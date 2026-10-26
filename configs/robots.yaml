@@ -1,0 +1,18 @@
+rover:
+  speed: 1
+  vision_radius: 3
+  thermal_radius: 6
+  thermal_decay: 3.0
+  thermal_noise: 0.05
+  acoustic_radius: 10
+  acoustic_decay: 6.0
+  acoustic_noise: 0.10
+  acoustic_wall_factor: 0.4
+  confirm_radius: 2
+  battery: 300
+  move_cost: 1.0
+  rubble_cost: 2.0
+  idle_cost: 0.1
+  can_cross_rubble: true
+  can_cross_walls: false
+  comm_radius: 8

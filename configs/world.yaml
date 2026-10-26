@@ -1,0 +1,15 @@
+layout: cave
+width: 48
+height: 48
+wall_fill: 0.42
+smoothing_steps: 4
+border_walls: true
+rubble_patches: 6
+rubble_patch_radius: [2, 4]
+spawn_origin: [1, 1]
+spawn_size: 3
+num_victims: 4
+victim_min_dist_from_spawn: 12
+victim_min_dist_between: 5
+min_free_ratio: 0.45
+max_generation_retries: 20

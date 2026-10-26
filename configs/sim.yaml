@@ -1,0 +1,7 @@
+num_rovers: 5
+max_steps: 400
+seed: 0
+end_when_all_found: true
+render_cell_px: 16
+fps: 10
+local_window_radius: 3
