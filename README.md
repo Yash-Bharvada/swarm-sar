@@ -40,6 +40,14 @@ python scripts/validate_step2.py
 
 The default gate runs 20 fixed seeds and writes four distinct agent graphs, baseline events, core episode artifacts and aggregate validation results under `results/step2_validation/`.
 
+The frozen baseline also passed an untouched stressed holdout:
+
+```bash
+python scripts/audit_step2_robustness.py
+```
+
+This uses seeds 100–119, cycles through 24×24, 32×32 and 40×40 maps, increases sensor noise and false positives, lowers detection probability, doubles odometry drift and reduces battery. Its fixed pass thresholds are stored in the installed validation module and written to the results before episodes run.
+
 ## Run
 
 ```bash
@@ -153,5 +161,6 @@ tests/                   unit, integration, property and official API tests
 - [x] Attributed graph edges and NetworkX shortest-path queries
 - [x] Four distinct graph artifacts plus maps, events and confirmed markers
 - [x] Twenty-seed baseline evaluation
+- [x] Untouched stressed holdout and frozen Git milestone
 
-The next milestone is Blueprint Step 3: RLlib PPO with one shared rover policy and one shared drone policy, trained on the same fixed observation/action contract and evaluated against this frozen frontier baseline.
+Step 2 is frozen at Git tag `blueprint-step2-frozen`. The next milestone is Blueprint Step 3: RLlib PPO with one shared rover policy and one shared drone policy, trained on the same fixed observation/action contract and evaluated against this frozen frontier baseline.
