@@ -75,5 +75,17 @@ def update_vision(robot: Robot, grid: np.ndarray, radius: int) -> int:
     return newly_revealed
 
 
-def update_all_vision(robots: list[Robot], grid: np.ndarray, radius: int) -> int:
-    return sum(update_vision(robot, grid, radius) for robot in robots if robot.alive)
+def update_all_vision(
+    robots: list[Robot],
+    grid: np.ndarray,
+    radius: int | dict[str, int],
+) -> int:
+    return sum(
+        update_vision(
+            robot,
+            grid,
+            int(radius[robot.type]) if isinstance(radius, dict) else int(radius),
+        )
+        for robot in robots
+        if robot.alive
+    )

@@ -11,17 +11,21 @@ from swarm_sar.world.victims import place_victims
 
 def test_victim_placement_rules_over_100_seeds():
     cfg = load_config("configs/world.yaml")
+    observed_counts = set()
     for seed in range(100):
         rng = make_rng(seed)
         grid, distances = generate_world(cfg, rng)
         victims = place_victims(grid, distances, cfg, rng)
-        assert len(victims) == cfg["num_victims"]
+        low, high = cfg["num_victims"]
+        assert low <= len(victims) <= high
+        observed_counts.add(len(victims))
         for victim in victims:
             assert distances[victim["y"], victim["x"]] >= cfg["victim_min_dist_from_spawn"]
             assert not victim["found"]
         for index, first in enumerate(victims):
             for second in victims[index + 1 :]:
                 assert np.hypot(first["x"] - second["x"], first["y"] - second["y"]) >= cfg["victim_min_dist_between"]
+    assert observed_counts == {1, 2, 3, 4}
 
 
 def test_confirmation_updates_found_fields():

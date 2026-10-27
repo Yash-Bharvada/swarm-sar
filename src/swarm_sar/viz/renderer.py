@@ -57,9 +57,11 @@ class Renderer:
 
         if self.show_vision:
             overlay = pygame.Surface(self.size, pygame.SRCALPHA)
-            radius = int(self.world.robot_config["vision_radius"]) * self.cell_px
             for robot in self.world.robots:
                 if robot.alive:
+                    radius = int(
+                        self.world.robot_configs[robot.type]["vision_radius"]
+                    ) * self.cell_px
                     center = (robot.x * self.cell_px + self.cell_px // 2, robot.y * self.cell_px + self.cell_px // 2)
                     pygame.draw.circle(overlay, (80, 180, 255, 35), center, radius, 1)
             surface.blit(overlay, (0, 0))
@@ -71,8 +73,15 @@ class Renderer:
         for robot in self.world.robots:
             color = ROBOT_COLORS[robot.id % len(ROBOT_COLORS)] if robot.alive else (90, 90, 90)
             rect = pygame.Rect(robot.x * self.cell_px + 2, robot.y * self.cell_px + 2, self.cell_px - 4, self.cell_px - 4)
-            pygame.draw.rect(surface, color, rect, border_radius=max(1, self.cell_px // 4))
-            label = self.font.render(str(robot.id), True, (5, 8, 12))
+            if robot.type == "drone":
+                pygame.draw.circle(surface, color, rect.center, max(3, rect.width // 2))
+            else:
+                pygame.draw.rect(surface, color, rect, border_radius=max(1, self.cell_px // 4))
+            label = self.font.render(
+                f"{'D' if robot.type == 'drone' else 'R'}{robot.id}",
+                True,
+                (5, 8, 12),
+            )
             surface.blit(label, label.get_rect(center=rect.center))
 
         panel_x = width * self.cell_px
@@ -84,12 +93,13 @@ class Renderer:
             surface.blit(self.small_font.render(line, True, (235, 238, 244)), (panel_x + 12, y))
             y += 21
         y += 8
-        full_battery = float(self.world.robot_config["battery"])
         for robot in self.world.robots:
-            surface.blit(self.small_font.render(f"R{robot.id}", True, ROBOT_COLORS[robot.id % len(ROBOT_COLORS)]), (panel_x + 12, y))
+            short_name = f"{'D' if robot.type == 'drone' else 'R'}{robot.id}"
+            surface.blit(self.small_font.render(short_name, True, ROBOT_COLORS[robot.id % len(ROBOT_COLORS)]), (panel_x + 12, y))
             bar = pygame.Rect(panel_x + 45, y + 2, 150, 12)
             pygame.draw.rect(surface, (68, 72, 80), bar)
             filled = bar.copy()
+            full_battery = float(self.world.robot_configs[robot.type]["battery"])
             filled.width = int(bar.width * robot.battery / full_battery)
             pygame.draw.rect(surface, (72, 190, 105) if robot.alive else (120, 70, 70), filled)
             y += 24

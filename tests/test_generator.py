@@ -46,3 +46,18 @@ def test_optional_maze_layout_is_reachable():
     grid, distances = generate_world(cfg, make_rng(5))
     assert grid.shape == (33, 33)
     assert np.all(distances[grid != WALL] >= 0)
+
+
+def test_blueprint_room_maps_support_24_and_40_cells():
+    cfg = config()
+    for size in (24, 40):
+        sized = {
+            **cfg,
+            "width": size,
+            "height": size,
+            "victim_min_dist_from_spawn": max(6, size // 4),
+        }
+        for seed in range(10):
+            grid, distances = generate_world(sized, make_rng(seed))
+            assert grid.shape == (size, size)
+            assert np.all(distances[grid != WALL] >= 0)

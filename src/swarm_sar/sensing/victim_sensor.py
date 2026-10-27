@@ -19,16 +19,22 @@ def thermal_reading(
     values = np.zeros(4, dtype=np.float64)
     radius = float(config["thermal_radius"])
     decay = float(config["thermal_decay"])
+    detection_probability = float(config.get("thermal_detection_probability", 1.0))
     for victim in victims:
         dx, dy = int(victim["x"]) - robot.x, int(victim["y"]) - robot.y
         distance = float(np.hypot(dx, dy))
         if distance > radius or not has_line_of_sight(grid, robot.position, (victim["x"], victim["y"])):
+            continue
+        if rng.random() > detection_probability:
             continue
         if abs(dy) >= abs(dx):
             sector = 0 if dy <= 0 else 2
         else:
             sector = 1 if dx > 0 else 3
         values[sector] += np.exp(-distance / decay)
+    false_positive_rate = float(config.get("thermal_false_positive_rate", 0.0))
+    if rng.random() < false_positive_rate:
+        values[int(rng.integers(4))] += float(rng.uniform(0.1, 0.4))
     values += rng.normal(0.0, float(config["thermal_noise"]), size=4)
     return np.clip(values, 0.0, None).astype(np.float32)
 
@@ -45,14 +51,19 @@ def acoustic_reading(
     radius = float(config["acoustic_radius"])
     decay = float(config["acoustic_decay"])
     wall_factor = float(config["acoustic_wall_factor"])
+    detection_probability = float(config.get("acoustic_detection_probability", 1.0))
     for victim in victims:
         distance = float(np.hypot(victim["x"] - robot.x, victim["y"] - robot.y))
         if distance > radius:
+            continue
+        if rng.random() > detection_probability:
             continue
         signal = float(np.exp(-distance / decay))
         if not has_line_of_sight(grid, robot.position, (victim["x"], victim["y"])):
             signal *= wall_factor
         total += signal
+    if rng.random() < float(config.get("acoustic_false_positive_rate", 0.0)):
+        total += float(rng.uniform(0.1, 0.4))
     total += float(rng.normal(0.0, float(config["acoustic_noise"])))
     return np.array([max(0.0, total)], dtype=np.float32)
 
@@ -77,7 +88,7 @@ def confirm_victims(
     robots: list[Robot],
     victims: list[dict[str, Any]],
     grid: np.ndarray,
-    confirm_radius: float,
+    confirm_radius: float | dict[str, float],
     step: int,
 ) -> int:
     """Mark newly confirmed victims and return their count."""
@@ -88,8 +99,13 @@ def confirm_victims(
         for robot in robots:
             if not robot.alive:
                 continue
+            radius = (
+                float(confirm_radius[robot.type])
+                if isinstance(confirm_radius, dict)
+                else float(confirm_radius)
+            )
             distance = float(np.hypot(victim["x"] - robot.x, victim["y"] - robot.y))
-            if distance <= confirm_radius and has_line_of_sight(
+            if distance <= radius and has_line_of_sight(
                 grid, robot.position, (victim["x"], victim["y"])
             ):
                 victim["found"] = True

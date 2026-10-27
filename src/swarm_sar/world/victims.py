@@ -16,7 +16,12 @@ def place_victims(
     """Place reachable, well-separated victims using the shared RNG."""
     minimum_path = int(config["victim_min_dist_from_spawn"])
     minimum_between = float(config["victim_min_dist_between"])
-    count = int(config["num_victims"])
+    configured_count = config["num_victims"]
+    if isinstance(configured_count, (list, tuple)):
+        low, high = map(int, configured_count)
+        count = int(rng.integers(low, high + 1))
+    else:
+        count = int(configured_count)
     candidates = np.argwhere((grid == FREE) & (distances >= minimum_path))
     if len(candidates) < count:
         raise ValueError("Not enough eligible cells to place victims")

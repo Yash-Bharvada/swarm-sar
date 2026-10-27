@@ -11,9 +11,13 @@ CONFIG = {
     "thermal_radius": 6,
     "thermal_decay": 3.0,
     "thermal_noise": 0.0,
+    "thermal_detection_probability": 1.0,
+    "thermal_false_positive_rate": 0.0,
     "acoustic_radius": 10,
     "acoustic_decay": 6.0,
     "acoustic_noise": 0.0,
+    "acoustic_detection_probability": 1.0,
+    "acoustic_false_positive_rate": 0.0,
     "acoustic_wall_factor": 0.4,
 }
 
@@ -51,3 +55,24 @@ def test_beyond_acoustic_range_is_noise_only():
     grid = np.zeros((20, 20), dtype=np.int8)
     rover = Robot.create(0, "rover", 1, 1, 10, grid.shape)
     assert acoustic_reading(rover, [victim(15, 15)], grid, config, make_rng(1))[0] == 0
+
+
+def test_configurable_misses_and_false_positives():
+    grid = np.zeros((10, 10), dtype=np.int8)
+    rover = Robot.create(0, "rover", 2, 2, 10, grid.shape)
+    missed = {
+        **CONFIG,
+        "thermal_detection_probability": 0.0,
+        "acoustic_detection_probability": 0.0,
+    }
+    target = [victim(3, 2)]
+    assert thermal_reading(rover, target, grid, missed, make_rng(3)).sum() == 0
+    assert acoustic_reading(rover, target, grid, missed, make_rng(3))[0] == 0
+
+    false_positive = {
+        **CONFIG,
+        "thermal_false_positive_rate": 1.0,
+        "acoustic_false_positive_rate": 1.0,
+    }
+    assert thermal_reading(rover, [], grid, false_positive, make_rng(4)).sum() > 0
+    assert acoustic_reading(rover, [], grid, false_positive, make_rng(4))[0] > 0

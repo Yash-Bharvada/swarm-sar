@@ -1,7 +1,10 @@
-num_rovers: 5
+agent_counts:
+  rover: 2
+  drone: 2
 max_steps: 400
 seed: 0
 end_when_all_found: true
-render_cell_px: 16
+render_cell_px: 18
 fps: 10
-local_window_radius: 3
+local_window_radius: 4
+max_frontiers: 5

@@ -73,6 +73,80 @@ def _maze(config: dict[str, Any], rng: np.random.Generator) -> np.ndarray:
     return grid
 
 
+def _carve_corridor(
+    grid: np.ndarray,
+    start: tuple[int, int],
+    end: tuple[int, int],
+    horizontal_first: bool,
+) -> None:
+    """Carve an L-shaped one-cell corridor between two room centers."""
+    x0, y0 = start
+    x1, y1 = end
+    if horizontal_first:
+        grid[y0, min(x0, x1) : max(x0, x1) + 1] = FREE
+        grid[min(y0, y1) : max(y0, y1) + 1, x1] = FREE
+    else:
+        grid[min(y0, y1) : max(y0, y1) + 1, x0] = FREE
+        grid[y1, min(x0, x1) : max(x0, x1) + 1] = FREE
+
+
+def _rooms(config: dict[str, Any], rng: np.random.Generator) -> np.ndarray:
+    """Generate irregular rooms joined by corridors and a few alternate routes."""
+    height, width = int(config["height"]), int(config["width"])
+    grid = np.full((height, width), WALL, dtype=np.int8)
+    room_low, room_high = map(int, config.get("num_rooms", [8, 12]))
+    size_low, size_high = map(int, config.get("room_size", [3, 7]))
+    target_count = int(rng.integers(room_low, room_high + 1))
+    sx, sy = map(int, config["spawn_origin"])
+    spawn_size = int(config["spawn_size"])
+    grid[sy : sy + spawn_size, sx : sx + spawn_size] = FREE
+    centers: list[tuple[int, int]] = [(sx + spawn_size // 2, sy + spawn_size // 2)]
+    rectangles: list[tuple[int, int, int, int]] = [
+        (sx, sy, sx + spawn_size - 1, sy + spawn_size - 1)
+    ]
+
+    for _ in range(target_count * 30):
+        if len(centers) >= target_count + 1:
+            break
+        room_width = int(rng.integers(size_low, min(size_high, width - 3) + 1))
+        room_height = int(rng.integers(size_low, min(size_high, height - 3) + 1))
+        x = int(rng.integers(1, width - room_width))
+        y = int(rng.integers(1, height - room_height))
+        rectangle = (x, y, x + room_width - 1, y + room_height - 1)
+        overlaps = any(
+            not (
+                rectangle[2] < old[0]
+                or rectangle[0] > old[2]
+                or rectangle[3] < old[1]
+                or rectangle[1] > old[3]
+            )
+            for old in rectangles
+        )
+        if overlaps:
+            continue
+        center = (x + room_width // 2, y + room_height // 2)
+        nearest = min(
+            centers,
+            key=lambda point: abs(point[0] - center[0]) + abs(point[1] - center[1]),
+        )
+        grid[y : y + room_height, x : x + room_width] = FREE
+        _carve_corridor(grid, nearest, center, bool(rng.integers(2)))
+        centers.append(center)
+        rectangles.append(rectangle)
+
+    # Extra connections make alternate paths and reduce single-corridor bottlenecks.
+    if len(centers) >= 4:
+        for _ in range(max(1, len(centers) // 4)):
+            first, second = rng.choice(len(centers), 2, replace=False)
+            _carve_corridor(
+                grid,
+                centers[int(first)],
+                centers[int(second)],
+                bool(rng.integers(2)),
+            )
+    return grid
+
+
 def _force_border(grid: np.ndarray) -> None:
     grid[0, :] = WALL
     grid[-1, :] = WALL
@@ -111,6 +185,8 @@ def generate_candidate(
         grid = _cave(config, rng)
     elif layout == "maze":
         grid = _maze(config, rng)
+    elif layout == "rooms":
+        grid = _rooms(config, rng)
     else:
         raise ValueError(f"Unknown layout: {layout}")
 

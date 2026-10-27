@@ -21,7 +21,7 @@ def main() -> None:
     while running:
         renderer.draw()
         robot = world.robots[selected]
-        pygame.display.set_caption(f"Swarm SAR | rover {selected} | thermal {robot.thermal.round(2)} | acoustic {robot.acoustic[0]:.2f}")
+        pygame.display.set_caption(f"Swarm SAR | {robot.name} | thermal {robot.thermal.round(2)} | acoustic {robot.acoustic[0]:.2f}")
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False

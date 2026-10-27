@@ -7,7 +7,7 @@ import numpy as np
 
 from swarm_sar.robots.robot import Robot
 from swarm_sar.sensing.victim_sensor import confirm_victims, update_robot_sensors
-from swarm_sar.sensing.vision import update_all_vision
+from swarm_sar.sensing.vision import update_vision
 from swarm_sar.sim.metrics import EpisodeMetrics
 from swarm_sar.utils.config import load_config
 from swarm_sar.utils.rng import make_rng
@@ -43,7 +43,7 @@ def apply_movements(
     robots: list[Robot],
     actions: Mapping[int, int] | Sequence[int],
     grid: np.ndarray,
-    robot_config: dict[str, Any],
+    robot_config: dict[str, Any] | dict[str, dict[str, Any]],
     rng: np.random.Generator,
 ) -> None:
     """Apply simultaneous intents in seeded random sequential order."""
@@ -52,6 +52,11 @@ def apply_movements(
     height, width = grid.shape
     for index in rng.permutation(len(robots)):
         robot = robots[int(index)]
+        config = (
+            robot_config[robot.type]
+            if robot.type in robot_config and isinstance(robot_config[robot.type], dict)
+            else robot_config
+        )
         robot.collided = False
         robot.last_action = action_by_id[robot.id]
         if not robot.alive:
@@ -64,28 +69,34 @@ def apply_movements(
         if moving:
             tx, ty = target
             blocked = not (0 <= tx < width and 0 <= ty < height)
-            if not blocked and grid[ty, tx] == WALL and not bool(robot_config["can_cross_walls"]):
+            if not blocked and grid[ty, tx] == WALL and not bool(config["can_cross_walls"]):
                 blocked = True
-            if not blocked and grid[ty, tx] == RUBBLE and not bool(robot_config["can_cross_rubble"]):
+            if not blocked and grid[ty, tx] == RUBBLE and not bool(config["can_cross_rubble"]):
                 blocked = True
             if not blocked and target in occupied:
                 blocked = True
 
         if blocked:
             robot.collided = True
-            cost = float(robot_config["idle_cost"])
+            cost = float(config["idle_cost"])
         elif not moving:
-            cost = float(robot_config["idle_cost"])
+            cost = float(config["idle_cost"])
         else:
             occupied.remove(robot.position)
             robot.x, robot.y = target
             occupied.add(target)
             robot.visited[robot.y, robot.x] = True
             robot.distance_travelled += 1
+            drift_std = float(config.get("odometry_drift_std", 0.0))
+            robot.odom_x += dx + float(rng.normal(0.0, drift_std))
+            robot.odom_y += dy + float(rng.normal(0.0, drift_std))
+            robot.odom_uncertainty += float(
+                config.get("odometry_uncertainty_growth", drift_std)
+            )
             cost = (
-                float(robot_config["rubble_cost"])
+                float(config["rubble_cost"])
                 if grid[robot.y, robot.x] == RUBBLE
-                else float(robot_config["move_cost"])
+                else float(config["move_cost"])
             )
 
         robot.battery = max(0.0, robot.battery - cost)
@@ -95,7 +106,7 @@ def apply_movements(
 
 
 class SwarmWorld:
-    """Deterministic multi-rover search-and-rescue world."""
+    """Deterministic heterogeneous search-and-rescue simulation core."""
 
     def __init__(
         self,
@@ -106,7 +117,13 @@ class SwarmWorld:
         root = Path(__file__).resolve().parents[3]
         self.world_config = self._config(world_config, root / "configs/world.yaml")
         all_robot_config = self._config(robot_config, root / "configs/robots.yaml")
-        self.robot_config = all_robot_config.get("rover", all_robot_config)
+        self.robot_configs = (
+            all_robot_config
+            if all(isinstance(value, dict) for value in all_robot_config.values())
+            else {"rover": all_robot_config}
+        )
+        # Kept for compatibility with older callers; new code uses robot_configs.
+        self.robot_config = self.robot_configs["rover"]
         self.sim_config = self._config(sim_config, root / "configs/sim.yaml")
         self.rng = make_rng(int(self.sim_config["seed"]))
         self.grid = np.empty((0, 0), dtype=np.int8)
@@ -117,6 +134,9 @@ class SwarmWorld:
         self.step_count = 0
         self.done = False
         self.seed = int(self.sim_config["seed"])
+        self.events: list[dict[str, Any]] = []
+        self.trajectory: list[dict[str, Any]] = []
+        self.last_revealed_by_robot: dict[int, int] = {}
 
     @staticmethod
     def _config(value: dict[str, Any] | str | Path | None, default: Path) -> dict[str, Any]:
@@ -147,20 +167,50 @@ class SwarmWorld:
             for x in range(x0, x0 + size)
             if self.grid[y, x] != WALL
         ]
-        count = int(self.sim_config["num_rovers"])
+        configured_counts = self.sim_config.get("agent_counts")
+        if configured_counts is None:
+            configured_counts = {"rover": int(self.sim_config.get("num_rovers", 0))}
+        robot_types = [
+            robot_type
+            for robot_type, count in configured_counts.items()
+            for _ in range(int(count))
+        ]
+        count = len(robot_types)
         if count > len(cells):
-            raise ValueError(f"Spawn has {len(cells)} free cells for {count} rovers")
+            raise ValueError(f"Spawn has {len(cells)} free cells for {count} agents")
+        unknown_types = set(robot_types) - set(self.robot_configs)
+        if unknown_types:
+            raise ValueError(f"Missing robot configuration for: {sorted(unknown_types)}")
         order = self.rng.permutation(len(cells))[:count]
         return [
             Robot.create(
                 robot_id,
-                "rover",
+                robot_type,
                 *cells[int(cell_index)],
-                float(self.robot_config["battery"]),
+                float(self.robot_configs[robot_type]["battery"]),
                 self.grid.shape,
             )
-            for robot_id, cell_index in enumerate(order)
+            for robot_id, (robot_type, cell_index) in enumerate(zip(robot_types, order))
         ]
+
+    def _record_trajectory(self) -> None:
+        for robot in self.robots:
+            self.trajectory.append(
+                {
+                    "step": self.step_count,
+                    "agent": robot.name,
+                    "type": robot.type,
+                    "x": robot.x,
+                    "y": robot.y,
+                    "odom_x": robot.odom_x,
+                    "odom_y": robot.odom_y,
+                    "pose_uncertainty": robot.odom_uncertainty,
+                    "battery": robot.battery,
+                    "alive": robot.alive,
+                    "action": robot.last_action,
+                    "collided": robot.collided,
+                }
+            )
 
     def reset(self, seed: int | None = None) -> dict[int, dict[str, np.ndarray]]:
         self.seed = int(self.sim_config["seed"] if seed is None else seed)
@@ -169,20 +219,26 @@ class SwarmWorld:
         self.robots = self._spawn_robots()
         self.step_count = 0
         self.done = False
-        update_all_vision(
-            self.robots, self.grid, int(self.robot_config["vision_radius"])
-        )
+        self.events = [{"step": 0, "event": "reset", "seed": self.seed}]
+        self.trajectory = []
+        self.last_revealed_by_robot = {}
         for robot in self.robots:
+            self.last_revealed_by_robot[robot.id] = update_vision(
+                robot,
+                self.grid,
+                int(self.robot_configs[robot.type]["vision_radius"]),
+            )
             update_robot_sensors(
                 robot,
                 self.victims,
                 self.grid,
-                self.robot_config,
+                self.robot_configs[robot.type],
                 self.rng,
                 preserve_previous=False,
             )
         self.metrics = EpisodeMetrics(self.grid, self.distances, self.victims)
         self.metrics.update(0, self.robots)
+        self._record_trajectory()
         return self.observations()
 
     def step(
@@ -194,23 +250,57 @@ class SwarmWorld:
             raise RuntimeError("Call reset() before step()")
 
         self.step_count += 1
-        apply_movements(self.robots, actions, self.grid, self.robot_config, self.rng)
-        newly_revealed = update_all_vision(
-            self.robots, self.grid, int(self.robot_config["vision_radius"])
-        )
+        alive_before = {robot.id: robot.alive for robot in self.robots}
+        apply_movements(self.robots, actions, self.grid, self.robot_configs, self.rng)
+        self.last_revealed_by_robot = {}
         for robot in self.robots:
             if robot.alive:
-                update_robot_sensors(
-                    robot, self.victims, self.grid, self.robot_config, self.rng
+                self.last_revealed_by_robot[robot.id] = update_vision(
+                    robot,
+                    self.grid,
+                    int(self.robot_configs[robot.type]["vision_radius"]),
                 )
+                update_robot_sensors(
+                    robot,
+                    self.victims,
+                    self.grid,
+                    self.robot_configs[robot.type],
+                    self.rng,
+                )
+            else:
+                self.last_revealed_by_robot[robot.id] = 0
         newly_found = confirm_victims(
             self.robots,
             self.victims,
             self.grid,
-            float(self.robot_config["confirm_radius"]),
+            {
+                robot_type: float(config["confirm_radius"])
+                for robot_type, config in self.robot_configs.items()
+            },
             self.step_count,
         )
+        for robot in self.robots:
+            if robot.collided:
+                self.events.append(
+                    {"step": self.step_count, "event": "collision", "agent": robot.name}
+                )
+            if alive_before[robot.id] and not robot.alive:
+                self.events.append(
+                    {"step": self.step_count, "event": "battery_depleted", "agent": robot.name}
+                )
+        for victim in self.victims:
+            if victim["found_step"] == self.step_count:
+                finder = next(robot.name for robot in self.robots if robot.id == victim["found_by"])
+                self.events.append(
+                    {
+                        "step": self.step_count,
+                        "event": "survivor_confirmed",
+                        "victim_id": victim["id"],
+                        "agent": finder,
+                    }
+                )
         self.metrics.update(self.step_count, self.robots)
+        self._record_trajectory()
 
         all_found = self.metrics.victims_found == len(self.victims)
         all_dead = not any(robot.alive for robot in self.robots)
@@ -221,7 +311,13 @@ class SwarmWorld:
             or timed_out
         )
         info = self.metrics.snapshot(self.step_count, self.robots)
-        info.update({"newly_revealed": newly_revealed, "newly_found": newly_found})
+        info.update(
+            {
+                "newly_revealed": sum(self.last_revealed_by_robot.values()),
+                "newly_revealed_by_robot": dict(self.last_revealed_by_robot),
+                "newly_found": newly_found,
+            }
+        )
         return self.observations(), info, self.done
 
     def observations(self) -> dict[int, dict[str, np.ndarray]]:
@@ -232,7 +328,7 @@ class SwarmWorld:
         padded = np.pad(robot.belief, radius, constant_values=UNKNOWN)
         px, py = robot.x + radius, robot.y + radius
         local_map = padded[py - radius : py + radius + 1, px - radius : px + radius + 1].copy()
-        full_battery = float(self.robot_config["battery"])
+        full_battery = float(self.robot_configs[robot.type]["battery"])
         spawn_x, spawn_y = spawn_center(self.world_config)
         height, width = self.grid.shape
         return {
@@ -243,9 +339,10 @@ class SwarmWorld:
             "prev_thermal": robot.prev_thermal.copy(),
             "prev_acoustic": robot.prev_acoustic.copy(),
             "rel_pos": np.array(
-                [(robot.x - spawn_x) / width, (robot.y - spawn_y) / height],
+                [(robot.odom_x - spawn_x) / width, (robot.odom_y - spawn_y) / height],
                 dtype=np.float32,
             ),
+            "pose_uncertainty": np.array([robot.odom_uncertainty], dtype=np.float32),
             "collided": np.array([float(robot.collided)], dtype=np.float32),
         }
 
@@ -253,3 +350,11 @@ class SwarmWorld:
         if self.metrics is None:
             raise RuntimeError("Call reset() first")
         return self.metrics.snapshot(self.step_count, self.robots)
+
+    def save_episode(self, output_dir: str | Path) -> dict[str, Path]:
+        """Save ground-truth map metadata, events and per-agent trajectories."""
+        from swarm_sar.sim.logging import save_episode_artifacts
+
+        if self.metrics is None:
+            raise RuntimeError("Call reset() before saving an episode")
+        return save_episode_artifacts(self, output_dir)

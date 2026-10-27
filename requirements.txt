@@ -3,3 +3,5 @@ pyyaml
 pygame
 matplotlib
 pytest
+gymnasium>=1.0
+pettingzoo>=1.24
