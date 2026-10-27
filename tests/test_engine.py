@@ -71,6 +71,7 @@ def test_max_steps_termination_and_no_steps_after_done():
 def test_all_victims_found_and_all_robots_dead_terminate():
     found_world = SwarmWorld()
     found_world.reset(4)
+    found_world.sim_config["auto_confirm_victims"] = True
     rover = found_world.robots[0]
     for victim in found_world.victims:
         victim["x"], victim["y"] = rover.position

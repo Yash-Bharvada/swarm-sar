@@ -8,3 +8,4 @@ render_cell_px: 18
 fps: 10
 local_window_radius: 4
 max_frontiers: 5
+auto_confirm_victims: false

@@ -269,16 +269,18 @@ class SwarmWorld:
                 )
             else:
                 self.last_revealed_by_robot[robot.id] = 0
-        newly_found = confirm_victims(
-            self.robots,
-            self.victims,
-            self.grid,
-            {
-                robot_type: float(config["confirm_radius"])
-                for robot_type, config in self.robot_configs.items()
-            },
-            self.step_count,
-        )
+        newly_found = 0
+        if bool(self.sim_config.get("auto_confirm_victims", True)):
+            newly_found = confirm_victims(
+                self.robots,
+                self.victims,
+                self.grid,
+                {
+                    robot_type: float(config["confirm_radius"])
+                    for robot_type, config in self.robot_configs.items()
+                },
+                self.step_count,
+            )
         for robot in self.robots:
             if robot.collided:
                 self.events.append(
@@ -358,3 +360,36 @@ class SwarmWorld:
         if self.metrics is None:
             raise RuntimeError("Call reset() before saving an episode")
         return save_episode_artifacts(self, output_dir)
+
+    def confirm_from_evidence(self, robot_ids: set[int] | list[int]) -> int:
+        """Ask the truth-side confirmation sensor to verify evidence-bearing agents."""
+        if self.metrics is None:
+            raise RuntimeError("Call reset() before confirming survivors")
+        selected = [robot for robot in self.robots if robot.id in set(robot_ids)]
+        newly_found = confirm_victims(
+            selected,
+            self.victims,
+            self.grid,
+            {
+                robot_type: float(config["confirm_radius"])
+                for robot_type, config in self.robot_configs.items()
+            },
+            self.step_count,
+        )
+        if newly_found:
+            self.metrics.record_victim_times(self.step_count)
+            for victim in self.victims:
+                if victim["found_step"] == self.step_count:
+                    finder = next(
+                        robot.name for robot in self.robots if robot.id == victim["found_by"]
+                    )
+                    event = {
+                        "step": self.step_count,
+                        "event": "survivor_confirmed",
+                        "victim_id": victim["id"],
+                        "agent": finder,
+                        "confirmation": "repeat_or_multi_agent_evidence",
+                    }
+                    if event not in self.events:
+                        self.events.append(event)
+        return newly_found

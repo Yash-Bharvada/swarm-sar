@@ -76,3 +76,12 @@ def test_configurable_misses_and_false_positives():
     }
     assert thermal_reading(rover, [], grid, false_positive, make_rng(4)).sum() > 0
     assert acoustic_reading(rover, [], grid, false_positive, make_rng(4))[0] > 0
+
+
+def test_confirmed_survivors_stop_emitting_sensor_cues():
+    grid = np.zeros((10, 10), dtype=np.int8)
+    rover = Robot.create(0, "rover", 2, 2, 10, grid.shape)
+    found = victim(3, 2)
+    found["found"] = True
+    assert thermal_reading(rover, [found], grid, CONFIG, make_rng(5)).sum() == 0
+    assert acoustic_reading(rover, [found], grid, CONFIG, make_rng(5))[0] == 0

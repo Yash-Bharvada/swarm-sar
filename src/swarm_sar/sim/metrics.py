@@ -37,14 +37,17 @@ class EpisodeMetrics:
         return float(np.count_nonzero(known & reachable) / denominator)
 
     def update(self, step: int, robots: list[Robot]) -> None:
+        self.record_victim_times(step)
+        self.collisions += sum(robot.collided for robot in robots)
+        self.coverage_over_time.append(self.coverage(robots))
+        self.victims_over_time.append(self.victims_found)
+
+    def record_victim_times(self, step: int) -> None:
         found = self.victims_found
         if found and self.time_to_first_victim is None:
             self.time_to_first_victim = step
         if found == len(self.victims) and self.time_to_all_victims is None:
             self.time_to_all_victims = step
-        self.collisions += sum(robot.collided for robot in robots)
-        self.coverage_over_time.append(self.coverage(robots))
-        self.victims_over_time.append(found)
 
     def snapshot(self, step: int, robots: list[Robot]) -> dict[str, Any]:
         return {

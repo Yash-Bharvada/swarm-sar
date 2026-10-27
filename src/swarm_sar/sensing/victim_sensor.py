@@ -21,6 +21,8 @@ def thermal_reading(
     decay = float(config["thermal_decay"])
     detection_probability = float(config.get("thermal_detection_probability", 1.0))
     for victim in victims:
+        if victim.get("found", False):
+            continue
         dx, dy = int(victim["x"]) - robot.x, int(victim["y"]) - robot.y
         distance = float(np.hypot(dx, dy))
         if distance > radius or not has_line_of_sight(grid, robot.position, (victim["x"], victim["y"])):
@@ -53,6 +55,8 @@ def acoustic_reading(
     wall_factor = float(config["acoustic_wall_factor"])
     detection_probability = float(config.get("acoustic_detection_probability", 1.0))
     for victim in victims:
+        if victim.get("found", False):
+            continue
         distance = float(np.hypot(victim["x"] - robot.x, victim["y"] - robot.y))
         if distance > radius:
             continue

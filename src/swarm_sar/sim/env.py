@@ -10,7 +10,7 @@ from pettingzoo import ParallelEnv
 
 from swarm_sar.sensing.victim_sensor import acoustic_reading, thermal_reading
 from swarm_sar.sim.engine import SwarmWorld
-from swarm_sar.sim.planning import frontier_candidates, movement_action
+from swarm_sar.sim.planning import astar_path, frontier_candidates, movement_action
 
 FRONTIER_SLOTS = 5
 INVESTIGATE = 5
@@ -46,6 +46,7 @@ class DisasterResponseParallelEnv(ParallelEnv):
         self._renderer = None
         self._invalid_actions: dict[str, bool] = {}
         self._candidate_cache: dict[str, list[dict[str, Any]]] = {}
+        self._active_goals: dict[str, tuple[int, int]] = {}
 
     def _configured_agent_names(self) -> list[str]:
         counts = self.core.sim_config.get(
@@ -98,8 +99,38 @@ class DisasterResponseParallelEnv(ParallelEnv):
             max_candidates=int(self.core.sim_config.get("max_frontiers", FRONTIER_SLOTS)),
             can_cross_rubble=bool(config["can_cross_rubble"]),
         )
+        active_goal = self._active_goals.get(agent)
+        if active_goal is not None and active_goal != robot.position:
+            active_path = astar_path(
+                robot.belief,
+                robot.position,
+                active_goal,
+                can_cross_rubble=bool(config["can_cross_rubble"]),
+            )
+            if active_path:
+                candidates = [
+                    {
+                        "position": active_goal,
+                        "cluster_size": 1,
+                        "path": active_path,
+                        "distance": len(active_path) - 1,
+                        "active_goal": True,
+                    }
+                ] + [
+                    candidate
+                    for candidate in candidates
+                    if tuple(candidate["position"]) != active_goal
+                ]
+                candidates = candidates[:FRONTIER_SLOTS]
         self._candidate_cache[agent] = candidates
         return candidates
+
+    def set_active_goal(self, agent: str, goal: tuple[int, int] | None) -> None:
+        if goal is None:
+            self._active_goals.pop(agent, None)
+        else:
+            self._active_goals[agent] = tuple(goal)
+        self._candidate_cache.pop(agent, None)
 
     def observe(self, agent: str) -> dict[str, np.ndarray]:
         robot = self._robots_by_name[agent]
@@ -142,6 +173,7 @@ class DisasterResponseParallelEnv(ParallelEnv):
         self.agents = self.possible_agents[:]
         self._invalid_actions = {agent: False for agent in self.agents}
         self._candidate_cache = {}
+        self._active_goals = {}
         observations = {agent: self.observe(agent) for agent in self.agents}
         infos = {
             agent: {"agent_type": self._robots_by_name[agent].type, "seed": self.core.seed}
@@ -176,10 +208,24 @@ class DisasterResponseParallelEnv(ParallelEnv):
                     invalid = True
                 else:
                     path = candidates[action]["path"]
+                    self._active_goals[agent] = tuple(candidates[action]["position"])
                     if len(path) >= 2:
                         movement = movement_action(robot.position, path[1])
             elif action == INVESTIGATE:
                 investigating.add(agent)
+                if float(robot.thermal.max()) > 0.0:
+                    sector = int(np.argmax(robot.thermal))
+                    movement = (1, 4, 2, 3)[sector]
+                    dx, dy = {1: (0, -1), 2: (0, 1), 3: (-1, 0), 4: (1, 0)}[
+                        movement
+                    ]
+                    tx, ty = robot.x + dx, robot.y + dy
+                    if not (
+                        0 <= tx < robot.belief.shape[1]
+                        and 0 <= ty < robot.belief.shape[0]
+                        and robot.belief[ty, tx] in (0, 2)
+                    ):
+                        movement = 0
             elif action != HOLD:
                 invalid = True
             self._invalid_actions[agent] = invalid
@@ -187,9 +233,12 @@ class DisasterResponseParallelEnv(ParallelEnv):
 
         _, core_info, _ = self.core.step(movement_actions)
         self._candidate_cache = {}
-        # Investigate is a dwell-and-fuse action: combine the regular sample with
-        # an independent second sample, reducing noise without exposing truth.
-        for agent in investigating:
+        for agent in list(self._active_goals):
+            if self._robots_by_name[agent].position == self._active_goals[agent]:
+                del self._active_goals[agent]
+        # Investigate follows the strongest thermal sector when locally traversable,
+        # then fuses an independent second sample without exposing truth.
+        for agent in sorted(investigating):
             robot = self._robots_by_name[agent]
             if not robot.alive:
                 continue

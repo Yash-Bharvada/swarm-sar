@@ -1,6 +1,6 @@
-# Autonomous Disaster Response Swarm — Blueprint Step 1
+# Autonomous Disaster Response Swarm — Blueprint Steps 1–2
 
-This repository implements the Blueprint Step 1 disaster-world testbed: a deterministic NumPy simulation with two rover-like and two drone-like agents, private occupancy maps, noisy thermal/acoustic sensing, drifting odometry, hidden survivors, frontier-level controls, A* motion, a PettingZoo `ParallelEnv`, structured artifacts, and a Pygame visualizer. It is the testbed for Step 2 mapping and frontier coordination; it does not yet contain the Step 2 baseline, peer networking, or reinforcement learning.
+This repository implements the Blueprint Step 1 disaster-world testbed and Step 2 non-learning benchmark: a deterministic NumPy simulation with two rover-like and two drone-like agents, private occupancy and topological maps, noisy thermal/acoustic sensing, drifting odometry, hidden survivors, coordinated frontier reservations, evidence-based confirmation, A* motion, a PettingZoo `ParallelEnv`, structured artifacts, and a Pygame visualizer. Peer networking and reinforcement learning are later steps.
 
 ## Setup
 
@@ -30,12 +30,25 @@ results/step1_validation/seed_N/trajectories.csv
 results/step1_validation/seed_N/metrics.json
 ```
 
+## Validate Step 2
+
+No API key is required. NetworkX runs locally.
+
+```bash
+python scripts/validate_step2.py
+```
+
+The default gate runs 20 fixed seeds and writes four distinct agent graphs, baseline events, core episode artifacts and aggregate validation results under `results/step2_validation/`.
+
 ## Run
 
 ```bash
 python scripts/view_world.py       # Space/N: next seed, G: view, V: vision
 python scripts/play_manual.py      # arrows: move, Tab: switch agent
 python scripts/run_random.py       # random valid high-level actions
+python scripts/run_frontier_baseline.py
+python scripts/run_frontier_baseline.py --seeds 0 --render
+python scripts/view_topology.py results/step2_validation/seed_0/topology/rover_0.json
 python scripts/benchmark.py        # PettingZoo + frontier + A* throughput
 ```
 
@@ -71,7 +84,7 @@ The seven policy actions are:
 
 ```text
 0–4  choose one of up to five local frontier slots; A* supplies the next move
-5    investigate by dwelling and fusing an independent second sensor sample
+5    follow the strongest thermal sector and fuse an independent second sample
 6    hold
 ```
 
@@ -98,6 +111,8 @@ src/swarm_sar/world/     rooms/caves/mazes, reachability and survivors
 src/swarm_sar/robots/    agent state and type configuration
 src/swarm_sar/sensing/   ray-cast vision, thermal, acoustic, confirmation
 src/swarm_sar/sim/       core, PettingZoo API, A*, frontiers, metrics, logging
+src/swarm_sar/mapping/   private NetworkX topological graphs
+src/swarm_sar/baselines/ coordinated frontier and evidence controller
 src/swarm_sar/viz/       Pygame renderer, isolated from the simulation core
 scripts/                 viewer, manual control, baseline, benchmark, validation
 tests/                   unit, integration, property and official API tests
@@ -111,7 +126,7 @@ tests/                   unit, integration, property and official API tests
 4. Thermal and acoustic outputs are probabilistic cues, not real sensor emulation.
 5. Time is discrete and the A* controller advances at most one grid cell per environment step.
 6. Policies never receive ground-truth maps or survivor coordinates. Offline JSON/CSV artifacts may contain truth for evaluation.
-7. Communication, graph merging, repeat/second-agent survivor confirmation, RL, ROS 2 and Gazebo belong to later blueprint steps.
+7. Goal reservations and evidence arbitration are direct calls inside the Step 2 benchmark. Transporting them as lossy peer messages is deliberately deferred to Step 4.
 
 ## Step 1 status
 
@@ -127,4 +142,16 @@ tests/                   unit, integration, property and official API tests
 - [x] JSON map/events/metrics and CSV trajectory artifacts
 - [x] Three-seed acceptance gate and automated tests
 
-The next milestone is Blueprint Step 2: distinct topological maps per agent plus a non-learning coordinated frontier baseline with goal reservations and repeat/second-agent survivor confirmation.
+## Step 2 status
+
+- [x] Private occupancy maps updated only from local sensing
+- [x] Frontier detection, clustering and up-to-five candidate slots
+- [x] Nearest useful unclaimed frontier selection
+- [x] Persistent goal reservations and A* navigation
+- [x] Repeat-evidence or second-agent survivor confirmation
+- [x] Per-agent NetworkX graphs with rooms, junctions, frontiers and survivor sites
+- [x] Attributed graph edges and NetworkX shortest-path queries
+- [x] Four distinct graph artifacts plus maps, events and confirmed markers
+- [x] Twenty-seed baseline evaluation
+
+The next milestone is Blueprint Step 3: RLlib PPO with one shared rover policy and one shared drone policy, trained on the same fixed observation/action contract and evaluated against this frozen frontier baseline.

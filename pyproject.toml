@@ -1,6 +1,6 @@
 [project]
 name = "swarm-sar"
-version = "0.2.0"
+version = "0.3.0"
 description = "Deterministic multi-rover search-and-rescue grid simulation"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -12,6 +12,7 @@ dependencies = [
     "pytest",
     "gymnasium>=1.0",
     "pettingzoo>=1.24",
+    "networkx>=3.2",
 ]
 
 [build-system]
