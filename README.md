@@ -1,6 +1,6 @@
-# Autonomous Disaster Response Swarm — Blueprint Steps 1–2
+# Autonomous Disaster Response Swarm — Blueprint Steps 1–2.5
 
-This repository implements the Blueprint Step 1 disaster-world testbed and Step 2 non-learning benchmark: a deterministic NumPy simulation with two rover-like and two drone-like agents, private occupancy and topological maps, noisy thermal/acoustic sensing, drifting odometry, hidden survivors, coordinated frontier reservations, evidence-based confirmation, A* motion, a PettingZoo `ParallelEnv`, structured artifacts, and a Pygame visualizer. Peer networking and reinforcement learning are later steps.
+This repository implements the Blueprint Step 1 disaster-world testbed, Step 2 non-learning benchmark, and Step 2.5 scalability layer: a deterministic NumPy simulation with heterogeneous rovers and drone proxies, private occupancy and topological maps, noisy thermal/acoustic sensing, drifting odometry, hidden survivors, coordinated frontier reservations, evidence-based confirmation, A* motion, a PettingZoo `ParallelEnv`, structured artifacts, and a Pygame visualizer. Step 2.5 adds random rectangular storage dimensions, connected procedural site footprints with no named shape, area-scaled resources, local peer map exchange, and a policy interface whose size does not grow with the world.
 
 ## Setup
 
@@ -47,6 +47,16 @@ python scripts/audit_step2_robustness.py
 ```
 
 This uses seeds 100–119, cycles through 24×24, 32×32 and 40×40 maps, increases sensor noise and false positives, lowers detection probability, doubles odometry drift and reduces battery. Its fixed pass thresholds are stored in the installed validation module and written to the results before episodes run.
+
+## Validate Step 2.5
+
+No API key is required.
+
+```bash
+python scripts/audit_step25_scalability.py
+```
+
+The audit first checks 50 generated worlds for reachability, survivor placement, non-square dimensions and irregular geometry. It then runs eight complete holdout missions over independently generated 48–90 by 72–140 cell sites, verifies the fixed 9×9 observation and seven-action contract during execution, and replays the first mission to check determinism. Full artifacts are written under `results/step25_scalability/`.
 
 ## Run
 
@@ -100,7 +110,9 @@ The action mask identifies valid frontier slots. Every observation contains only
 
 ## Environment model
 
-- Configurable 24×24 through 40×40 room/corridor worlds; default 32×32
+- Configurable rectangular room/corridor worlds; default 32×32
+- Large procedural footprints made from seeded random connected lobes/corridors
+- Fixed, named L/T/multi-structure/tunnel footprints for targeted tests
 - Walls, rubble, blocked passages, safe common-entry spawn and reachability cleanup
 - Random 1–4 hidden survivors
 - Two rovers with shorter vision and higher rubble cost
@@ -134,7 +146,7 @@ tests/                   unit, integration, property and official API tests
 4. Thermal and acoustic outputs are probabilistic cues, not real sensor emulation.
 5. Time is discrete and the A* controller advances at most one grid cell per environment step.
 6. Policies never receive ground-truth maps or survivor coordinates. Offline JSON/CSV artifacts may contain truth for evaluation.
-7. Goal reservations and evidence arbitration are direct calls inside the Step 2 benchmark. Transporting them as lossy peer messages is deliberately deferred to Step 4.
+7. Goal reservations and evidence arbitration are direct calls inside the benchmark. Step 2.5 peer map exchange is local and range-limited, but idealized; lossy/delayed radio transport remains deferred to Step 4.
 
 ## Step 1 status
 
@@ -164,3 +176,18 @@ tests/                   unit, integration, property and official API tests
 - [x] Untouched stressed holdout and frozen Git milestone
 
 Step 2 is frozen at Git tag `blueprint-step2-frozen`. The next milestone is Blueprint Step 3: RLlib PPO with one shared rover policy and one shared drone policy, trained on the same fixed observation/action contract and evaluated against this frozen frontier baseline.
+
+## Step 2.5 status
+
+- [x] Portrait and landscape dimensions sampled independently per seed
+- [x] Connected procedural footprints with no fixed named geometry
+- [x] Reachability cleanup and valid survivor placement on every generated map
+- [x] Four to eight heterogeneous agents and time/battery scaled by site area
+- [x] Range-limited peer-to-peer occupancy-map fusion
+- [x] Multi-sample frontier splitting for large connected boundaries
+- [x] Fixed 9×9 local observation, five frontier slots and seven actions at every size
+- [x] Adaptive renderer bounded by configured display dimensions
+- [x] Fifty-world generation property test and eight-mission end-to-end holdout
+- [x] Legacy Step 1, Step 2 and stressed Step 2 regression gates
+
+Step 2.5 supports arbitrary finite dimensions within configured compute/resource limits; it does not claim an infinite map or guarantee a fixed robot team can cover unlimited physical area. See `docs/step25_scalability.md` for the validation report and limitations. The next milestone is Blueprint Step 3.

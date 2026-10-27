@@ -1,6 +1,6 @@
 [project]
 name = "swarm-sar"
-version = "0.3.0"
+version = "0.4.0"
 description = "Deterministic multi-rover search-and-rescue grid simulation"
 readme = "README.md"
 requires-python = ">=3.10"

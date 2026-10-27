@@ -101,32 +101,126 @@ def frontier_candidates(
     start: tuple[int, int],
     *,
     max_candidates: int = 5,
+    max_per_cluster: int = 1,
     can_cross_rubble: bool = True,
 ) -> list[dict[str, Any]]:
     """Return up to N reachable representative frontiers, nearest first."""
     candidates: list[dict[str, Any]] = []
-    for cluster in frontier_clusters(belief):
-        center_x = sum(point[0] for point in cluster) / len(cluster)
-        center_y = sum(point[1] for point in cluster) / len(cluster)
-        representative = min(
-            cluster,
-            key=lambda point: (point[0] - center_x) ** 2 + (point[1] - center_y) ** 2,
-        )
-        path = astar_path(
-            belief,
-            start,
-            representative,
-            can_cross_rubble=can_cross_rubble,
-        )
-        if path:
-            candidates.append(
-                {
-                    "position": representative,
-                    "cluster_size": len(cluster),
-                    "path": path,
-                    "distance": max(0, len(path) - 1),
-                }
+    clusters = frontier_clusters(belief)
+    if max_per_cluster <= 1:
+        # Preserve the frozen Step 2 controller exactly on its small worlds.
+        for cluster in clusters:
+            center_x = sum(point[0] for point in cluster) / len(cluster)
+            center_y = sum(point[1] for point in cluster) / len(cluster)
+            representative = min(
+                cluster,
+                key=lambda point: (
+                    (point[0] - center_x) ** 2 + (point[1] - center_y) ** 2
+                ),
             )
+            path = astar_path(
+                belief,
+                start,
+                representative,
+                can_cross_rubble=can_cross_rubble,
+            )
+            if path:
+                candidates.append(
+                    {
+                        "position": representative,
+                        "cluster_size": len(cluster),
+                        "path": path,
+                        "distance": max(0, len(path) - 1),
+                    }
+                )
+        candidates.sort(
+            key=lambda item: (
+                -item["cluster_size"], item["distance"], item["position"]
+            )
+        )
+        return candidates[:max_candidates]
+
+    height, width = belief.shape
+    passable = belief == FREE
+    if can_cross_rubble:
+        passable |= belief == RUBBLE
+    if not (
+        0 <= start[0] < width
+        and 0 <= start[1] < height
+        and passable[start[1], start[0]]
+    ):
+        return []
+
+    # One deterministic Dijkstra pass supplies paths to every sampled frontier.
+    # This avoids repeating a whole-grid A* search for each action slot.
+    search: list[tuple[int, int, int]] = [(0, start[0], start[1])]
+    costs: dict[tuple[int, int], int] = {start: 0}
+    came_from: dict[tuple[int, int], tuple[int, int] | None] = {start: None}
+    while search:
+        cost, x, y = heappop(search)
+        if cost != costs[(x, y)]:
+            continue
+        for nx, ny in _neighbours(x, y, width, height):
+            if not passable[ny, nx]:
+                continue
+            next_cost = cost + (2 if belief[ny, nx] == RUBBLE else 1)
+            point = (nx, ny)
+            if next_cost < costs.get(point, 1 << 60):
+                costs[point] = next_cost
+                came_from[point] = (x, y)
+                heappush(search, (next_cost, nx, ny))
+
+    for cluster in clusters:
+        # A long room boundary is one connected component but should offer several
+        # directions so multiple agents can disperse. Deterministic farthest-point
+        # sampling preserves the fixed five-slot interface.
+        representative_count = min(
+            max_candidates,
+            max(1, int(max_per_cluster)),
+            max(1, (len(cluster) + 7) // 8),
+        )
+        representatives = [
+            min(
+                cluster,
+                key=lambda point: (
+                    abs(point[0] - start[0]) + abs(point[1] - start[1]),
+                    point,
+                ),
+            )
+        ]
+        while len(representatives) < representative_count:
+            remaining = [point for point in cluster if point not in representatives]
+            if not remaining:
+                break
+            representatives.append(
+                max(
+                    remaining,
+                    key=lambda point: (
+                        min(
+                            (point[0] - chosen[0]) ** 2 + (point[1] - chosen[1]) ** 2
+                            for chosen in representatives
+                        ),
+                        -point[1],
+                        -point[0],
+                    ),
+                )
+            )
+        for representative in representatives:
+            if representative in came_from:
+                path: list[tuple[int, int]] = []
+                cursor: tuple[int, int] | None = representative
+                while cursor is not None:
+                    path.append(cursor)
+                    cursor = came_from[cursor]
+                path.reverse()
+                candidates.append(
+                    {
+                        "position": representative,
+                        "cluster_size": len(cluster),
+                        "path": path,
+                        "distance": max(0, len(path) - 1),
+                    }
+                )
     candidates.sort(key=lambda item: (-item["cluster_size"], item["distance"], item["position"]))
     return candidates[:max_candidates]
 

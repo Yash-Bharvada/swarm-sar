@@ -72,7 +72,7 @@ class DisasterResponseParallelEnv(ParallelEnv):
                 "acoustic": spaces.Box(0.0, np.inf, shape=(1,), dtype=np.float32),
                 "prev_thermal": spaces.Box(0.0, np.inf, shape=(4,), dtype=np.float32),
                 "prev_acoustic": spaces.Box(0.0, np.inf, shape=(1,), dtype=np.float32),
-                "rel_pos": spaces.Box(-2.0, 2.0, shape=(2,), dtype=np.float32),
+                "rel_pos": spaces.Box(-4.0, 4.0, shape=(2,), dtype=np.float32),
                 "pose_uncertainty": spaces.Box(0.0, np.inf, shape=(1,), dtype=np.float32),
                 "collided": spaces.Box(0.0, 1.0, shape=(1,), dtype=np.float32),
                 "frontier_features": spaces.Box(
@@ -97,6 +97,9 @@ class DisasterResponseParallelEnv(ParallelEnv):
             robot.belief,
             robot.position,
             max_candidates=int(self.core.sim_config.get("max_frontiers", FRONTIER_SLOTS)),
+            max_per_cluster=int(
+                self.core.sim_config.get("frontier_samples_per_cluster", 1)
+            ),
             can_cross_rubble=bool(config["can_cross_rubble"]),
         )
         active_goal = self._active_goals.get(agent)

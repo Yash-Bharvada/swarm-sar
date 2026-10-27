@@ -8,4 +8,8 @@ render_cell_px: 18
 fps: 10
 local_window_radius: 4
 max_frontiers: 5
+frontier_samples_per_cluster: 1
 auto_confirm_victims: false
+pose_scale_cells: 32
+render_max_grid_width_px: 900
+render_max_grid_height_px: 700

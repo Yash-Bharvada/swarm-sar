@@ -1,4 +1,5 @@
 layout: rooms
+footprint: full
 width: 32
 height: 32
 wall_fill: 0.42

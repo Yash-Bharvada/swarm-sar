@@ -332,7 +332,7 @@ class SwarmWorld:
         local_map = padded[py - radius : py + radius + 1, px - radius : px + radius + 1].copy()
         full_battery = float(self.robot_configs[robot.type]["battery"])
         spawn_x, spawn_y = spawn_center(self.world_config)
-        height, width = self.grid.shape
+        pose_scale = float(self.sim_config.get("pose_scale_cells", 32))
         return {
             "local_map": local_map,
             "battery": np.array([robot.battery / full_battery], dtype=np.float32),
@@ -341,7 +341,10 @@ class SwarmWorld:
             "prev_thermal": robot.prev_thermal.copy(),
             "prev_acoustic": robot.prev_acoustic.copy(),
             "rel_pos": np.array(
-                [(robot.odom_x - spawn_x) / width, (robot.odom_y - spawn_y) / height],
+                [
+                    np.clip((robot.odom_x - spawn_x) / pose_scale, -4.0, 4.0),
+                    np.clip((robot.odom_y - spawn_y) / pose_scale, -4.0, 4.0),
+                ],
                 dtype=np.float32,
             ),
             "pose_uncertainty": np.array([robot.odom_uncertainty], dtype=np.float32),

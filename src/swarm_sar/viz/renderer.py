@@ -21,9 +21,18 @@ class Renderer:
         pygame.init()
         pygame.font.init()
         self.world = world
-        self.cell_px = int(cell_px or world.sim_config["render_cell_px"])
-        self.panel_width = 230
         height, width = world.grid.shape
+        if cell_px is None:
+            configured = int(world.sim_config["render_cell_px"])
+            max_width = int(world.sim_config.get("render_max_grid_width_px", 900))
+            max_height = int(world.sim_config.get("render_max_grid_height_px", 700))
+            self.cell_px = max(
+                2,
+                min(configured, max_width // width, max_height // height),
+            )
+        else:
+            self.cell_px = int(cell_px)
+        self.panel_width = 230
         self.size = (width * self.cell_px + self.panel_width, height * self.cell_px)
         self.rgb_array_mode = rgb_array
         self.surface = pygame.Surface(self.size) if rgb_array else pygame.display.set_mode(self.size)

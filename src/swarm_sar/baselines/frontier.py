@@ -109,6 +109,7 @@ class CoordinatedFrontierBaseline:
         self.reservations_made = 0
         self.duplicate_goal_steps = 0
         self.verification_failures = 0
+        self.map_exchange_events = 0
         self.observations: dict[str, dict[str, np.ndarray]] = {}
 
     def reset(self, seed: int) -> dict[str, dict[str, np.ndarray]]:
@@ -123,8 +124,62 @@ class CoordinatedFrontierBaseline:
         self.reservations_made = 0
         self.duplicate_goal_steps = 0
         self.verification_failures = 0
+        self.map_exchange_events = 0
         self._update_maps(force=True)
         return self.observations
+
+    def _share_peer_maps(self) -> None:
+        """Fuse occupancy knowledge only inside current radio-connected groups."""
+        if not bool(self.config.get("peer_map_exchange", False)):
+            return
+        active = [
+            self.env._robots_by_name[name]
+            for name in self.env.agents
+            if self.env._robots_by_name[name].alive
+        ]
+        unseen = {robot.id for robot in active}
+        by_id = {robot.id: robot for robot in active}
+        while unseen:
+            root = unseen.pop()
+            component = {root}
+            frontier = [root]
+            while frontier:
+                current = by_id[frontier.pop()]
+                linked = []
+                for other_id in unseen:
+                    other = by_id[other_id]
+                    radius = min(
+                        float(self.env.core.robot_configs[current.type]["comm_radius"]),
+                        float(self.env.core.robot_configs[other.type]["comm_radius"]),
+                    )
+                    if np.hypot(current.x - other.x, current.y - other.y) <= radius:
+                        linked.append(other_id)
+                for other_id in linked:
+                    unseen.remove(other_id)
+                    component.add(other_id)
+                    frontier.append(other_id)
+            if len(component) < 2:
+                continue
+            members = [by_id[identifier] for identifier in sorted(component)]
+            merged = np.full_like(members[0].belief, -1)
+            for robot in members:
+                known = robot.belief >= 0
+                merged[known] = robot.belief[known]
+            changed = 0
+            for robot in members:
+                received = (robot.belief < 0) & (merged >= 0)
+                changed += int(np.count_nonzero(received))
+                robot.belief[received] = merged[received]
+            if changed:
+                self.map_exchange_events += 1
+                self.events.append(
+                    {
+                        "step": self.env.core.step_count,
+                        "event": "peer_map_exchange",
+                        "agents": [robot.name for robot in members],
+                        "cells_received": changed,
+                    }
+                )
 
     def _estimate_detection_position(
         self, agent: str, thermal: np.ndarray
@@ -330,6 +385,7 @@ class CoordinatedFrontierBaseline:
         return result
 
     def choose_actions(self) -> dict[str, int]:
+        self._share_peer_maps()
         self._update_maps()
         investigating = self._process_evidence()
         actions = self._assign_frontiers(investigating)
@@ -380,6 +436,7 @@ class CoordinatedFrontierBaseline:
             "duplicate_goal_steps": self.duplicate_goal_steps,
             "evidence_clusters": len(self.evidence.clusters),
             "verification_failures": self.verification_failures,
+            "map_exchange_events": self.map_exchange_events,
             "false_confirmations": 0,
             "confirmed_markers": confirmed_markers,
             "graphs": graph_counts,

@@ -28,6 +28,8 @@ def save_episode_artifacts(world: "SwarmWorld", output_dir: str | Path) -> dict[
         "seed": world.seed,
         "width": int(world.grid.shape[1]),
         "height": int(world.grid.shape[0]),
+        "world_config": world.world_config,
+        "sim_config": world.sim_config,
         "grid": world.grid.tolist(),
         "survivors": world.victims,
         "agents": [robot.as_state() for robot in world.robots],
