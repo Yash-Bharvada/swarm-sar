@@ -1,6 +1,6 @@
-# Autonomous Disaster Response Swarm — Blueprint Steps 1–2.5
+# Autonomous Disaster Response Swarm — Blueprint Steps 1–3
 
-This repository implements the Blueprint Step 1 disaster-world testbed, Step 2 non-learning benchmark, and Step 2.5 scalability layer: a deterministic NumPy simulation with heterogeneous rovers and drone proxies, private occupancy and topological maps, noisy thermal/acoustic sensing, drifting odometry, hidden survivors, coordinated frontier reservations, evidence-based confirmation, A* motion, a PettingZoo `ParallelEnv`, structured artifacts, and a Pygame visualizer. Step 2.5 adds random rectangular storage dimensions, connected procedural site footprints with no named shape, area-scaled resources, local peer map exchange, and a policy interface whose size does not grow with the world.
+This repository implements Blueprint Steps 1–3: a deterministic heterogeneous disaster simulator, a coordinated frontier benchmark, irregular-world scalability, and RLlib PPO with one shared rover policy plus one shared drone policy. Agents receive only local maps, noisy sensors, relative pose, frontier features, and a fixed peer summary; A* and a local safety layer handle movement.
 
 ## Setup
 
@@ -58,6 +58,20 @@ python scripts/audit_step25_scalability.py
 
 The audit first checks 50 generated worlds for reachability, survivor placement, non-square dimensions and irregular geometry. It then runs eight complete holdout missions over independently generated 48–90 by 72–140 cell sites, verifies the fixed 9×9 observation and seven-action contract during execution, and replays the first mission to check determinism. Full artifacts are written under `results/step25_scalability/`.
 
+## Train and validate Step 3
+
+No API key is required. Training runs locally with RLlib and PyTorch.
+
+```bash
+python scripts/train_step3.py
+python scripts/validate_step3.py
+python scripts/run_step3_policy.py --rovers 2 --drones 3 --network
+```
+
+Step 3 uses exactly two shared PPO policies regardless of agent count, curriculum training over 1–6 robots, and held-out evaluation on 5-agent and 8-agent teams. The checkpoint is evaluated on 20 unseen maps against the frozen frontier baseline. See `docs/step3_validation.md` for the honest comparison and limitations.
+
+The validated checkpoint is versioned at `artifacts/step3/checkpoint/`; retraining output is written under `results/step3_training/`.
+
 ## Run
 
 ```bash
@@ -106,7 +120,7 @@ The seven policy actions are:
 6    hold
 ```
 
-The action mask identifies valid frontier slots. Every observation contains only the agent's private belief crop, drifting local pose, uncertainty, battery, noisy sensors, collision state and locally derived frontier features. True grids and survivor coordinates are never returned to policies.
+The action mask identifies valid frontier slots. Every observation contains only the agent's private belief crop, drifting local pose, uncertainty, battery, noisy sensors, collision state, locally derived frontier features and a range-limited peer summary. True grids and survivor coordinates are never returned to policies.
 
 ## Environment model
 
@@ -133,6 +147,7 @@ src/swarm_sar/sensing/   ray-cast vision, thermal, acoustic, confirmation
 src/swarm_sar/sim/       core, PettingZoo API, A*, frontiers, metrics, logging
 src/swarm_sar/mapping/   private NetworkX topological graphs
 src/swarm_sar/baselines/ coordinated frontier and evidence controller
+src/swarm_sar/learning/   RLlib adapter, PPO module, encoding and inference
 src/swarm_sar/viz/       Pygame renderer, isolated from the simulation core
 scripts/                 viewer, manual control, baseline, benchmark, validation
 tests/                   unit, integration, property and official API tests
@@ -175,7 +190,7 @@ tests/                   unit, integration, property and official API tests
 - [x] Twenty-seed baseline evaluation
 - [x] Untouched stressed holdout and frozen Git milestone
 
-Step 2 is frozen at Git tag `blueprint-step2-frozen`. The next milestone is Blueprint Step 3: RLlib PPO with one shared rover policy and one shared drone policy, trained on the same fixed observation/action contract and evaluated against this frozen frontier baseline.
+Step 2 is frozen at Git tag `blueprint-step2-frozen`; Step 3 evaluates its learned policies against that unchanged historical baseline.
 
 ## Step 2.5 status
 
@@ -190,4 +205,18 @@ Step 2 is frozen at Git tag `blueprint-step2-frozen`. The next milestone is Blue
 - [x] Fifty-world generation property test and eight-mission end-to-end holdout
 - [x] Legacy Step 1, Step 2 and stressed Step 2 regression gates
 
-Step 2.5 supports arbitrary finite dimensions within configured compute/resource limits; it does not claim an infinite map or guarantee a fixed robot team can cover unlimited physical area. See `docs/step25_scalability.md` for the validation report and limitations. The next milestone is Blueprint Step 3.
+Step 2.5 supports arbitrary finite dimensions within configured compute/resource limits; it does not claim an infinite map or guarantee a fixed robot team can cover unlimited physical area. See `docs/step25_scalability.md` for the validation report and limitations.
+
+## Step 3 status
+
+- [x] RLlib PPO on the current RLModule/Learner API
+- [x] One shared rover policy and one shared drone policy
+- [x] Fixed 129-value local input and masked seven-action output
+- [x] One-rover → two-rover → heterogeneous-team curriculum
+- [x] Cooperative reward and local collision safety layer
+- [x] Restorable checkpoint, training history and curve
+- [x] Twenty unseen-map comparison against the frontier baseline
+- [x] Networking-on/off inference
+- [x] Held-out 2-rover/3-drone and 4-rover/4-drone execution
+
+Step 3 is a valid learned prototype, but PPO currently reaches 52.94% survivor recall versus the frontier baseline's 94.12%. Use the baseline for the strongest rescue demo and PPO as the experimental learned mode. The next milestone is Step 4's realistic decentralized message network.

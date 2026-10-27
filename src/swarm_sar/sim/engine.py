@@ -381,6 +381,8 @@ class SwarmWorld:
         )
         if newly_found:
             self.metrics.record_victim_times(self.step_count)
+            if self.metrics.victims_over_time:
+                self.metrics.victims_over_time[-1] = self.metrics.victims_found
             for victim in self.victims:
                 if victim["found_step"] == self.step_count:
                     finder = next(

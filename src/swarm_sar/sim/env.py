@@ -19,7 +19,7 @@ ACTION_COUNT = 7
 
 
 class DisasterResponseParallelEnv(ParallelEnv):
-    """Four-agent local-observation environment for Step 1 of the blueprint."""
+    """Variable-team local-observation environment for the swarm blueprint."""
 
     metadata = {
         "name": "swarm_sar_step1_v0",
@@ -75,6 +75,7 @@ class DisasterResponseParallelEnv(ParallelEnv):
                 "rel_pos": spaces.Box(-4.0, 4.0, shape=(2,), dtype=np.float32),
                 "pose_uncertainty": spaces.Box(0.0, np.inf, shape=(1,), dtype=np.float32),
                 "collided": spaces.Box(0.0, 1.0, shape=(1,), dtype=np.float32),
+                "peer_summary": spaces.Box(-1.0, 1.0, shape=(8,), dtype=np.float32),
                 "frontier_features": spaces.Box(
                     -1.0, 1.0, shape=(FRONTIER_SLOTS, 5), dtype=np.float32
                 ),
@@ -152,13 +153,114 @@ class DisasterResponseParallelEnv(ParallelEnv):
                 1.0,
             )
         action_mask = np.zeros(ACTION_COUNT, dtype=np.int8)
-        action_mask[: len(candidates)] = 1
+        occupied = {
+            other.position
+            for other in self.core.robots
+            if other.alive and other.id != robot.id
+        }
+        for index, candidate in enumerate(candidates[:FRONTIER_SLOTS]):
+            path = candidate["path"]
+            if len(path) < 2 or tuple(path[1]) not in occupied:
+                action_mask[index] = 1
         action_mask[INVESTIGATE] = 1
         action_mask[HOLD] = 1
         observation.update(
-            {"frontier_features": features, "action_mask": action_mask}
+            {
+                "frontier_features": features,
+                "peer_summary": self._peer_summary(agent),
+                "action_mask": action_mask,
+            }
         )
         return observation
+
+    def _safety_filter_movements(
+        self, movement_actions: dict[int, int]
+    ) -> dict[int, int]:
+        """Apply a decentralized-style one-step shield below policy goal selection."""
+        deltas = {
+            0: (0, 0),
+            1: (0, -1),
+            2: (0, 1),
+            3: (-1, 0),
+            4: (1, 0),
+        }
+        robots = {robot.id: robot for robot in self.core.robots if robot.alive}
+        occupied = {robot.position for robot in robots.values()}
+        filtered = dict(movement_actions)
+        targets: dict[int, tuple[int, int]] = {}
+        for identifier, action in filtered.items():
+            robot = robots.get(identifier)
+            if robot is None:
+                continue
+            dx, dy = deltas[action]
+            target = (robot.x + dx, robot.y + dy)
+            if action and target in occupied:
+                filtered[identifier] = 0
+                target = robot.position
+            targets[identifier] = target
+
+        claims: dict[tuple[int, int], list[int]] = {}
+        for identifier, target in targets.items():
+            if target != robots[identifier].position:
+                claims.setdefault(target, []).append(identifier)
+        for claimants in claims.values():
+            if len(claimants) < 2:
+                continue
+            claimants.sort()
+            winner = claimants[self.core.step_count % len(claimants)]
+            for identifier in claimants:
+                if identifier != winner:
+                    filtered[identifier] = 0
+        return filtered
+
+    def _peer_summary(self, agent: str) -> np.ndarray:
+        """Aggregate only range-reachable peer advertisements into a fixed vector."""
+        summary = np.zeros(8, dtype=np.float32)
+        if not bool(self.core.sim_config.get("network_enabled", False)):
+            return summary
+        robot = self._robots_by_name[agent]
+        peers = []
+        for other in self.core.robots:
+            if other.id == robot.id or not other.alive:
+                continue
+            radius = min(
+                float(self.core.robot_configs[robot.type]["comm_radius"]),
+                float(self.core.robot_configs[other.type]["comm_radius"]),
+            )
+            distance = float(np.hypot(robot.x - other.x, robot.y - other.y))
+            if distance <= radius:
+                peers.append((other, distance, radius))
+        summary[0] = 1.0
+        if not peers:
+            return summary
+        pose_scale = float(self.core.sim_config.get("pose_scale_cells", 32))
+        count_scale = max(1, len(self.core.robots) - 1)
+        summary[1] = len(peers) / count_scale
+        summary[2] = sum(peer.type == "rover" for peer, _, _ in peers) / len(peers)
+        summary[3] = sum(peer.type == "drone" for peer, _, _ in peers) / len(peers)
+        summary[4] = float(
+            np.clip(
+                np.mean([peer.odom_x - robot.odom_x for peer, _, _ in peers])
+                / pose_scale,
+                -1.0,
+                1.0,
+            )
+        )
+        summary[5] = float(
+            np.clip(
+                np.mean([peer.odom_y - robot.odom_y for peer, _, _ in peers])
+                / pose_scale,
+                -1.0,
+                1.0,
+            )
+        )
+        summary[6] = float(
+            np.clip(np.mean([float(peer.thermal.max()) for peer, _, _ in peers]), 0, 1)
+        )
+        summary[7] = float(
+            np.clip(np.mean([float(peer.acoustic[0]) for peer, _, _ in peers]), 0, 1)
+        )
+        return summary
 
     def reset(
         self,
@@ -234,6 +336,7 @@ class DisasterResponseParallelEnv(ParallelEnv):
             self._invalid_actions[agent] = invalid
             movement_actions[robot.id] = movement
 
+        movement_actions = self._safety_filter_movements(movement_actions)
         _, core_info, _ = self.core.step(movement_actions)
         self._candidate_cache = {}
         for agent in list(self._active_goals):
@@ -257,6 +360,17 @@ class DisasterResponseParallelEnv(ParallelEnv):
             self.core.events.append(
                 {"step": self.core.step_count, "event": "investigate", "agent": agent}
             )
+        newly_confirmed = 0
+        if bool(self.core.sim_config.get("investigate_confirms_victims", False)):
+            newly_confirmed = self.core.confirm_from_evidence(
+                {
+                    self._robots_by_name[agent].id
+                    for agent in investigating
+                    if self._robots_by_name[agent].alive
+                }
+            )
+        core_info["newly_found"] += newly_confirmed
+        core_info["victims_found"] = self.core.metrics.victims_found
         all_found = core_info["victims_found"] == len(self.core.victims)
         all_dead = not any(robot.alive for robot in self.core.robots)
         timed_out = self.core.step_count >= int(self.core.sim_config["max_steps"])
@@ -279,6 +393,7 @@ class DisasterResponseParallelEnv(ParallelEnv):
                 "invalid_action": self._invalid_actions[agent],
                 "investigating": agent in investigating,
                 "newly_revealed": self.core.last_revealed_by_robot[robot.id],
+                "newly_found": core_info["newly_found"],
                 "victims_found": core_info["victims_found"],
                 "coverage": core_info["coverage"],
             }

@@ -10,6 +10,8 @@ local_window_radius: 4
 max_frontiers: 5
 frontier_samples_per_cluster: 1
 auto_confirm_victims: false
+investigate_confirms_victims: false
+network_enabled: false
 pose_scale_cells: 32
 render_max_grid_width_px: 900
 render_max_grid_height_px: 700
