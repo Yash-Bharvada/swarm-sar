@@ -5,9 +5,8 @@ from typing import Mapping
 import numpy as np
 from gymnasium import spaces
 
+from swarm_sar.policy_contract import ENCODED_OBSERVATION_SIZE
 from swarm_sar.sim.env import ACTION_COUNT
-
-ENCODED_OBSERVATION_SIZE = 129
 
 
 def encode_observation(observation: Mapping[str, np.ndarray]) -> np.ndarray:
@@ -27,6 +26,10 @@ def encode_observation(observation: Mapping[str, np.ndarray]) -> np.ndarray:
             np.clip(observation["collided"], 0.0, 1.0),
             np.clip(np.asarray(observation["frontier_features"]).reshape(-1), -1.0, 1.0),
             np.clip(observation["peer_summary"], -1.0, 1.0),
+            np.clip(observation["previous_action"], 0.0, 1.0),
+            np.clip(observation["active_goal"], -1.0, 1.0),
+            np.clip(observation["mission_progress"], 0.0, 1.0),
+            np.clip(np.asarray(observation["peer_features"]).reshape(-1), -1.0, 1.0),
         ]
     ).astype(np.float32)
     if values.shape != (ENCODED_OBSERVATION_SIZE,):

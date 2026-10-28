@@ -6,11 +6,13 @@ from swarm_sar.learning.observation import (
     encode_observation,
     wrap_observation,
 )
+from swarm_sar.policy_contract import MAX_PEER_SLOTS, PEER_FEATURE_WIDTH
 from swarm_sar.learning.training import (
     DRONE_POLICY,
     ROVER_POLICY,
     policy_mapping_fn,
 )
+from swarm_sar.learning.inference import module_observation_size
 from swarm_sar.sim.env import HOLD, INVESTIGATE, DisasterResponseParallelEnv
 from swarm_sar.utils.config import load_config
 from swarm_sar.world.cells import FREE
@@ -28,6 +30,31 @@ def test_policy_encoding_is_fixed_and_contains_no_truth():
     assert np.min(encoded) >= -1 and np.max(encoded) <= 1
     assert set(wrapped) == {"action_mask", "observations"}
     assert not {"grid", "victims", "survivor_positions"}.intersection(raw)
+    assert raw["previous_action"].shape == (7,)
+    assert not np.any(raw["previous_action"])
+    assert raw["active_goal"].shape == (4,)
+    assert raw["mission_progress"].shape == (1,)
+    assert raw["peer_features"].shape == (MAX_PEER_SLOTS, PEER_FEATURE_WIDTH)
+    env.close()
+
+
+def test_temporal_and_goal_features_update_without_truth_fields():
+    sim = load_config("configs/sim.yaml")
+    sim["network_enabled"] = True
+    env = DisasterResponseParallelEnv(sim_config=sim)
+    observations, _ = env.reset(seed=81)
+    agent = env.agents[0]
+    candidates = env._candidate_list(agent)
+    action = 0 if candidates else HOLD
+    observations, _, _, _, _ = env.step(
+        {name: action if name == agent else HOLD for name in env.agents}
+    )
+    observation = observations[agent]
+    assert observation["previous_action"][action] == 1.0
+    assert observation["previous_action"].sum() == 1.0
+    assert observation["mission_progress"][0] > 0.0
+    assert np.all(np.isfinite(observation["peer_features"]))
+    assert env.observation_space(agent).contains(observation)
     env.close()
 
 
@@ -130,3 +157,18 @@ def test_action_mask_prevents_invalid_high_level_choices():
     assert len(valid) >= 2
     assert all(action < 5 for action in invalid)
     env.close()
+
+
+def test_module_observation_size_supports_dict_and_flat_spaces():
+    class Module:
+        observation_space = {
+            "observations": type("Space", (), {"shape": (129,)})()
+        }
+
+    class DictLike(dict):
+        @property
+        def spaces(self):
+            return self
+
+    Module.observation_space = DictLike(Module.observation_space)
+    assert module_observation_size(Module()) == 129

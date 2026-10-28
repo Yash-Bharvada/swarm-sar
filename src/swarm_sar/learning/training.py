@@ -14,6 +14,7 @@ from ray.tune.registry import register_env
 from swarm_sar.learning.env import VariableSwarmRLlibEnv
 from swarm_sar.learning.rllib_module import SwarmActionMaskingTorchRLModule
 from swarm_sar.utils.config import load_config
+from swarm_sar.validation.seeds import load_seed_splits
 
 ENV_NAME = "swarm_sar_step3_v0"
 ROVER_POLICY = "rover_policy"
@@ -30,7 +31,12 @@ def policy_mapping_fn(agent_id: str, *args, **kwargs) -> str:
 
 
 def register_swarm_env() -> None:
-    register_env(ENV_NAME, lambda config: VariableSwarmRLlibEnv(dict(config)))
+    def creator(context):
+        config = dict(context)
+        config["worker_index"] = int(getattr(context, "worker_index", 0))
+        return VariableSwarmRLlibEnv(config)
+
+    register_env(ENV_NAME, creator)
 
 
 def training_config(path: str | Path | None = None) -> dict[str, Any]:
@@ -39,6 +45,10 @@ def training_config(path: str | Path | None = None) -> dict[str, Any]:
 
 
 def rllib_env_config(config: dict[str, Any], **overrides) -> dict[str, Any]:
+    splits = load_seed_splits(config.get("seed_splits_path"))
+    # Ray reserves worker index 0 for the local runner and numbers remote
+    # runners from 1, so the seed schedule must admit N + 1 distinct slots.
+    runner_count = max(1, int(config.get("num_env_runners", 0)) + 1)
     result = {
         "seed": int(config["seed"]),
         "max_steps": int(config["max_steps"]),
@@ -50,6 +60,8 @@ def rllib_env_config(config: dict[str, Any], **overrides) -> dict[str, Any]:
         "survivor_reward": float(config["survivor_reward"]),
         "new_cell_reward": float(config["new_cell_reward"]),
         "investigate_evidence_reward": float(config["investigate_evidence_reward"]),
+        "training_seed_range": [splits["train"].start, splits["train"].stop],
+        "runner_count": runner_count,
     }
     result.update(overrides)
     return result
@@ -68,6 +80,9 @@ def build_ppo_config(config: dict[str, Any] | None = None) -> PPOConfig:
         "fcnet_activation": "relu",
         "head_fcnet_hiddens": [],
         "vf_share_layers": False,
+        "use_lstm": bool(config.get("use_lstm", False)),
+        "lstm_cell_size": int(config.get("lstm_cell_size", 256)),
+        "max_seq_len": int(config.get("max_seq_len", 32)),
     }
     module_specs = {
         policy_id: RLModuleSpec(
@@ -90,11 +105,15 @@ def build_ppo_config(config: dict[str, Any] | None = None) -> PPOConfig:
         .environment(ENV_NAME, env_config=env_config, disable_env_checking=False)
         .framework("torch")
         .env_runners(
-            num_env_runners=0,
+            num_env_runners=int(config.get("num_env_runners", 0)),
+            num_cpus_per_env_runner=float(config.get("num_cpus_per_env_runner", 1)),
             rollout_fragment_length=int(config["rollout_fragment_length"]),
             batch_mode="truncate_episodes",
         )
-        .learners(num_learners=0, num_gpus_per_learner=0)
+        .learners(
+            num_learners=0,
+            num_gpus_per_learner=float(config.get("num_gpus_per_learner", 0)),
+        )
         .training(
             lr=float(config["learning_rate"]),
             gamma=float(config["gamma"]),

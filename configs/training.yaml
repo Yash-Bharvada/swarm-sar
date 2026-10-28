@@ -1,5 +1,14 @@
 seed: 42
 iterations: 12
+target_env_steps: 24576
+checkpoint_interval_steps: 8192
+evaluation_interval_steps: 0
+development_eval_count: 20
+seed_splits_path: configs/seed_splits.yaml
+num_cpus: 2
+num_env_runners: 0
+num_cpus_per_env_runner: 1
+num_gpus_per_learner: 0
 train_batch_size_per_learner: 2048
 minibatch_size: 256
 num_epochs: 6
@@ -13,6 +22,9 @@ survivor_reward: 20.0
 new_cell_reward: 0.05
 investigate_evidence_reward: 0.2
 hidden_layers: [128, 128]
+use_lstm: false
+lstm_cell_size: 256
+max_seq_len: 32
 max_steps: 240
 world_sizes: [24, 28, 32]
 curriculum_phase_episodes: [12, 12]

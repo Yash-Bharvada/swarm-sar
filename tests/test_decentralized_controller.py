@@ -91,3 +91,20 @@ def test_controller_retains_local_autonomy_without_network():
     assert controller.local_goals
     assert not env.network_metrics()["enabled"]
     env.close()
+
+
+def test_controller_never_selects_a_masked_policy_action():
+    env = network_env(loss=0.30)
+    controller = DecentralizedFrontierController(env)
+    controller.reset(33)
+    for _ in range(100):
+        if not env.agents:
+            break
+        actions = controller.choose_actions()
+        assert all(
+            controller.observations[agent]["action_mask"][action] > 0
+            for agent, action in actions.items()
+        )
+        result = env.step(actions)
+        controller.observations = result[0]
+    env.close()

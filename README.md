@@ -72,6 +72,36 @@ Step 3 uses exactly two shared PPO policies regardless of agent count, curriculu
 
 The validated checkpoint is versioned at `artifacts/step3/checkpoint/`; retraining output is written under `results/step3_training/`.
 
+### GPU-v1 training preparation
+
+The original Step 3 checkpoint remains frozen under its historical 129-value
+contract. New training uses the versioned 229-value `gpu-v1` contract, bounded
+per-peer features, goal/action memory, an optional LSTM, disjoint seed ranges,
+parallel Ray runners, periodic non-overwriting checkpoints and resume support.
+
+Mac infrastructure smoke test:
+
+```bash
+python scripts/train_step3.py --config configs/training_gpu_a5000.yaml \
+  --smoke --num-cpus 2 --num-env-runners 0 --num-gpus-per-learner 0 \
+  --output results/mac_lstm_smoke
+```
+
+Export and validate Step 4 expert demonstrations:
+
+```bash
+python scripts/export_step4_expert.py --episodes 2000 --output results/expert_train
+python scripts/validate_expert_dataset.py results/expert_train
+```
+
+The A5000 profile is `configs/training_gpu_a5000.yaml`. See
+`docs/gpu_training_preparation.md` before launching it.
+
+The completed local expert dataset contains 811,652 validated decisions from
+2,000 training seeds and is stored at `results/expert_train_gpu_v1/` (138 MB on
+disk). Copy that ignored directory to the GPU machine together with the repo;
+the tracked aggregate and manifest hash are in `artifacts/gpu_v1/`.
+
 ## Validate Step 4
 
 No API key or cloud service is required.
@@ -222,7 +252,8 @@ Step 2.5 supports arbitrary finite dimensions within configured compute/resource
 
 - [x] RLlib PPO on the current RLModule/Learner API
 - [x] One shared rover policy and one shared drone policy
-- [x] Fixed 129-value local input and masked seven-action output
+- [x] Frozen original 129-value input and masked seven-action output
+- [x] Versioned 229-value GPU-v1 input with recurrent-training support
 - [x] One-rover → two-rover → heterogeneous-team curriculum
 - [x] Cooperative reward and local collision safety layer
 - [x] Restorable checkpoint, training history and curve
@@ -243,6 +274,6 @@ Step 3 is a valid learned prototype. The final regression run reached 64.71% sur
 - [x] Safe narrow-corridor convoy/yield behavior with zero-overlap simultaneous motion
 - [x] Variable 5–9-agent end-to-end holdout and 4–10-agent generation coverage
 - [x] 95.24% survivor recall on the final untouched large irregular-world holdout
-- [x] Full Steps 1–3 regression gates and 75-test suite
+- [x] Full Steps 1–3 regression gates and 92-test suite
 
 Step 4 is complete for this simulator. It does not prove 95.24% performance in physical disasters, unlimited map sizes, arbitrary RF conditions, or ROS 2/Gazebo; those require the next integration and validation stage.

@@ -102,6 +102,10 @@ class DecentralizedFrontierController:
     def _release_goal(self, agent: str) -> None:
         self.local_goals.pop(agent, None)
         self.env.set_active_goal(agent, None)
+        # Goal cancellation changes frontier-slot ordering. Refresh the exact
+        # observation/action contract that the controller and any imitation
+        # dataset use for the following decision.
+        self.observations[agent] = self.env.observe(agent)
 
     def _should_investigate(self, agent: str) -> bool:
         thermal = float(self.observations[agent]["thermal"].max())
@@ -127,6 +131,10 @@ class DecentralizedFrontierController:
             return INVESTIGATE
 
         candidates = self.env._candidate_list(agent)
+        action_mask = np.asarray(self.observations[agent]["action_mask"])
+        valid_frontier_slots = {
+            slot for slot in range(min(len(candidates), 5)) if action_mask[slot] > 0
+        }
         by_position = {
             tuple(candidate["position"]): (slot, candidate)
             for slot, candidate in enumerate(candidates)
@@ -138,9 +146,15 @@ class DecentralizedFrontierController:
                 peer_goal == goal and sender < agent
                 for sender, peer_goal in claims_by_sender.items()
             )
-            if not lower_priority_claim:
-                return by_position[goal][0]
+            slot = by_position[goal][0]
+            if not lower_priority_claim and slot in valid_frontier_slots:
+                return slot
         self._release_goal(agent)
+        candidates = self.env._candidate_list(agent)
+        action_mask = np.asarray(self.observations[agent]["action_mask"])
+        valid_frontier_slots = {
+            slot for slot in range(min(len(candidates), 5)) if action_mask[slot] > 0
+        }
         if not candidates:
             return HOLD
 
@@ -149,6 +163,7 @@ class DecentralizedFrontierController:
         available = [
             (slot, candidate)
             for slot, candidate in enumerate(candidates)
+            if slot in valid_frontier_slots
             if all(
                 abs(candidate["position"][0] - claim[0])
                 + abs(candidate["position"][1] - claim[1])
@@ -160,6 +175,7 @@ class DecentralizedFrontierController:
             available = [
                 (slot, candidate)
                 for slot, candidate in enumerate(candidates)
+                if slot in valid_frontier_slots
                 if tuple(candidate["position"]) not in peer_claims
             ]
         if not available:
@@ -204,13 +220,6 @@ class DecentralizedFrontierController:
                 slot, candidate = ranked[robot.id % len(ranked)]
         goal = tuple(candidate["position"])
         self.local_goals[agent] = goal
-        self.env.set_active_goal(agent, goal)
-        candidates = self.env._candidate_list(agent)
-        slot = next(
-            index
-            for index, item in enumerate(candidates)
-            if tuple(item["position"]) == goal
-        )
         self.events.append(
             {
                 "step": self.env.core.step_count,

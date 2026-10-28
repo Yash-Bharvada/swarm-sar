@@ -9,6 +9,7 @@ from gymnasium import spaces
 from pettingzoo import ParallelEnv
 
 from swarm_sar.network import PeerNetwork
+from swarm_sar.policy_contract import MAX_PEER_SLOTS, PEER_FEATURE_WIDTH
 from swarm_sar.sensing.victim_sensor import acoustic_reading, thermal_reading
 from swarm_sar.sim.engine import SwarmWorld
 from swarm_sar.sim.planning import astar_path, frontier_candidates, movement_action
@@ -49,6 +50,7 @@ class DisasterResponseParallelEnv(ParallelEnv):
         self._invalid_actions: dict[str, bool] = {}
         self._candidate_cache: dict[str, list[dict[str, Any]]] = {}
         self._active_goals: dict[str, tuple[int, int]] = {}
+        self._last_policy_actions: dict[str, int | None] = {}
         self.network: PeerNetwork | None = None
         self._last_broadcast_beliefs: dict[str, np.ndarray] = {}
         self._snapshot_cursors: dict[str, int] = {}
@@ -86,6 +88,19 @@ class DisasterResponseParallelEnv(ParallelEnv):
                 "pose_uncertainty": spaces.Box(0.0, np.inf, shape=(1,), dtype=np.float32),
                 "collided": spaces.Box(0.0, 1.0, shape=(1,), dtype=np.float32),
                 "peer_summary": spaces.Box(-1.0, 1.0, shape=(8,), dtype=np.float32),
+                "peer_features": spaces.Box(
+                    -1.0,
+                    1.0,
+                    shape=(MAX_PEER_SLOTS, PEER_FEATURE_WIDTH),
+                    dtype=np.float32,
+                ),
+                "previous_action": spaces.Box(
+                    0.0, 1.0, shape=(ACTION_COUNT,), dtype=np.float32
+                ),
+                "active_goal": spaces.Box(-1.0, 1.0, shape=(4,), dtype=np.float32),
+                "mission_progress": spaces.Box(
+                    0.0, 1.0, shape=(1,), dtype=np.float32
+                ),
                 "frontier_features": spaces.Box(
                     -1.0, 1.0, shape=(FRONTIER_SLOTS, 5), dtype=np.float32
                 ),
@@ -174,10 +189,40 @@ class DisasterResponseParallelEnv(ParallelEnv):
                 action_mask[index] = 1
         action_mask[INVESTIGATE] = 1
         action_mask[HOLD] = 1
+        previous_action = np.zeros(ACTION_COUNT, dtype=np.float32)
+        previous = self._last_policy_actions.get(agent)
+        if previous is not None:
+            previous_action[int(previous)] = 1.0
+        goal_features = np.zeros(4, dtype=np.float32)
+        active_goal = self._active_goals.get(agent)
+        if active_goal is not None:
+            dx = float(active_goal[0]) - robot.odom_x
+            dy = float(active_goal[1]) - robot.odom_y
+            goal_features[:] = (
+                np.clip(dx / max(1, width), -1.0, 1.0),
+                np.clip(dy / max(1, height), -1.0, 1.0),
+                np.clip(np.hypot(dx, dy) / max(1.0, scale), 0.0, 1.0),
+                1.0,
+            )
+        mission_progress = np.array(
+            [
+                np.clip(
+                    self.core.step_count
+                    / max(1, int(self.core.sim_config["max_steps"])),
+                    0.0,
+                    1.0,
+                )
+            ],
+            dtype=np.float32,
+        )
         observation.update(
             {
                 "frontier_features": features,
                 "peer_summary": self._peer_summary(agent),
+                "peer_features": self._peer_features(agent),
+                "previous_action": previous_action,
+                "active_goal": goal_features,
+                "mission_progress": mission_progress,
                 "action_mask": action_mask,
             }
         )
@@ -353,6 +398,39 @@ class DisasterResponseParallelEnv(ParallelEnv):
         )
         return summary
 
+    def _peer_features(self, agent: str) -> np.ndarray:
+        """Return bounded per-peer fields from delivered messages only."""
+        features = np.zeros((MAX_PEER_SLOTS, PEER_FEATURE_WIDTH), dtype=np.float32)
+        if self.network is None:
+            return features
+        robot = self._robots_by_name[agent]
+        pose_scale = float(self.core.sim_config.get("pose_scale_cells", 32))
+        messages = sorted(
+            self.network.peer_messages(agent, self.core.step_count),
+            key=lambda message: message.sender_id,
+        )[:MAX_PEER_SLOTS]
+        for slot, message in enumerate(messages):
+            payload = message.payload
+            goal = payload.get("goal")
+            evidence = payload.get("evidence", {})
+            goal_valid = goal is not None
+            goal_dx = float(goal[0]) - robot.odom_x if goal_valid else 0.0
+            goal_dy = float(goal[1]) - robot.odom_y if goal_valid else 0.0
+            features[slot] = (
+                1.0,
+                float(payload.get("robot_type") == "rover"),
+                float(payload.get("robot_type") == "drone"),
+                np.clip((message.pose[0] - robot.odom_x) / pose_scale, -1.0, 1.0),
+                np.clip((message.pose[1] - robot.odom_y) / pose_scale, -1.0, 1.0),
+                np.clip(message.pose_uncertainty / 4.0, 0.0, 1.0),
+                float(goal_valid),
+                np.clip(goal_dx / pose_scale, -1.0, 1.0),
+                np.clip(goal_dy / pose_scale, -1.0, 1.0),
+                np.clip(float(evidence.get("thermal", 0.0)), 0.0, 1.0),
+                np.clip(float(evidence.get("acoustic", 0.0)), 0.0, 1.0),
+            )
+        return features
+
     def _evidence_position(self, agent: str) -> tuple[int, int] | None:
         robot = self._robots_by_name[agent]
         strength = float(robot.thermal.max())
@@ -504,6 +582,7 @@ class DisasterResponseParallelEnv(ParallelEnv):
         self._invalid_actions = {agent: False for agent in self.agents}
         self._candidate_cache = {}
         self._active_goals = {}
+        self._last_policy_actions = {agent: None for agent in self.agents}
         self._network_application_metrics = {
             "map_cells_merged": 0,
             "map_merges_refused": 0,
@@ -618,6 +697,9 @@ class DisasterResponseParallelEnv(ParallelEnv):
             )
         core_info["newly_found"] += newly_confirmed
         core_info["victims_found"] = self.core.metrics.victims_found
+        self._last_policy_actions.update(
+            {agent: int(actions[agent]) for agent in current_agents}
+        )
         self._broadcast_network_state()
         if self.network is not None:
             self.network.advance(

@@ -10,6 +10,7 @@ from ray.rllib.env.multi_agent_env import MultiAgentEnv
 from swarm_sar.learning.observation import policy_observation_space, wrap_observation
 from swarm_sar.sim.env import ACTION_COUNT, DisasterResponseParallelEnv
 from swarm_sar.utils.config import load_config
+from swarm_sar.validation.seeds import scheduled_training_seed
 
 
 def normalise_profile(profile: dict[str, Any]) -> dict[str, int]:
@@ -33,6 +34,12 @@ class VariableSwarmRLlibEnv(MultiAgentEnv):
         self.base_robots = load_config(root / "configs/robots.yaml")
         self.base_sim = load_config(root / "configs/sim.yaml")
         self.base_seed = int(config.get("seed", 42))
+        seed_bounds = config.get("training_seed_range")
+        self.training_seed_range = (
+            range(int(seed_bounds[0]), int(seed_bounds[1])) if seed_bounds else None
+        )
+        self.worker_index = int(config.get("worker_index", 0))
+        self.runner_count = int(config.get("runner_count", 1))
         self.max_steps = int(config.get("max_steps", 240))
         self.world_sizes = [int(size) for size in config.get("world_sizes", [24, 28, 32])]
         self.network_enabled = bool(config.get("network_enabled", True))
@@ -141,7 +148,17 @@ class VariableSwarmRLlibEnv(MultiAgentEnv):
             robot_config=robots,
             sim_config=sim,
         )
-        episode_seed = self.base_seed + self.episode_index if seed is None else int(seed)
+        if seed is not None:
+            episode_seed = int(seed)
+        elif self.training_seed_range is not None:
+            episode_seed = scheduled_training_seed(
+                self.training_seed_range,
+                worker_index=self.worker_index,
+                runner_count=self.runner_count,
+                episode_index=self.episode_index,
+            )
+        else:
+            episode_seed = self.base_seed + self.episode_index
         observations, infos = self.env.reset(seed=episode_seed)
         self.current_seed = episode_seed
         self.current_profile = profile
