@@ -281,3 +281,7 @@ Step 3 is a valid learned prototype. The final regression run reached 64.71% sur
 - [x] Full Steps 1–3 regression gates and 92-test suite
 
 Step 4 is complete for this simulator. It does not prove 95.24% performance in physical disasters, unlimited map sizes, arbitrary RF conditions, or ROS 2/Gazebo; those require the next integration and validation stage.
+
+## Browser simulator (frontend)
+
+`frontend/` contains a standalone browser 3D "Swarm Mission Control" simulator (React, Three.js, TypeScript). It runs locally with `cd frontend && npm install && npm run dev`. It is separate from ROS 2/Gazebo and from the Python runtime. Its Decentralized Autonomous Mode is a TypeScript implementation of the Step 4 decentralized-controller principles, not PPO/RL. See `frontend/README.md` and `frontend/CONTROLLER_COMPATIBILITY.md`.
