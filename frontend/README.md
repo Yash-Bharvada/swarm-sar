@@ -152,7 +152,7 @@ reconnect events and aggregate counters.
 | `network.test.ts` | packet loss drops; delay queues; TTL expiry; range and wall attenuation; partition isolation; reconnection; operator partition toggle; de-duplication; deterministic transport |
 | `autonomy.test.ts` | robots never see truth survivors; `LocalView` has no truth fields; relocating hidden survivors does not change autonomous trajectories; network-off autonomy; maps spread only through delivered messages |
 | `collision.test.ts` | same-cell overlap prevented; swaps blocked; convoys advance through one-cell corridors; holding robots yield; turning robots are followed, not pushed; walls respected; manual movement passes the shield |
-| `controller.test.ts` | deterministic rendezvous branch ownership and reassignment; thermal/acoustic corroboration; no reservation table; priority claim release; controller source never references truth data |
+| `controller.test.ts` | deterministic rendezvous branch ownership and reassignment; thermal/acoustic corroboration; no reservation table; priority claim release; never selects a masked frontier action (mirrors the upstream Python test); controller source never references truth data |
 | `demo.test.ts` | the validation demo shows loss, delay, partition, reconnection, map sharing, survivor detection and convoy traffic with zero collisions |
 | `missions.test.ts` | complete missions on every preset at 10% loss: zero collisions, recall guard, coverage guard |
 

@@ -31,13 +31,19 @@ export interface LocalView {
   acoustic: number;
   /** Latest unexpired message per peer that has actually been delivered. */
   peerMessages: PeerMessage[];
+  /**
+   * Neighbouring cells (4-connected) currently occupied by teammates: short-range
+   * proximity sensing. Python derives the frontier action mask from exactly this
+   * (a slot is masked when its next step is occupied).
+   */
+  adjacentRobots: Point[];
   networkEnabled: boolean;
   step: number;
 }
 
 export type Decision =
   | {
-      action: number; // frontier slot index 0–4 (always 0 here: the active goal is slot 0)
+      action: number; // frontier slot index 0–4 in this robot's candidate list
       kind: 'explore';
       goal: Point;
       path: Point[];
@@ -142,18 +148,24 @@ export class AgentBrain {
       return { action: INVESTIGATE, kind: 'investigate', thermal, acoustic: view.acoustic };
     }
 
-    const candidates = this.candidates(view);
+    // Action mask (Python env.observe): a frontier slot is valid unless its next
+    // step is a cell a teammate currently occupies.
+    const occupied = new Set(view.adjacentRobots.map((p) => `${p.x},${p.y}`));
+    const valid = (c: FrontierCandidate) => c.path.length < 2 || !occupied.has(`${c.path[1].x},${c.path[1].y}`);
+
+    let candidates = this.candidates(view);
     const claims = this.claimsBySender(view);
     const goal = this.localGoal;
     if (goal) {
-      const current = candidates.find((c) => c.position.x === goal.x && c.position.y === goal.y);
+      const index = candidates.findIndex((c) => c.position.x === goal.x && c.position.y === goal.y);
+      const current = index >= 0 && index < this.config.maxFrontiers ? candidates[index] : null;
       if (current) {
         // Deterministic tie-break on identical claims: lexicographically smaller name keeps it.
         let lowerPriority = false;
         for (const [sender, g] of claims) if (g.x === goal.x && g.y === goal.y && sender < view.name) lowerPriority = true;
-        if (!lowerPriority)
+        if (!lowerPriority && valid(current))
           return {
-            action: 0,
+            action: index,
             kind: 'explore',
             goal,
             path: current.path,
@@ -167,13 +179,16 @@ export class AgentBrain {
     }
     const released = this.localGoal;
     this.localGoal = null;
+    // Releasing the goal changes slot ordering; recompute from the own belief.
+    candidates = this.candidates(view);
     if (!candidates.length) return { action: HOLD, kind: 'hold', reason: 'no-frontier' };
 
+    const slots = candidates.slice(0, this.config.maxFrontiers).filter(valid);
     const peerClaims = [...claims.values()];
     const sep = this.config.goalSeparationCells;
-    let available = candidates.filter((c) => peerClaims.every((p) => manhattan(c.position, p) > sep));
+    let available = slots.filter((c) => peerClaims.every((p) => manhattan(c.position, p) > sep));
     if (!available.length)
-      available = candidates.filter((c) => !peerClaims.some((p) => p.x === c.position.x && p.y === c.position.y));
+      available = slots.filter((c) => !peerClaims.some((p) => p.x === c.position.x && p.y === c.position.y));
     if (!available.length) return { action: HOLD, kind: 'hold', reason: 'all-claimed' };
 
     const evidence = this.peerEvidencePositions(view);
@@ -209,12 +224,13 @@ export class AgentBrain {
       }
     }
     this.localGoal = { ...chosen.position };
-    const path = astarPath(view.belief, view.position, chosen.position, { canCrossRubble: view.canCrossRubble });
+    // The chosen slot's own frontier-search path is executed (Python executes
+    // candidates[slot]["path"] for the returned slot).
     return {
-      action: 0,
+      action: candidates.indexOf(chosen),
       kind: 'explore',
       goal: this.localGoal,
-      path: path.length ? path : chosen.path,
+      path: chosen.path,
       newGoal: true,
       owned,
       followingPeerEvidence: evidence.length > 0,

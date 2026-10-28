@@ -14,7 +14,7 @@ describe('Autonomy restrictions', () => {
       // Local views passed to the controller carry no truth fields.
       const view = engine.localView(r);
       expect(Object.keys(view).sort()).toEqual(
-        ['acoustic', 'batteryFraction', 'belief', 'canCrossRubble', 'id', 'name', 'networkEnabled', 'odom', 'peerMessages', 'position', 'step', 'thermal', 'type'].sort(),
+        ['acoustic', 'adjacentRobots', 'batteryFraction', 'belief', 'canCrossRubble', 'id', 'name', 'networkEnabled', 'odom', 'peerMessages', 'position', 'step', 'thermal', 'type'].sort(),
       );
       // The belief map is a private copy, not the truth grid.
       expect(r.belief.cells).not.toBe(engine.scenario.grid.cells);

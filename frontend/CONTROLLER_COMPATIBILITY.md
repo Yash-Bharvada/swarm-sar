@@ -4,6 +4,12 @@ This document maps the TypeScript simulator in `frontend/src/simulation/` to the
 Python Step 4 reference. The Python code is the behavioural source of truth; nothing in the
 Python package was modified.
 
+**Reference revision:** upstream `main` at `e2db65c` ("training: add guarded behavior cloning
+and cohort gates"). That revision and its parent `0f9210d` changed
+`baselines/decentralized.py` to respect the frontier action mask; the browser port includes
+that change. Their other additions (GPU-v1 training pipeline, behavior cloning, cohort gates,
+extra observation fields for learning) do not affect controller decisions and are not ported.
+
 The browser's **Decentralized Autonomous Mode** ports the principles and algorithms of
 `DecentralizedFrontierController`. It is not PPO, RL, MARL or a GNN, and it does not run ROS 2 or
 Gazebo.
@@ -65,8 +71,16 @@ Movement actions (`sim/engine.py ACTIONS`): `0` stay, `1` up (y−1), `2` down (
 (x−1), `4` right (x+1).
 
 High-level policy actions (`sim/env.py`): `0–4` frontier slot, `5` investigate, `6` hold. The
-browser brain returns a `Decision` whose `action` uses the same codes. Its chosen goal is always
-slot 0 (the active goal is prepended to the candidate list, exactly as `_candidate_list` does).
+browser brain returns a `Decision` whose `action` uses the same codes, with the frontier slot
+indexing the robot's own candidate list (the active goal is prepended, exactly as
+`_candidate_list` does).
+
+**Action mask** (`env.observe`, honoured by the controller since `0f9210d`): a frontier slot is
+valid only if its path's next step is not a cell occupied by a teammate. The brain keeps its
+current goal only while that slot is valid and no higher-priority peer claims it. Otherwise it
+releases the goal, recomputes its candidates, and picks only among valid slots. The chosen
+slot's own frontier-search path is executed, as Python executes `candidates[slot]["path"]`.
+
 Investigate steps towards the strongest thermal sector only if the robot's own belief says that
 cell is traversable, then fuses an independent second sample.
 
@@ -144,6 +158,7 @@ An autonomous robot's brain (`AgentBrain.decide`) receives only a `LocalView`:
 - its rubble capability and battery fraction;
 - its own thermal and acoustic readings;
 - the latest unexpired messages actually delivered to its inbox;
+- `adjacentRobots`: the 4-neighbour cells occupied by teammates (short-range proximity sensing, the only input the action mask needs);
 - the step counter.
 
 It never receives the truth grid, the survivor list, other robots' states, or any shared
@@ -163,6 +178,7 @@ The truth map is used only by:
 Tests enforce this:
 
 - `controller.test.ts` checks that the controller source never references survivor or world data and that brains hold only `localGoal`.
+- `controller.test.ts` also mirrors upstream `test_controller_never_selects_a_masked_policy_action`: at 30% loss, no chosen frontier slot ever steps into a teammate's cell.
 - `autonomy.test.ts` moves the hidden survivors in one of two otherwise identical worlds and checks that the robots' trajectories stay identical.
 
 ## Known intentional browser simplifications and deviations
@@ -186,13 +202,15 @@ Tests enforce this:
    - Every manual move passes through the same `safetyFilter` and `applyMovements` as autonomous moves.
    - A manual robot broadcasts its waypoint as its claimed goal and sends no frontier list.
    - It confirms survivors only when the operator presses Scan.
-10. **Telemetry.** Plain-language events are throttled per robot and per event type. This affects only the feed, not the simulation.
+10. **Telemetry.** Plain-language events are throttled per robot and per event type. "Single file" convoy messages fire when adjacent robots both advance through narrow cells in the same tick. This affects only the feed, not the simulation.
 11. **Time.** One tick represents one second of mission time. The UI runs 4 ticks per second at 1× and interpolates rendering between ticks without changing simulation state.
 12. **Drones** keep the Python 2D traversal rules: they never cross walls and pay a cost of 1 on rubble. Altitude, bobbing, searchlights and rotor animation are visual only.
 
 ## Future: learned policy slot
 
 A PPO/ONNX policy could be added as another `Decision` producer behind the same `LocalView`
-interface: build the 129-value observation from `LocalView`, run it with `onnxruntime-web`,
-and mask the seven actions. It would sit beside `AgentBrain` without touching the engine,
+interface: build the versioned observation from `LocalView` (the frozen 129-value Step 3
+contract, or upstream's 229-value `gpu-v1` contract in `artifacts/policy_contract_gpu_v1.json`,
+whose per-peer features come only from delivered messages), run it with `onnxruntime-web`, and
+apply the same seven-action mask. It would sit beside `AgentBrain` without touching the engine,
 network or safety layers. No such mode exists today, and the UI makes no claim to one.

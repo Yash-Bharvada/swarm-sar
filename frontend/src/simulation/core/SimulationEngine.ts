@@ -296,6 +296,9 @@ export class SimulationEngine {
       thermal: [...r.thermal] as Sectors,
       acoustic: r.acoustic,
       peerMessages: this.network.enabled ? this.network.peerMessages(r.name, this.step) : [],
+      adjacentRobots: this.robots
+        .filter((o) => o.alive && o.id !== r.id && Math.abs(o.x - r.x) + Math.abs(o.y - r.y) === 1)
+        .map((o) => ({ x: o.x, y: o.y })),
       networkEnabled: this.network.enabled,
       step: this.step,
     };
@@ -346,6 +349,7 @@ export class SimulationEngine {
 
     this.step++;
     this.collisions += applyMovements(this.robots, shield.filtered, this.world.grid, this.rng);
+    this.narrateConvoys();
 
     for (const r of this.robots) {
       if (r.alive) {
@@ -399,6 +403,22 @@ export class SimulationEngine {
       this.doneReason = allFound ? 'all_found' : allDead ? 'all_depleted' : 'timeout';
       this.emit({ type: 'complete', reason: this.doneReason, found, total: this.world.victims.length });
     }
+  }
+
+  /** Telemetry only: adjacent robots that both advanced through narrow cells this tick. */
+  private narrateConvoys(): void {
+    const movers = this.robots.filter((r) => {
+      const prev = this.prevPositions.get(r.id)!;
+      return r.alive && (prev.x !== r.x || prev.y !== r.y) && this.isNarrow(r);
+    });
+    for (let i = 0; i < movers.length; i++)
+      for (let j = i + 1; j < movers.length; j++) {
+        const a = movers[i];
+        const b = movers[j];
+        if (Math.abs(a.x - b.x) + Math.abs(a.y - b.y) !== 1) continue;
+        const key = [a.name, b.name].sort().join();
+        this.emitThrottled(`convoy:${key}`, 30, { type: 'yield', robots: [a.name, b.name] });
+      }
   }
 
   /** Telemetry only: a cell is narrow when it has at most two passable neighbours. */

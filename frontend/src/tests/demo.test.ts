@@ -9,9 +9,16 @@ describe('Validation demo scenario', () => {
   const engine = new SimulationEngine(demoOptions());
   const kinds = new Set<string>();
   let isolatedDuringWindow = false;
+  // The demo's one-cell corridor runs along the middle row from x = 8 to x = 20.
+  const corridorRow = Math.floor(engine.scenario.height / 2);
+  let sharedCorridorTicks = 0;
   while (!engine.done) {
     engine.tick();
     if (engine.step >= 20 && engine.step <= 60 && engine.network.isolatedAgents(engine.step).has('rover_0')) isolatedDuringWindow = true;
+    const inside = engine.robots.filter((r) => r.alive && r.y === corridorRow && r.x >= 8 && r.x <= 20);
+    if (inside.length >= 2) sharedCorridorTicks++;
+    const cells = engine.robots.filter((r) => r.alive).map((r) => `${r.x},${r.y}`);
+    if (new Set(cells).size !== cells.length) throw new Error(`overlap at step ${engine.step}`);
   }
   for (const e of engine.rawEvents) kinds.add(e.event.type);
   const m = engine.network.metrics;
@@ -36,6 +43,7 @@ describe('Validation demo scenario', () => {
     expect(engine.survivorsFound()).toBeGreaterThan(0);
   });
   it('passes the narrow corridor in convoy with zero collisions', () => {
+    expect(sharedCorridorTicks).toBeGreaterThan(0);
     expect(kinds.has('yield')).toBe(true);
     expect(engine.collisions).toBe(0);
   });

@@ -57,6 +57,7 @@ describe('DecentralizedController', () => {
       thermal: [0, 0, 0, 0] as [number, number, number, number],
       acoustic: 0,
       peerMessages: [],
+      adjacentRobots: [],
       networkEnabled: true,
       step: 0,
     };
@@ -82,6 +83,7 @@ describe('DecentralizedController', () => {
       thermal: [0, 0, 0, 0] as [number, number, number, number],
       acoustic: 0,
       peerMessages: [],
+      adjacentRobots: [],
       networkEnabled: true,
       step: 1,
     };
@@ -109,6 +111,29 @@ describe('DecentralizedController', () => {
     // 'drone_0' < 'rover_1', so rover_1 yields the identical goal.
     const second = brain.decide({ ...base, peerMessages: [claim] });
     expect(second.kind === 'explore' && second.goal.x === goal.x && second.goal.y === goal.y).toBe(false);
+  });
+
+  it('never selects a masked frontier action (next step occupied by a teammate)', () => {
+    // Mirrors Python test_controller_never_selects_a_masked_policy_action.
+    const engine = new SimulationEngine(defaultOptions({ seed: 33, packetLoss: 0.3 }));
+    let checked = 0;
+    for (let i = 0; i < 100 && !engine.done; i++) {
+      for (const r of engine.robots) {
+        if (!r.alive) continue;
+        const view = engine.localView(r);
+        const decision = new AgentBrain(`probe_${r.name}`, DEFAULT_CONTROLLER);
+        decision.localGoal = engine.controller.brain(r.name).localGoal;
+        const d = decision.decide({ ...view, name: r.name });
+        if (d.kind !== 'explore' || d.path.length < 2) continue;
+        const next = d.path[1];
+        expect(view.adjacentRobots.some((p) => p.x === next.x && p.y === next.y)).toBe(false);
+        expect(d.action).toBeGreaterThanOrEqual(0);
+        expect(d.action).toBeLessThan(DEFAULT_CONTROLLER.maxFrontiers);
+        checked++;
+      }
+      engine.tick();
+    }
+    expect(checked).toBeGreaterThan(100);
   });
 
   it('controller source never references truth data', () => {
