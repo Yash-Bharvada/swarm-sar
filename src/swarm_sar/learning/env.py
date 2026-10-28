@@ -4,6 +4,7 @@ import copy
 from pathlib import Path
 from typing import Any
 
+import numpy as np
 from gymnasium import spaces
 from ray.rllib.env.multi_agent_env import MultiAgentEnv
 
@@ -11,6 +12,7 @@ from swarm_sar.learning.observation import policy_observation_space, wrap_observ
 from swarm_sar.sim.env import ACTION_COUNT, DisasterResponseParallelEnv
 from swarm_sar.utils.config import load_config
 from swarm_sar.validation.seeds import scheduled_training_seed
+from swarm_sar.world.cells import UNKNOWN
 
 
 def normalise_profile(profile: dict[str, Any]) -> dict[str, int]:
@@ -45,6 +47,9 @@ class VariableSwarmRLlibEnv(MultiAgentEnv):
         self.network_enabled = bool(config.get("network_enabled", True))
         self.sim_overrides = copy.deepcopy(config.get("sim_overrides", {}))
         self.robot_stress = copy.deepcopy(config.get("robot_stress", {}))
+        self.world_overrides = copy.deepcopy(config.get("world_overrides", {}))
+        self.domain_randomization = bool(config.get("domain_randomization", False))
+        self.randomization_seed = int(config.get("randomization_seed", self.base_seed))
         self.survivor_reward = float(config.get("survivor_reward", 20.0))
         self.new_cell_reward = float(config.get("new_cell_reward", 0.05))
         self.investigate_evidence_reward = float(
@@ -86,11 +91,12 @@ class VariableSwarmRLlibEnv(MultiAgentEnv):
             agent: self.observation_space for agent in self.possible_agents
         }
         self.action_spaces = {agent: self.action_space for agent in self.possible_agents}
-        self.episode_index = 0
+        self.episode_index = int(config.get("training_episode_offset", 0))
         self.current_profile: dict[str, int] | None = None
         self.current_seed = self.base_seed
         self.invalid_action_count = 0
         self.env: DisasterResponseParallelEnv | None = None
+        self._team_known_mask: np.ndarray | None = None
 
     @staticmethod
     def _names_for_profile(profile: dict[str, int]) -> list[str]:
@@ -102,17 +108,20 @@ class VariableSwarmRLlibEnv(MultiAgentEnv):
                 identifier += 1
         return names
 
-    def _select_profile(self) -> dict[str, int]:
+    def _select_profile(self, episode_seed: int | None = None) -> dict[str, int]:
         if self.fixed_profile is not None:
             return dict(self.fixed_profile)
         if self.curriculum and self.episode_index < self.phase_episodes[0]:
             return {"rover": 1, "drone": 0}
         if self.curriculum and self.episode_index < sum(self.phase_episodes):
             return {"rover": 2, "drone": 0}
+        if self.domain_randomization and episode_seed is not None:
+            rng = np.random.default_rng(int(episode_seed) ^ self.randomization_seed ^ 0x5445414D)
+            return dict(self.final_profiles[int(rng.integers(len(self.final_profiles)))])
         offset = self.episode_index - sum(self.phase_episodes)
         return dict(self.final_profiles[offset % len(self.final_profiles)])
 
-    def _episode_configs(self, profile: dict[str, int]):
+    def _episode_configs(self, profile: dict[str, int], episode_seed: int | None = None):
         world = copy.deepcopy(self.base_world)
         robots = copy.deepcopy(self.base_robots)
         sim = copy.deepcopy(self.base_sim)
@@ -122,10 +131,54 @@ class VariableSwarmRLlibEnv(MultiAgentEnv):
             height=size,
             victim_min_dist_from_spawn=max(6, size // 4),
         )
+        if self.domain_randomization and episode_seed is not None:
+            rng = np.random.default_rng(int(episode_seed) ^ self.randomization_seed ^ 0x444F4D41)
+            size = int(rng.choice(self.world_sizes))
+            layout = str(rng.choice(["rooms", "rooms", "cave", "maze"]))
+            if layout == "maze":
+                # Teach the target labyrinth family at manageable sizes; the
+                # 56-cell maze remains a true scale-extrapolation test.
+                maze_sizes = [value for value in self.world_sizes if value <= 32]
+                size = int(rng.choice(maze_sizes or self.world_sizes))
+            procedural = layout == "rooms" and size >= 32 and bool(rng.integers(2))
+            world.update(
+                width=size,
+                height=size,
+                layout=layout,
+                footprint="procedural" if procedural else "full",
+                victim_min_dist_from_spawn=max(6, size // 4),
+                min_free_ratio=0.14 if procedural else 0.30,
+                max_generation_retries=100,
+                spawn_origin=[int(rng.integers(1, 4)), int(rng.integers(1, 4))],
+            )
+            enabled = self.network_enabled and bool(rng.random() >= 0.15)
+            sim.update(
+                network_enabled=enabled,
+                network_packet_loss=float(rng.choice([0.0, 0.1, 0.3])),
+                network_delay_steps=[1, int(rng.integers(2, 6))],
+                network_partition_windows=(
+                    [{"start": 40, "end": 100, "agents": ["rover_0"]}]
+                    if enabled and rng.random() < 0.25
+                    else []
+                ),
+            )
+            for robot_config in robots.values():
+                noise = float(rng.uniform(0.75, 1.5))
+                drift = float(rng.uniform(0.5, 2.0))
+                for sensor in ("thermal", "acoustic"):
+                    robot_config[f"{sensor}_noise"] *= noise
+                    robot_config[f"{sensor}_detection_probability"] -= float(rng.uniform(0, 0.1))
+                    robot_config[f"{sensor}_false_positive_rate"] += float(rng.uniform(0, 0.02))
+                robot_config["odometry_drift_std"] *= drift
+                robot_config["odometry_uncertainty_growth"] *= drift
+                robot_config["battery"] *= float(rng.uniform(0.9, 1.4))
+        world.update(self.world_overrides)
         sim.update(
             agent_counts=profile,
             max_steps=self.max_steps,
-            network_enabled=self.network_enabled,
+            network_enabled=sim.get("network_enabled", self.network_enabled)
+            if self.domain_randomization
+            else self.network_enabled,
             investigate_confirms_victims=True,
             frontier_samples_per_cluster=5,
         )
@@ -172,11 +225,24 @@ class VariableSwarmRLlibEnv(MultiAgentEnv):
 
     def reset(self, *, seed: int | None = None, options: dict | None = None):
         super().reset(seed=seed, options=options)
+        # RLlib supplies an initialization seed. A configured training range is
+        # authoritative so initialization/resume cannot reset every worker to it.
+        if self.training_seed_range is not None:
+            episode_seed = scheduled_training_seed(
+                self.training_seed_range,
+                worker_index=self.worker_index,
+                runner_count=self.runner_count,
+                episode_index=self.episode_index,
+            )
+        elif seed is not None:
+            episode_seed = int(seed)
+        else:
+            episode_seed = self.base_seed + self.episode_index
         if options and "team_profile" in options:
             profile = normalise_profile(options["team_profile"])
         else:
-            profile = self._select_profile()
-        world, robots, sim = self._episode_configs(profile)
+            profile = self._select_profile(episode_seed)
+        world, robots, sim = self._episode_configs(profile, episode_seed)
         if self.env is not None:
             self.env.close()
         self.env = DisasterResponseParallelEnv(
@@ -184,18 +250,8 @@ class VariableSwarmRLlibEnv(MultiAgentEnv):
             robot_config=robots,
             sim_config=sim,
         )
-        if seed is not None:
-            episode_seed = int(seed)
-        elif self.training_seed_range is not None:
-            episode_seed = scheduled_training_seed(
-                self.training_seed_range,
-                worker_index=self.worker_index,
-                runner_count=self.runner_count,
-                episode_index=self.episode_index,
-            )
-        else:
-            episode_seed = self.base_seed + self.episode_index
         observations, infos = self.env.reset(seed=episode_seed)
+        self._team_known_mask = self._known_cell_union()
         self.current_seed = episode_seed
         self.current_profile = profile
         self.agents = list(self.env.agents)
@@ -203,7 +259,7 @@ class VariableSwarmRLlibEnv(MultiAgentEnv):
         self.episode_index += 1
         for info in infos.values():
             info["team_profile"] = dict(profile)
-            info["network_enabled"] = self.network_enabled
+            info["network_enabled"] = bool(sim["network_enabled"])
         return {
             agent: wrap_observation(observation)
             for agent, observation in observations.items()
@@ -225,9 +281,11 @@ class VariableSwarmRLlibEnv(MultiAgentEnv):
         newly_found = max(
             (int(infos[agent]["newly_found"]) for agent in acted_agents), default=0
         )
-        newly_revealed = sum(
-            int(infos[agent]["newly_revealed"]) for agent in acted_agents
-        )
+        now_known = self._known_cell_union()
+        newly_revealed = int(np.count_nonzero(now_known & ~self._team_known_mask))
+        # Reward each discovered coordinate once for the whole mission. Peer
+        # map delivery or another robot revisiting it cannot earn it again.
+        self._team_known_mask |= now_known
         collisions = sum(
             bool(self.env._robots_by_name[agent].collided) for agent in acted_agents
         )
@@ -246,8 +304,9 @@ class VariableSwarmRLlibEnv(MultiAgentEnv):
         rewards = {agent: team_reward for agent in acted_agents}
         for info in infos.values():
             info["team_reward"] = team_reward
+            info["team_newly_revealed"] = newly_revealed
             info["team_profile"] = dict(self.current_profile or {})
-            info["network_enabled"] = self.network_enabled
+            info["network_enabled"] = bool(self.env.core.sim_config["network_enabled"])
         self.agents = list(self.env.agents)
         terminations["__all__"] = not self.agents and all(terminations.values())
         truncations["__all__"] = not self.agents and all(truncations.values())
@@ -271,13 +330,27 @@ class VariableSwarmRLlibEnv(MultiAgentEnv):
                 "survivors_total": len(self.env.core.victims),
                 "invalid_actions": self.invalid_action_count,
                 "team_profile": dict(self.current_profile or {}),
-                "network_enabled": self.network_enabled,
+                "network_enabled": bool(self.env.core.sim_config["network_enabled"]),
                 "sim_overrides": copy.deepcopy(self.sim_overrides),
                 "robot_stress": copy.deepcopy(self.robot_stress),
+                "world_overrides": copy.deepcopy(self.world_overrides),
                 "seed": self.current_seed,
             }
         )
         return metrics
+
+    def _known_cell_union(self) -> np.ndarray:
+        if self.env is None:
+            raise RuntimeError("Call reset() first")
+        return np.logical_or.reduce([robot.belief != UNKNOWN for robot in self.env.core.robots])
+
+    def schedule_state(self) -> dict[str, int]:
+        return {"worker_index": self.worker_index, "episode_index": self.episode_index}
+
+    def restore_schedule(self, state: dict[str, int]) -> None:
+        if int(state["worker_index"]) != self.worker_index:
+            raise ValueError("Cannot restore a schedule for a different worker")
+        self.episode_index = max(self.episode_index, int(state["episode_index"]))
 
     def close(self) -> None:
         if self.env is not None:

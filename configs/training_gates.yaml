@@ -1,9 +1,15 @@
 version: 1
 hard_abort:
   max_invalid_actions: 0
-  max_collisions_per_evaluation: 1000
+  max_collisions_per_evaluation: 8
 quality:
   max_dominant_action_ratio: 0.985
+  collapse_max_recall: 0.20
+  max_reference_regression: 0.10
+  max_train_development_gap: 0.35
+  max_fixed_shadow_gap: 0.25
+  generalization_gap_patience: 2
+  plateau_target_recall: 0.90
   plateau_evaluations: 4
   minimum_recall_improvement: 0.01
 stages:

@@ -74,6 +74,11 @@ The validated checkpoint is versioned at `artifacts/step3/checkpoint/`; retraini
 
 ### GPU-v1 training preparation
 
+Use the audited `rashiyaom` GPU pipeline and **v2 expert dataset** described in
+[`docs/GPU_TRANSFER_CHECKLIST.md`](docs/GPU_TRANSFER_CHECKLIST.md). The older
+`gpu-v1-training-ready` release and v1 expert data do not include the 29 October
+full-launch, causal-teacher and stable-trajectory fixes.
+
 The original Step 3 checkpoint remains frozen under its historical 129-value
 contract. New training uses the versioned 229-value `gpu-v1` contract, bounded
 per-peer features, goal/action memory, an optional LSTM, disjoint seed ranges,
@@ -90,8 +95,8 @@ python scripts/train_step3.py --config configs/training_gpu_a5000.yaml \
 Export and validate Step 4 expert demonstrations:
 
 ```bash
-python scripts/export_step4_expert.py --episodes 2000 --output results/expert_train
-python scripts/validate_expert_dataset.py results/expert_train
+python scripts/export_step4_expert.py --episodes 2000 --output results/expert_train_gpu_v2
+python scripts/validate_expert_dataset.py results/expert_train_gpu_v2
 ```
 
 The complete GPU handoff, class-balanced recurrent behavior cloning, cohort
@@ -101,10 +106,11 @@ evaluation, and automatic training gates are documented in
 The A5000 profile is `configs/training_gpu_a5000.yaml`. See
 `docs/gpu_training_preparation.md` before launching it.
 
-The completed local expert dataset contains 811,652 validated decisions from
-2,000 training seeds and is stored at `results/expert_train_gpu_v1/` (138 MB on
-disk). Copy that ignored directory to the GPU machine together with the repo;
-the tracked aggregate and manifest hash are in `artifacts/gpu_v1/`.
+The corrected expert dataset contains 868,887 validated decisions from 2,000
+training seeds at `results/expert_train_gpu_v2/`. Copy that ignored directory
+or its 128 MiB archive to the GPU machine; its aggregate and manifest hash are
+tracked in `artifacts/gpu_v2/`. The teacher found 4,930/4,970 survivors through
+the same observation/action interface available to the learned policies.
 
 ## Validate Step 4
 

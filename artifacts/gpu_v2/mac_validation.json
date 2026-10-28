@@ -1,0 +1,99 @@
+{
+  "review_date": "2026-10-29",
+  "branch": "rashiyaom",
+  "base_commit": "7e64f0c981fa9aec02880057d8bd2fec8825072c",
+  "python_tests_passed": 146,
+  "frontend_working_tree_tests_passed": 97,
+  "frontend_committed_checkout_production_build": "passed",
+  "frontend_working_tree_production_build": "pre-existing survivor editor/store TypeScript mismatch; frontend changes preserved and excluded",
+  "baseline_hashes_verified": 30,
+  "policy_contract_verified": true,
+  "dataset_rows": 868887,
+  "expert_manifest_sha256": "610fe2e0ed6462f8a97036cb581c7af5e5edd2884c176be52d865cd0132bbdae",
+  "transfer_archive": {
+    "path": "results/expert_train_gpu_v2.tar.gz",
+    "bytes": 131161524,
+    "sha256": "f1701522a6e1255863ca23d544454c18169424479bde132a56c3f71496e792dc"
+  },
+  "bc": {
+    "quality_passed": true,
+    "diagnostic": true,
+    "training_device": "cpu",
+    "checkpoint_roundtrip_passed": true,
+    "epochs": 6,
+    "max_batches": 64
+  },
+  "development_closed_loop": {
+    "cohorts": 9,
+    "episodes": 72,
+    "summary": {
+      "minimum_cohort_recall": 0.1111111111111111,
+      "mean_cohort_recall": 0.7482010582010582,
+      "fixed_mean_recall": 0.7288359788359788,
+      "fixed_mean_cohort_recall": 0.7288359788359788,
+      "shadow_mean_recall": 0.784365017698351,
+      "shadow_mean_cohort_recall": 0.784365017698351,
+      "fixed_shadow_gap": -0.05552903886237215,
+      "minimum_cohort_coverage": 0.11493736368545221,
+      "invalid_actions": 0,
+      "collisions": 0,
+      "maximum_dominant_action_ratio": 0.8121259432734843,
+      "diagnostic_only": false,
+      "train_probe_recall": 1.0,
+      "train_development_gap": 0.07692307692307687,
+      "train_probe_note": "Recomputed using exact final seed-keyed PPO configuration after the nine-cohort evaluation. Small sample diagnostic only.",
+      "baseline_mean_recalls": {
+        "expert": 0.871252204585538,
+        "random_masked": 0.2851675485008818,
+        "frontier0": 0.22269841269841273
+      },
+      "baseline_fixed_mean_recalls": {
+        "expert": 0.8743386243386243,
+        "random_masked": 0.2955026455026455,
+        "frontier0": 0.18888888888888886
+      },
+      "baseline_mean_recall": 0.871252204585538,
+      "matched_development_probe_recall": 0.9230769230769231
+    },
+    "qualification": {
+      "passed": true,
+      "learned_fixed_recall": 0.7288359788359788,
+      "random_fixed_recall": 0.2955026455026455,
+      "expert_fixed_recall": 0.8743386243386243,
+      "reason": "closed_loop_sanity_passed",
+      "interpretation": "A small development sanity gate, not a significance or real-world safety claim."
+    }
+  },
+  "bc_to_ppo_handoff": {
+    "exact_initial_hash_continuity": true,
+    "weights_updated": true,
+    "checkpoint_verified": true
+  },
+  "production_domain_gate": {
+    "status": "completed",
+    "reasons": [],
+    "weights_updated": true,
+    "verified_checkpoint": true
+  },
+  "changed_worker_resume": {
+    "env_steps": 1024,
+    "weights_updated": true,
+    "status": "completed"
+  },
+  "strict_pipeline_mac_refusal": {
+    "status": "aborted",
+    "reason": "Correctly refused non-CUDA under-resourced dirty Mac before training"
+  },
+  "training_resets_validated": 100,
+  "training_world_variants": 11,
+  "tunnel_holdout_resets_validated": 8,
+  "export_recovery": "Fresh/resumed test manifests and chunks matched byte-for-byte",
+  "gpu_execution_validated": false,
+  "gpu_throughput_validated": false,
+  "final_test_seeds_used": false,
+  "limitations": [
+    "Only the actual GPU host can validate CUDA and runtime performance.",
+    "A short CPU pilot does not prove long-run PPO improvement.",
+    "Real SLAM, ROS2/physics, physical robots and browser learned-policy execution are not implemented."
+  ]
+}

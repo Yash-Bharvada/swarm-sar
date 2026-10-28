@@ -16,9 +16,25 @@ from swarm_sar.learning.observation import wrap_observation
 from swarm_sar.policy_contract import ENCODED_OBSERVATION_SIZE, policy_contract
 from swarm_sar.sim.env import ACTION_COUNT, DisasterResponseParallelEnv
 from swarm_sar.utils.config import load_config
+from swarm_sar.validation.seeds import load_seed_splits
 
 
 POLICY_IDS = {"rover": 0, "drone": 1}
+DATASET_SCHEMA_VERSION = 2
+EXPERT_INTERFACE = "observation_action_only_v1"
+
+
+class PolicyCompatibleExpert(DecentralizedFrontierController):
+    """Keep expert decisions inside the learner's observation/action interface.
+
+    The production controller can cancel goals through a simulator method.
+    Such a cancellation changes frontier-slot ordering before it emits an
+    action, and cannot be represented by the learner's seven-action contract.
+    Dataset collection therefore changes only private controller memory.
+    """
+
+    def _release_goal(self, agent: str) -> None:
+        self.local_goals.pop(agent, None)
 
 
 def sha256_file(path: Path) -> str:
@@ -177,7 +193,9 @@ class DemonstrationWriter:
     def finish(self, episodes: list[dict[str, Any]]) -> dict[str, Any]:
         self.flush()
         manifest = {
-            "schema_version": 1,
+            "schema_version": DATASET_SCHEMA_VERSION,
+            "agent_identity": "stable_robot_id",
+            "expert_interface": EXPERT_INTERFACE,
             "policy_contract": policy_contract(),
             "rows": self.total_rows,
             "episodes": episodes,
@@ -197,17 +215,36 @@ class DemonstrationWriter:
 def validate_dataset(path: str | Path) -> dict[str, Any]:
     root = Path(path).resolve()
     manifest = json.loads((root / "manifest.json").read_text(encoding="utf-8"))
+    if manifest.get("schema_version") != DATASET_SCHEMA_VERSION or manifest.get("agent_identity") != "stable_robot_id":
+        raise ValueError("Unsafe legacy expert identities: regenerate schema-v2 dataset")
+    if manifest.get("expert_interface") != EXPERT_INTERFACE:
+        raise ValueError("Unsafe expert action interface: regenerate policy-compatible dataset")
     if manifest["policy_contract"] != policy_contract():
         raise ValueError("Dataset policy contract does not match executable contract")
     rows = 0
     action_counts: dict[str, int] = {}
     policy_counts = {"rover": 0, "drone": 0}
+    seeds = [int(episode["seed"]) for episode in manifest["episodes"]]
+    if len(set(seeds)) != len(seeds) or len(seeds) != int(manifest["episode_count"]):
+        raise ValueError("Duplicate or inconsistent expert episode seeds")
+    known_seeds = set(seeds)
+    if not known_seeds or not known_seeds.issubset(load_seed_splits()["train"]):
+        raise ValueError("Expert provenance includes seeds outside the training split")
+    identities: dict[tuple[int, int], tuple[int, int]] = {}
     for chunk in manifest["chunks"]:
+        if Path(chunk["path"]).name != chunk["path"]:
+            raise ValueError("Expert chunk path must be a local basename")
         chunk_path = root / chunk["path"]
         if sha256_file(chunk_path) != chunk["sha256"]:
             raise ValueError(f"Corrupt demonstration chunk: {chunk_path.name}")
         with np.load(chunk_path) as data:
+            required = {"observations", "action_masks", "actions", "policy_ids", "episode_seeds", "steps", "agent_indices", "packet_loss", "team_sizes"}
+            if not required.issubset(data.files):
+                raise ValueError("Missing required demonstration row fields")
             count = len(data["actions"])
+            for field in ("actions", "policy_ids", "episode_seeds", "steps", "agent_indices", "packet_loss", "team_sizes"):
+                if data[field].shape != (count,):
+                    raise ValueError(f"Invalid demonstration field shape: {field}")
             if data["observations"].shape != (count, ENCODED_OBSERVATION_SIZE):
                 raise ValueError("Invalid demonstration observation shape")
             if data["action_masks"].shape != (count, ACTION_COUNT):
@@ -216,12 +253,26 @@ def validate_dataset(path: str | Path) -> dict[str, Any]:
                 raise ValueError("Non-finite demonstration observation")
             actions = data["actions"].astype(int)
             masks = data["action_masks"]
+            if np.any((masks != 0) & (masks != 1)):
+                raise ValueError("Demonstration masks must be binary")
             if np.any(actions < 0) or np.any(actions >= ACTION_COUNT):
                 raise ValueError("Out-of-range expert action")
             if np.any(masks[np.arange(count), actions] <= 0):
                 raise ValueError("Dataset contains masked expert action")
             if np.any((data["policy_ids"] < 0) | (data["policy_ids"] > 1)):
                 raise ValueError("Invalid policy ID")
+            if np.any(data["steps"] < 0) or np.any(data["agent_indices"] < 0):
+                raise ValueError("Negative trajectory step or robot identity")
+            for seed, robot_id, policy_id, step in zip(data["episode_seeds"], data["agent_indices"], data["policy_ids"], data["steps"]):
+                if int(seed) not in known_seeds:
+                    raise ValueError("Chunk seed is absent from episode provenance")
+                key = (int(seed), int(robot_id))
+                previous = identities.get(key)
+                if previous is not None and (previous[0] != int(policy_id) or previous[1] + 1 != int(step)):
+                    raise ValueError(f"Expert trajectory identity or continuity violation: {key}")
+                if previous is None and int(step) != 0:
+                    raise ValueError(f"Expert trajectory does not begin at reset: {key}")
+                identities[key] = (int(policy_id), int(step))
             for action in actions:
                 key = str(int(action))
                 action_counts[key] = action_counts.get(key, 0) + 1
@@ -274,20 +325,31 @@ def collect_episode(seed: int, writer: DemonstrationWriter) -> dict[str, Any]:
     env = DisasterResponseParallelEnv(
         world_config=world, robot_config=robots, sim_config=sim
     )
-    controller = DecentralizedFrontierController(env, controller_config)
+    controller = PolicyCompatibleExpert(env, controller_config)
     controller.reset(seed)
     try:
         while env.agents and env.core.step_count < int(controller_config["max_steps"]):
             acting_agents = list(env.agents)
+            observations_before = dict(controller.observations)
+            active_goals_before = dict(env._active_goals)
+            candidates_before = {
+                agent: [tuple(candidate["position"]) for candidate in env._candidate_list(agent)]
+                for agent in acting_agents
+            }
             actions = controller.choose_actions()
-            for agent_index, agent in enumerate(acting_agents):
+            if env._active_goals != active_goals_before or any(
+                [tuple(candidate["position"]) for candidate in env._candidate_list(agent)] != candidates_before[agent]
+                for agent in acting_agents
+            ):
+                raise RuntimeError("Expert changed the learner's environment before emitting actions")
+            for agent in acting_agents:
                 writer.add(
-                    observation=controller.observations[agent],
+                    observation=observations_before[agent],
                     action=actions[agent],
                     robot_type=env._robots_by_name[agent].type,
                     seed=seed,
                     step=env.core.step_count,
-                    agent_index=agent_index,
+                    agent_index=int(env._robots_by_name[agent].id),
                     packet_loss=metadata["packet_loss"],
                     team_size=len(acting_agents),
                 )
@@ -299,7 +361,6 @@ def collect_episode(seed: int, writer: DemonstrationWriter) -> dict[str, Any]:
             "steps": summary["steps"],
             "survivors_found": summary["survivors_found"],
             "survivors_total": summary["survivors_total"],
-            "coverage": summary["coverage"],
         }
     finally:
         env.close()

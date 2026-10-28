@@ -1,0 +1,30 @@
+{
+  "dataset_path": "results/expert_train_gpu_v2",
+  "manifest_sha256": "610fe2e0ed6462f8a97036cb581c7af5e5edd2884c176be52d865cd0132bbdae",
+  "policy_contract_sha256": "c5dff01368e1bb3a77112884c5d545457830097b11aefe54e0d412fc874c57c5",
+  "episode_seed_range": [
+    0,
+    1999
+  ],
+  "episode_count": 2000,
+  "rows": 868887,
+  "chunks": 18,
+  "compressed_chunk_bytes": 133006334,
+  "survivors_found": 4930,
+  "survivors_total": 4970,
+  "survivor_recall": 0.9919517102615694,
+  "action_counts": {
+    "1": 46996,
+    "0": 581576,
+    "6": 109126,
+    "2": 30773,
+    "3": 21099,
+    "5": 63755,
+    "4": 15562
+  },
+  "policy_counts": {
+    "rover": 436028,
+    "drone": 432859
+  },
+  "validation": "passed"
+}

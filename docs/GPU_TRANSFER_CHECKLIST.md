@@ -1,110 +1,137 @@
-# GPU training transfer checklist
+# Audited GPU handoff: rashiyaom, pipeline v2
 
-This is the fail-closed handoff for the A5000 run. Do not launch a long PPO
-job until every preflight and smoke command below passes.
+The 29 October audit supersedes the old `gpu-v1-training-ready` launch advice.
+The 229-value policy contract remains `gpu-v1`; the **expert dataset and run
+protocol are v2**. Do not use `expert_train_gpu_v1`: its agent identities and
+teacher action interface were unsafe for recurrent imitation.
 
-## Immutable identities
+The honest architecture/go–no-go review is in
+[gpu_architecture_review.md](gpu_architecture_review.md). A 15-hour slot is a
+maximum experiment budget, not a commitment to keep training after a failure.
 
-- GPU-v1 policy contract SHA-256:
-  `c5dff01368e1bb3a77112884c5d545457830097b11aefe54e0d412fc874c57c5`
-- Expert manifest SHA-256:
-  `b4afe76df70480e24dba15ecc6b526044647fa94fd2efffbeefdbb2271fd2857`
-- Expert contents: 811,652 decisions, 2,000 seeds, 17 chunks, all seven
-  actions, 4,966/4,970 survivors.
-- The release commit is the commit pointed to by the annotated
-  `gpu-v1-training-ready` tag. Verify with `git rev-parse HEAD` and
-  `git rev-list -n 1 gpu-v1-training-ready`.
+## Transfer identity and branch
 
-## 1. Clone and environment
+Use the `rashiyaom` branch and the `rashiyaom-gpu-v2-audited` tag. `main` is
+deliberately unchanged by this refinement. Verify the exact code and dataset
+using the tracked records:
+
+- `artifacts/gpu_v2/source_manifest.json`: every training source/config file
+  and the dependency/data records, with byte counts and SHA-256.
+- `artifacts/gpu_v2/expert_dataset_summary.json`: exact dataset manifest hash,
+  counts and policy-contract hash.
+- `artifacts/gpu_v2/mac_validation.json`: measured validation evidence and
+  explicit GPU/hardware limitations.
+
+The policy contract hash is
+`c5dff01368e1bb3a77112884c5d545457830097b11aefe54e0d412fc874c57c5`.
+
+The corrected dataset has 868,887 decisions and 18 chunks. Its manifest SHA-256
+is `610fe2e0ed6462f8a97036cb581c7af5e5edd2884c176be52d865cd0132bbdae`.
+The local transferable archive has SHA-256
+`f1701522a6e1255863ca23d544454c18169424479bde132a56c3f71496e792dc`.
+
+The large expert data lives in ignored `results/expert_train_gpu_v2/`.
+Transfer that complete directory separately. An optional archive can be made
+with `tar -czf results/expert_train_gpu_v2.tar.gz -C results expert_train_gpu_v2`.
+The preflight checks every chunk; copying only the Git repository does not
+copy the dataset. If the directory is absent, the launcher regenerates it from
+the exact source before training. A partial or mismatched directory causes a
+stop; it is never overwritten or silently accepted.
+
+## One-command server workflow
+
+On a clean Linux clone, with NVIDIA drivers, Python's venv support, pip and GNU
+`timeout` available:
 
 ```bash
-git clone https://github.com/rashiyaom/swarm-sar.git
+git clone --branch rashiyaom --single-branch https://github.com/rashiyaom/swarm-sar.git
 cd swarm-sar
-git checkout gpu-v1-training-ready
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install --upgrade pip
-python -m pip install -e .
+git fetch origin tag rashiyaom-gpu-v2-audited
 ```
 
-The expert data is intentionally not committed to Git. Either copy the exact
-`results/expert_train_gpu_v1/` directory from the Mac, or deterministically
-regenerate it on the server:
+The launcher requires branch `rashiyaom`. Verify its HEAD matches the audited
+tag, then launch:
 
 ```bash
-python scripts/export_step4_expert.py --episodes 2000 --chunk-size 50000 \
-  --output results/expert_train_gpu_v1
+test "$(git rev-parse HEAD)" = "$(git rev-list -n 1 rashiyaom-gpu-v2-audited)"
+bash scripts/launch_gpu.sh --hours 15
 ```
 
-Never reuse a partial output directory.
+Run inside an SSH session manager (such as an already installed tmux) if the
+connection may close. Training itself is supervised by the repository's
+Python program; a chat conversation is not the process supervisor.
 
-## 2. Strict preflight
+The launcher creates its own `.venv-gpu`, installs pinned direct dependencies,
+records setup logs, and counts setup time toward the same wall-clock budget.
+It selects the official PyTorch 2.14.1 CUDA 12.6 wheel rather than relying on
+whatever CUDA variant pip happens to choose; this is one of the distributions
+listed in [PyTorch's installation matrix](https://pytorch.org/get-started/previous-versions/).
+It then performs:
 
-```bash
-python scripts/preflight_gpu.py --dataset results/expert_train_gpu_v1
-python -m pytest -q
-python scripts/freeze_training_baseline.py --verify
-python scripts/verify_policy_contract.py
-```
+1. Source identity, clean worktree, actual CUDA backward pass and disk checks.
+2. Missing-data generation followed by full hash/schema/identity validation.
+3. Repository tests, frozen baseline and policy-contract verification.
+4. Two-batch BC CUDA/checkpoint smoke.
+5. Full class-balanced recurrent BC, capped at two training hours plus
+   validation allowance; each epoch is logged.
+6. Actual rescue rollouts on nine cohorts against the policy-compatible
+   expert, random legal actions and first-legal-action references.
+7. GPU PPO/checkpoint smoke, then at most one hour of pilot PPO.
+8. Paired comparison against BC. Further compute requires improvement, or
+   retention of already high recall.
+9. Qualified continuation within the remaining budget, final development
+   report, rollout artifacts and a hashed checkpoint handoff.
 
-Preflight must report `passed: true`, a clean worktree, CUDA available, at
-least 20 GiB VRAM and the exact hashes above. One RTX A5000 is expected; NVLink
-does not add value unless a second GPU is installed.
+If continuation regresses, the qualified pilot is retained. The pipeline does
+not automatically lower quality thresholds, bypass a pause, or unseal final
+test seeds. Child processes have timeouts and a no-progress watchdog.
 
-## 3. Behavior-cloning warm start
+## Acceptance and monitoring
 
-First run the two-batch GPU plumbing smoke:
+BC requires all seven actions in both splits, balanced validation accuracy
+at least 0.40 per robot type, at least 0.05 recall for each action, a 0.10
+balanced-accuracy margin over the mask-only classifier, an overfitting gap no
+greater than 0.15, finite parameters, and exact restored weight hashes. These
+are minimum sanity gates, not guarantees of useful rescue behavior; the
+following closed-loop gate must pass too.
 
-```bash
-python scripts/train_behavior_cloning.py \
-  --dataset results/expert_train_gpu_v1 \
-  --output results/bc_gpu_smoke --smoke --num-cpus 4 --num-gpus 1
-```
+PPO checks both optimizing policies after every iteration, evaluates every
+250,000 environment steps or hour, and pauses on regression, persistent
+generalization gaps, low-performance action collapse, unmet stages or plateau.
+Repeated sensor evidence does not earn the GPU policy an investigation bonus;
+discovery reward is counted once per coordinate for the whole swarm.
 
-Then run the real sequence-aware, class-weighted rover/drone clone:
+Inspect `results/gpu_pipeline_*/heartbeat.json`, `pipeline_history.json`, stage
+logs, BC progress files, PPO iteration history and cohort JSON. Exit 3 is a
+quality/budget pause; exit 2 is an error/abort. `HANDOFF.json` always records
+the reason, exact Git commit, available checkpoint and per-file hashes. A
+pause is a useful result: preserve the evidence before deciding another run.
 
-```bash
-python scripts/train_behavior_cloning.py \
-  --dataset results/expert_train_gpu_v1 \
-  --output results/bc_gpu_v1 --num-cpus 8 --num-gpus 1
-```
+CUDA itself has to pass on the actual A5000. The Mac validates CPU execution
+and the stop paths; no Mac test can prove A5000 throughput or driver support.
 
-Continue only if `summary.json` says `passed: true`, both initial/final hashes
-differ, each validation balanced accuracy is at least 0.40, and each train vs
-validation gap is at most 0.15. Raw accuracy is not an acceptance metric.
+## Overfitting boundaries
 
-## 4. PPO handoff smoke and intensive run
+BC splits whole episode seeds (0–1,799 training, 1,800–1,999 validation), with
+stable robot trajectories, recurrent context and class-balanced loss. PPO
+samples procedural cases from 0–9,999, so the BC validation seeds cease to be
+an untouched rollout test during later PPO. Independent development seeds are
+10,000–10,099; four remain fixed for comparable progress and four rotate for
+additional coverage. Training-range probes are explicitly weak diagnostics.
 
-```bash
-python scripts/train_step3.py --config configs/training_gpu_a5000.yaml \
-  --resume results/bc_gpu_v1/checkpoint --smoke \
-  --num-cpus 4 --num-env-runners 2 --num-gpus-per-learner 1 \
-  --output results/ppo_gpu_smoke
-```
+Nine cohorts cover nominal, alternate team mixture, swarm scale, no network,
+30% loss/partition, sensor/pose-feature stress, a composition omitted from
+PPO, a 56-cell maze (PPO maze sizes are at most 32), and a tunnel footprint
+absent from both BC and PPO. Expert BC may contain the
+team mixture, so it is only a **PPO composition holdout**. Bootstrap intervals
+and paired baselines expose uncertainty; eight maps per cohort are not a
+reliability certificate.
 
-Confirm `weights_updated: true`, then launch:
+Final seeds 20,000–20,199 remain sealed. Final evaluation requires an explicit
+freeze acknowledgement and cannot run in shortened/smoke mode. Use it once
+after choosing the model and all hyperparameters.
 
-```bash
-export OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1
-python scripts/train_step3.py --config configs/training_gpu_a5000.yaml \
-  --resume results/bc_gpu_v1/checkpoint \
-  --output results/gpu_v1_run_001
-```
-
-Inspect `heartbeat.json` after every iteration. A full cohort report runs every
-250,000 environment steps or every hour, whichever comes first. The run writes
-a numbered checkpoint before each
-gate. `PAUSED.json` means review the recorded quality reason and resume only
-after diagnosis; `ABORTED.json` means the run encountered a hard integrity
-failure. Never bypass a gate merely to reach five million steps.
-
-## 5. Anti-overfitting evidence
-
-Training samples seeds 0–9,999. BC validation uses seeds 1,800–1,999 and PPO
-does not use those labels. Online evaluation uses only development seeds
-10,000–10,099: four fixed seeds plus four rotating seeds over six cohorts.
-Final seeds 20,000–20,199 remain sealed until model and hyperparameters are
-frozen. Report the final range exactly once for the chosen candidate.
-
-Archive the repo commit, BC summary, training definition, checkpoint index,
-all cohort JSON files, heartbeat/termination marker, and final checkpoint.
+This trains a hierarchical grid-world cooperative policy. Accurate own-cell
+planning and canonical map registration remain simulator conveniences. Real
+SLAM/localization, ROS2/Gazebo flight/rover dynamics and the browser policy
+bridge are separate implementation milestones.

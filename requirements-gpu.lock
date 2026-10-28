@@ -1,0 +1,12 @@
+# Direct dependency versions used by the Mac validation, also pinned for Linux.
+# GPU preflight additionally proves an actual CUDA backward pass.
+numpy==2.5.4
+pyyaml==6.0.3
+pygame==2.6.1
+matplotlib==3.11.2
+pytest==9.1.1
+gymnasium==1.2.2
+pettingzoo==1.27.0
+networkx==3.7
+ray[rllib]==2.59.0
+torch==2.14.1

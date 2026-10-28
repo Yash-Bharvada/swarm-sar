@@ -1,13 +1,14 @@
-version: 1
+version: 2
 fixed_seed_count: 4
 rotating_seed_count: 4
+train_probe_seed_count: 4
 cohorts:
   - name: nominal_2r2d
     team_profile: {rover: 2, drone: 2}
     world_size: 32
     max_steps: 400
     network_enabled: true
-  - name: heldout_2r3d
+  - name: mixed_team_2r3d
     team_profile: {rover: 2, drone: 3}
     world_size: 40
     max_steps: 400
@@ -42,3 +43,34 @@ cohorts:
       detection_probability_drop: 0.10
       false_positive_increase: 0.05
       drift_multiplier: 2.0
+  - name: ppo_unseen_team_1r4d
+    # This composition is excluded from PPO sampling. BC expert data may contain it.
+    team_profile: {rover: 1, drone: 4}
+    world_size: 40
+    max_steps: 400
+    network_enabled: true
+    world_overrides:
+      footprint: procedural
+      min_free_ratio: 0.14
+      max_generation_retries: 100
+  - name: ood_maze_56
+    # Maze sizes in PPO are at most 32; size 56 tests extrapolation.
+    team_profile: {rover: 2, drone: 2}
+    world_size: 56
+    max_steps: 400
+    network_enabled: true
+    world_overrides:
+      layout: maze
+      footprint: full
+      max_generation_retries: 100
+  - name: ood_tunnel_48
+    # This footprint never appears in either expert BC or PPO sampling.
+    team_profile: {rover: 2, drone: 3}
+    world_size: 48
+    max_steps: 600
+    network_enabled: true
+    world_overrides:
+      layout: rooms
+      footprint: tunnel
+      min_free_ratio: 0.08
+      max_generation_retries: 100

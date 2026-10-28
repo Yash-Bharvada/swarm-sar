@@ -1,5 +1,10 @@
 # GPU-v1 training preparation
 
+> Historical preparation record. The 29 October 2026 audit found additional
+> full-launch and expert-data defects. Use
+> [GPU_TRANSFER_CHECKLIST.md](GPU_TRANSFER_CHECKLIST.md) and the v2 data on
+> `rashiyaom`; the old expert data and launch commands below are superseded.
+
 ## Status
 
 Mac preparation Steps 1–8 were completed and validated on 28 October 2026.

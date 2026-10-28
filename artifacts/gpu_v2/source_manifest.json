@@ -1,0 +1,370 @@
+{
+  "schema_version": 2,
+  "label": "rashiyaom-gpu-v2",
+  "files": {
+    "artifacts/gpu_v2/expert_dataset_summary.json": {
+      "bytes": 709,
+      "sha256": "e380b086860da56ed1d45534360467dfd9655243355cd81fbca73866dca35a49"
+    },
+    "artifacts/policy_contract_gpu_v1.json": {
+      "bytes": 1139,
+      "sha256": "477df66a96619b71a69f8793b7ad3bea924f07acbb1f9c5eeef5c950d0932574"
+    },
+    "configs/baseline.yaml": {
+      "bytes": 219,
+      "sha256": "1ae3c8dc772afcf573ca141f3ea8b51d6fddff59b5acb97091f0e24ef9f9a4f9"
+    },
+    "configs/evaluation_cohorts.yaml": {
+      "bytes": 2119,
+      "sha256": "3545bd45cd26ce0b1e35317f8b1ad428bbcdd9d57d89f325bffba2877dbb1e97"
+    },
+    "configs/network.yaml": {
+      "bytes": 206,
+      "sha256": "5bfbef3bfc16040711803918275aeffd3f9ad1ff6b4de69482105378ed7d2150"
+    },
+    "configs/robots.yaml": {
+      "bytes": 1132,
+      "sha256": "91ca76a092f4ef019c9f44c1c72cb294555d8282b36da61fa0b3910249a53db9"
+    },
+    "configs/seed_splits.yaml": {
+      "bytes": 121,
+      "sha256": "c96d52268b1f903a7d628a98d8642f47810f4942223f230bf4a2f02e8c270047"
+    },
+    "configs/sim.yaml": {
+      "bytes": 642,
+      "sha256": "6451dae72884ee99fe9b60e359b4a93a44cafe4576e47ea07d5cb5dceb76fdc2"
+    },
+    "configs/training.yaml": {
+      "bytes": 907,
+      "sha256": "4a7cf69b08d61aa23c4319c6fd44fb889c2e33255de53aa1c50f0f873158d00f"
+    },
+    "configs/training_gates.yaml": {
+      "bytes": 891,
+      "sha256": "75199de2ff0963431c719225714700c36d696a0e790aa04f180e183ab18553ee"
+    },
+    "configs/training_gpu_a5000.yaml": {
+      "bytes": 1193,
+      "sha256": "01b66eaeb0ec49017e1f56a38209c8279c0e1bb70b9e1e8b2bb0df52e2afd6b2"
+    },
+    "configs/world.yaml": {
+      "bytes": 349,
+      "sha256": "e708089f0668d920e5bf0ac5d65bc319a0c3b751de1123952eb41fd783d63ee9"
+    },
+    "pyproject.toml": {
+      "bytes": 561,
+      "sha256": "5f6c67a2597218d0e80a79513f9f5888cf718e06f0c27883f73dc0f77085efe8"
+    },
+    "requirements-gpu.lock": {
+      "bytes": 303,
+      "sha256": "aaf8039443479ea7367c9b7ea71e08e403d22f531ed35be63391327f0ec32795"
+    },
+    "requirements.txt": {
+      "bytes": 117,
+      "sha256": "69924fb7c2ee4a053359052e5aec2418c4f7172779b7c134da60c0759144203c"
+    },
+    "scripts/audit_step25_scalability.py": {
+      "bytes": 9425,
+      "sha256": "5eec1803e32fe497c49f4a06ebf39574cec88b9af58f656555c05a6933d29d8c"
+    },
+    "scripts/audit_step2_robustness.py": {
+      "bytes": 4317,
+      "sha256": "d6f2a62646429dd9829d1d731f5d92fd8ee7d1071f8c3493b5580ea40135be42"
+    },
+    "scripts/audit_step4_network.py": {
+      "bytes": 13547,
+      "sha256": "1587ec75d2ba472fa7ecc98ab8b262f55a3d673a30a8cbaac44d25f558095f37"
+    },
+    "scripts/benchmark.py": {
+      "bytes": 1398,
+      "sha256": "6873bc98c4b67ca8fbb2e78196c4a55b361488059a6361ff9489e7266a5a66f7"
+    },
+    "scripts/evaluate_gpu_checkpoint.py": {
+      "bytes": 3143,
+      "sha256": "60812ee43574902ffa6db0370151e0f6a7d66d3e8baab5f02c6b68a1907b56cc"
+    },
+    "scripts/export_step4_expert.py": {
+      "bytes": 1863,
+      "sha256": "5be2d42d92f8e97887a5100dbaf4ac011f65d1f5aa2d8984948e4b01ef94dddc"
+    },
+    "scripts/freeze_gpu_release.py": {
+      "bytes": 620,
+      "sha256": "a17465f4ab9b00bbde6ac2481bc818b91d14a28827f045e5fbf01c098e6430c0"
+    },
+    "scripts/freeze_training_baseline.py": {
+      "bytes": 3556,
+      "sha256": "9e9c872f99000ff8051e48fa921dad07d1370d3574216635c7320d4f0941aaad"
+    },
+    "scripts/launch_gpu.sh": {
+      "bytes": 1831,
+      "sha256": "3e3f24cf79f08b77b87ee8e9d44c5b2ecd550f11240eace1a7302dbb0b92ebd6"
+    },
+    "scripts/play_manual.py": {
+      "bytes": 1698,
+      "sha256": "2fb1c7cf64218a1e366a010c4cb1e2ce30238bee9a47ad93a652e8c21e04bdcb"
+    },
+    "scripts/preflight_gpu.py": {
+      "bytes": 6106,
+      "sha256": "14bbc568f5038da44001efaaddfa93308343be32215fce7e404aab05c2ee65f7"
+    },
+    "scripts/recover_expert_export.py": {
+      "bytes": 4232,
+      "sha256": "3e7077221c3798110972e50e499d540e7d111d579b5961947a001393a0fcb82e"
+    },
+    "scripts/run_frontier_baseline.py": {
+      "bytes": 2787,
+      "sha256": "be04eda2d7218a7b3531870a4f224998c3889b8771893faeb16c8e6dd9468215"
+    },
+    "scripts/run_gpu_pipeline.py": {
+      "bytes": 9839,
+      "sha256": "eb500b440c148e750398a76a2583380461cb8bdfa566afe1bfe47a5e1bb5427f"
+    },
+    "scripts/run_random.py": {
+      "bytes": 1750,
+      "sha256": "db0a13d52f42000aede3e3a2708153154eb28c1a36f066c24dab0bfe2475493f"
+    },
+    "scripts/run_step3_policy.py": {
+      "bytes": 2202,
+      "sha256": "7c401705e5f267ca12bcff3427d45b5b1d5cf708f63118302e4efbd62c7305c9"
+    },
+    "scripts/train_behavior_cloning.py": {
+      "bytes": 9635,
+      "sha256": "903a135d8423ce8a5893f6c15e3a017b252c1d78f1b4289bf98e8680056fb78b"
+    },
+    "scripts/train_step3.py": {
+      "bytes": 23515,
+      "sha256": "451c8d3d2ad4f0115473ecfeff1c397bd54afdc3425194c56d669252dac1918a"
+    },
+    "scripts/validate_expert_dataset.py": {
+      "bytes": 956,
+      "sha256": "d6772f36ea61e736da1defef48f2674c093b656e5b464a81920183aa3cb73794"
+    },
+    "scripts/validate_step1.py": {
+      "bytes": 4992,
+      "sha256": "071af420cbc84183a5406cbf9e92a367dc1b4bc75f2bae3123cf5064e6037fce"
+    },
+    "scripts/validate_step2.py": {
+      "bytes": 3120,
+      "sha256": "e5fafc8e4392ead564832441d8c434dea4cb146c3e7b43cbf55554f6e5bb0a2d"
+    },
+    "scripts/validate_step3.py": {
+      "bytes": 7849,
+      "sha256": "3999028ac2e6fffb32078f63c45ff5c724d089cff216b851e12cea85aa687470"
+    },
+    "scripts/verify_policy_contract.py": {
+      "bytes": 664,
+      "sha256": "c3fbdccb4a77b984ce3e9e4047461ea4a4f20a846af712bb6b906ec838745a56"
+    },
+    "scripts/view_topology.py": {
+      "bytes": 1558,
+      "sha256": "ffd6add9490da6e235d447825207a188ec8ce02d336549498907f8b8bbffd0ff"
+    },
+    "scripts/view_world.py": {
+      "bytes": 1501,
+      "sha256": "06c4743a0e5ef122ef7f9f8bb1e8fbbb3d854635224dd473bc25dfa472e0b517"
+    },
+    "src/swarm_sar/__init__.py": {
+      "bytes": 517,
+      "sha256": "f6fba2e2a18a04b4f30c5bbbd39da26efcff8eb696ad053c199af4a153ec9d38"
+    },
+    "src/swarm_sar/baselines/__init__.py": {
+      "bytes": 268,
+      "sha256": "c2d87660da62583f1cf1b2254b2db9e67cfa70625ac82fe8831a3c29045d6aef"
+    },
+    "src/swarm_sar/baselines/decentralized.py": {
+      "bytes": 11294,
+      "sha256": "072313d3cc8a5660ebee8c3dd6129b0c77422b73006540aaca7339b5629cc43a"
+    },
+    "src/swarm_sar/baselines/frontier.py": {
+      "bytes": 18277,
+      "sha256": "eb7e9da902b56494420863fe26d6b75f0fb2e10f1f686acb9ab5099187c3be8c"
+    },
+    "src/swarm_sar/learning/__init__.py": {
+      "bytes": 275,
+      "sha256": "9243f7e9f31e84f3c85dd753b7b4922b1464eb6ac088cd07bd1b14d9c55cd9ff"
+    },
+    "src/swarm_sar/learning/behavior_cloning.py": {
+      "bytes": 17689,
+      "sha256": "6e49be17fbf16cb6ad532eb057d3f968cb8d3e6ed63addb1f73464f60c02f93f"
+    },
+    "src/swarm_sar/learning/cohort_evaluation.py": {
+      "bytes": 14733,
+      "sha256": "544ddad9f24db1c1c97e5e25ef4ca004a98cecf3a9e33624ca6be8f3a3ac5938"
+    },
+    "src/swarm_sar/learning/demonstrations.py": {
+      "bytes": 16599,
+      "sha256": "9b5869570d3359b7e10856e207aa8d30c0df7da3b5ba2ee333bf88038d809e75"
+    },
+    "src/swarm_sar/learning/env.py": {
+      "bytes": 16540,
+      "sha256": "b00d7ec4942d30b9a3e8cb18e4f5eefb86a311aa7f3158d5053ea3df9137bc63"
+    },
+    "src/swarm_sar/learning/expert_evaluation.py": {
+      "bytes": 4436,
+      "sha256": "19203f95ec8e7f5f0f736ee21361bf5f3dea85fc71f01b016c41a0341f3d6820"
+    },
+    "src/swarm_sar/learning/gpu_pipeline.py": {
+      "bytes": 10044,
+      "sha256": "83bc66e9e8b8d54da7afb79fe183b9336bfe7e78ed8f00999e7e8fbd18e01ddf"
+    },
+    "src/swarm_sar/learning/inference.py": {
+      "bytes": 8852,
+      "sha256": "6701b8e9c50d3ab8760a46f025182c2d0396d209ffe8da3ebf049bc0d03a4dfc"
+    },
+    "src/swarm_sar/learning/observation.py": {
+      "bytes": 2585,
+      "sha256": "5be60c848b82d750238d09923dad7317b7c8202aaad725cf1e54f08f7b5840e3"
+    },
+    "src/swarm_sar/learning/release.py": {
+      "bytes": 2425,
+      "sha256": "7bd0fbf9a3eb672d9e11fcfc7500453e0e3b58a5d0e07dc40f2f3ad7f9597c86"
+    },
+    "src/swarm_sar/learning/rllib_module.py": {
+      "bytes": 3684,
+      "sha256": "027086e6353ab82defd020842b44bc449f317b7f4cd252e8e6e360e1a43a3c01"
+    },
+    "src/swarm_sar/learning/training.py": {
+      "bytes": 5482,
+      "sha256": "bdc6015b32a94ef5808ed0a6cfd9b5ea803c73a31dcccda37b50ac0e62e463a9"
+    },
+    "src/swarm_sar/learning/training_gates.py": {
+      "bytes": 7439,
+      "sha256": "3704865dedb4533fcf2e2c17829f50126559f98e93033967d54b8d870364ad94"
+    },
+    "src/swarm_sar/mapping/__init__.py": {
+      "bytes": 144,
+      "sha256": "933547fdfd9130507ffd49fbc2d94a80d4c9f1c4bc22da40dd5346b00a2d672a"
+    },
+    "src/swarm_sar/mapping/topology.py": {
+      "bytes": 9675,
+      "sha256": "45f90b4221789c2070df3e3efc47655029b891d83feaa1f58ba98f79331bb8e3"
+    },
+    "src/swarm_sar/network/__init__.py": {
+      "bytes": 200,
+      "sha256": "7cd12b658c0fd8201efe06c7cae41d0d5e27e9c647311f803dcf344ca00d5f59"
+    },
+    "src/swarm_sar/network/messages.py": {
+      "bytes": 868,
+      "sha256": "7be374acd1e286bb139322612b8b36bbda8300e3caeeeb2543cc643607c856ec"
+    },
+    "src/swarm_sar/network/peer.py": {
+      "bytes": 9991,
+      "sha256": "3f1c1b05fe82a00fca8d11ba94a95fa700bf076f55491e93f9bf4abd8ce05e6f"
+    },
+    "src/swarm_sar/policy_contract.py": {
+      "bytes": 2189,
+      "sha256": "3e74236748c7eebfb11ade230a1ff9f2ec78e0b31c3b4b79c684fceda79da51e"
+    },
+    "src/swarm_sar/robots/__init__.py": {
+      "bytes": 140,
+      "sha256": "339b03a48a86293b48d3a56c96736181e9d56831585e80f590542e74fc5ecb50"
+    },
+    "src/swarm_sar/robots/robot.py": {
+      "bytes": 1918,
+      "sha256": "4b1e875f1f11253239f998c505f27265aa9e13a14b81bdde9d290dfe5e458031"
+    },
+    "src/swarm_sar/robots/robot_types.py": {
+      "bytes": 637,
+      "sha256": "4f6de010a112b84ae2133ce9989bc36bfbaf52c23c5c03451eb096da069b6b02"
+    },
+    "src/swarm_sar/robots/types.py": {
+      "bytes": 195,
+      "sha256": "739226d93932cade3ce9f9d91f4100523079ed4fcfe30ba8c4d33b4a3052288a"
+    },
+    "src/swarm_sar/sensing/__init__.py": {
+      "bytes": 199,
+      "sha256": "1219be65bbd937fdd4d30afd2517f3e1558c04909191e0569296913ef8d314f5"
+    },
+    "src/swarm_sar/sensing/victim_sensor.py": {
+      "bytes": 4295,
+      "sha256": "45ac058e4521c95df935027dd2b28d95b248532f77ad31ec08d99fb19e2f6b26"
+    },
+    "src/swarm_sar/sensing/vision.py": {
+      "bytes": 2822,
+      "sha256": "0d6ea49cf45fae9f21279a7a1ab38ac68af639f4bf91fed44e09cc3a22bb6406"
+    },
+    "src/swarm_sar/sim/__init__.py": {
+      "bytes": 361,
+      "sha256": "f522cda07ca0f6b7f686bcf67167fde6d704761e021bbdd555bc07e74ca85616"
+    },
+    "src/swarm_sar/sim/engine.py": {
+      "bytes": 18024,
+      "sha256": "206b02bf40e53eb7ace2ce9f0413274a1bcada256b3fc06e9a4f101e51df9ee8"
+    },
+    "src/swarm_sar/sim/env.py": {
+      "bytes": 32568,
+      "sha256": "ccee63f25c04cbd550136d2bddffbf5ee2a740126a47d09e6b5440972fe8585e"
+    },
+    "src/swarm_sar/sim/logging.py": {
+      "bytes": 1796,
+      "sha256": "abc6f40f9fb546fa275b4d2311fdf32535c5e5de0918959d0aa01c7f89839414"
+    },
+    "src/swarm_sar/sim/metrics.py": {
+      "bytes": 3166,
+      "sha256": "6f565d7b98f7456ffed178125c51a5016d7cae1c5a1a56eda24038a78db215ae"
+    },
+    "src/swarm_sar/sim/planning.py": {
+      "bytes": 9766,
+      "sha256": "7521bca5c858789ad67acfb45654256814804a8bc389a8c811a5a6324bcf59da"
+    },
+    "src/swarm_sar/utils/__init__.py": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "src/swarm_sar/utils/config.py": {
+      "bytes": 477,
+      "sha256": "4b25085dc93b464601a286bcd683fe593726415f55e93c2fc74ee53c16848ca3"
+    },
+    "src/swarm_sar/utils/rng.py": {
+      "bytes": 191,
+      "sha256": "8dfbf419a775292bfa5855063dadfd98627643c2559ddfc347753380e81142e0"
+    },
+    "src/swarm_sar/validation/__init__.py": {
+      "bytes": 403,
+      "sha256": "250448a355b64c73327980c7c954cd57f8d3c71d446739e8497b1105883c5d19"
+    },
+    "src/swarm_sar/validation/network.py": {
+      "bytes": 3172,
+      "sha256": "33c1d8906e079506ef861fdf196c1cdae551c59aac79363a489dbccc4ea7805a"
+    },
+    "src/swarm_sar/validation/robustness.py": {
+      "bytes": 1472,
+      "sha256": "39726022de5ee5becd761432c9249cf21f4cd4b61b363eb4af414d656e2f5130"
+    },
+    "src/swarm_sar/validation/scalability.py": {
+      "bytes": 3860,
+      "sha256": "43a49986bf5b08bac9e4dc86f871597d5faa63491f9c07228fd20c95e8af9822"
+    },
+    "src/swarm_sar/validation/seeds.py": {
+      "bytes": 1739,
+      "sha256": "b10aa49303dd075d77a9ac436717aa58d2c706c018c23608b1eaad0f43d3d644"
+    },
+    "src/swarm_sar/viz/__init__.py": {
+      "bytes": 68,
+      "sha256": "1a1450ee346f18c524c8dc2e4da667c46d37af9515c071ad3538aacc270f3fe5"
+    },
+    "src/swarm_sar/viz/renderer.py": {
+      "bytes": 5840,
+      "sha256": "4e51fe6d2e87e4ff43c85d52c37a26af82e4e4ee28918419bc3a92b3c87129f8"
+    },
+    "src/swarm_sar/world/__init__.py": {
+      "bytes": 222,
+      "sha256": "67dddaae5a4219a4a3d83da4f8c057c5d3753de2e71bdcb4afbde3711b5fa89a"
+    },
+    "src/swarm_sar/world/cells.py": {
+      "bytes": 192,
+      "sha256": "a66c659356461325b6bcf0dbd58d89296250e66eb07de43e0fa22dac2d763967"
+    },
+    "src/swarm_sar/world/generator.py": {
+      "bytes": 16080,
+      "sha256": "de8d71b68c23d0230610bf43bbcb85999f98e15fe369df5ffd158fb78108f97f"
+    },
+    "src/swarm_sar/world/reachability.py": {
+      "bytes": 1404,
+      "sha256": "c20ae6a3952660c6f246452dc704e5242dc12978fd5da9426a195a241ee7902d"
+    },
+    "src/swarm_sar/world/victims.py": {
+      "bytes": 1517,
+      "sha256": "734275c276b2aaf01bd8e86cf23f7465995f7e43745adef6686de06ffaec81a2"
+    }
+  }
+}

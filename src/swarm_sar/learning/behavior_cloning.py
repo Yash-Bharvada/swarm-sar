@@ -2,18 +2,18 @@
 
 from __future__ import annotations
 
-import copy
-import json
+import math
+import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any, Callable, Iterable
 
 import numpy as np
 import torch
 import torch.nn.functional as functional
 from ray.rllib.core.columns import Columns
 
-from swarm_sar.learning.demonstrations import POLICY_IDS, validate_dataset
+from swarm_sar.learning.demonstrations import validate_dataset
 from swarm_sar.policy_contract import ENCODED_OBSERVATION_SIZE
 from swarm_sar.sim.env import ACTION_COUNT
 
@@ -27,6 +27,29 @@ class ExpertArrays:
     episode_seeds: np.ndarray
     steps: np.ndarray
     agent_indices: np.ndarray
+
+
+@dataclass
+class ContextWindow:
+    indices: np.ndarray
+    loss_start: int
+
+
+def with_burn_in(arrays: ExpertArrays, windows: list[np.ndarray], burn_in: int) -> list[ContextWindow]:
+    """Include prior observations as recurrent context, without scoring them twice."""
+    if burn_in < 0:
+        raise ValueError("burn_in cannot be negative")
+    lookup = {
+        (int(arrays.episode_seeds[index]), int(arrays.agent_indices[index]), int(arrays.steps[index])): index
+        for indices in windows for index in indices
+    }
+    result = []
+    for indices in windows:
+        first = int(indices[0])
+        seed, agent, step = int(arrays.episode_seeds[first]), int(arrays.agent_indices[first]), int(arrays.steps[first])
+        context = [lookup[(seed, agent, previous)] for previous in range(max(0, step - burn_in), step)]
+        result.append(ContextWindow(np.concatenate([np.asarray(context, dtype=np.int64), indices]), len(context)))
+    return result
 
 
 def load_expert_arrays(path: str | Path) -> tuple[ExpertArrays, dict[str, Any]]:
@@ -108,12 +131,16 @@ def trajectory_windows(
 
 
 def class_weights(actions: np.ndarray) -> np.ndarray:
+    if actions.ndim != 1 or not len(actions) or np.any((actions < 0) | (actions >= ACTION_COUNT)):
+        raise ValueError("Invalid class-weight actions")
     counts = np.bincount(actions.astype(int), minlength=ACTION_COUNT).astype(np.float64)
     if np.any(counts == 0):
         raise ValueError(f"Expert split is missing actions: {np.flatnonzero(counts == 0)}")
-    weights = np.sqrt(counts.sum() / (ACTION_COUNT * counts))
-    weights /= weights.mean()
-    return np.clip(weights, 0.25, 4.0).astype(np.float32)
+    # Each class contributes equal total mass to the expected objective.
+    # Square-root weighting still lets the dominant continuation action
+    # outweigh rare investigation/frontier labels by several multiples.
+    weights = counts.sum() / (ACTION_COUNT * counts)
+    return weights.astype(np.float32)
 
 
 def initial_state_for_batch(module, batch_size: int, device: torch.device):
@@ -130,7 +157,7 @@ def initial_state_for_batch(module, batch_size: int, device: torch.device):
 
 def sequence_batch(
     arrays: ExpertArrays,
-    windows: list[np.ndarray],
+    windows: list[np.ndarray] | list[ContextWindow],
     selected: Iterable[int],
     *,
     max_seq_len: int,
@@ -146,12 +173,16 @@ def sequence_batch(
     )
     actions = np.zeros((batch_size, max_seq_len), dtype=np.int64)
     valid = np.zeros((batch_size, max_seq_len), dtype=np.float32)
-    for row, indices in enumerate(chosen):
+    for row, window in enumerate(chosen):
+        indices = window.indices if isinstance(window, ContextWindow) else window
+        loss_start = window.loss_start if isinstance(window, ContextWindow) else 0
         length = len(indices)
+        if length > max_seq_len:
+            raise ValueError("Sequence window exceeds batch capacity")
         observations[row, :length] = arrays.observations[indices]
         action_masks[row, :length] = arrays.action_masks[indices]
         actions[row, :length] = arrays.actions[indices]
-        valid[row, :length] = 1.0
+        valid[row, loss_start:length] = 1.0
     batch = {
         Columns.OBS: {
             "observations": torch.as_tensor(observations, device=device),
@@ -173,6 +204,7 @@ def _empty_metrics() -> dict[str, Any]:
         "per_action_total": np.zeros(ACTION_COUNT, dtype=np.int64),
         "per_action_correct": np.zeros(ACTION_COUNT, dtype=np.int64),
         "prediction_counts": np.zeros(ACTION_COUNT, dtype=np.int64),
+        "first_valid_correct": np.zeros(ACTION_COUNT, dtype=np.int64),
     }
 
 
@@ -192,13 +224,14 @@ def _finish_metrics(values: dict[str, Any]) -> dict[str, Any]:
             str(index): int(values["prediction_counts"][index])
             for index in range(ACTION_COUNT)
         },
+        "first_valid_balanced_accuracy": float(np.mean(values["first_valid_correct"][present] / totals[present])) if np.any(present) else 0.0,
     }
 
 
 def run_epoch(
     module,
     arrays: ExpertArrays,
-    windows: list[np.ndarray],
+    windows: list[np.ndarray] | list[ContextWindow],
     *,
     weights: torch.Tensor,
     batch_size: int,
@@ -206,13 +239,16 @@ def run_epoch(
     rng: np.random.Generator,
     optimizer: torch.optim.Optimizer | None,
     max_batches: int | None = None,
+    deadline: float | None = None,
 ) -> dict[str, Any]:
     training = optimizer is not None
     module.train(training)
     device = next(module.parameters()).device
-    order = rng.permutation(len(windows)) if training else np.arange(len(windows))
+    order = rng.permutation(len(windows)) if training else np.random.default_rng(56219).permutation(len(windows))
     metrics = _empty_metrics()
     for batch_number, start in enumerate(range(0, len(order), batch_size)):
+        if deadline is not None and time.monotonic() >= deadline:
+            break
         if max_batches is not None and batch_number >= max_batches:
             break
         selected = order[start : start + batch_size]
@@ -242,13 +278,16 @@ def run_epoch(
                 raise FloatingPointError("Non-finite behavior-cloning loss")
             if training:
                 loss.backward()
-                torch.nn.utils.clip_grad_norm_(module.parameters(), max_norm=5.0)
+                torch.nn.utils.clip_grad_norm_(module.parameters(), max_norm=5.0, error_if_nonfinite=True)
                 optimizer.step()
+                if not all(torch.isfinite(parameter).all() for parameter in module.parameters()):
+                    raise FloatingPointError("Non-finite behavior-cloning parameter")
         with torch.no_grad():
             predictions = torch.argmax(logits, dim=-1)
             active = valid.bool()
             active_actions = actions[active].detach().cpu().numpy()
             active_predictions = predictions[active].detach().cpu().numpy()
+            baseline = torch.argmax(batch[Columns.OBS]["action_mask"], dim=-1)[active].detach().cpu().numpy()
             tokens = int(active.sum().item())
             metrics["loss_sum"] += float((losses * valid).sum().item())
             metrics["tokens"] += tokens
@@ -262,6 +301,9 @@ def run_epoch(
             metrics["prediction_counts"] += np.bincount(
                 active_predictions, minlength=ACTION_COUNT
             )
+            metrics["first_valid_correct"] += np.bincount(active_actions[active_actions == baseline], minlength=ACTION_COUNT)
+    if metrics["tokens"] == 0:
+        raise TimeoutError("Behavior-cloning budget expired before a batch completed")
     return _finish_metrics(metrics)
 
 
@@ -279,6 +321,9 @@ def train_policy_clone(
     seed: int,
     patience: int,
     max_batches: int | None = None,
+    burn_in: int = 16,
+    deadline: float | None = None,
+    on_epoch: Callable[[dict[str, Any]], None] | None = None,
 ) -> dict[str, Any]:
     train_windows = trajectory_windows(
         arrays,
@@ -294,6 +339,9 @@ def train_policy_clone(
     )
     train_actions = np.concatenate([arrays.actions[window] for window in train_windows])
     weight_values = class_weights(train_actions)
+    train_windows = with_burn_in(arrays, train_windows, burn_in)
+    validation_windows = with_burn_in(arrays, validation_windows, burn_in)
+    sequence_capacity = max_seq_len + burn_in
     device = next(module.parameters()).device
     weights = torch.as_tensor(weight_values, device=device)
     optimizer = torch.optim.Adam(module.parameters(), lr=float(learning_rate))
@@ -310,10 +358,11 @@ def train_policy_clone(
             train_windows,
             weights=weights,
             batch_size=batch_size,
-            max_seq_len=max_seq_len,
+            max_seq_len=sequence_capacity,
             rng=rng,
             optimizer=optimizer,
             max_batches=max_batches,
+            deadline=deadline,
         )
         validation_metrics = run_epoch(
             module,
@@ -321,7 +370,7 @@ def train_policy_clone(
             validation_windows,
             weights=weights,
             batch_size=batch_size,
-            max_seq_len=max_seq_len,
+            max_seq_len=sequence_capacity,
             rng=rng,
             optimizer=None,
             max_batches=max_batches,
@@ -332,6 +381,8 @@ def train_policy_clone(
             "validation": validation_metrics,
         }
         history.append(record)
+        if on_epoch is not None:
+            on_epoch(record)
         score = float(validation_metrics["balanced_accuracy"])
         if score > best_score + 1e-6:
             best_score = score
@@ -343,7 +394,7 @@ def train_policy_clone(
             stale = 0
         else:
             stale += 1
-        if stale >= patience:
+        if stale >= patience or (deadline is not None and time.monotonic() >= deadline):
             break
     if best_state is None:
         raise RuntimeError("Behavior cloning did not produce a best state")
@@ -354,10 +405,14 @@ def train_policy_clone(
         validation_windows,
         weights=weights,
         batch_size=batch_size,
-        max_seq_len=max_seq_len,
+        max_seq_len=sequence_capacity,
         rng=rng,
         optimizer=None,
         max_batches=max_batches,
+    )
+    final_train = run_epoch(
+        module, arrays, train_windows, weights=weights, batch_size=batch_size,
+        max_seq_len=sequence_capacity, rng=rng, optimizer=None, max_batches=max_batches,
     )
     return {
         "policy_id": int(policy_id),
@@ -368,8 +423,12 @@ def train_policy_clone(
         },
         "best_epoch": best_epoch,
         "best_validation": final_validation,
+        "best_train": final_train,
+        "burn_in_steps": burn_in,
+        "device": str(device),
+        "budget_exhausted": deadline is not None and time.monotonic() >= deadline,
         "overfit_gap": float(
-            history[best_epoch - 1]["train"]["balanced_accuracy"]
+            final_train["balanced_accuracy"]
             - final_validation["balanced_accuracy"]
         ),
         "history": history,
@@ -381,10 +440,24 @@ def clone_summary_passed(
     *,
     minimum_balanced_accuracy: float,
     maximum_overfit_gap: float,
+    minimum_per_action_recall: float = 0.05,
+    minimum_baseline_margin: float = 0.10,
 ) -> bool:
-    return all(
-        report["best_validation"]["balanced_accuracy"]
-        >= minimum_balanced_accuracy
-        and report["overfit_gap"] <= maximum_overfit_gap
-        for report in reports.values()
-    )
+    if set(reports) != {"rover_policy", "drone_policy"}:
+        return False
+    for report in reports.values():
+        validation = report["best_validation"]
+        accuracy = float(validation["balanced_accuracy"])
+        gap = float(report["overfit_gap"])
+        baseline = float(validation["first_valid_balanced_accuracy"])
+        recalls = [float(value) for value in validation["per_action_recall"].values()]
+        totals = [int(value) for value in validation["per_action_total"].values()]
+        if not all(math.isfinite(value) for value in [accuracy, gap, baseline, *recalls]):
+            return False
+        if len(recalls) != ACTION_COUNT or len(totals) != ACTION_COUNT or min(totals) <= 0:
+            return False
+        if accuracy < minimum_balanced_accuracy or gap > maximum_overfit_gap:
+            return False
+        if min(recalls) < minimum_per_action_recall or accuracy < baseline + minimum_baseline_margin:
+            return False
+    return True

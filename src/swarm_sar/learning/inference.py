@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
 
 import numpy as np
@@ -74,6 +75,8 @@ def policy_step(
         output = module.forward_inference(batch)
     logits = output[Columns.ACTION_DIST_INPUTS]
     logits = logits[0, -1] if logits.ndim == 3 else logits[0]
+    if not torch.isfinite(logits).all():
+        raise FloatingPointError("Policy inference produced non-finite action logits")
     probabilities = torch.softmax(logits, dim=-1).cpu().numpy()
     if rng is None:
         action = int(torch.argmax(logits).item())
@@ -92,7 +95,10 @@ def policy_step_with_diagnostics(module, observation, rng, state=None):
     if stateful and state is None:
         state = initial_policy_state(module)
     prefix = (None, None) if stateful else (None,)
-    vector = observation["observations"][..., : module_observation_size(module)]
+    expected_size = module_observation_size(module)
+    if observation["observations"].shape[-1] < expected_size:
+        raise ValueError(f"Policy expects {expected_size} observation values")
+    vector = observation["observations"][..., :expected_size]
     batch = {
         Columns.OBS: {
             "action_mask": torch.as_tensor(
@@ -109,6 +115,8 @@ def policy_step_with_diagnostics(module, observation, rng, state=None):
         output = module.forward_inference(batch)
     logits = output[Columns.ACTION_DIST_INPUTS]
     logits = logits[0, -1] if logits.ndim == 3 else logits[0]
+    if not torch.isfinite(logits).all():
+        raise FloatingPointError("Policy inference produced non-finite action logits")
     probabilities = torch.softmax(logits, dim=-1)
     action = int(
         torch.argmax(logits).item()
@@ -141,6 +149,9 @@ def evaluate_modules(
     stochastic: bool = True,
     sim_overrides: dict[str, Any] | None = None,
     robot_stress: dict[str, Any] | None = None,
+    world_overrides: dict[str, Any] | None = None,
+    rollout_output: str | Path | None = None,
+    env_config_overrides: dict[str, Any] | None = None,
 ) -> list[dict[str, Any]]:
     rows = []
     for seed in seeds:
@@ -155,6 +166,8 @@ def evaluate_modules(
                 "final_team_profiles": [team_profile],
                 "sim_overrides": sim_overrides or {},
                 "robot_stress": robot_stress or {},
+                "world_overrides": world_overrides or {},
+                **(env_config_overrides or {}),
             }
         )
         observations, _ = env.reset(seed=seed)
@@ -191,9 +204,9 @@ def evaluate_modules(
         rows.append(
             {
                 "seed": seed,
-                "network_enabled": network_enabled,
-                "rover_count": int(team_profile.get("rover", 0)),
-                "drone_count": int(team_profile.get("drone", 0)),
+                "network_enabled": bool(metrics["network_enabled"]),
+                "rover_count": int(env.current_profile.get("rover", 0)),
+                "drone_count": int(env.current_profile.get("drone", 0)),
                 "steps": int(metrics["step"]),
                 "survivors_found": int(metrics["victims_found"]),
                 "survivors_total": int(metrics["survivors_total"]),
@@ -210,5 +223,7 @@ def evaluate_modules(
                 },
             }
         )
+        if rollout_output is not None:
+            env.env.core.save_episode(Path(rollout_output) / f"seed_{seed}")
         env.close()
     return rows
