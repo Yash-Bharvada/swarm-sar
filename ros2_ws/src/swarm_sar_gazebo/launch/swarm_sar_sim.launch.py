@@ -6,7 +6,8 @@ import tempfile
 import yaml
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, SetEnvironmentVariable, OpaqueFunction
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, SetEnvironmentVariable, OpaqueFunction, RegisterEventHandler
+from launch.event_handlers import OnProcessExit
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import Command, EnvironmentVariable, PathJoinSubstitution, LaunchConfiguration
@@ -48,9 +49,11 @@ def _setup(context):
         bridge_config = stream.name
     atexit.register(lambda: os.path.exists(bridge_config) and os.unlink(bridge_config))
     actions = [
+        # Limit Mesa software-renderer worker memory on the validation VM.
+        SetEnvironmentVariable("LP_NUM_THREADS", EnvironmentVariable("LP_NUM_THREADS", default_value="2"), condition=IfCondition(LaunchConfiguration("low_resource"))),
         SetEnvironmentVariable(
             "GZ_SIM_RESOURCE_PATH",
-            [EnvironmentVariable("GZ_SIM_RESOURCE_PATH", default_value=""), ":", description_share],
+            [EnvironmentVariable("GZ_SIM_RESOURCE_PATH", default_value=""), ":", description_share, ":", PathJoinSubstitution([description_share, "models"])],
         ),
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(PathJoinSubstitution([FindPackageShare("ros_gz_sim"), "launch", "gz_sim.launch.py"])),
@@ -58,7 +61,7 @@ def _setup(context):
         ),
         Node(package="ros_gz_bridge", executable="parameter_bridge", name="ros_gz_bridge", output="screen", parameters=[{"config_file": bridge_config, "use_sim_time": True}]),
         Node(package="swarm_sar_control", executable="peer_network_bridge", name="peer_network_bridge", output="screen", parameters=[shared]),
-        Node(package="swarm_sar_control", executable="survivor_oracle", name="survivor_oracle", output="screen", parameters=[shared]),
+        Node(package="swarm_sar_control", executable="survivor_oracle", name="survivor_oracle", output="screen", parameters=[shared, {"world_file": world}]),
     ]
     for name, robot_type, x, y, z in robots:
         # All vehicles now use world-relative OdometryPublisher for simulation feedback.
@@ -75,7 +78,11 @@ def _setup(context):
             ]
         )
     actions.append(Node(package="swarm_sar_control", executable="disaster_scene", condition=IfCondition(LaunchConfiguration("rviz"))))
-    actions.append(Node(package="rviz2", executable="rviz2", name="rviz2", output="screen", condition=IfCondition(LaunchConfiguration("rviz")), arguments=["-d", PathJoinSubstitution([gazebo_share, "config", "rviz_config.rviz"])], parameters=[{"use_sim_time": True}]))
+    # Start the second graphics app only after Gazebo has rendered sensor data.
+    readiness = Node(package="swarm_sar_control", executable="wait_for_simulation", output="screen", condition=IfCondition(LaunchConfiguration("rviz")))
+    rviz = Node(package="rviz2", executable="rviz2", name="rviz2", output="screen", arguments=["-d", PathJoinSubstitution([gazebo_share, "config", "rviz_config.rviz"])], parameters=[{"use_sim_time": True}])
+    actions.append(RegisterEventHandler(OnProcessExit(target_action=readiness, on_exit=lambda event, context: [rviz] if event.returncode == 0 else [])))
+    actions.append(readiness)
     actions.append(Node(package="swarm_sar_control", executable="demo_views", name="demo_sensor_views", output="screen", condition=IfCondition(LaunchConfiguration("views"))))
     return actions
 

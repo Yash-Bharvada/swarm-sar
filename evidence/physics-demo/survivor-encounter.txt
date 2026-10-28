@@ -1,0 +1,30 @@
+Waiting for actual encounter; rover: None
+Waiting for actual encounter; rover: [-1.0000000000000002, -17.0, -1.7361785059621938e-10]
+Waiting for actual encounter; rover: [-1.0000000000000002, -17.0, -1.7361785059621938e-10]
+Waiting for actual encounter; rover: [-1.0000000000000002, -17.0, -1.7361785059621938e-10]
+Waiting for actual encounter; rover: [-1.0000000000000002, -17.0, -1.7361785059621938e-10]
+Waiting for actual encounter; rover: [-1.0000000000000002, -17.0, -1.7361785059621938e-10]
+Waiting for actual encounter; rover: [-1.0000000000000002, -17.0, -1.7361785059621938e-10]
+Waiting for actual encounter; rover: [-1.0000000000000002, -17.0, -1.7361785059621938e-10]
+Waiting for actual encounter; rover: [-1.0000000000000002, -17.0, -1.7361785059621938e-10]
+Waiting for actual encounter; rover: [1.4825723028012212, -15.812983893180013, 7.674904559021683e-09]
+Waiting for actual encounter; rover: [0.9337217676338766, -11.62748809697175, -1.905746526711254e-08]
+CONFIRMED {"source": "rover_0", "simulation_seconds": 20.0, "estimated_position": [-0.9230405144503852, -10.188095809452204], "thermal": 0.6327767372131348, "acoustic": 0.8440263271331787}
+{
+  "confirmed": {
+    "source": "rover_0",
+    "simulation_seconds": 20.0,
+    "estimated_position": [
+      -0.9230405144503852,
+      -10.188095809452204
+    ],
+    "thermal": 0.6327767372131348,
+    "acoustic": 0.8440263271331787
+  },
+  "green_dot": null,
+  "rover": [
+    -2.538264792813369,
+    -11.350087438783637,
+    -9.928807938658082e-09
+  ]
+}

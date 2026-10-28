@@ -30,16 +30,28 @@ profiles if the demonstration must contain exactly two drones.
 ## Cameras and live sensor views
 
 The command above now opens Gazebo and the original RViz map concurrently.
-RViz shows the live rover occupancy map, LiDAR returns and labeled moving
-vehicle arrows in grayscale. There are no preset survivor locations or colored
+RViz waits for Gazebo's clock and rover scan before starting, to reduce startup
+contention between the two graphics applications. The low-resource
+profile limits Mesa software rendering to two worker threads unless
+LP_NUM_THREADS is already set. This does not alter the physics timestep or gains.
+RViz shows the live rover occupancy map and LiDAR returns in grayscale. The
+vehicles use red/green/blue coordinate axes attached to their TF frames, with
+gray name labels, instead of arrow-shaped vehicle markers.
+There are no preset survivor locations or colored
 world-obstacle overlays. **Detected Survivors - green dots** adds a green dot
 only when a rover or drone reports confirmed survivor evidence (or meets the
 existing thermal >= 0.62 and acoustic >= 0.28 confirmation thresholds).
 Dots use estimated detection positions, merge observations within one metre,
 remain visible during the view session and clear when simulation time resets.
-Before a confirmed encounter there are no green dots. Existing demo routes
-do not guarantee a close encounter with every survivor.
-The vehicle physics, routes, world collisions and sensing remain unchanged.
+Before a confirmed encounter there are no green dots. Gazebo shows five
+reclining human figures with orange vests. Survivor 4 is at (-1, -10), beside
+the north edge of the existing rover circuit, so the rover can encounter it
+without changing its route. The sensor oracle reads the world-file positions
+directly. Other survivor locations are unchanged; the route does not visit all five.
+Drone 0 now passes over survivor 1 at (-2, 6); drone 1 passes over survivor 3
+at (13, -14). Their flight lanes remain separate, at 3.5 m and 4.5 m respectively.
+Their waypoint routes changed; the motor physics, controller gains, rover route,
+world collisions and sensing thresholds did not.
 Drag with the left mouse button to orbit in RViz; scroll to zoom.
 The current physical demo remains exactly two drones and one rover.
 To reopen only RViz against a running simulation, use:
@@ -76,15 +88,18 @@ ros2 run swarm_sar_control demo_camera top
 ros2 run swarm_sar_control demo_camera side
 ros2 run swarm_sar_control demo_camera follow --robot drone_1
 ros2 run swarm_sar_control demo_camera overview
+ros2 run swarm_sar_control demo_camera survivor
 ```
 
 The Gazebo GUI must be running for camera services. Headless physics is available
 with headless:=true views:=false rviz:=false. RViz is enabled by default.
 **Live Occupancy Map** draws the actual /rover_0/private_map cells as batched
-tiles at up to 1 Hz, avoiding this VM's failing indexed-texture map shader.
+flat rectangles at up to 1 Hz, avoiding this VM's failing indexed-texture map
+shader. Equal neighboring cells are batched to reduce rendering work.
 Unknown cells remain the dark background, free cells are light, and occupied
 cells are dark. The native **Rover 0 Private Map** display is available but off
-by default. Vehicle markers update at up to 10 Hz from live odometry.
+by default. Vehicle labels update at up to 10 Hz from live odometry, and the
+axes track the robot TF frames.
 Low-resource sensors are the default; low_resource:=false restores
 the higher sensor workload.
 
@@ -121,6 +136,17 @@ python3 scripts/ros2_runtime_probe.py --agents rover_0 drone_0 drone_1 --seconds
 gz model --list
 ros2 topic echo /rover_0/demo_stage
 ```
+
+To verify real encounters from all three vehicles, run this against a newly
+started simulation (it subscribes only and never injects detections):
+
+```bash
+python3 scripts/ros2_encounter_probe.py --seconds 300
+```
+
+The validated run confirmed survivors from rover_0 at 22.0 simulated seconds,
+drone_0 at 32.5 seconds and drone_1 at 33.5 seconds, with three green map dots.
+These are observed times, not a timing guarantee on a different machine.
 
 Stop the echo with Ctrl+C. Stop the simulation with Ctrl+C in its launch terminal.
 Keep original captures of actual windows. Tests and real run observations are

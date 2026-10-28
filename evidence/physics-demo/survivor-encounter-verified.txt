@@ -1,0 +1,26 @@
+Waiting for encounter: {"confirmed": null, "green_dot": [-0.7201236405324369, -10.058831016076141, 0.12], "rover": [-0.08324672020265882, -16.924054733344114, -3.320466454255206e-08]}
+Waiting for encounter: {"confirmed": null, "green_dot": [-0.7201236405324369, -10.058831016076141, 0.12], "rover": [2.011276356100993, -14.582511423252376, -5.3697469728601696e-08]}
+Waiting for encounter: {"confirmed": null, "green_dot": [-0.7201236405324369, -10.058831016076141, 0.12], "rover": [1.031539158231738, -11.70552051087138, -1.281296403498752e-08]}
+{
+  "confirmed": {
+    "source": "rover_0",
+    "simulation_seconds": 107.0,
+    "position": [
+      -1.063632950405657,
+      -10.432183643737268
+    ],
+    "thermal": 0.6837782263755798,
+    "acoustic": 0.7586644291877747
+  },
+  "green_dot": [
+    -0.7201236405324369,
+    -10.058831016076141,
+    0.12
+  ],
+  "rover": [
+    -0.011717621802253261,
+    -11.097047996256157,
+    -3.0597700604558474e-08
+  ]
+}
+PASS: real sensor confirmation and green map dot, without injecting detections.

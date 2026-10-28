@@ -42,3 +42,26 @@ Do not describe shutdown as entirely error-free.
 
 The radar-style map is an odometry presentation, not a simulated RF radar.
 Physics constants are not calibrated to a specific real vehicle.
+
+## Axes and survivor-encounter update
+
+The earlier motion samples above used the original short drone routes. The
+latest routes visit survivor 1 with drone_0 and survivor 3 with drone_1; survivor_4
+was moved beside the unchanged rover route. Vehicle physical parameters did not
+change. Five local human-shaped visual models replace the capsule markers.
+
+- all-vehicle-encounters-final.txt: successful live validation. rover_0 confirmed
+  at simulation time 22.0 s, drone_0 at 32.5 s, and drone_1 at 33.5 s. Three
+  corresponding green map dots were received. No detections were injected.
+- survivor-encounter-verified.txt: earlier successful rover-only encounter check.
+- survivor-encounter.txt and all-vehicle-encounters.txt: incomplete startup
+  attempts, retained for transparency. Graphics processes were terminated while
+  starting both applications; the first probe observed a rover confirmation but
+  missed its dot. These files are not successful end-to-end validation.
+
+The final launch waits for Gazebo clock and scan data before starting RViz,
+limits software-renderer threads by default in the low-resource profile, and
+draws equal map-cell runs as flat rectangles. The successful final run used this
+launch sequence. Sixteen static/model/control/visualization tests passed; the
+new survivor SDF passed `gz sdf -k`. All three map-to-vehicle axis frames were
+observed. Screenshot rendering was not independently captured by the agent.
