@@ -52,6 +52,16 @@ def test_swap_attempt_is_blocked():
     assert all(item.collided for item in robots)
 
 
+def test_convoy_advances_simultaneously_into_empty_cell():
+    grid = np.full((5, 6), FREE, dtype=np.int8)
+    grid[[0, -1], :] = WALL
+    grid[:, [0, -1]] = WALL
+    robots = [robot(0, 1, 2), robot(1, 2, 2), robot(2, 3, 2)]
+    apply_movements(robots, [4, 4, 4], grid, CONFIG, make_rng(4))
+    assert [item.position for item in robots] == [(2, 2), (3, 2), (4, 2)]
+    assert not any(item.collided for item in robots)
+
+
 def test_rubble_cost_battery_death_and_dead_robot_not_blocking():
     grid = bordered_grid()
     grid[2, 2] = RUBBLE

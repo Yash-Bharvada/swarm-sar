@@ -85,6 +85,19 @@ def test_investigate_fuses_an_extra_sensor_sample():
     env.close()
 
 
+def test_safety_filter_clears_opposing_intents_in_narrow_line():
+    env = DisasterResponseParallelEnv()
+    env.reset(seed=9)
+    robots = sorted(env.core.robots, key=lambda item: item.id)[:3]
+    for robot, x in zip(robots, (5, 6, 7)):
+        robot.x, robot.y = x, 5
+        env.core.grid[5, x : x + 2] = 0
+    actions = {robot.id: action for robot, action in zip(robots, (4, 3, 3))}
+    filtered = env._safety_filter_movements(actions)
+    assert [filtered[robot.id] for robot in robots] == [4, 4, 4]
+    env.close()
+
+
 def test_episode_artifacts_contain_map_events_and_trajectories(tmp_path):
     env = DisasterResponseParallelEnv()
     env.reset(seed=5)

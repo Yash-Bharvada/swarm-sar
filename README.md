@@ -1,6 +1,6 @@
-# Autonomous Disaster Response Swarm — Blueprint Steps 1–3
+# Autonomous Disaster Response Swarm — Blueprint Steps 1–4
 
-This repository implements Blueprint Steps 1–3: a deterministic heterogeneous disaster simulator, a coordinated frontier benchmark, irregular-world scalability, and RLlib PPO with one shared rover policy plus one shared drone policy. Agents receive only local maps, noisy sensors, relative pose, frontier features, and a fixed peer summary; A* and a local safety layer handle movement.
+This repository implements Blueprint Steps 1–4: a deterministic heterogeneous disaster simulator, frontier and PPO policies, irregular-world scalability, and a decentralized lossy peer network. Agents use local maps, noisy sensors, relative pose, received peer messages and fixed action spaces; no server assigns goals or exposes global state.
 
 ## Setup
 
@@ -72,6 +72,16 @@ Step 3 uses exactly two shared PPO policies regardless of agent count, curriculu
 
 The validated checkpoint is versioned at `artifacts/step3/checkpoint/`; retraining output is written under `results/step3_training/`.
 
+## Validate Step 4
+
+No API key or cloud service is required.
+
+```bash
+python scripts/audit_step4_network.py
+```
+
+The locked audit runs 200 deterministic transport property cases, generates 100 large irregular worlds, executes 12 untouched networked missions over 0%, 10% and 30% packet loss, executes six network-disabled fallback missions, forces a temporary partition, and checks exact replay. The final holdout recovered 40/42 survivors (95.24%), recovered 14/16 at 30% loss (87.5%), recovered 17/17 with the network disabled, and recorded zero collisions. See `docs/step4_validation.md`; compact evidence is versioned under `artifacts/step4/`.
+
 ## Run
 
 ```bash
@@ -135,7 +145,7 @@ The action mask identifies valid frontier slots. Every observation contains only
 - Longer acoustic sensing with wall attenuation
 - Configurable noise, detection misses and false positives
 - Per-agent private maps and odometry drift/confidence
-- Sequentially resolved movement that prevents overlap and swaps
+- Simultaneous collision resolution with safe convoy motion, no overlap, and blocked swaps
 
 ## Project layout
 
@@ -146,7 +156,8 @@ src/swarm_sar/robots/    agent state and type configuration
 src/swarm_sar/sensing/   ray-cast vision, thermal, acoustic, confirmation
 src/swarm_sar/sim/       core, PettingZoo API, A*, frontiers, metrics, logging
 src/swarm_sar/mapping/   private NetworkX topological graphs
-src/swarm_sar/baselines/ coordinated frontier and evidence controller
+src/swarm_sar/network/   lossy, delayed, partitionable peer transport
+src/swarm_sar/baselines/ coordinated and fully decentralized controllers
 src/swarm_sar/learning/   RLlib adapter, PPO module, encoding and inference
 src/swarm_sar/viz/       Pygame renderer, isolated from the simulation core
 scripts/                 viewer, manual control, baseline, benchmark, validation
@@ -161,7 +172,7 @@ tests/                   unit, integration, property and official API tests
 4. Thermal and acoustic outputs are probabilistic cues, not real sensor emulation.
 5. Time is discrete and the A* controller advances at most one grid cell per environment step.
 6. Policies never receive ground-truth maps or survivor coordinates. Offline JSON/CSV artifacts may contain truth for evaluation.
-7. Goal reservations and evidence arbitration are direct calls inside the benchmark. Step 2.5 peer map exchange is local and range-limited, but idealized; lossy/delayed radio transport remains deferred to Step 4.
+7. Step 4 coordination uses only delivered peer messages. Radio range, walls, loss, delay, bandwidth, expiry and partitions are simulated; it is not yet a ROS 2 DDS or RF-channel model.
 
 ## Step 1 status
 
@@ -219,4 +230,19 @@ Step 2.5 supports arbitrary finite dimensions within configured compute/resource
 - [x] Networking-on/off inference
 - [x] Held-out 2-rover/3-drone and 4-rover/4-drone execution
 
-Step 3 is a valid learned prototype, but PPO currently reaches 52.94% survivor recall versus the frontier baseline's 94.12%. Use the baseline for the strongest rescue demo and PPO as the experimental learned mode. The next milestone is Step 4's realistic decentralized message network.
+Step 3 is a valid learned prototype. The final regression run reached 64.71% survivor recall versus 98.04% for the frontier baseline; use the baseline/Step 4 controller for the strongest rescue demo and PPO as the experimental learned mode.
+
+## Step 4 status
+
+- [x] Sender sequence numbers, frame IDs, pose uncertainty, map deltas, goals and survivor evidence
+- [x] Range and wall attenuation, 0–30% loss, 1–4-step delay, bandwidth and stale expiry
+- [x] Forced partitions, continued local autonomy, reconnection detection and periodic snapshot recovery
+- [x] Common-entry relative frame and uncertainty-gated map merge refusal
+- [x] Per-agent local loop with no reservation server or centralized assignment table
+- [x] Active-peer rendezvous hashing for decentralized frontier ownership and automatic reassignment
+- [x] Safe narrow-corridor convoy/yield behavior with zero-overlap simultaneous motion
+- [x] Variable 5–9-agent end-to-end holdout and 4–10-agent generation coverage
+- [x] 95.24% survivor recall on the final untouched large irregular-world holdout
+- [x] Full Steps 1–3 regression gates and 75-test suite
+
+Step 4 is complete for this simulator. It does not prove 95.24% performance in physical disasters, unlimited map sizes, arbitrary RF conditions, or ROS 2/Gazebo; those require the next integration and validation stage.

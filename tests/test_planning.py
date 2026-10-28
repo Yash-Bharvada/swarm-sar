@@ -29,3 +29,14 @@ def test_frontier_candidates_include_reachable_paths():
     candidates = frontier_candidates(belief, (4, 4), max_candidates=5)
     assert 1 <= len(candidates) <= 5
     assert all(candidate["path"][0] == (4, 4) for candidate in candidates)
+
+
+def test_multi_sample_candidates_surface_distinct_branches_first():
+    belief = np.full((9, 15), WALL, dtype=np.int8)
+    belief[4, 1:14] = FREE
+    belief[3, 3] = UNKNOWN
+    belief[5, 11] = UNKNOWN
+    candidates = frontier_candidates(
+        belief, (7, 4), max_candidates=2, max_per_cluster=5
+    )
+    assert {candidate["position"] for candidate in candidates} == {(3, 4), (11, 4)}

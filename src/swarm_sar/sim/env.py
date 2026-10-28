@@ -8,9 +8,11 @@ import numpy as np
 from gymnasium import spaces
 from pettingzoo import ParallelEnv
 
+from swarm_sar.network import PeerNetwork
 from swarm_sar.sensing.victim_sensor import acoustic_reading, thermal_reading
 from swarm_sar.sim.engine import SwarmWorld
 from swarm_sar.sim.planning import astar_path, frontier_candidates, movement_action
+from swarm_sar.world.cells import RUBBLE, WALL
 
 FRONTIER_SLOTS = 5
 INVESTIGATE = 5
@@ -47,6 +49,14 @@ class DisasterResponseParallelEnv(ParallelEnv):
         self._invalid_actions: dict[str, bool] = {}
         self._candidate_cache: dict[str, list[dict[str, Any]]] = {}
         self._active_goals: dict[str, tuple[int, int]] = {}
+        self.network: PeerNetwork | None = None
+        self._last_broadcast_beliefs: dict[str, np.ndarray] = {}
+        self._snapshot_cursors: dict[str, int] = {}
+        self._network_application_metrics = {
+            "map_cells_merged": 0,
+            "map_merges_refused": 0,
+            "messages_processed": 0,
+        }
 
     def _configured_agent_names(self) -> list[str]:
         counts = self.core.sim_config.get(
@@ -139,7 +149,7 @@ class DisasterResponseParallelEnv(ParallelEnv):
     def observe(self, agent: str) -> dict[str, np.ndarray]:
         robot = self._robots_by_name[agent]
         observation = self.core._observation(robot)
-        candidates = self._candidate_list(agent, refresh=True)
+        candidates = self._candidate_list(agent)
         features = np.zeros((FRONTIER_SLOTS, 5), dtype=np.float32)
         height, width = self.core.grid.shape
         scale = float(max(width, height))
@@ -185,8 +195,53 @@ class DisasterResponseParallelEnv(ParallelEnv):
             4: (1, 0),
         }
         robots = {robot.id: robot for robot in self.core.robots if robot.alive}
-        occupied = {robot.position for robot in robots.values()}
         filtered = dict(movement_actions)
+        occupant = {robot.position: identifier for identifier, robot in robots.items()}
+
+        # Local narrow-passage traffic rule. If a priority robot's requested step
+        # points through a contiguous line of peers to a free cell, that line
+        # yields in the same direction for one tick. This clears opposing intents
+        # without global path planning and cannot create overlap.
+        locked: set[int] = set()
+        identifiers = sorted(robots)
+        if identifiers:
+            offset = self.core.step_count % len(identifiers)
+            priority_order = identifiers[offset:] + identifiers[:offset]
+        else:
+            priority_order = []
+        for identifier in priority_order:
+            action = filtered.get(identifier, 0)
+            if not action or identifier in locked:
+                continue
+            dx, dy = deltas[action]
+            chain = [identifier]
+            cursor = (robots[identifier].x + dx, robots[identifier].y + dy)
+            while cursor in occupant and occupant[cursor] not in chain:
+                other = occupant[cursor]
+                chain.append(other)
+                cursor = (robots[other].x + dx, robots[other].y + dy)
+            if len(chain) < 2 or cursor in occupant or any(item in locked for item in chain):
+                continue
+            traversable = True
+            for item in chain:
+                robot = robots[item]
+                tx, ty = robot.x + dx, robot.y + dy
+                config = self.core.robot_configs[robot.type]
+                if not (0 <= tx < self.core.grid.shape[1] and 0 <= ty < self.core.grid.shape[0]):
+                    traversable = False
+                    break
+                cell = int(self.core.grid[ty, tx])
+                if cell == WALL and not bool(config["can_cross_walls"]):
+                    traversable = False
+                    break
+                if cell == RUBBLE and not bool(config["can_cross_rubble"]):
+                    traversable = False
+                    break
+            if traversable:
+                for item in chain:
+                    filtered[item] = action
+                locked.update(chain)
+
         targets: dict[int, tuple[int, int]] = {}
         for identifier, action in filtered.items():
             robot = robots.get(identifier)
@@ -194,9 +249,6 @@ class DisasterResponseParallelEnv(ParallelEnv):
                 continue
             dx, dy = deltas[action]
             target = (robot.x + dx, robot.y + dy)
-            if action and target in occupied:
-                filtered[identifier] = 0
-                target = robot.position
             targets[identifier] = target
 
         claims: dict[tuple[int, int], list[int]] = {}
@@ -211,36 +263,57 @@ class DisasterResponseParallelEnv(ParallelEnv):
             for identifier in claimants:
                 if identifier != winner:
                     filtered[identifier] = 0
+                    targets[identifier] = robots[identifier].position
+
+        # Permit a convoy to advance through a one-cell corridor when every robot
+        # ahead is leaving its cell. Cycles (including head-on swaps) and chains
+        # ending at a stationary robot remain blocked.
+        memo: dict[int, bool] = {}
+
+        def can_move(identifier: int, visiting: set[int]) -> bool:
+            if identifier in memo:
+                return memo[identifier]
+            if filtered.get(identifier, 0) == 0:
+                memo[identifier] = False
+                return False
+            other = occupant.get(targets[identifier])
+            if other is None:
+                memo[identifier] = True
+                return True
+            if other in visiting:
+                memo[identifier] = False
+                return False
+            allowed = can_move(other, visiting | {other})
+            memo[identifier] = allowed
+            return allowed
+
+        for identifier in sorted(filtered):
+            if filtered[identifier] and not can_move(identifier, {identifier}):
+                filtered[identifier] = 0
         return filtered
 
     def _peer_summary(self, agent: str) -> np.ndarray:
         """Aggregate only range-reachable peer advertisements into a fixed vector."""
         summary = np.zeros(8, dtype=np.float32)
-        if not bool(self.core.sim_config.get("network_enabled", False)):
+        if self.network is None:
             return summary
         robot = self._robots_by_name[agent]
-        peers = []
-        for other in self.core.robots:
-            if other.id == robot.id or not other.alive:
-                continue
-            radius = min(
-                float(self.core.robot_configs[robot.type]["comm_radius"]),
-                float(self.core.robot_configs[other.type]["comm_radius"]),
-            )
-            distance = float(np.hypot(robot.x - other.x, robot.y - other.y))
-            if distance <= radius:
-                peers.append((other, distance, radius))
         summary[0] = 1.0
-        if not peers:
+        messages = self.network.peer_messages(agent, self.core.step_count)
+        if not messages:
             return summary
         pose_scale = float(self.core.sim_config.get("pose_scale_cells", 32))
         count_scale = max(1, len(self.core.robots) - 1)
-        summary[1] = len(peers) / count_scale
-        summary[2] = sum(peer.type == "rover" for peer, _, _ in peers) / len(peers)
-        summary[3] = sum(peer.type == "drone" for peer, _, _ in peers) / len(peers)
+        summary[1] = len(messages) / count_scale
+        summary[2] = sum(
+            message.payload.get("robot_type") == "rover" for message in messages
+        ) / len(messages)
+        summary[3] = sum(
+            message.payload.get("robot_type") == "drone" for message in messages
+        ) / len(messages)
         summary[4] = float(
             np.clip(
-                np.mean([peer.odom_x - robot.odom_x for peer, _, _ in peers])
+                np.mean([message.pose[0] - robot.odom_x for message in messages])
                 / pose_scale,
                 -1.0,
                 1.0,
@@ -248,19 +321,171 @@ class DisasterResponseParallelEnv(ParallelEnv):
         )
         summary[5] = float(
             np.clip(
-                np.mean([peer.odom_y - robot.odom_y for peer, _, _ in peers])
+                np.mean([message.pose[1] - robot.odom_y for message in messages])
                 / pose_scale,
                 -1.0,
                 1.0,
             )
         )
         summary[6] = float(
-            np.clip(np.mean([float(peer.thermal.max()) for peer, _, _ in peers]), 0, 1)
+            np.clip(
+                np.mean(
+                    [
+                        float(message.payload.get("evidence", {}).get("thermal", 0.0))
+                        for message in messages
+                    ]
+                ),
+                0,
+                1,
+            )
         )
         summary[7] = float(
-            np.clip(np.mean([float(peer.acoustic[0]) for peer, _, _ in peers]), 0, 1)
+            np.clip(
+                np.mean(
+                    [
+                        float(message.payload.get("evidence", {}).get("acoustic", 0.0))
+                        for message in messages
+                    ]
+                ),
+                0,
+                1,
+            )
         )
         return summary
+
+    def _evidence_position(self, agent: str) -> tuple[int, int] | None:
+        robot = self._robots_by_name[agent]
+        strength = float(robot.thermal.max())
+        if strength <= 0.0:
+            return None
+        config = self.core.robot_configs[robot.type]
+        sector = int(np.argmax(robot.thermal))
+        distance = float(
+            np.clip(
+                -float(config["thermal_decay"]) * np.log(max(1e-4, min(0.999, strength))),
+                1.0,
+                float(config["thermal_radius"]),
+            )
+        )
+        dx, dy = ((0, -1), (1, 0), (0, 1), (-1, 0))[sector]
+        return int(round(robot.odom_x + dx * distance)), int(
+            round(robot.odom_y + dy * distance)
+        )
+
+    def _map_cells_for_broadcast(self, agent: str) -> tuple[list[list[int]], bool]:
+        robot = self._robots_by_name[agent]
+        limit = int(self.core.sim_config.get("network_map_chunk_cells", 64))
+        previous = self._last_broadcast_beliefs[agent]
+        changed = np.argwhere((robot.belief >= 0) & (robot.belief != previous))
+        snapshot = False
+        if len(changed):
+            selected = changed[:limit]
+            for y, x in selected:
+                previous[y, x] = robot.belief[y, x]
+        elif self.core.step_count % int(
+            self.core.sim_config.get("network_snapshot_interval", 8)
+        ) == 0:
+            known = np.argwhere(robot.belief >= 0)
+            if len(known):
+                cursor = self._snapshot_cursors[agent] % len(known)
+                indices = [known[(cursor + offset) % len(known)] for offset in range(min(limit, len(known)))]
+                selected = np.asarray(indices)
+                self._snapshot_cursors[agent] = cursor + len(selected)
+                snapshot = True
+            else:
+                selected = np.empty((0, 2), dtype=int)
+        else:
+            selected = np.empty((0, 2), dtype=int)
+        return [
+            [int(x), int(y), int(robot.belief[y, x])] for y, x in selected
+        ], snapshot
+
+    def _broadcast_network_state(self) -> None:
+        if self.network is None:
+            return
+        for agent in sorted(self._robots_by_name):
+            robot = self._robots_by_name[agent]
+            if not robot.alive:
+                continue
+            candidates = self._candidate_list(agent)
+            cells, snapshot = self._map_cells_for_broadcast(agent)
+            evidence_position = self._evidence_position(agent)
+            payload = {
+                "robot_type": robot.type,
+                "goal": list(self._active_goals[agent]) if agent in self._active_goals else None,
+                "evidence": {
+                    "thermal": float(robot.thermal.max()),
+                    "acoustic": float(robot.acoustic[0]),
+                    "position": list(evidence_position) if evidence_position else None,
+                },
+                "graph_delta": [
+                    {"kind": "frontier", "position": list(item["position"])}
+                    for item in candidates[:5]
+                ],
+                "map_cells": cells,
+                "map_snapshot": snapshot,
+            }
+            self.network.broadcast(
+                agent,
+                frame_id="common_entry_v1",
+                step=self.core.step_count,
+                kind="state_delta",
+                pose=(robot.odom_x, robot.odom_y),
+                pose_uncertainty=robot.odom_uncertainty,
+                payload=payload,
+            )
+
+    def _process_network_messages(self) -> None:
+        if self.network is None:
+            return
+        uncertainty_limit = float(
+            self.core.sim_config.get("network_transform_uncertainty_max", 4.0)
+        )
+        for agent in sorted(self._robots_by_name):
+            receiver = self._robots_by_name[agent]
+            for message in self.network.drain(agent):
+                self._network_application_metrics["messages_processed"] += 1
+                cells = message.payload.get("map_cells", [])
+                aligned = (
+                    message.frame_id == "common_entry_v1"
+                    and message.pose_uncertainty <= uncertainty_limit
+                    and receiver.odom_uncertainty <= uncertainty_limit
+                )
+                if cells and not aligned:
+                    self._network_application_metrics["map_merges_refused"] += 1
+                    continue
+                merged = 0
+                for x, y, value in cells:
+                    if (
+                        0 <= y < receiver.belief.shape[0]
+                        and 0 <= x < receiver.belief.shape[1]
+                        and receiver.belief[y, x] < 0
+                    ):
+                        receiver.belief[y, x] = int(value)
+                        merged += 1
+                self._network_application_metrics["map_cells_merged"] += merged
+
+    def peer_claims(self, agent: str) -> set[tuple[int, int]]:
+        return set(self.peer_claims_by_sender(agent).values())
+
+    def peer_claims_by_sender(self, agent: str) -> dict[str, tuple[int, int]]:
+        if self.network is None:
+            return {}
+        claims = {}
+        for message in self.network.peer_messages(agent, self.core.step_count):
+            goal = message.payload.get("goal")
+            if goal is not None:
+                claims[message.sender_id] = (int(goal[0]), int(goal[1]))
+        return claims
+
+    def network_metrics(self) -> dict[str, Any]:
+        if self.network is None:
+            return {"enabled": False, **self._network_application_metrics}
+        return {
+            "enabled": True,
+            **self.network.snapshot(),
+            **self._network_application_metrics,
+        }
 
     def reset(
         self,
@@ -279,6 +504,28 @@ class DisasterResponseParallelEnv(ParallelEnv):
         self._invalid_actions = {agent: False for agent in self.agents}
         self._candidate_cache = {}
         self._active_goals = {}
+        self._network_application_metrics = {
+            "map_cells_merged": 0,
+            "map_merges_refused": 0,
+            "messages_processed": 0,
+        }
+        if bool(self.core.sim_config.get("network_enabled", False)):
+            self.network = PeerNetwork(self.core.sim_config, self.core.seed)
+            self.network.register(self.agents)
+            self._last_broadcast_beliefs = {
+                agent: np.full_like(self._robots_by_name[agent].belief, -1)
+                for agent in self.agents
+            }
+            self._snapshot_cursors = {agent: 0 for agent in self.agents}
+            self._broadcast_network_state()
+            self.network.advance(
+                0, self.core.robots, self.core.robot_configs, self.core.grid
+            )
+            self._process_network_messages()
+        else:
+            self.network = None
+            self._last_broadcast_beliefs = {}
+            self._snapshot_cursors = {}
         observations = {agent: self.observe(agent) for agent in self.agents}
         infos = {
             agent: {"agent_type": self._robots_by_name[agent].type, "seed": self.core.seed}
@@ -371,6 +618,15 @@ class DisasterResponseParallelEnv(ParallelEnv):
             )
         core_info["newly_found"] += newly_confirmed
         core_info["victims_found"] = self.core.metrics.victims_found
+        self._broadcast_network_state()
+        if self.network is not None:
+            self.network.advance(
+                self.core.step_count,
+                self.core.robots,
+                self.core.robot_configs,
+                self.core.grid,
+            )
+            self._process_network_messages()
         all_found = core_info["victims_found"] == len(self.core.victims)
         all_dead = not any(robot.alive for robot in self.core.robots)
         timed_out = self.core.step_count >= int(self.core.sim_config["max_steps"])
@@ -396,6 +652,7 @@ class DisasterResponseParallelEnv(ParallelEnv):
                 "newly_found": core_info["newly_found"],
                 "victims_found": core_info["victims_found"],
                 "coverage": core_info["coverage"],
+                "network": self.network_metrics(),
             }
         terminations = {
             agent: globally_terminated or not self._robots_by_name[agent].alive

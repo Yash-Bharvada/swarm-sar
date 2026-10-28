@@ -170,6 +170,7 @@ def frontier_candidates(
                 came_from[point] = (x, y)
                 heappush(search, (next_cost, nx, ny))
 
+    candidates_by_cluster: list[list[dict[str, Any]]] = []
     for cluster in clusters:
         # A long room boundary is one connected component but should offer several
         # directions so multiple agents can disperse. Deterministic farthest-point
@@ -205,6 +206,7 @@ def frontier_candidates(
                     ),
                 )
             )
+        cluster_candidates: list[dict[str, Any]] = []
         for representative in representatives:
             if representative in came_from:
                 path: list[tuple[int, int]] = []
@@ -213,7 +215,7 @@ def frontier_candidates(
                     path.append(cursor)
                     cursor = came_from[cursor]
                 path.reverse()
-                candidates.append(
+                cluster_candidates.append(
                     {
                         "position": representative,
                         "cluster_size": len(cluster),
@@ -221,8 +223,40 @@ def frontier_candidates(
                         "distance": max(0, len(path) - 1),
                     }
                 )
-    candidates.sort(key=lambda item: (-item["cluster_size"], item["distance"], item["position"]))
-    return candidates[:max_candidates]
+        cluster_candidates.sort(key=lambda item: (item["distance"], item["position"]))
+        if cluster_candidates:
+            candidates_by_cluster.append(cluster_candidates)
+
+    # Do not let several samples from one large room consume every action slot.
+    # Round-robin across disconnected frontier clusters first, then expose extra
+    # directions within each cluster. This is especially important for narrow
+    # side branches in non-convex disaster sites.
+    candidates_by_cluster.sort(
+        key=lambda group: (
+            -group[0]["cluster_size"],
+            group[0]["distance"],
+            group[0]["position"],
+        )
+    )
+    # Surface distinct branches before adding extra directions from a large
+    # boundary. The decentralized controller assigns these branches to peers by
+    # rendezvous hashing, so this diversity does not imply a central scheduler.
+    selected = [group[0] for group in candidates_by_cluster[:max_candidates]]
+    if len(selected) < max_candidates:
+        selected_ids = {id(candidate) for candidate in selected}
+        extras = [
+            candidate
+            for group in candidates_by_cluster
+            for candidate in group[1:]
+            if id(candidate) not in selected_ids
+        ]
+        extras.sort(
+            key=lambda item: (
+                -item["cluster_size"], item["distance"], item["position"]
+            )
+        )
+        selected.extend(extras[: max_candidates - len(selected)])
+    return selected
 
 
 def movement_action(start: tuple[int, int], next_cell: tuple[int, int]) -> int:

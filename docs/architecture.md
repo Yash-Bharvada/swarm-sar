@@ -1,6 +1,6 @@
-# Blueprint Steps 1–3 architecture
+# Blueprint Steps 1–4 architecture
 
-The core owns the episode RNG and passes it to generation, survivor placement, movement-order shuffling, odometry drift, detection misses, false positives and sensor noise. Calling `reset(seed)` replaces that generator, so a seed plus an action sequence fully identifies an episode.
+The core owns the episode RNG and passes it to generation, survivor placement, movement-conflict resolution, odometry drift, detection misses, false positives and sensor noise. Calling `reset(seed)` replaces that generator, so a seed plus an action sequence fully identifies an episode.
 
 ```text
 YAML configs
@@ -12,7 +12,7 @@ ParallelEnv.reset --> SwarmWorld --> rooms/corridors --> survivor placement
     |                                                       |
 ParallelEnv.step(frontier/investigate/hold)                 |
     +--> local frontier extraction + A*                     |
-    +--> shuffled sequential movement + odometry drift      |
+    +--> simultaneous safe movement + odometry drift        |
     +--> vision / private belief updates                    |
     +--> thermal + acoustic sensing <-----------------------+
     +--> line-of-sight confirmation
@@ -28,4 +28,8 @@ The policy-facing observation contains only private belief data, normalized batt
 
 Step 3 wraps that contract in a fixed 129-value vector and trains two RLlib PPO modules. Every `rover_*` agent maps to `rover_policy`; every `drone_*` agent maps to `drone_policy`, so adding agents does not add neural networks. Curriculum episodes vary team size while each actor executes from its own observation. A local one-step safety shield rejects occupied or duplicate immediate movement targets below policy goal selection. Seeded categorical checkpoint inference preserves PPO's exploratory distribution reproducibly.
 
-Movement intents are processed in a newly shuffled order each step. Occupancy is updated after each accepted move, preventing overlaps and swaps. Dead agents are excluded from occupancy and individually removed from the PettingZoo active-agent list. Rendering imports pygame lazily, so importing or training with the environment does not initialize a display.
+Step 4 inserts `PeerNetwork` between independent sender outboxes and recipient inboxes. It applies radio range, wall attenuation or strict LOS, seeded packet loss, delay, bandwidth, TTL expiry and configured partitions. Messages contain a sender/sequence identity, common-entry frame, uncertain pose, goal, graph frontier deltas, sensor evidence and bounded occupancy-map chunks. Receivers deduplicate messages, refuse unaligned/uncertain map merges, and periodically receive snapshot chunks so missed changes can recover after reconnection.
+
+The Step 4 controller reads only its agent's observation, private map and delivered messages. It uses active-peer rendezvous hashing to assign frontier branches without a reservation server; ownership changes automatically when a peer disappears. Thermal evidence can be independently corroborated by acoustic evidence. A local traffic rule clears opposing intents in narrow passages, while the simultaneous movement resolver permits safe follow-the-leader chains, blocks swaps and duplicate targets, and prevents overlap.
+
+Ground truth remains limited to physics, collision/radio propagation, offline metrics and debug artifacts. Rendering imports pygame lazily, so importing or training with the environment does not initialize a display.

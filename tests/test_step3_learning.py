@@ -82,6 +82,10 @@ def test_network_toggle_changes_peer_summary_without_changing_shape():
     sim["network_enabled"] = True
     on = DisasterResponseParallelEnv(sim_config=sim)
     on_observations, _ = on.reset(seed=8)
+    for _ in range(2):
+        on_observations, _, _, _, _ = on.step(
+            {agent: HOLD for agent in on.agents}
+        )
     assert all(obs["peer_summary"].shape == (8,) for obs in on_observations.values())
     assert all(obs["peer_summary"][0] == 1 for obs in on_observations.values())
     assert any(obs["peer_summary"][1] > 0 for obs in on_observations.values())

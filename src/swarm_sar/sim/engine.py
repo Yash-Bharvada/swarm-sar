@@ -46,45 +46,86 @@ def apply_movements(
     robot_config: dict[str, Any] | dict[str, dict[str, Any]],
     rng: np.random.Generator,
 ) -> None:
-    """Apply simultaneous intents in seeded random sequential order."""
+    """Resolve and apply simultaneous intents without corridor-order artefacts."""
     action_by_id = _normalise_actions(robots, actions)
-    occupied = {robot.position for robot in robots if robot.alive}
     height, width = grid.shape
-    for index in rng.permutation(len(robots)):
-        robot = robots[int(index)]
-        config = (
+    alive = {robot.id: robot for robot in robots if robot.alive}
+    occupant = {robot.position: robot.id for robot in alive.values()}
+    targets: dict[int, tuple[int, int]] = {}
+    eligible: set[int] = set()
+
+    def config_for(robot: Robot) -> dict[str, Any]:
+        return (
             robot_config[robot.type]
             if robot.type in robot_config and isinstance(robot_config[robot.type], dict)
             else robot_config
         )
+
+    for robot in robots:
         robot.collided = False
         robot.last_action = action_by_id[robot.id]
         if not robot.alive:
             continue
-
         dx, dy = ACTIONS[robot.last_action]
         target = (robot.x + dx, robot.y + dy)
-        moving = robot.last_action != 0
-        blocked = False
-        if moving:
+        targets[robot.id] = target
+        if robot.last_action:
+            config = config_for(robot)
             tx, ty = target
             blocked = not (0 <= tx < width and 0 <= ty < height)
             if not blocked and grid[ty, tx] == WALL and not bool(config["can_cross_walls"]):
                 blocked = True
             if not blocked and grid[ty, tx] == RUBBLE and not bool(config["can_cross_rubble"]):
                 blocked = True
-            if not blocked and target in occupied:
-                blocked = True
+            if not blocked:
+                eligible.add(robot.id)
 
-        if blocked:
+    claims: dict[tuple[int, int], list[int]] = {}
+    for identifier in eligible:
+        claims.setdefault(targets[identifier], []).append(identifier)
+    for claimants in claims.values():
+        if len(claimants) > 1:
+            ordered = sorted(claimants)
+            winner = ordered[int(rng.integers(len(ordered)))]
+            eligible.difference_update(identifier for identifier in ordered if identifier != winner)
+
+    memo: dict[int, bool] = {}
+
+    def can_move(identifier: int, visiting: set[int]) -> bool:
+        if identifier in memo:
+            return memo[identifier]
+        other = occupant.get(targets[identifier])
+        if other is None:
+            memo[identifier] = True
+            return True
+        if other not in eligible or other in visiting:
+            memo[identifier] = False
+            return False
+        allowed = can_move(other, visiting | {other})
+        memo[identifier] = allowed
+        return allowed
+
+    accepted = {
+        identifier
+        for identifier in eligible
+        if can_move(identifier, {identifier})
+    }
+
+    for robot in robots:
+        if not robot.alive:
+            continue
+        config = config_for(robot)
+        moving = robot.last_action != 0
+        accepted_move = robot.id in accepted
+
+        if moving and not accepted_move:
             robot.collided = True
             cost = float(config["idle_cost"])
         elif not moving:
             cost = float(config["idle_cost"])
         else:
-            occupied.remove(robot.position)
-            robot.x, robot.y = target
-            occupied.add(target)
+            dx, dy = ACTIONS[robot.last_action]
+            robot.x, robot.y = targets[robot.id]
             robot.visited[robot.y, robot.x] = True
             robot.distance_travelled += 1
             drift_std = float(config.get("odometry_drift_std", 0.0))
@@ -102,7 +143,6 @@ def apply_movements(
         robot.battery = max(0.0, robot.battery - cost)
         if robot.battery <= 0.0:
             robot.alive = False
-            occupied.discard(robot.position)
 
 
 class SwarmWorld:

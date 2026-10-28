@@ -12,6 +12,16 @@ frontier_samples_per_cluster: 1
 auto_confirm_victims: false
 investigate_confirms_victims: false
 network_enabled: false
+network_packet_loss: 0.0
+network_delay_steps: [1, 2]
+network_message_ttl: 8
+network_bandwidth_bytes: 8192
+network_wall_attenuation: 0.70
+network_require_los: false
+network_snapshot_interval: 8
+network_map_chunk_cells: 64
+network_transform_uncertainty_max: 4.0
+network_partition_windows: []
 pose_scale_cells: 32
 render_max_grid_width_px: 900
 render_max_grid_height_px: 700
