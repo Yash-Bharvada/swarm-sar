@@ -78,6 +78,10 @@
       "bytes": 1398,
       "sha256": "6873bc98c4b67ca8fbb2e78196c4a55b361488059a6361ff9489e7266a5a66f7"
     },
+    "scripts/build_validation_report.py": {
+      "bytes": 8807,
+      "sha256": "11753a4e40e96e02b0761fc2c736648a7fa5c13df4ea0d0b284e3ce75960b2ec"
+    },
     "scripts/evaluate_gpu_checkpoint.py": {
       "bytes": 3143,
       "sha256": "60812ee43574902ffa6db0370151e0f6a7d66d3e8baab5f02c6b68a1907b56cc"
@@ -109,6 +113,14 @@
     "scripts/recover_expert_export.py": {
       "bytes": 4232,
       "sha256": "3e7077221c3798110972e50e499d540e7d111d579b5961947a001393a0fcb82e"
+    },
+    "scripts/ros2_preflight.sh": {
+      "bytes": 1166,
+      "sha256": "a0edf2944fbb0402805912de2ee9e5ff694bcc3a0f578844755cbcdb594e70a8"
+    },
+    "scripts/ros2_runtime_probe.py": {
+      "bytes": 4256,
+      "sha256": "3e13d3f48e53c545fcc2112714c89b88f3083701d389de0747d5eb064853fac0"
     },
     "scripts/run_frontier_baseline.py": {
       "bytes": 2787,

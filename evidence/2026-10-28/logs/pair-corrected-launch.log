@@ -1,0 +1,38 @@
+1793217050.0550499 [INFO] [launch]: All log files can be found below /tmp/swarm_audit_logs/2026-10-28-19-50-50-053815-Ubantu-11362
+1793217050.0557096 [INFO] [launch]: Default logging verbosity is set to INFO
+1793217050.6174915 [INFO] [gazebo-1]: process started with pid [11388]
+1793217050.6181271 [INFO] [parameter_bridge-2]: process started with pid [11389]
+1793217050.6189644 [INFO] [peer_network_bridge-3]: process started with pid [11390]
+1793217050.6213250 [INFO] [survivor_oracle-4]: process started with pid [11392]
+1793217050.6214080 [INFO] [robot_state_publisher-5]: process started with pid [11393]
+1793217050.6217194 [INFO] [static_transform_publisher-6]: process started with pid [11394]
+1793217050.6222136 [INFO] [create-7]: process started with pid [11395]
+1793217050.6236975 [INFO] [decentralized_agent-8]: process started with pid [11396]
+1793217050.6238563 [INFO] [robot_state_publisher-9]: process started with pid [11397]
+1793217050.6239150 [INFO] [static_transform_publisher-10]: process started with pid [11398]
+1793217050.6239591 [INFO] [create-11]: process started with pid [11399]
+1793217050.6239979 [INFO] [decentralized_agent-12]: process started with pid [11404]
+1793217052.4144723 [static_transform_publisher-10] [INFO] [1793217052.413036142] [map_to_drone_0_odom]: Spinning until stopped - publishing transform
+1793217052.4154315 [static_transform_publisher-10] translation: ('0.000000', '0.000000', '0.000000')
+1793217052.4183276 [static_transform_publisher-10] rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+1793217052.4203224 [static_transform_publisher-10] from 'map' to 'drone_0/odom'
+1793217052.4405506 [static_transform_publisher-6] [INFO] [1793217052.437127907] [map_to_rover_0_odom]: Spinning until stopped - publishing transform
+1793217052.4428580 [static_transform_publisher-6] translation: ('-16.000000', '-17.000000', '0.000000')
+1793217052.4445639 [static_transform_publisher-6] rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+1793217052.4460752 [static_transform_publisher-6] from 'map' to 'rover_0/odom'
+1793217056.1181796 [INFO] [create-11]: process has finished cleanly [pid 11399]
+1793217056.2252331 [INFO] [create-7]: process has finished cleanly [pid 11395]
+1793217142.0655863 [WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+1793217142.1030123 [static_transform_publisher-10] [INFO] [1793217142.068850476] [rclcpp]: signal_handler(signum=2)
+1793217142.1031470 [static_transform_publisher-6] [INFO] [1793217142.070806044] [rclcpp]: signal_handler(signum=2)
+1793217142.6040950 [INFO] [peer_network_bridge-3]: process has finished cleanly [pid 11390]
+1793217142.6880901 [INFO] [decentralized_agent-8]: process has finished cleanly [pid 11396]
+1793217142.7038372 [INFO] [decentralized_agent-12]: process has finished cleanly [pid 11404]
+1793217142.7104111 [INFO] [survivor_oracle-4]: process has finished cleanly [pid 11392]
+1793217142.8482563 [INFO] [static_transform_publisher-10]: process has finished cleanly [pid 11398]
+1793217142.8488035 [INFO] [static_transform_publisher-6]: process has finished cleanly [pid 11394]
+1793217142.8690834 [INFO] [robot_state_publisher-5]: process has finished cleanly [pid 11393]
+1793217142.8759825 [INFO] [robot_state_publisher-9]: process has finished cleanly [pid 11397]
+1793217142.8841841 [INFO] [parameter_bridge-2]: process has finished cleanly [pid 11389]
+1793217147.0863323 [ERROR] [gazebo-1]: process has died [pid 11388, exit code -2, cmd 'ruby /opt/ros/lyrical/opt/gz_tools_vendor/bin/gz sim -r -v 3 /home/yash/Desktop/swarm-sar/ros2_ws/install/swarm_sar_description/share/swarm_sar_description/worlds/disaster_site.world --force-version 10'].
+1793217147.0883038 [INFO] [launch]: process[gazebo-1] was required: shutting down launched system

@@ -1,0 +1,106 @@
+[INFO] [launch]: All log files can be found below /tmp/swarm_audit_logs/2026-10-28-19-48-31-678418-Ubantu-10724
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [gazebo-1]: process started with pid [10735]
+[INFO] [parameter_bridge-2]: process started with pid [10736]
+[INFO] [peer_network_bridge-3]: process started with pid [10738]
+[INFO] [survivor_oracle-4]: process started with pid [10740]
+[INFO] [robot_state_publisher-5]: process started with pid [10741]
+[INFO] [static_transform_publisher-6]: process started with pid [10743]
+[INFO] [create-7]: process started with pid [10744]
+[INFO] [decentralized_agent-8]: process started with pid [10745]
+[INFO] [robot_state_publisher-9]: process started with pid [10747]
+[INFO] [static_transform_publisher-10]: process started with pid [10748]
+[INFO] [create-11]: process started with pid [10749]
+[INFO] [decentralized_agent-12]: process started with pid [10751]
+[static_transform_publisher-6] [INFO] [1793216912.394040942] [map_to_rover_0_odom]: Spinning until stopped - publishing transform
+[static_transform_publisher-6] translation: ('-16.000000', '-17.000000', '0.000000')
+[static_transform_publisher-6] rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+[static_transform_publisher-6] from 'map' to 'rover_0/odom'
+[static_transform_publisher-10] [INFO] [1793216912.562597386] [map_to_drone_0_odom]: Spinning until stopped - publishing transform
+[static_transform_publisher-10] translation: ('-16.000000', '-14.000000', '2.500000')
+[static_transform_publisher-10] rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+[static_transform_publisher-10] from 'map' to 'drone_0/odom'
+[robot_state_publisher-9] [INFO] [1793216912.579349375] [drone_0.robot_state_publisher]: Robot initialized
+[robot_state_publisher-5] [INFO] [1793216912.648103718] [rover_0.robot_state_publisher]: Robot initialized
+[gazebo-1] (2026-10-28 19:48:32.825) [info] [gz.cc:407] Gazebo Sim Server v10.5.0
+[gazebo-1] (2026-10-28 19:48:32.860) [info] [ServerPrivate.cc:697] Loading SDF world file[/home/yash/Desktop/swarm-sar/ros2_ws/install/swarm_sar_description/share/swarm_sar_description/worlds/disaster_site.world].
+[parameter_bridge-2] [INFO] [1793216913.505605055] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/clock (gz.msgs.Clock) -> /clock (rosgraph_msgs/msg/Clock)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216913.516782839] [ros_gz_bridge]: Creating ROS->GZ Bridge: [/rover_0/cmd_vel (geometry_msgs/msg/Twist) -> /rover_0/cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216913.555677156] [ros_gz_bridge]: Creating ROS->GZ Bridge: [/drone_0/cmd_vel (geometry_msgs/msg/Twist) -> /drone_0/cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216913.563398857] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/rover_0/odom (gz.msgs.Odometry) -> /rover_0/odom (nav_msgs/msg/Odometry)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216913.580248232] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/drone_0/odom (gz.msgs.Odometry) -> /drone_0/odom (nav_msgs/msg/Odometry)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216913.584471011] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/rover_0/scan (gz.msgs.LaserScan) -> /rover_0/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216913.599793797] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/drone_0/scan (gz.msgs.LaserScan) -> /drone_0/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216913.605189212] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/rover_0/imu/data (gz.msgs.IMU) -> /rover_0/imu/data (sensor_msgs/msg/Imu)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216913.612163663] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/drone_0/imu/data (gz.msgs.IMU) -> /drone_0/imu/data (sensor_msgs/msg/Imu)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216913.614918231] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/drone_0/altitude (gz.msgs.LaserScan) -> /drone_0/altitude (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216913.617874220] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/drone_0/downward_camera (gz.msgs.Image) -> /drone_0/downward_camera/image_raw (sensor_msgs/msg/Image)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216913.623045791] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/rover_0/tf (gz.msgs.Pose_V) -> /tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216913.630077756] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/drone_0/tf (gz.msgs.Pose_V) -> /tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
+[gazebo-1] (2026-10-28 19:48:34.848) [info] [SystemManager.cc:54] Serving entity system service on [/entity/system/add]
+[gazebo-1] (2026-10-28 19:48:34.851) [info] [SimulationRunner.cc:347] Serving world controls on [/world/disaster_site/control], [/world/disaster_site/control/state] and [/world/disaster_site/playback/control]
+[gazebo-1] (2026-10-28 19:48:34.852) [info] [SimulationRunner.cc:373] Serving GUI information on [/world/disaster_site/gui/info]
+[gazebo-1] (2026-10-28 19:48:34.852) [info] [SimulationRunner.cc:376] World [disaster_site] initialized with [vm_stable] physics profile.
+[gazebo-1] (2026-10-28 19:48:34.852) [info] [SimulationRunner.cc:383] Serving world SDF generation service on [/world/disaster_site/generate_world_sdf]
+[gazebo-1] (2026-10-28 19:48:34.852) [info] [ServerPrivate.cc:357] Serving world names on [/gazebo/worlds]
+[gazebo-1] (2026-10-28 19:48:34.853) [info] [ServerPrivate.cc:370] Resource path add service on [/gazebo/resource_paths/add].
+[gazebo-1] (2026-10-28 19:48:34.853) [info] [ServerPrivate.cc:383] Resource path get service on [/gazebo/resource_paths/get].
+[gazebo-1] (2026-10-28 19:48:34.853) [info] [ServerPrivate.cc:398] Resource path resolve service on [/gazebo/resource_paths/resolve].
+[gazebo-1] (2026-10-28 19:48:34.854) [info] [ServerPrivate.cc:412] Resource paths published on [/gazebo/resource_paths].
+[gazebo-1] (2026-10-28 19:48:34.855) [info] [ServerPrivate.cc:425] Server control service on [/server_control].
+[gazebo-1] (2026-10-28 19:48:34.856) [info] [SimulationRunner.cc:868] Found no publishers on /stats, adding root stats topic
+[gazebo-1] (2026-10-28 19:48:34.856) [info] [SimulationRunner.cc:902] Found no publishers on /clock, adding root clock topic
+[gazebo-1] (2026-10-28 19:48:35.062) [info] [UserCommands.cc:751] Create service on [/world/disaster_site/create_multiple] (async)
+[gazebo-1] (2026-10-28 19:48:35.062) [info] [UserCommands.cc:753] Create service on [/world/disaster_site/create_multiple/blocking] (blocking)
+[gazebo-1] (2026-10-28 19:48:35.063) [info] [UserCommands.cc:751] Remove service on [/world/disaster_site/remove] (async)
+[gazebo-1] (2026-10-28 19:48:35.063) [info] [UserCommands.cc:753] Remove service on [/world/disaster_site/remove/blocking] (blocking)
+[gazebo-1] (2026-10-28 19:48:35.064) [info] [UserCommands.cc:751] Pose service on [/world/disaster_site/set_pose] (async)
+[gazebo-1] (2026-10-28 19:48:35.064) [info] [UserCommands.cc:753] Pose service on [/world/disaster_site/set_pose/blocking] (blocking)
+[gazebo-1] (2026-10-28 19:48:35.064) [info] [UserCommands.cc:751] Pose service on [/world/disaster_site/set_pose_vector] (async)
+[gazebo-1] (2026-10-28 19:48:35.064) [info] [UserCommands.cc:753] Pose service on [/world/disaster_site/set_pose_vector/blocking] (blocking)
+[gazebo-1] (2026-10-28 19:48:35.065) [info] [UserCommands.cc:751] Light configuration service on [/world/disaster_site/light_config] (async)
+[gazebo-1] (2026-10-28 19:48:35.065) [info] [UserCommands.cc:753] Light configuration service on [/world/disaster_site/light_config/blocking] (blocking)
+[gazebo-1] (2026-10-28 19:48:35.065) [info] [UserCommands.cc:751] Physics service on [/world/disaster_site/set_physics] (async)
+[gazebo-1] (2026-10-28 19:48:35.065) [info] [UserCommands.cc:753] Physics service on [/world/disaster_site/set_physics/blocking] (blocking)
+[gazebo-1] (2026-10-28 19:48:35.066) [info] [UserCommands.cc:751] SphericalCoordinates service on [/world/disaster_site/set_spherical_coordinates] (async)
+[gazebo-1] (2026-10-28 19:48:35.066) [info] [UserCommands.cc:753] SphericalCoordinates service on [/world/disaster_site/set_spherical_coordinates/blocking] (blocking)
+[gazebo-1] (2026-10-28 19:48:35.066) [info] [UserCommands.cc:751] Enable collision service on [/world/disaster_site/enable_collision] (async)
+[gazebo-1] (2026-10-28 19:48:35.066) [info] [UserCommands.cc:753] Enable collision service on [/world/disaster_site/enable_collision/blocking] (blocking)
+[gazebo-1] (2026-10-28 19:48:35.066) [info] [UserCommands.cc:751] Disable collision service on [/world/disaster_site/disable_collision] (async)
+[gazebo-1] (2026-10-28 19:48:35.066) [info] [UserCommands.cc:753] Disable collision service on [/world/disaster_site/disable_collision/blocking] (blocking)
+[gazebo-1] (2026-10-28 19:48:35.067) [info] [UserCommands.cc:751] Material service on [/world/disaster_site/visual_config] (async)
+[gazebo-1] (2026-10-28 19:48:35.067) [info] [UserCommands.cc:753] Material service on [/world/disaster_site/visual_config/blocking] (blocking)
+[gazebo-1] (2026-10-28 19:48:35.067) [info] [UserCommands.cc:751] Material service on [/world/disaster_site/wheel_slip] (async)
+[gazebo-1] (2026-10-28 19:48:35.067) [info] [UserCommands.cc:753] Material service on [/world/disaster_site/wheel_slip/blocking] (blocking)
+[gazebo-1] (2026-10-28 19:48:35.080) [info] [LevelManager.cc:646] Loaded level [default]
+[create-11] [INFO] [1793216915.206470763] [spawn_drone_0]: Entity creation successful.
+[create-7] [INFO] [1793216915.356204943] [spawn_rover_0]: Entity creation successful.
+[INFO] [create-11]: process has finished cleanly [pid 10749]
+[gazebo-1] (2026-10-28 19:48:35.422) [info] [VelocityControl.cc:153] VelocityControl subscribing to twist messages on [/drone_0/cmd_vel]
+[gazebo-1] (2026-10-28 19:48:35.424) [info] [OdometryPublisher.cc:263] OdometryPublisher publishing odometry on [/drone_0/odom]
+[gazebo-1] (2026-10-28 19:48:35.424) [info] [OdometryPublisher.cc:278] OdometryPublisher publishing odometry with covariance on [/model/drone_0/odometry_with_covariance]
+[gazebo-1] (2026-10-28 19:48:35.425) [info] [OdometryPublisher.cc:295] OdometryPublisher publishing Pose_V (TF) on [/drone_0/tf]
+[gazebo-1] (2026-10-28 19:48:35.432) [info] [DiffDrive.cc:385] DiffDrive subscribing to twist messages on [/rover_0/cmd_vel]
+[gazebo-1] (2026-10-28 19:48:35.444) [info] [RenderEngineManager.cc:513] Loading plugin [gz-rendering-ogre2]
+[gazebo-1] (2026-10-28 19:48:35.445) [info] [SceneBroadcaster.cc:654] Serving scene information on [/world/disaster_site/scene/info]
+[gazebo-1] (2026-10-28 19:48:35.450) [info] [SceneBroadcaster.cc:663] Serving graph information on [/world/disaster_site/scene/graph]
+[gazebo-1] (2026-10-28 19:48:35.451) [info] [SceneBroadcaster.cc:674] Serving full state on [/world/disaster_site/state]
+[gazebo-1] (2026-10-28 19:48:35.451) [info] [SceneBroadcaster.cc:683] Serving full state (async) on [/world/disaster_site/state_async]
+[gazebo-1] (2026-10-28 19:48:35.453) [info] [SceneBroadcaster.cc:691] Publishing scene information on [/world/disaster_site/scene/info]
+[gazebo-1] (2026-10-28 19:48:35.456) [info] [SceneBroadcaster.cc:700] Publishing entity deletions on [/world/disaster_site/scene/deletion]
+[gazebo-1] (2026-10-28 19:48:35.456) [info] [SceneBroadcaster.cc:709] Publishing state changes on [/world/disaster_site/state]
+[gazebo-1] (2026-10-28 19:48:35.457) [info] [SceneBroadcaster.cc:720] Publishing pose messages on [/world/disaster_site/pose/info]
+[gazebo-1] (2026-10-28 19:48:35.457) [info] [SceneBroadcaster.cc:731] Publishing dynamic pose messages on [/world/disaster_site/dynamic_pose/info]
+[gazebo-1] libEGL warning: Not allowed to force software rendering when API explicitly selects a hardware device.
+[INFO] [create-7]: process has finished cleanly [pid 10744]
+[gazebo-1] libEGL warning: Not allowed to force software rendering when API explicitly selects a hardware device.
+[gazebo-1] (2026-10-28 19:48:38.225) [warning] [Ogre2Camera.cc:423] Ogre2Camera::SetVisibilityMask: Mask bits c0000000 are set but will be ignored as they conflict with the reserved bits used internally by the ogre2 backend.
+[parameter_bridge-2] [INFO] [1793216918.671421335] [ros_gz_bridge]: Passing message from ROS geometry_msgs/msg/Twist to Gazebo gz.msgs.Twist (showing msg only once per type)
+[peer_network_bridge-3] [INFO] [1793216930.363200754] [peer_network_bridge]: network attempted=18 delivered=8 dropped_range=4 dropped_loss=6 dropped_expired=0
+[peer_network_bridge-3] [INFO] [1793216940.820770196] [peer_network_bridge]: network attempted=38 delivered=25 dropped_range=4 dropped_loss=9 dropped_expired=0
+[peer_network_bridge-3] [INFO] [1793216951.749211946] [peer_network_bridge]: network attempted=58 delivered=41 dropped_range=4 dropped_loss=13 dropped_expired=0
+[peer_network_bridge-3] [INFO] [1793216962.623231658] [peer_network_bridge]: network attempted=78 delivered=60 dropped_range=4 dropped_loss=14 dropped_expired=0
+[peer_network_bridge-3] [INFO] [1793216973.694422008] [peer_network_bridge]: network attempted=98 delivered=76 dropped_range=4 dropped_loss=18 dropped_expired=0
+[peer_network_bridge-3] [INFO] [1793216985.112120061] [peer_network_bridge]: network attempted=118 delivered=94 dropped_range=4 dropped_loss=20 dropped_expired=0
+[peer_network_bridge-3] [INFO] [1793216996.506966762] [peer_network_bridge]: network attempted=138 delivered=112 dropped_range=4 dropped_loss=22 dropped_expired=0
+[peer_network_bridge-3] [INFO] [1793217007.097496349] [peer_network_bridge]: network attempted=158 delivered=127 dropped_range=4 dropped_loss=27 dropped_expired=0

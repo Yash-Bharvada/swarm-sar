@@ -1,0 +1,181 @@
+[INFO] [launch]: All log files can be found below /tmp/swarm_audit_logs/2026-10-28-19-46-57-992943-Ubantu-9979
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [gazebo-1]: process started with pid [10024]
+[INFO] [parameter_bridge-2]: process started with pid [10025]
+[INFO] [peer_network_bridge-3]: process started with pid [10026]
+[INFO] [survivor_oracle-4]: process started with pid [10028]
+[INFO] [robot_state_publisher-5]: process started with pid [10029]
+[INFO] [static_transform_publisher-6]: process started with pid [10030]
+[INFO] [create-7]: process started with pid [10031]
+[INFO] [decentralized_agent-8]: process started with pid [10033]
+[INFO] [robot_state_publisher-9]: process started with pid [10034]
+[INFO] [static_transform_publisher-10]: process started with pid [10035]
+[INFO] [create-11]: process started with pid [10036]
+[INFO] [decentralized_agent-12]: process started with pid [10037]
+[static_transform_publisher-6] [INFO] [1793216822.336864046] [map_to_rover_0_odom]: Spinning until stopped - publishing transform
+[static_transform_publisher-6] translation: ('-16.000000', '-17.000000', '0.000000')
+[static_transform_publisher-6] rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+[static_transform_publisher-6] from 'map' to 'rover_0/odom'
+[static_transform_publisher-10] [INFO] [1793216822.353572605] [map_to_drone_0_odom]: Spinning until stopped - publishing transform
+[static_transform_publisher-10] translation: ('-16.000000', '-14.000000', '2.500000')
+[static_transform_publisher-10] rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+[static_transform_publisher-10] from 'map' to 'drone_0/odom'
+[gazebo-1] (2026-10-28 19:47:02.360) [info] [gz.cc:407] Gazebo Sim Server v10.5.0
+[robot_state_publisher-5] [INFO] [1793216822.506252578] [rover_0.robot_state_publisher]: Robot initialized
+[robot_state_publisher-9] [INFO] [1793216822.562285167] [drone_0.robot_state_publisher]: Robot initialized
+[gazebo-1] (2026-10-28 19:47:02.566) [info] [ServerPrivate.cc:697] Loading SDF world file[/home/yash/Desktop/swarm-sar/ros2_ws/install/swarm_sar_description/share/swarm_sar_description/worlds/disaster_site.world].
+[parameter_bridge-2] [INFO] [1793216823.598712774] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/clock (gz.msgs.Clock) -> /clock (rosgraph_msgs/msg/Clock)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216823.617168393] [ros_gz_bridge]: Creating ROS->GZ Bridge: [/rover_0/cmd_vel (geometry_msgs/msg/Twist) -> /rover_0/cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216823.630195046] [ros_gz_bridge]: Creating ROS->GZ Bridge: [/rover_1/cmd_vel (geometry_msgs/msg/Twist) -> /rover_1/cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216823.643114980] [ros_gz_bridge]: Creating ROS->GZ Bridge: [/drone_0/cmd_vel (geometry_msgs/msg/Twist) -> /drone_0/cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216823.646649215] [ros_gz_bridge]: Creating ROS->GZ Bridge: [/drone_1/cmd_vel (geometry_msgs/msg/Twist) -> /drone_1/cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216823.649617088] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/rover_0/odom (gz.msgs.Odometry) -> /rover_0/odom (nav_msgs/msg/Odometry)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216823.659778980] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/rover_1/odom (gz.msgs.Odometry) -> /rover_1/odom (nav_msgs/msg/Odometry)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216823.664740399] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/drone_0/odom (gz.msgs.Odometry) -> /drone_0/odom (nav_msgs/msg/Odometry)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216823.669705614] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/drone_1/odom (gz.msgs.Odometry) -> /drone_1/odom (nav_msgs/msg/Odometry)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216823.672165512] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/rover_0/scan (gz.msgs.LaserScan) -> /rover_0/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216823.684018629] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/rover_1/scan (gz.msgs.LaserScan) -> /rover_1/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216823.689155903] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/drone_0/scan (gz.msgs.LaserScan) -> /drone_0/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216823.692618865] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/drone_1/scan (gz.msgs.LaserScan) -> /drone_1/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216823.699957630] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/rover_0/imu/data (gz.msgs.IMU) -> /rover_0/imu/data (sensor_msgs/msg/Imu)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216823.706801804] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/rover_1/imu/data (gz.msgs.IMU) -> /rover_1/imu/data (sensor_msgs/msg/Imu)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216823.709796822] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/drone_0/imu/data (gz.msgs.IMU) -> /drone_0/imu/data (sensor_msgs/msg/Imu)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216823.712992000] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/drone_1/imu/data (gz.msgs.IMU) -> /drone_1/imu/data (sensor_msgs/msg/Imu)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216823.718740714] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/drone_0/altitude (gz.msgs.LaserScan) -> /drone_0/altitude (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216823.721072234] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/drone_1/altitude (gz.msgs.LaserScan) -> /drone_1/altitude (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216823.724962375] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/drone_0/downward_camera (gz.msgs.Image) -> /drone_0/downward_camera/image_raw (sensor_msgs/msg/Image)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216823.731239680] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/drone_1/downward_camera (gz.msgs.Image) -> /drone_1/downward_camera/image_raw (sensor_msgs/msg/Image)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216823.747728648] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/rover_0/tf (gz.msgs.Pose_V) -> /tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216823.763007490] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/rover_1/tf (gz.msgs.Pose_V) -> /tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216823.765306448] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/drone_0/tf (gz.msgs.Pose_V) -> /tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1793216823.769182415] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/drone_1/tf (gz.msgs.Pose_V) -> /tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
+[gazebo-1] (2026-10-28 19:47:04.377) [info] [SystemManager.cc:54] Serving entity system service on [/entity/system/add]
+[gazebo-1] (2026-10-28 19:47:04.585) [info] [SimulationRunner.cc:347] Serving world controls on [/world/disaster_site/control], [/world/disaster_site/control/state] and [/world/disaster_site/playback/control]
+[gazebo-1] (2026-10-28 19:47:04.590) [info] [SimulationRunner.cc:373] Serving GUI information on [/world/disaster_site/gui/info]
+[gazebo-1] (2026-10-28 19:47:04.590) [info] [SimulationRunner.cc:376] World [disaster_site] initialized with [vm_stable] physics profile.
+[gazebo-1] (2026-10-28 19:47:04.591) [info] [SimulationRunner.cc:383] Serving world SDF generation service on [/world/disaster_site/generate_world_sdf]
+[gazebo-1] (2026-10-28 19:47:04.592) [info] [ServerPrivate.cc:357] Serving world names on [/gazebo/worlds]
+[gazebo-1] (2026-10-28 19:47:04.592) [info] [ServerPrivate.cc:370] Resource path add service on [/gazebo/resource_paths/add].
+[gazebo-1] (2026-10-28 19:47:04.593) [info] [ServerPrivate.cc:383] Resource path get service on [/gazebo/resource_paths/get].
+[gazebo-1] (2026-10-28 19:47:04.593) [info] [ServerPrivate.cc:398] Resource path resolve service on [/gazebo/resource_paths/resolve].
+[gazebo-1] (2026-10-28 19:47:04.594) [info] [ServerPrivate.cc:412] Resource paths published on [/gazebo/resource_paths].
+[gazebo-1] (2026-10-28 19:47:04.594) [info] [ServerPrivate.cc:425] Server control service on [/server_control].
+[gazebo-1] (2026-10-28 19:47:04.595) [info] [SimulationRunner.cc:868] Found no publishers on /stats, adding root stats topic
+[gazebo-1] (2026-10-28 19:47:04.596) [info] [SimulationRunner.cc:902] Found no publishers on /clock, adding root clock topic
+[gazebo-1] (2026-10-28 19:47:06.578) [info] [UserCommands.cc:751] Create service on [/world/disaster_site/create_multiple] (async)
+[gazebo-1] (2026-10-28 19:47:06.578) [info] [UserCommands.cc:753] Create service on [/world/disaster_site/create_multiple/blocking] (blocking)
+[gazebo-1] (2026-10-28 19:47:06.580) [info] [UserCommands.cc:751] Remove service on [/world/disaster_site/remove] (async)
+[gazebo-1] (2026-10-28 19:47:06.580) [info] [UserCommands.cc:753] Remove service on [/world/disaster_site/remove/blocking] (blocking)
+[gazebo-1] (2026-10-28 19:47:06.581) [info] [UserCommands.cc:751] Pose service on [/world/disaster_site/set_pose] (async)
+[gazebo-1] (2026-10-28 19:47:06.581) [info] [UserCommands.cc:753] Pose service on [/world/disaster_site/set_pose/blocking] (blocking)
+[gazebo-1] (2026-10-28 19:47:06.582) [info] [UserCommands.cc:751] Pose service on [/world/disaster_site/set_pose_vector] (async)
+[gazebo-1] (2026-10-28 19:47:06.582) [info] [UserCommands.cc:753] Pose service on [/world/disaster_site/set_pose_vector/blocking] (blocking)
+[gazebo-1] (2026-10-28 19:47:06.583) [info] [UserCommands.cc:751] Light configuration service on [/world/disaster_site/light_config] (async)
+[gazebo-1] (2026-10-28 19:47:06.583) [info] [UserCommands.cc:753] Light configuration service on [/world/disaster_site/light_config/blocking] (blocking)
+[gazebo-1] (2026-10-28 19:47:06.585) [info] [UserCommands.cc:751] Physics service on [/world/disaster_site/set_physics] (async)
+[gazebo-1] (2026-10-28 19:47:06.585) [info] [UserCommands.cc:753] Physics service on [/world/disaster_site/set_physics/blocking] (blocking)
+[gazebo-1] (2026-10-28 19:47:06.587) [info] [UserCommands.cc:751] SphericalCoordinates service on [/world/disaster_site/set_spherical_coordinates] (async)
+[gazebo-1] (2026-10-28 19:47:06.587) [info] [UserCommands.cc:753] SphericalCoordinates service on [/world/disaster_site/set_spherical_coordinates/blocking] (blocking)
+[gazebo-1] (2026-10-28 19:47:06.588) [info] [UserCommands.cc:751] Enable collision service on [/world/disaster_site/enable_collision] (async)
+[gazebo-1] (2026-10-28 19:47:06.588) [info] [UserCommands.cc:753] Enable collision service on [/world/disaster_site/enable_collision/blocking] (blocking)
+[gazebo-1] (2026-10-28 19:47:06.589) [info] [UserCommands.cc:751] Disable collision service on [/world/disaster_site/disable_collision] (async)
+[gazebo-1] (2026-10-28 19:47:06.589) [info] [UserCommands.cc:753] Disable collision service on [/world/disaster_site/disable_collision/blocking] (blocking)
+[gazebo-1] (2026-10-28 19:47:06.590) [info] [UserCommands.cc:751] Material service on [/world/disaster_site/visual_config] (async)
+[gazebo-1] (2026-10-28 19:47:06.590) [info] [UserCommands.cc:753] Material service on [/world/disaster_site/visual_config/blocking] (blocking)
+[gazebo-1] (2026-10-28 19:47:06.591) [info] [UserCommands.cc:751] Material service on [/world/disaster_site/wheel_slip] (async)
+[gazebo-1] (2026-10-28 19:47:06.591) [info] [UserCommands.cc:753] Material service on [/world/disaster_site/wheel_slip/blocking] (blocking)
+[create-11] [INFO] [1793216826.703314622] [spawn_drone_0]: Entity creation successful.
+[gazebo-1] (2026-10-28 19:47:06.747) [info] [LevelManager.cc:646] Loaded level [default]
+[create-7] [INFO] [1793216826.801778150] [spawn_rover_0]: Entity creation successful.
+[gazebo-1] (2026-10-28 19:47:06.867) [info] [VelocityControl.cc:153] VelocityControl subscribing to twist messages on [/drone_0/cmd_vel]
+[gazebo-1] (2026-10-28 19:47:06.868) [info] [OdometryPublisher.cc:263] OdometryPublisher publishing odometry on [/drone_0/odom]
+[gazebo-1] (2026-10-28 19:47:06.869) [info] [OdometryPublisher.cc:278] OdometryPublisher publishing odometry with covariance on [/model/drone_0/odometry_with_covariance]
+[gazebo-1] (2026-10-28 19:47:06.869) [info] [OdometryPublisher.cc:295] OdometryPublisher publishing Pose_V (TF) on [/drone_0/tf]
+[gazebo-1] (2026-10-28 19:47:06.874) [info] [DiffDrive.cc:385] DiffDrive subscribing to twist messages on [/rover_0/cmd_vel]
+[gazebo-1] (2026-10-28 19:47:06.883) [info] [RenderEngineManager.cc:513] Loading plugin [gz-rendering-ogre2]
+[gazebo-1] (2026-10-28 19:47:06.884) [info] [SceneBroadcaster.cc:654] Serving scene information on [/world/disaster_site/scene/info]
+[gazebo-1] (2026-10-28 19:47:06.885) [info] [SceneBroadcaster.cc:663] Serving graph information on [/world/disaster_site/scene/graph]
+[gazebo-1] (2026-10-28 19:47:06.887) [info] [SceneBroadcaster.cc:674] Serving full state on [/world/disaster_site/state]
+[gazebo-1] (2026-10-28 19:47:06.891) [info] [SceneBroadcaster.cc:683] Serving full state (async) on [/world/disaster_site/state_async]
+[gazebo-1] (2026-10-28 19:47:06.892) [info] [SceneBroadcaster.cc:691] Publishing scene information on [/world/disaster_site/scene/info]
+[gazebo-1] (2026-10-28 19:47:06.893) [info] [SceneBroadcaster.cc:700] Publishing entity deletions on [/world/disaster_site/scene/deletion]
+[gazebo-1] (2026-10-28 19:47:06.893) [info] [SceneBroadcaster.cc:709] Publishing state changes on [/world/disaster_site/state]
+[gazebo-1] (2026-10-28 19:47:06.893) [info] [SceneBroadcaster.cc:720] Publishing pose messages on [/world/disaster_site/pose/info]
+[gazebo-1] (2026-10-28 19:47:06.893) [info] [SceneBroadcaster.cc:731] Publishing dynamic pose messages on [/world/disaster_site/dynamic_pose/info]
+[INFO] [create-11]: process has finished cleanly [pid 10036]
+[INFO] [create-7]: process has finished cleanly [pid 10031]
+[gazebo-1] VMware: No 3D enabled (0, Success).
+[gazebo-1] libEGL warning: egl: failed to create dri2 screen
+[gazebo-1] VMware: No 3D enabled (0, Success).
+[gazebo-1] libEGL warning: egl: failed to create dri2 screen
+[gazebo-1] VMware: No 3D enabled (0, Success).
+[gazebo-1] libEGL warning: egl: failed to create dri2 screen
+[gazebo-1] VMware: No 3D enabled (0, Success).
+[gazebo-1] libEGL warning: egl: failed to create dri2 screen
+[gazebo-1] VMware: No 3D enabled (0, Success).
+[gazebo-1] libEGL warning: egl: failed to create dri2 screen
+[gazebo-1] VMware: No 3D enabled (0, Success).
+[gazebo-1] libEGL warning: egl: failed to create dri2 screen
+[gazebo-1] (2026-10-28 19:47:08.407) [error] [Ogre2RenderEngine.cc:1273]  Unable to create the rendering window: OGRE EXCEPTION(3:RenderingAPIException): eglInitialize failed for device EGL_EXT_device_drm EGL_EXT_device_drm_render_node EGL_EXT_device_query_name EGL_EXT_device_persistent_id #0 /dev/dri/card0 in EGLSupport::getGLDisplay at ./.obj-x86_64-linux-gnu/gz_ogre_next_vendor-prefix/src/gz_ogre_next_vendor/RenderSystems/GL3Plus/src/windowing/EGL/PBuffer/OgreEglPBufferSupport.cpp (line 320)
+[gazebo-1] (2026-10-28 19:47:08.407) [error] [Ogre2RenderEngine.cc:1273]  Unable to create the rendering window: OGRE EXCEPTION(3:RenderingAPIException): OpenGL 3.3 is not supported. Please update your graphics card drivers. in GL3PlusRenderSystem::initialiseContext at ./.obj-x86_64-linux-gnu/gz_ogre_next_vendor-prefix/src/gz_ogre_next_vendor/RenderSystems/GL3Plus/src/OgreGL3PlusRenderSystem.cpp (line 3434)
+[gazebo-1] (2026-10-28 19:47:08.408) [error] [Ogre2RenderEngine.cc:1273]  Unable to create the rendering window: OGRE EXCEPTION(3:RenderingAPIException): OpenGL 3.3 is not supported. Please update your graphics card drivers. in GL3PlusRenderSystem::initialiseContext at ./.obj-x86_64-linux-gnu/gz_ogre_next_vendor-prefix/src/gz_ogre_next_vendor/RenderSystems/GL3Plus/src/OgreGL3PlusRenderSystem.cpp (line 3434)
+[gazebo-1] (2026-10-28 19:47:08.409) [error] [Ogre2RenderEngine.cc:1273]  Unable to create the rendering window: OGRE EXCEPTION(3:RenderingAPIException): OpenGL 3.3 is not supported. Please update your graphics card drivers. in GL3PlusRenderSystem::initialiseContext at ./.obj-x86_64-linux-gnu/gz_ogre_next_vendor-prefix/src/gz_ogre_next_vendor/RenderSystems/GL3Plus/src/OgreGL3PlusRenderSystem.cpp (line 3434)
+[gazebo-1] (2026-10-28 19:47:08.411) [error] [Ogre2RenderEngine.cc:1273]  Unable to create the rendering window: OGRE EXCEPTION(3:RenderingAPIException): OpenGL 3.3 is not supported. Please update your graphics card drivers. in GL3PlusRenderSystem::initialiseContext at ./.obj-x86_64-linux-gnu/gz_ogre_next_vendor-prefix/src/gz_ogre_next_vendor/RenderSystems/GL3Plus/src/OgreGL3PlusRenderSystem.cpp (line 3434)
+[gazebo-1] (2026-10-28 19:47:08.411) [error] [Ogre2RenderEngine.cc:1273]  Unable to create the rendering window: OGRE EXCEPTION(3:RenderingAPIException): OpenGL 3.3 is not supported. Please update your graphics card drivers. in GL3PlusRenderSystem::initialiseContext at ./.obj-x86_64-linux-gnu/gz_ogre_next_vendor-prefix/src/gz_ogre_next_vendor/RenderSystems/GL3Plus/src/OgreGL3PlusRenderSystem.cpp (line 3434)
+[gazebo-1] (2026-10-28 19:47:08.412) [error] [Ogre2RenderEngine.cc:1273]  Unable to create the rendering window: OGRE EXCEPTION(3:RenderingAPIException): OpenGL 3.3 is not supported. Please update your graphics card drivers. in GL3PlusRenderSystem::initialiseContext at ./.obj-x86_64-linux-gnu/gz_ogre_next_vendor-prefix/src/gz_ogre_next_vendor/RenderSystems/GL3Plus/src/OgreGL3PlusRenderSystem.cpp (line 3434)
+[gazebo-1] (2026-10-28 19:47:08.412) [error] [Ogre2RenderEngine.cc:1273]  Unable to create the rendering window: OGRE EXCEPTION(3:RenderingAPIException): OpenGL 3.3 is not supported. Please update your graphics card drivers. in GL3PlusRenderSystem::initialiseContext at ./.obj-x86_64-linux-gnu/gz_ogre_next_vendor-prefix/src/gz_ogre_next_vendor/RenderSystems/GL3Plus/src/OgreGL3PlusRenderSystem.cpp (line 3434)
+[gazebo-1] (2026-10-28 19:47:08.412) [error] [Ogre2RenderEngine.cc:1273]  Unable to create the rendering window: OGRE EXCEPTION(3:RenderingAPIException): OpenGL 3.3 is not supported. Please update your graphics card drivers. in GL3PlusRenderSystem::initialiseContext at ./.obj-x86_64-linux-gnu/gz_ogre_next_vendor-prefix/src/gz_ogre_next_vendor/RenderSystems/GL3Plus/src/OgreGL3PlusRenderSystem.cpp (line 3434)
+[gazebo-1] (2026-10-28 19:47:08.412) [error] [Ogre2RenderEngine.cc:1273]  Unable to create the rendering window: OGRE EXCEPTION(3:RenderingAPIException): OpenGL 3.3 is not supported. Please update your graphics card drivers. in GL3PlusRenderSystem::initialiseContext at ./.obj-x86_64-linux-gnu/gz_ogre_next_vendor-prefix/src/gz_ogre_next_vendor/RenderSystems/GL3Plus/src/OgreGL3PlusRenderSystem.cpp (line 3434)
+[gazebo-1] (2026-10-28 19:47:08.412) [error] [Ogre2RenderEngine.cc:1281] Unable to create the rendering window after [11] attempts.
+[gazebo-1] (2026-10-28 19:47:08.412) [error] [Ogre2RenderEngine.cc:1162] Failed to create dummy render window.
+[gazebo-1] (2026-10-28 19:47:08.412) [error] [Ogre2RenderEngine.cc:1163] Please see the troubleshooting page for possible fixes: https://gazebosim.org/docs/fortress/troubleshooting
+[gazebo-1] Stack trace (most recent call last) in thread 10297:
+[gazebo-1] #21   Object "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2", at 0xffffffffffffffff, in 
+[gazebo-1] #20   Source "../sysdeps/unix/sysv/linux/x86_64/clone3.S", line 78, in __GI___clone3 [0x73be17d375cb]
+[gazebo-1] #19   Source "./nptl/pthread_create.c", line 454, in start_thread [0x73be17ca3df9]
+[gazebo-1] #18   Source "../../../../../src/libstdc++-v3/src/c++11/thread.cc", line 105, in execute_native_thread_routine [0x73be180f5ef8]
+[gazebo-1] #17   Object "/opt/ros/lyrical/opt/gz_sim_vendor/lib/gz-sim-10/plugins/libgz-sim-sensors-system.so.10.5.0", at 0x73bdc196a596, in 
+[gazebo-1] #16   Object "/opt/ros/lyrical/opt/gz_sim_vendor/lib/libgz-sim-rendering.so.10.5.0", at 0x73bdc18d4eb1, in gz::sim::v10::RenderUtil::Init()
+[gazebo-1] #15   Object "/opt/ros/lyrical/opt/gz_rendering_vendor/lib/libgz-rendering.so.10.0.2", at 0x73bdc17a9d62, in gz::rendering::v10::RenderEngineManager::Engine(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+[gazebo-1] #14   Object "/opt/ros/lyrical/opt/gz_rendering_vendor/lib/libgz-rendering.so.10.0.2", at 0x73bdc17b4cae, in 
+[gazebo-1] #13   Object "/opt/ros/lyrical/opt/gz_rendering_vendor/lib/libgz-rendering.so.10.0.2", at 0x73bdc17ba104, in gz::rendering::v10::BaseRenderEngine::Init()
+[gazebo-1] #12   Object "/opt/ros/lyrical/opt/gz_rendering_vendor/lib/libgz-rendering-ogre2.so.10.0.2", at 0x73bdc040e7b3, in gz::rendering::v10::Ogre2RenderEngine::InitImpl()
+[gazebo-1] #11   Object "/opt/ros/lyrical/opt/gz_rendering_vendor/lib/libgz-rendering-ogre2.so.10.0.2", at 0x73bdc041207b, in gz::rendering::v10::Ogre2RenderEngine::InitAttempt()
+[gazebo-1] #10   Object "/opt/ros/lyrical/opt/gz_ogre_next_vendor/lib/libOgreNextMain.so.2.3.3", at 0x73bdbbd78a37, in Ogre::ResourceGroupManager::initialiseAllResourceGroups(bool)
+[gazebo-1] #9    Object "/opt/ros/lyrical/opt/gz_ogre_next_vendor/lib/libOgreNextMain.so.2.3.3", at 0x73bdbbd78220, in Ogre::ResourceGroupManager::parseResourceGroupScripts(Ogre::ResourceGroupManager::ResourceGroup*)
+[gazebo-1] #8    Object "/opt/ros/lyrical/opt/gz_ogre_next_vendor/lib/libOgreNextMain.so.2.3.3", at 0x73bdbbdc0878, in Ogre::ScriptCompilerManager::parseScript(Ogre::SharedPtr<Ogre::DataStream>&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+[gazebo-1] #7    Object "/opt/ros/lyrical/opt/gz_ogre_next_vendor/lib/libOgreNextMain.so.2.3.3", at 0x73bdbbdb7a3b, in Ogre::ScriptCompiler::compile(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+[gazebo-1] #6    Object "/opt/ros/lyrical/opt/gz_ogre_next_vendor/lib/libOgreNextMain.so.2.3.3", at 0x73bdbbdb777a, in Ogre::ScriptCompiler::compile(Ogre::SharedPtr<std::__cxx11::list<Ogre::SharedPtr<Ogre::ConcreteNode>, Ogre::STLAllocator<Ogre::SharedPtr<Ogre::ConcreteNode>, Ogre::CategorisedAllocPolicy<(Ogre::MemoryCategory)0> > > > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+[gazebo-1] #5    Object "/opt/ros/lyrical/opt/gz_ogre_next_vendor/lib/libOgreNextMain.so.2.3.3", at 0x73bdbbdca5b3, in Ogre::MaterialTranslator::translate(Ogre::ScriptCompiler*, Ogre::SharedPtr<Ogre::AbstractNode> const&)
+[gazebo-1] #4    Object "/opt/ros/lyrical/opt/gz_ogre_next_vendor/lib/libOgreNextMain.so.2.3.3", at 0x73bdbbdcb656, in Ogre::TechniqueTranslator::translate(Ogre::ScriptCompiler*, Ogre::SharedPtr<Ogre::AbstractNode> const&)
+[gazebo-1] #3    Object "/opt/ros/lyrical/opt/gz_ogre_next_vendor/lib/libOgreNextMain.so.2.3.3", at 0x73bdbbdd1a04, in Ogre::PassTranslator::translate(Ogre::ScriptCompiler*, Ogre::SharedPtr<Ogre::AbstractNode> const&)
+[gazebo-1] #2    Object "/opt/ros/lyrical/opt/gz_ogre_next_vendor/lib/libOgreNextMain.so.2.3.3", at 0x73bdbbe48fa6, in Ogre::Technique::createPass()
+[gazebo-1] #1    Object "/opt/ros/lyrical/opt/gz_ogre_next_vendor/lib/libOgreNextMain.so.2.3.3", at 0x73bdbbd28e27, in Ogre::Pass::Pass(Ogre::Technique*, unsigned short)
+[gazebo-1] #0    Object "/opt/ros/lyrical/opt/gz_ogre_next_vendor/lib/libOgreNextMain.so.2.3.3", at 0x73bdbbc3f7c4, in Ogre::Hlms::createDatablock(Ogre::IdString, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, Ogre::HlmsMacroblock const&, Ogre::HlmsBlendblock const&, std::vector<std::pair<Ogre::IdString, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, Ogre::STLAllocator<std::pair<Ogre::IdString, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, Ogre::CategorisedAllocPolicy<(Ogre::MemoryCategory)0> > > const&, bool, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+[gazebo-1] Segmentation fault (Address not mapped to object [0x220])
+[gazebo-1] Segmentation fault (core dumped)
+[ERROR] [gazebo-1]: process has died [pid 10024, exit code 139, cmd 'ruby /opt/ros/lyrical/opt/gz_tools_vendor/bin/gz sim -r -v 3 -s --headless-rendering /home/yash/Desktop/swarm-sar/ros2_ws/install/swarm_sar_description/share/swarm_sar_description/worlds/disaster_site.world --force-version 10'].
+[INFO] [launch]: process[gazebo-1] was required: shutting down launched system
+[INFO] [decentralized_agent-12]: sending signal 'SIGINT' to process[decentralized_agent-12]
+[INFO] [static_transform_publisher-10]: sending signal 'SIGINT' to process[static_transform_publisher-10]
+[INFO] [robot_state_publisher-9]: sending signal 'SIGINT' to process[robot_state_publisher-9]
+[INFO] [decentralized_agent-8]: sending signal 'SIGINT' to process[decentralized_agent-8]
+[INFO] [static_transform_publisher-6]: sending signal 'SIGINT' to process[static_transform_publisher-6]
+[INFO] [robot_state_publisher-5]: sending signal 'SIGINT' to process[robot_state_publisher-5]
+[INFO] [survivor_oracle-4]: sending signal 'SIGINT' to process[survivor_oracle-4]
+[INFO] [peer_network_bridge-3]: sending signal 'SIGINT' to process[peer_network_bridge-3]
+[INFO] [parameter_bridge-2]: sending signal 'SIGINT' to process[parameter_bridge-2]
+[static_transform_publisher-10] [INFO] [1793216892.060552484] [rclcpp]: signal_handler(signum=2)
+[robot_state_publisher-9] [INFO] [1793216892.066880324] [rclcpp]: signal_handler(signum=2)
+[static_transform_publisher-6] [INFO] [1793216892.081201852] [rclcpp]: signal_handler(signum=2)
+[robot_state_publisher-5] [INFO] [1793216892.102342245] [rclcpp]: signal_handler(signum=2)
+[parameter_bridge-2] [INFO] [1793216892.116446797] [rclcpp]: signal_handler(signum=2)
+[INFO] [static_transform_publisher-10]: process has finished cleanly [pid 10035]
+[INFO] [decentralized_agent-12]: process has finished cleanly [pid 10037]
+[INFO] [robot_state_publisher-9]: process has finished cleanly [pid 10034]
+[INFO] [robot_state_publisher-5]: process has finished cleanly [pid 10029]
+[INFO] [static_transform_publisher-6]: process has finished cleanly [pid 10030]
+[ERROR] [parameter_bridge-2]: process has died [pid 10025, exit code -11, cmd '/opt/ros/lyrical/lib/ros_gz_bridge/parameter_bridge --ros-args -r __node:=ros_gz_bridge --params-file /tmp/launch_params_i4pxn5om'].
+[INFO] [survivor_oracle-4]: process has finished cleanly [pid 10028]
+[INFO] [peer_network_bridge-3]: process has finished cleanly [pid 10026]
+[INFO] [decentralized_agent-8]: process has finished cleanly [pid 10033]

@@ -3,6 +3,11 @@
 Review date: 29 October 2026. This review applies to the Python training
 prototype on `rashiyaom`; the browser changes are a separate workstream.
 
+Step 5 update: PR #1 adds the ROS2/Gazebo workspace and recorded physics-demo
+evidence. The original review below predates that merge. ROS packages/models
+are now present, but the default demo is a waypoint controller using simulator
+pose feedback, not the learned policy. See [step5_integration.md](step5_integration.md).
+
 ## Decision
 
 The A5000 is worth using for a measured experiment: behavior cloning,
@@ -117,9 +122,10 @@ generator does not establish real-world generalization.
 - Thermal/acoustic readings are synthetic. Confirmation uses simulated true
   distance and line of sight (`sensing/victim_sensor.py`). It cannot establish
   real sensor precision, survivor identity, or reliable field detection.
-- The one-process radio emulator tests loss/delay/TTL/partition logic. ROS 2
-  nodes, DDS/QoS timing, Gazebo/Isaac physics, calibrated flight dynamics and
-  hardware deployment are absent.
+- The Python training radio emulator tests loss/delay/TTL/partition logic.
+  Step 5 adds separate ROS 2 nodes and Gazebo models; the GPU training pipeline
+  does not exercise them. Calibrated dynamics, hardware deployment and measured
+  learned-policy transfer to the ROS environment are still unvalidated.
 - `frontend/src/simulation/core/SimulationEngine.ts` constructs a TypeScript
   `DecentralizedController`. It does not load the Python PPO checkpoint.
   Learned-policy rollout artifacts can be archived for a later integration,

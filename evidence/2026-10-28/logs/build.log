@@ -1,0 +1,10 @@
+Starting >>> swarm_sar_interfaces
+Starting >>> swarm_sar_description
+Finished <<< swarm_sar_description [0.26s]
+Finished <<< swarm_sar_interfaces [2.19s]
+Starting >>> swarm_sar_control
+Finished <<< swarm_sar_control [7.57s]
+Starting >>> swarm_sar_gazebo
+Finished <<< swarm_sar_gazebo [2.71s]
+
+Summary: 4 packages finished [12.8s]

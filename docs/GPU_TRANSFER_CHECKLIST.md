@@ -11,7 +11,7 @@ maximum experiment budget, not a commitment to keep training after a failure.
 
 ## Transfer identity and branch
 
-Use the `rashiyaom` branch and the `rashiyaom-gpu-v2-audited` tag. `main` is
+Use the `rashiyaom` branch and the `rashiyaom-step5-integrated` tag. `main` is
 deliberately unchanged by this refinement. Verify the exact code and dataset
 using the tracked records:
 
@@ -46,14 +46,14 @@ On a clean Linux clone, with NVIDIA drivers, Python's venv support, pip and GNU
 ```bash
 git clone --branch rashiyaom --single-branch https://github.com/rashiyaom/swarm-sar.git
 cd swarm-sar
-git fetch origin tag rashiyaom-gpu-v2-audited
+git fetch origin tag rashiyaom-step5-integrated
 ```
 
 The launcher requires branch `rashiyaom`. Verify its HEAD matches the audited
 tag, then launch:
 
 ```bash
-test "$(git rev-parse HEAD)" = "$(git rev-list -n 1 rashiyaom-gpu-v2-audited)"
+test "$(git rev-parse HEAD)" = "$(git rev-list -n 1 rashiyaom-step5-integrated)"
 bash scripts/launch_gpu.sh --hours 15
 ```
 
@@ -132,6 +132,8 @@ freeze acknowledgement and cannot run in shortened/smoke mode. Use it once
 after choosing the model and all hyperparameters.
 
 This trains a hierarchical grid-world cooperative policy. Accurate own-cell
-planning and canonical map registration remain simulator conveniences. Real
-SLAM/localization, ROS2/Gazebo flight/rover dynamics and the browser policy
-bridge are separate implementation milestones.
+planning and canonical map registration remain simulator conveniences. Step 5
+now supplies a separate ROS2/Gazebo physics workspace with recorded Ubuntu
+validation. Its default waypoint demo does not load this learned policy.
+Real SLAM/localization, the learned-policy-to-ROS adapter and the browser policy
+bridge remain separate integration milestones. See [step5_integration.md](step5_integration.md).
