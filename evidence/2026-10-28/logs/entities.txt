@@ -1,0 +1,17 @@
+
+Requesting state for world [disaster_site]...
+
+Available models:
+    - floor
+    - boundary
+    - damaged_walls
+    - rubble_north
+    - rubble_center
+    - slab
+    - survivor_0
+    - survivor_1
+    - survivor_2
+    - survivor_3
+    - survivor_4
+    - drone_0
+    - rover_0

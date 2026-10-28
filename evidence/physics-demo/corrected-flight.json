@@ -1,0 +1,331 @@
+{
+  "wall_seconds": 100.01697602700006,
+  "nodes": [
+    [
+      "_ros2cli_daemon_0_69a824c60a7849de80c09e65180f1b2b",
+      "/"
+    ],
+    [
+      "decentralized_agent",
+      "/drone_0"
+    ],
+    [
+      "decentralized_agent",
+      "/drone_1"
+    ],
+    [
+      "decentralized_agent",
+      "/rover_0"
+    ],
+    [
+      "demo_sensor_views",
+      "/"
+    ],
+    [
+      "map_to_drone_0_odom",
+      "/"
+    ],
+    [
+      "map_to_drone_1_odom",
+      "/"
+    ],
+    [
+      "map_to_rover_0_odom",
+      "/"
+    ],
+    [
+      "peer_network_bridge",
+      "/"
+    ],
+    [
+      "robot_state_publisher",
+      "/drone_0"
+    ],
+    [
+      "robot_state_publisher",
+      "/drone_1"
+    ],
+    [
+      "robot_state_publisher",
+      "/rover_0"
+    ],
+    [
+      "ros_gz_bridge",
+      "/"
+    ],
+    [
+      "survivor_oracle",
+      "/"
+    ],
+    [
+      "swarm_validation_probe",
+      "/"
+    ]
+  ],
+  "counts": {
+    "/clock": 10621,
+    "/tf": 5991,
+    "/rover_0/odom": 1191,
+    "/rover_0/scan": 215,
+    "/rover_0/imu/data": 2142,
+    "/rover_0/joint_states": 824,
+    "/drone_0/odom": 1190,
+    "/drone_0/scan": 215,
+    "/drone_0/imu/data": 4282,
+    "/drone_0/joint_states": 824,
+    "/drone_1/odom": 1189,
+    "/drone_1/imu/data": 4280,
+    "/rover_0/demo_stage": 428,
+    "/drone_1/joint_states": 823,
+    "/drone_0/demo_stage": 428,
+    "/drone_1/demo_stage": 428,
+    "/drone_0/peer_inbox": 68,
+    "/drone_1/peer_inbox": 65,
+    "/drone_1/scan": 214,
+    "/drone_1/downward_camera/image_raw": 128,
+    "/drone_0/downward_camera/image_raw": 128,
+    "/drone_0/status": 42,
+    "/drone_1/status": 42,
+    "/rover_0/status": 42,
+    "/rover_0/peer_inbox": 47
+  },
+  "samples": {
+    "/clock": 47.856,
+    "/rover_0/odom": {
+      "frame": "rover_0/odom",
+      "child": "rover_0/base_footprint"
+    },
+    "/rover_0/scan": {
+      "samples": 180,
+      "finite": 109,
+      "minimum": 3.3351519107818604,
+      "frame": "rover_0/lidar_link"
+    },
+    "/rover_0/joint_states": {
+      "names": [
+        "front_left_wheel_joint",
+        "front_right_wheel_joint",
+        "rear_left_wheel_joint",
+        "rear_right_wheel_joint"
+      ],
+      "velocity": [
+        4.141741651711786,
+        5.143972637458351,
+        4.14174164779284,
+        5.143972633661476
+      ]
+    },
+    "/drone_0/odom": {
+      "frame": "drone_0/odom",
+      "child": "drone_0/base_footprint"
+    },
+    "/drone_0/scan": {
+      "samples": 180,
+      "finite": 0,
+      "minimum": null,
+      "frame": "drone_0/sensor_link"
+    },
+    "/drone_0/joint_states": {
+      "names": [
+        "front_left_joint",
+        "front_right_joint",
+        "rear_left_joint",
+        "rear_right_joint"
+      ],
+      "velocity": [
+        73.8884926872886,
+        -76.01459593304853,
+        -75.81822748914966,
+        74.15892868804431
+      ]
+    },
+    "/drone_1/odom": {
+      "frame": "drone_1/odom",
+      "child": "drone_1/base_footprint"
+    },
+    "/drone_1/joint_states": {
+      "names": [
+        "front_left_joint",
+        "front_right_joint",
+        "rear_left_joint",
+        "rear_right_joint"
+      ],
+      "velocity": [
+        73.94677235282418,
+        -76.07443751553453,
+        -75.77980372847887,
+        74.12616808912712
+      ]
+    },
+    "/drone_1/scan": {
+      "samples": 180,
+      "finite": 0,
+      "minimum": null,
+      "frame": "drone_1/sensor_link"
+    },
+    "/drone_1/downward_camera/image_raw": {
+      "width": 320,
+      "height": 240,
+      "encoding": "rgb8"
+    },
+    "/drone_0/downward_camera/image_raw": {
+      "width": 320,
+      "height": 240,
+      "encoding": "rgb8"
+    }
+  },
+  "positions": {
+    "/rover_0/odom": {
+      "first": [
+        -2.3418247710320093,
+        -16.0000000034575,
+        3.7641630418430764e-08
+      ],
+      "last": [
+        -8.905142579537301,
+        -12.108623637394002,
+        -1.0482509552037187e-08
+      ]
+    },
+    "/drone_0/odom": {
+      "first": [
+        -5.0,
+        -5.0,
+        2.2979571684636855
+      ],
+      "last": [
+        -4.462268108062008,
+        -2.000797737601178,
+        3.4938381754113594
+      ]
+    },
+    "/drone_1/odom": {
+      "first": [
+        1.0,
+        -6.0,
+        2.320574837259657
+      ],
+      "last": [
+        2.5909781577599444,
+        -2.9394569373159944,
+        4.475774842435165
+      ]
+    }
+  },
+  "motion": {
+    "/rover_0/odom": {
+      "min": [
+        -8.905142579537301,
+        -16.007836876601292,
+        -6.458515020646872e-08
+      ],
+      "max": [
+        5.303627116049705,
+        -11.382755541803288,
+        5.3497526387253e-08
+      ],
+      "max_tilt_rad": 1.6726511955740805e-07,
+      "max_speed": 0.6799160488928494
+    },
+    "/drone_0/odom": {
+      "min": [
+        -5.000001187448283,
+        -5.010492620151108,
+        2.2979571684636855
+      ],
+      "max": [
+        -1.935522693528598,
+        -1.9036488772577504,
+        3.5793813239530605
+      ],
+      "max_tilt_rad": 0.06653550271176649,
+      "max_speed": 0.6834989479733994
+    },
+    "/drone_1/odom": {
+      "min": [
+        0.9999988760793681,
+        -6.011376410710218,
+        2.320574837259657
+      ],
+      "max": [
+        4.070094551256248,
+        -2.9047593696725515,
+        4.579363820728388
+      ],
+      "max_tilt_rad": 0.06624420468325239,
+      "max_speed": 0.683509516284577
+    }
+  },
+  "stages": {
+    "/rover_0/demo_stage": [
+      "WAYPOINT_0",
+      "WAYPOINT_1",
+      "WAYPOINT_2",
+      "WAYPOINT_3"
+    ],
+    "/drone_0/demo_stage": [
+      "HOVER",
+      "TAKEOFF",
+      "WAYPOINT_0",
+      "WAYPOINT_1",
+      "WAYPOINT_2",
+      "WAYPOINT_3"
+    ],
+    "/drone_1/demo_stage": [
+      "HOVER",
+      "TAKEOFF",
+      "WAYPOINT_0",
+      "WAYPOINT_1",
+      "WAYPOINT_2",
+      "WAYPOINT_3"
+    ]
+  },
+  "dynamic_tf_parents": {
+    "rover_0/front_left_wheel_link": [
+      "rover_0/base_link"
+    ],
+    "rover_0/front_right_wheel_link": [
+      "rover_0/base_link"
+    ],
+    "rover_0/rear_left_wheel_link": [
+      "rover_0/base_link"
+    ],
+    "rover_0/rear_right_wheel_link": [
+      "rover_0/base_link"
+    ],
+    "drone_0/front_left_rotor": [
+      "drone_0/base_link"
+    ],
+    "drone_0/front_right_rotor": [
+      "drone_0/base_link"
+    ],
+    "drone_0/rear_left_rotor": [
+      "drone_0/base_link"
+    ],
+    "drone_0/rear_right_rotor": [
+      "drone_0/base_link"
+    ],
+    "drone_1/base_footprint": [
+      "drone_1/odom"
+    ],
+    "rover_0/base_footprint": [
+      "rover_0/odom"
+    ],
+    "drone_0/base_footprint": [
+      "drone_0/odom"
+    ],
+    "drone_1/front_left_rotor": [
+      "drone_1/base_link"
+    ],
+    "drone_1/front_right_rotor": [
+      "drone_1/base_link"
+    ],
+    "drone_1/rear_left_rotor": [
+      "drone_1/base_link"
+    ],
+    "drone_1/rear_right_rotor": [
+      "drone_1/base_link"
+    ]
+  },
+  "missing": []
+}

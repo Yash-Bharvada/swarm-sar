@@ -1,0 +1,542 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
+track_mode: FOLLOW
+follow_target {
+  name: "drone_1"
+}
+follow_offset {
+  x: -5
+  z: 3
+}
+follow_pgain: 0.08
+
