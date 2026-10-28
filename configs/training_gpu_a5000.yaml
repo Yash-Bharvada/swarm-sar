@@ -3,8 +3,11 @@ iterations: 10000
 target_env_steps: 5000000
 checkpoint_interval_steps: 250000
 evaluation_interval_steps: 250000
+evaluation_interval_seconds: 3600
 development_eval_count: 20
 seed_splits_path: configs/seed_splits.yaml
+evaluation_cohorts_path: configs/evaluation_cohorts.yaml
+training_gates_path: configs/training_gates.yaml
 num_cpus: 28
 num_env_runners: 20
 num_cpus_per_env_runner: 1

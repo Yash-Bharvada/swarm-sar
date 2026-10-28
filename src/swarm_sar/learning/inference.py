@@ -23,7 +23,7 @@ def initial_policy_state(module):
     device = next(module.parameters()).device
     return {
         branch: {
-            name: tensor.unsqueeze(1).to(device)
+            name: tensor.unsqueeze(0).to(device)
             for name, tensor in values.items()
         }
         for branch, values in module.get_initial_state().items()
@@ -74,15 +74,51 @@ def policy_step(
         output = module.forward_inference(batch)
     logits = output[Columns.ACTION_DIST_INPUTS]
     logits = logits[0, -1] if logits.ndim == 3 else logits[0]
+    probabilities = torch.softmax(logits, dim=-1).cpu().numpy()
     if rng is None:
         action = int(torch.argmax(logits).item())
     else:
-        probabilities = torch.softmax(logits, dim=-1).cpu().numpy()
         action = int(rng.choice(len(probabilities), p=probabilities))
     if observation["action_mask"][action] <= 0:
         raise AssertionError(f"Masked policy selected invalid action {action}")
     next_state = output.get(Columns.STATE_OUT) if stateful else None
     return action, next_state
+
+
+def policy_step_with_diagnostics(module, observation, rng, state=None):
+    """Inference step plus policy entropy, used only by evaluation."""
+    device = next(module.parameters()).device
+    stateful = module.is_stateful()
+    if stateful and state is None:
+        state = initial_policy_state(module)
+    prefix = (None, None) if stateful else (None,)
+    vector = observation["observations"][..., : module_observation_size(module)]
+    batch = {
+        Columns.OBS: {
+            "action_mask": torch.as_tensor(
+                observation["action_mask"][prefix], dtype=torch.float32, device=device
+            ),
+            "observations": torch.as_tensor(
+                vector[prefix], dtype=torch.float32, device=device
+            ),
+        }
+    }
+    if stateful:
+        batch[Columns.STATE_IN] = state
+    with torch.no_grad():
+        output = module.forward_inference(batch)
+    logits = output[Columns.ACTION_DIST_INPUTS]
+    logits = logits[0, -1] if logits.ndim == 3 else logits[0]
+    probabilities = torch.softmax(logits, dim=-1)
+    action = int(
+        torch.argmax(logits).item()
+        if rng is None
+        else rng.choice(len(probabilities), p=probabilities.cpu().numpy())
+    )
+    if observation["action_mask"][action] <= 0:
+        raise AssertionError(f"Masked policy selected invalid action {action}")
+    entropy = float(-(probabilities * probabilities.clamp_min(1e-12).log()).sum())
+    return action, output.get(Columns.STATE_OUT) if stateful else None, entropy
 
 
 def policy_action(
@@ -103,6 +139,8 @@ def evaluate_modules(
     max_steps: int = 400,
     world_size: int = 32,
     stochastic: bool = True,
+    sim_overrides: dict[str, Any] | None = None,
+    robot_stress: dict[str, Any] | None = None,
 ) -> list[dict[str, Any]]:
     rows = []
     for seed in seeds:
@@ -115,6 +153,8 @@ def evaluate_modules(
                 "max_steps": max_steps,
                 "network_enabled": network_enabled,
                 "final_team_profiles": [team_profile],
+                "sim_overrides": sim_overrides or {},
+                "robot_stress": robot_stress or {},
             }
         )
         observations, _ = env.reset(seed=seed)
@@ -123,19 +163,29 @@ def evaluate_modules(
             agent: initial_policy_state(modules[policy_mapping_fn(agent)])
             for agent in env.agents
         }
+        action_counts = {
+            "rover_policy": np.zeros(7, dtype=np.int64),
+            "drone_policy": np.zeros(7, dtype=np.int64),
+        }
+        entropy_sums = {"rover_policy": 0.0, "drone_policy": 0.0}
+        policy_steps = {"rover_policy": 0, "drone_policy": 0}
         while env.agents:
             actions = {}
             for agent, observation in observations.items():
                 if agent not in env.agents:
                     continue
-                action, next_state = policy_step(
-                    modules[policy_mapping_fn(agent)],
+                policy_id = policy_mapping_fn(agent)
+                action, next_state, entropy = policy_step_with_diagnostics(
+                    modules[policy_id],
                     observation,
                     rng if stochastic else None,
                     states.get(agent),
                 )
                 actions[agent] = action
                 states[agent] = next_state
+                action_counts[policy_id][action] += 1
+                entropy_sums[policy_id] += entropy
+                policy_steps[policy_id] += 1
             observations, _, _, _, _ = env.step(actions)
         metrics = env.metrics_snapshot()
         rows.append(
@@ -151,6 +201,13 @@ def evaluate_modules(
                 "collisions": int(metrics["collisions"]),
                 "invalid_actions": int(metrics["invalid_actions"]),
                 "time_to_all_victims": metrics["time_to_all_victims"],
+                "action_counts": {
+                    policy: counts.tolist() for policy, counts in action_counts.items()
+                },
+                "mean_action_entropy": {
+                    policy: entropy_sums[policy] / max(1, policy_steps[policy])
+                    for policy in action_counts
+                },
             }
         )
         env.close()

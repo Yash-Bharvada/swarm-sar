@@ -43,6 +43,8 @@ class VariableSwarmRLlibEnv(MultiAgentEnv):
         self.max_steps = int(config.get("max_steps", 240))
         self.world_sizes = [int(size) for size in config.get("world_sizes", [24, 28, 32])]
         self.network_enabled = bool(config.get("network_enabled", True))
+        self.sim_overrides = copy.deepcopy(config.get("sim_overrides", {}))
+        self.robot_stress = copy.deepcopy(config.get("robot_stress", {}))
         self.survivor_reward = float(config.get("survivor_reward", 20.0))
         self.new_cell_reward = float(config.get("new_cell_reward", 0.05))
         self.investigate_evidence_reward = float(
@@ -127,6 +129,40 @@ class VariableSwarmRLlibEnv(MultiAgentEnv):
             investigate_confirms_victims=True,
             frontier_samples_per_cluster=5,
         )
+        sim.update(self.sim_overrides)
+        for robot_config in robots.values():
+            robot_config["thermal_noise"] *= float(
+                self.robot_stress.get("noise_multiplier", 1.0)
+            )
+            robot_config["acoustic_noise"] *= float(
+                self.robot_stress.get("noise_multiplier", 1.0)
+            )
+            robot_config["thermal_detection_probability"] = max(
+                0.0,
+                robot_config["thermal_detection_probability"]
+                - float(self.robot_stress.get("detection_probability_drop", 0.0)),
+            )
+            robot_config["acoustic_detection_probability"] = max(
+                0.0,
+                robot_config["acoustic_detection_probability"]
+                - float(self.robot_stress.get("detection_probability_drop", 0.0)),
+            )
+            robot_config["thermal_false_positive_rate"] = min(
+                1.0,
+                robot_config["thermal_false_positive_rate"]
+                + float(self.robot_stress.get("false_positive_increase", 0.0)),
+            )
+            robot_config["acoustic_false_positive_rate"] = min(
+                1.0,
+                robot_config["acoustic_false_positive_rate"]
+                + float(self.robot_stress.get("false_positive_increase", 0.0)),
+            )
+            robot_config["odometry_drift_std"] *= float(
+                self.robot_stress.get("drift_multiplier", 1.0)
+            )
+            robot_config["odometry_uncertainty_growth"] *= float(
+                self.robot_stress.get("drift_multiplier", 1.0)
+            )
         required = sum(profile.values())
         if required > int(world["spawn_size"]) ** 2:
             raise ValueError(
@@ -236,6 +272,8 @@ class VariableSwarmRLlibEnv(MultiAgentEnv):
                 "invalid_actions": self.invalid_action_count,
                 "team_profile": dict(self.current_profile or {}),
                 "network_enabled": self.network_enabled,
+                "sim_overrides": copy.deepcopy(self.sim_overrides),
+                "robot_stress": copy.deepcopy(self.robot_stress),
                 "seed": self.current_seed,
             }
         )

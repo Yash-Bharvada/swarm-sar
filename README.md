@@ -94,6 +94,10 @@ python scripts/export_step4_expert.py --episodes 2000 --output results/expert_tr
 python scripts/validate_expert_dataset.py results/expert_train
 ```
 
+The complete GPU handoff, class-balanced recurrent behavior cloning, cohort
+evaluation, and automatic training gates are documented in
+[`docs/GPU_TRANSFER_CHECKLIST.md`](docs/GPU_TRANSFER_CHECKLIST.md).
+
 The A5000 profile is `configs/training_gpu_a5000.yaml`. See
 `docs/gpu_training_preparation.md` before launching it.
 

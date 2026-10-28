@@ -5,6 +5,7 @@ import csv
 import hashlib
 import json
 import math
+import time
 from pathlib import Path
 
 import matplotlib
@@ -20,9 +21,9 @@ from swarm_sar.learning.training import (
     build_ppo_config,
     training_config,
 )
-from swarm_sar.learning.inference import evaluate_modules
+from swarm_sar.learning.cohort_evaluation import evaluate_cohorts, write_evaluation
+from swarm_sar.learning.training_gates import evaluate_gate, gate_definition, iteration_health
 from swarm_sar.policy_contract import policy_contract
-from swarm_sar.validation.seeds import load_seed_splits
 
 
 def parameter_vector(module) -> torch.Tensor:
@@ -80,25 +81,10 @@ def save_numbered_checkpoint(algorithm, output: Path, env_steps: int) -> Path:
     return saved
 
 
-def development_recall(algorithm, config: dict) -> float:
-    splits = load_seed_splits(config.get("seed_splits_path"))
-    count = min(int(config.get("development_eval_count", 20)), len(splits["development"]))
-    seeds = list(splits["development"])[:count]
-    modules = {
-        ROVER_POLICY: algorithm.get_module(ROVER_POLICY),
-        DRONE_POLICY: algorithm.get_module(DRONE_POLICY),
-    }
-    rows = evaluate_modules(
-        modules,
-        seeds=seeds,
-        team_profile={"rover": 2, "drone": 2},
-        network_enabled=True,
-        max_steps=int(config["max_steps"]),
-        world_size=max(int(size) for size in config["world_sizes"]),
-        stochastic=False,
-    )
-    total = sum(row["survivors_total"] for row in rows)
-    return sum(row["survivors_found"] for row in rows) / max(1, total)
+def write_json_atomic(path: Path, payload: dict) -> None:
+    temporary = path.with_suffix(path.suffix + ".tmp")
+    temporary.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    temporary.replace(path)
 
 
 def main() -> None:
@@ -192,7 +178,14 @@ def main() -> None:
     last_evaluation_step = 0
     checkpoint_interval = int(config.get("checkpoint_interval_steps", 0))
     evaluation_interval = int(config.get("evaluation_interval_steps", 0))
+    evaluation_interval_seconds = int(config.get("evaluation_interval_seconds", 0))
+    last_evaluation_time = time.monotonic()
     interrupted = False
+    termination_status = "completed"
+    termination_reasons: list[str] = []
+    recall_history: list[float] = []
+    gates = gate_definition(config.get("training_gates_path"))
+    evaluation_index = 0
     try:
         for iteration in range(1, iterations + 1):
             try:
@@ -224,6 +217,22 @@ def main() -> None:
             rows.append(row)
             print(json.dumps(row), flush=True)
 
+            health_failures = iteration_health(row)
+            write_json_atomic(
+                output / "heartbeat.json",
+                {
+                    "status": "running",
+                    "iteration": iteration,
+                    "env_steps": row["env_steps"],
+                    "latest_checkpoint": str(latest_checkpoint) if latest_checkpoint else None,
+                    "health_failures": health_failures,
+                },
+            )
+            if health_failures:
+                termination_status = "aborted"
+                termination_reasons = health_failures
+                break
+
             env_steps = row["env_steps"]
             due_checkpoint = checkpoint_interval > 0 and (
                 env_steps // checkpoint_interval
@@ -233,15 +242,34 @@ def main() -> None:
                 env_steps // evaluation_interval
                 > last_evaluation_step // evaluation_interval
             )
+            due_evaluation = due_evaluation or (
+                evaluation_interval_seconds > 0
+                and time.monotonic() - last_evaluation_time >= evaluation_interval_seconds
+            )
             if due_checkpoint:
                 latest_checkpoint = save_numbered_checkpoint(
                     algorithm, output, env_steps
                 )
                 last_checkpoint_step = env_steps
             if due_evaluation:
-                recall = development_recall(algorithm, config)
-                row["development_recall"] = recall
+                report = evaluate_cohorts(
+                    {
+                        ROVER_POLICY: algorithm.get_module(ROVER_POLICY),
+                        DRONE_POLICY: algorithm.get_module(DRONE_POLICY),
+                    },
+                    evaluation_index=evaluation_index,
+                    config_path=config.get("evaluation_cohorts_path"),
+                    seed_splits_path=config.get("seed_splits_path"),
+                )
+                write_evaluation(
+                    report,
+                    output / "evaluations" / f"step_{env_steps:012d}.json",
+                )
+                recall = float(report["summary"]["mean_cohort_recall"])
+                recall_history.append(recall)
+                row["development_mean_cohort_recall"] = recall
                 last_evaluation_step = env_steps
+                last_evaluation_time = time.monotonic()
                 if latest_checkpoint is None or last_checkpoint_step != env_steps:
                     latest_checkpoint = save_numbered_checkpoint(
                         algorithm, output, env_steps
@@ -253,6 +281,29 @@ def main() -> None:
                     index["best_development_recall"] = recall
                     index["best"] = latest_checkpoint.relative_to(output).as_posix()
                     write_checkpoint_index(output, index)
+                decision = evaluate_gate(
+                    report,
+                    env_steps=env_steps,
+                    definition=gates,
+                    recall_history=recall_history,
+                )
+                row["gate_status"] = decision["status"]
+                write_json_atomic(
+                    output / "heartbeat.json",
+                    {
+                        "status": decision["status"],
+                        "iteration": iteration,
+                        "env_steps": env_steps,
+                        "latest_checkpoint": str(latest_checkpoint),
+                        "evaluation": report["summary"],
+                        "gate": decision,
+                    },
+                )
+                evaluation_index += 1
+                if decision["status"] != "continue":
+                    termination_status = "aborted" if decision["status"] == "abort" else "paused"
+                    termination_reasons = decision["abort_reasons"] + decision["pause_reasons"]
+                    break
             if target_env_steps > 0 and env_steps >= target_env_steps:
                 break
 
@@ -284,6 +335,8 @@ def main() -> None:
             "checkpoint": str(checkpoint),
             "resumed_from": str(args.resume.resolve()) if args.resume else None,
             "interrupted": interrupted,
+            "termination_status": termination_status,
+            "termination_reasons": termination_reasons,
             "policy_contract": policy_contract(),
             "policies": parameter_report,
             "weights_updated": all(
@@ -314,8 +367,14 @@ def main() -> None:
         figure.savefig(output / "training_curve.png", dpi=150)
         plt.close(figure)
         print(json.dumps(summary, indent=2))
+        write_json_atomic(
+            output / ("ABORTED.json" if termination_status == "aborted" else "PAUSED.json" if termination_status == "paused" else "COMPLETED.json"),
+            summary,
+        )
         if not summary["weights_updated"]:
             raise SystemExit("FAIL: one or more PPO policies did not update")
+        if termination_status == "aborted":
+            raise SystemExit("ABORT: " + ", ".join(termination_reasons))
     finally:
         if algorithm is not None:
             algorithm.stop()

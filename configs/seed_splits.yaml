@@ -1,7 +1,7 @@
 version: 1
 train:
   start: 0
-  stop: 5000
+  stop: 10000
 development:
   start: 10000
   stop: 10100

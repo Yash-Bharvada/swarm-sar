@@ -6,7 +6,7 @@ from swarm_sar.learning.training import training_config
 
 def test_checked_in_seed_splits_are_disjoint_and_expected_sizes():
     splits = load_seed_splits()
-    assert len(splits["train"]) == 5000
+    assert len(splits["train"]) == 10000
     assert len(splits["development"]) == 100
     assert len(splits["final"]) == 200
     assert not set(splits["train"]).intersection(splits["development"])
