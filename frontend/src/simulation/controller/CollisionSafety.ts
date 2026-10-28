@@ -54,13 +54,23 @@ export function safetyFilter(robots: RobotState[], requested: MoveMap, grid: Gri
     const chain = [id];
     let cx = alive.get(id)!.x + dx;
     let cy = alive.get(id)!.y + dy;
+    let sideways = false;
     while (occupant.has(pk(cx, cy)) && !chain.includes(occupant.get(pk(cx, cy))!)) {
       const other = occupant.get(pk(cx, cy))!;
+      // Browser deviation: a peer already leaving perpendicular is not pushed
+      // (the convoy check below lets the follower take its cell). Pushing it
+      // caused a two-robot livelock at corridor mouths.
+      const own = filtered.get(other) ?? 0;
+      const [ox, oy] = MOVE_DELTAS[own];
+      if (own && ox * dx + oy * dy === 0) {
+        sideways = true;
+        break;
+      }
       chain.push(other);
       cx = alive.get(other)!.x + dx;
       cy = alive.get(other)!.y + dy;
     }
-    if (chain.length < 2 || occupant.has(pk(cx, cy)) || chain.some((c) => locked.has(c))) continue;
+    if (sideways || chain.length < 2 || occupant.has(pk(cx, cy)) || chain.some((c) => locked.has(c))) continue;
     const traversable = chain.every((c) => {
       const r = alive.get(c)!;
       return cellAllows(grid, r, r.x + dx, r.y + dy);

@@ -202,6 +202,7 @@ export class SimulationEngine {
     this.broadcastState();
     this.network.advance(0, this.robots, this.world.grid);
     this.processMessages();
+    this.trackConnectivity();
     this.coverageHistory.push(this.coverage());
     this.emit({ type: 'mission_start', robots: this.robots.length, scenario: this.scenario.name });
   }
@@ -339,7 +340,8 @@ export class SimulationEngine {
     if (goals.length !== new Set(goals).size) this.duplicateGoalSteps++;
 
     const shield = safetyFilter(this.robots, requested, this.world.grid, this.step);
-    for (const chain of shield.yielded)
+    // Narrate convoys only where they matter: inside one-cell-wide passages.
+    for (const chain of shield.yielded.filter((c) => c.some((id) => this.isNarrow(this.robots[id]))))
       this.emitThrottled(`yield:${chain.slice().sort().join()}`, 30, { type: 'yield', robots: chain.map((id) => this.robots[id].name) });
 
     this.step++;
@@ -397,6 +399,13 @@ export class SimulationEngine {
       this.doneReason = allFound ? 'all_found' : allDead ? 'all_depleted' : 'timeout';
       this.emit({ type: 'complete', reason: this.doneReason, found, total: this.world.victims.length });
     }
+  }
+
+  /** Telemetry only: a cell is narrow when it has at most two passable neighbours. */
+  private isNarrow(r: RobotState): boolean {
+    let open = 0;
+    for (const [dx, dy] of MOVE_DELTAS.slice(1)) if (this.world.grid.isTraversable(r.x + dx, r.y + dy)) open++;
+    return open <= 2;
   }
 
   private investigateMove(r: RobotState): number {
@@ -643,11 +652,11 @@ export class SimulationEngine {
     return this.robots.filter((r) => r.alive && this.connected.get(r.name)).length;
   }
 
-  /** Measured link-layer loss over all in-range transmission attempts. */
-  measuredLoss(): number {
+  /** Measured link-layer loss over in-range attempts; null until the sample is meaningful. */
+  measuredLoss(): number | null {
     const m = this.network.metrics;
     const inRange = m.messagesDelivered + m.droppedLoss + m.droppedStale + m.duplicatesSuppressed;
-    return inRange ? m.droppedLoss / inRange : 0;
+    return inRange >= 30 ? m.droppedLoss / inRange : null;
   }
 
   /** Deterministic fingerprint of the complete simulation state. */

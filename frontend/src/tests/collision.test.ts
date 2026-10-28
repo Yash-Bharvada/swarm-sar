@@ -82,6 +82,24 @@ describe('CollisionSafety', () => {
     ]);
   });
 
+  it('a robot turning out of the way is followed, not pushed (no livelock)', () => {
+    const grid = openGrid(6, 6);
+    const follower = robotAt(0, 'rover', 1, 1, grid);
+    const turner = robotAt(1, 'rover', 2, 1, grid);
+    for (const step of [0, 1]) {
+      follower.x = 1;
+      follower.y = 1;
+      turner.x = 2;
+      turner.y = 1;
+      const { collisions } = run([follower, turner], [[0, RIGHT], [1, 2]], grid, step);
+      expect(collisions).toBe(0);
+      expect(positions([follower, turner])).toEqual([
+        [2, 1],
+        [2, 2],
+      ]);
+    }
+  });
+
   it('a convoy stops at a wall instead of overlapping', () => {
     const grid = corridor(6);
     grid.set(5, 1, WALL);
