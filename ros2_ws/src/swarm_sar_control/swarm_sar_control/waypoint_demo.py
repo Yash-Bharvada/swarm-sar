@@ -11,17 +11,20 @@ def slew(value, target, step):
     return value + max(-step, min(step, target - value))
 
 
+DEMO_ROUTES = {
+    "rover_0": [(-1+3*math.cos(-math.pi/2+i*math.pi/8),
+                 -14+3*math.sin(-math.pi/2+i*math.pi/8)) for i in range(16)],
+    "rover_1": [(-15., -6.), (-12., -6.), (-12., 3.), (-15., 3.)],
+    # Separated flight lanes pass over existing survivors 1 and 3.
+    "drone_0": [(-5., -5.), (-2., -5.), (-2., 6.), (-5., 6.)],
+    "drone_1": [(1., -6.), (13., -14.), (15., -14.), (4., -3.)],
+}
+
+
 class WaypointDemo(DecentralizedAgent):
     def __init__(self):
         super().__init__()
-        routes = {
-            "rover_0": [(-1+3*math.cos(-math.pi/2+i*math.pi/8),
-                         -14+3*math.sin(-math.pi/2+i*math.pi/8)) for i in range(16)],
-            "rover_1": [(-15., -6.), (-12., -6.), (-12., 3.), (-15., 3.)],
-            "drone_0": [(-5., -5.), (-2., -5.), (-2., -2.), (-5., -2.)],
-            "drone_1": [(1., -6.), (4., -6.), (4., -3.), (1., -3.)],
-        }
-        self.route = routes[self.agent_id]
+        self.route = DEMO_ROUTES[self.agent_id]
         self.target_height = 3.5 if self.agent_id == "drone_0" else 4.5
         self.index = 0
         self.last_command = Twist()

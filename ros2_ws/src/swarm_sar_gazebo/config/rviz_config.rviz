@@ -27,13 +27,31 @@ Visualization Manager:
         Durability Policy: Transient Local
         Depth: 1
     - Class: rviz_default_plugins/MarkerArray
-      Name: Live Vehicles
+      Name: Vehicle Labels
       Enabled: true
       Topic:
         Value: /demo_vehicle_markers
         Reliability Policy: Reliable
         Durability Policy: Volatile
         Depth: 1
+    - Class: rviz_default_plugins/Axes
+      Name: Rover 0 Axes
+      Enabled: true
+      Reference Frame: rover_0/base_footprint
+      Length: 0.9
+      Radius: 0.045
+    - Class: rviz_default_plugins/Axes
+      Name: Drone 0 Axes
+      Enabled: true
+      Reference Frame: drone_0/base_footprint
+      Length: 0.9
+      Radius: 0.045
+    - Class: rviz_default_plugins/Axes
+      Name: Drone 1 Axes
+      Enabled: true
+      Reference Frame: drone_1/base_footprint
+      Length: 0.9
+      Radius: 0.045
     - Class: rviz_default_plugins/Grid
       Name: Site Grid
       Enabled: true

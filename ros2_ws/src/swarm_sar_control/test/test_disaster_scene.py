@@ -16,10 +16,12 @@ def test_projected_box_and_map_cells():
     grid.info.origin.orientation.w = 1.
     grid.data = [-1, 0, 100, 50]
     marker = map_tiles(grid).markers[0]
-    assert len(marker.points) == 3  # unknown cells must not become free space
-    assert np.allclose([(p.x, p.y) for p in marker.points], [(.3, .1), (.1, .3), (.3, .3)])
+    assert len(marker.points) == 18  # three observed cells, two triangles each
+    assert np.allclose([(marker.points[i].x, marker.points[i].y) for i in (0,6,12)], [(.2, 0.), (0., .2), (.2, .2)])
     assert marker.pose.position.x == -24.
-    assert marker.colors[0].r > marker.colors[2].r > marker.colors[1].r
+    assert marker.colors[0].r > marker.colors[12].r > marker.colors[6].r
+    grid.data = [0] * 4
+    assert len(map_tiles(grid).markers[0].points) == 12  # two row rectangles, not four cubes
     grid.data = [-1] * 4
     assert map_tiles(grid).markers[0].action == Marker.DELETE
 

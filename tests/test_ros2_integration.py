@@ -77,3 +77,27 @@ def test_default_demo_and_full_profile_have_the_documented_robot_counts():
                      and node.args and isinstance(node.args[0], ast.Constant) and node.args[0].value == "scenario"]
     assert len(scenario_args) == 1
     assert next(keyword.value.value for keyword in scenario_args[0].keywords if keyword.arg == "default_value") == "demo"
+
+
+def test_survivor_model_is_packaged_and_matches_oracle_positions():
+    description = ROS / "swarm_sar_description"
+    world = ET.parse(description / "worlds/disaster_site.world").getroot().find("world")
+    survivors = [entity for entity in world.findall("include") if entity.findtext("name", "").startswith("survivor_")]
+    assert len(survivors) == 5
+    assert all(entity.findtext("uri") == "model://survivor" for entity in survivors)
+    model = ET.parse(description / "models/survivor/model.sdf")
+    assert model.find(".//visual[@name='head']") is not None
+    assert model.find(".//collision") is None
+    assert "urdf worlds models" in (description / "CMakeLists.txt").read_text()
+    launch = (ROS / "swarm_sar_gazebo/launch/swarm_sar_sim.launch.py").read_text()
+    assert '{"world_file": world}' in launch
+
+
+def test_readiness_uses_selected_profile_and_bounds_wait():
+    launch = (ROS / "swarm_sar_gazebo/launch/swarm_sar_sim.launch.py").read_text()
+    helper = (ROS / "swarm_sar_control/swarm_sar_control/wait_for_simulation.py").read_text()
+    assert '"scan_topic": f"/{robots[0][0]}/scan"' in launch
+    assert 'node.declare_parameter("timeout_seconds", 120.0)' in helper
+    assert 'while rclpy.ok() and time.monotonic() < deadline:' in helper
+    assert 'event.returncode == 0' in launch
+    ast.parse((ROOT / "ros2_ws/tools/ros2_encounter_probe.py").read_text())

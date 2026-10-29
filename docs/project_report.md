@@ -37,7 +37,7 @@ Fleet/menu refinement adds rotating rover/drone previews using the actual world 
 The latest local checks passed:
 
 - Production frontend build and **127 frontend tests across 15 files**, including audio routing, discovery queues, paused-state protection, stable fictional dialogue and an identical final engine state with/without encounter pauses.
-- **152 Python tests passed, 2 ROS/xacro-dependent tests skipped**, with two PettingZoo deprecation warnings.
+- **154 Python tests passed, 2 ROS/xacro-dependent tests skipped**, with two PettingZoo deprecation warnings.
 - **30 frozen baseline file hashes verified** and GPU-v1 policy contract verified: `c5dff01368e1bb3a77112884c5d545457830097b11aefe54e0d412fc874c57c5`.
 - Audited GPU training source manifest verified: **94 files**, manifest SHA-256 `554f1bc621d0b2144113e75a94fa6668ef73e02f1ce7ee2d308637b14ab920ef`. This UI/report pass leaves those training sources and the expert dataset unchanged.
 - GPU pipeline `--plan` succeeds without starting training. CUDA/A5000 execution has not been tested here.
@@ -75,3 +75,21 @@ Both grid robot types already have occupancy sensing, directional thermal eviden
 ## Branch delivery
 
 This completion is intended to leave `main` and `rashiyaom` at the same reviewed commit containing these controls and reports. Branch spelling in the repository is **`rashiyaom`**. The GPU-only branch and all existing audited training tags are retained. Historical evidence remains labelled by its original run rather than overwritten by this status report.
+
+## Yash PR #2 integration review — 29 October 2026
+
+Integrated the ROS/Gazebo axes and survivor-encounter update from Yash Bharvada
+(PR #2, source commit `b87c246`). It adds five human visual models, shared world-file
+survivor coordinates, detection-only green RViz dots, flat batched occupancy tiles,
+and distinct drone encounter routes. Vehicle dynamics and the rover circuit remain
+unchanged. Submitted logs record three vehicle confirmations; these demonstrate
+scripted encounters, not exhaustive autonomous search or learned-policy deployment.
+
+Integration fixes select the active profile's scan topic for RViz readiness (including
+drone-only launches), bound readiness to 120 wall-clock seconds, and place the
+subscribe-only probe at `ros2_ws/tools/ros2_encounter_probe.py` to preserve the audited
+GPU source manifest. Validation: 154 local Python tests passed, two ROS/xacro tests
+skipped; all 94 GPU source hashes verified unchanged. ROS/Gazebo executables are
+unavailable on this Mac, so live ROS package tests and physics were not rerun here.
+Existing frontend work, immutable training tags and the server's running training
+checkout are unaffected. No PR CI checks were configured at review time.

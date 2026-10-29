@@ -34,22 +34,29 @@ def map_tiles(grid):
     marker = Marker()
     marker.header.frame_id = grid.header.frame_id
     marker.ns = "measured_map"
-    marker.type = Marker.CUBE_LIST
+    marker.type = Marker.TRIANGLE_LIST
     marker.pose = grid.info.origin
-    marker.scale.x = marker.scale.y = grid.info.resolution
-    marker.scale.z = 0.02
+    marker.scale.x = marker.scale.y = marker.scale.z = 1.0
     marker.color.a = 1.0
     width, height = grid.info.width, grid.info.height
     if width <= 0 or height <= 0 or grid.info.resolution <= 0 or len(grid.data) != width*height:
         marker.action = Marker.DELETE
         return MarkerArray(markers=[marker])
-    # Unobserved cells remain the dark background; never present them as free.
-    for index in np.flatnonzero(np.asarray(grid.data) >= 0):
-        value = grid.data[index]
-        shade = 0.88 - 0.70 * min(value, 100) / 100
-        marker.points.append(Point(x=float((index % width + .5)*grid.info.resolution),
-                                   y=float((index // width + .5)*grid.info.resolution), z=-0.02))
-        marker.colors.append(ColorRGBA(r=shade, g=shade, b=shade, a=1.0))
+    # Merge equal horizontal cells into flat rectangles. This preserves every
+    # measured cell while avoiding tens of thousands of 3D cubes on the VM.
+    rows = np.asarray(grid.data).reshape(height, width)
+    resolution = grid.info.resolution
+    for y, row in enumerate(rows):
+        edges = np.r_[0, np.flatnonzero(row[1:] != row[:-1])+1, width]
+        for start, end in zip(edges[:-1], edges[1:]):
+            value = int(row[start])
+            if value < 0:
+                continue  # Unknown remains dark; never present it as free.
+            shade = 0.88 - 0.70 * min(value, 100) / 100
+            x0, x1, y0, y1 = start*resolution, end*resolution, y*resolution, (y+1)*resolution
+            for x, yy in ((x0,y0),(x1,y0),(x1,y1),(x0,y0),(x1,y1),(x0,y1)):
+                marker.points.append(Point(x=float(x), y=float(yy), z=-0.02))
+                marker.colors.append(ColorRGBA(r=shade, g=shade, b=shade, a=1.0))
     if not marker.points:
         marker.action = Marker.DELETE
     return MarkerArray(markers=[marker])
@@ -138,16 +145,8 @@ class DisasterScene(Node):
         for name, (odom, received) in self.poses.items():
             if time.monotonic() - received > 2.0:
                 continue
-            marker = Marker()
-            marker.header.frame_id = odom.header.frame_id
-            marker.ns = name
-            marker.type = Marker.ARROW
-            marker.pose = odom.pose.pose
-            marker.scale.x, marker.scale.y, marker.scale.z = 1.1, .35, .35
-            marker.color.r, marker.color.g, marker.color.b, marker.color.a = self.colors[name]
-            marker.lifetime.sec = 2
-            markers.markers.append(marker)
-            p = marker.pose.position
+            # Vehicle orientation is drawn by native RViz TF axes, not arrows.
+            p = odom.pose.pose.position
             text = label(name, p.x, p.y, p.z+1.0, name, 1, self.colors[name])
             text.header.frame_id = odom.header.frame_id
             text.lifetime.sec = 2

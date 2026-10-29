@@ -1,0 +1,19 @@
+Waiting: ['rover_0', 'drone_0', 'drone_1'] green dots: 0
+Waiting: ['rover_0', 'drone_0', 'drone_1'] green dots: 0
+Waiting: ['rover_0', 'drone_0', 'drone_1'] green dots: 0
+Waiting: ['rover_0', 'drone_0', 'drone_1'] green dots: 0
+Waiting: ['rover_0', 'drone_0', 'drone_1'] green dots: 0
+Waiting: ['rover_0', 'drone_0', 'drone_1'] green dots: 0
+Waiting: ['rover_0', 'drone_0', 'drone_1'] green dots: 0
+Waiting: ['rover_0', 'drone_0', 'drone_1'] green dots: 0
+Waiting: ['rover_0', 'drone_0', 'drone_1'] green dots: 0
+Waiting: ['rover_0', 'drone_0', 'drone_1'] green dots: 0
+Waiting: ['rover_0', 'drone_0', 'drone_1'] green dots: 0
+Waiting: ['rover_0', 'drone_0', 'drone_1'] green dots: 0
+Waiting: ['rover_0', 'drone_0', 'drone_1'] green dots: 0
+Waiting: ['rover_0', 'drone_0', 'drone_1'] green dots: 0
+{
+  "confirmed_by_agent": {},
+  "green_dots": [],
+  "passed": false
+}

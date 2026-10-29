@@ -27,6 +27,7 @@ def camera(preset, robot="rover_0"):
         "top": (-1., -8., 32., 1.5707, 0.),
         "side": (-1., -26., 5., 0.12, 1.5708),
         "overview": (21., -32., 24., 0.63, 2.18),
+        "survivor": (-1., -13., 2.5, 0.65, 1.5708),
     }[preset]
     cy, sy, cp, sp = math.cos(yaw/2), math.sin(yaw/2), math.cos(pitch/2), math.sin(pitch/2)
     request = "pose {position {x: %f y: %f z: %f} orientation {w: %f x: %f y: %f z: %f}} duration: 1" % (x, y, z, cy*cp, -sy*sp, cy*sp, sy*cp)
@@ -36,7 +37,7 @@ def camera(preset, robot="rover_0"):
 
 def camera_main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("preset", choices=["top", "side", "overview", "follow"])
+    parser.add_argument("preset", choices=["top", "side", "overview", "follow", "survivor"])
     parser.add_argument("--robot", default="rover_0", choices=["rover_0", "drone_0", "drone_1"])
     args = parser.parse_args()
     print(camera(args.preset, args.robot))
