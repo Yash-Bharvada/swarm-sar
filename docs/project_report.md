@@ -4,12 +4,12 @@ Status reviewed on **29 October 2026** against the [exact Problem Statement 5](p
 
 ## Assessment against the actual challenge
 
-The project has a working heterogeneous swarm simulator, a cooperative PPO training framework, peer communication, a browser demonstration and a separate ROS 2/Gazebo physics workspace. The **MARL requirement is central**: the browser's frontier heuristic alone does not fulfill it. A new GPU experiment and paired learned-policy evaluation are still needed before claiming the new trained system meets the challenge end to end.
+The project has a working heterogeneous swarm simulator, a cooperative PPO training framework, peer communication, a browser demonstration and a separate ROS 2/Gazebo physics workspace. The **MARL requirement is central**: the browser's frontier heuristic alone does not fulfill it. A GPU BC/PPO experiment and paired development evaluation now have a verified checkpoint handoff. Learned-policy demonstration integration and final testing are still needed before claiming the system meets the challenge end to end.
 
 | Problem statement capability | Implemented evidence | Remaining boundary |
 |---|---|---|
 | Heterogeneous drones and rovers | Separate rover/drone policies, sensing and traversal parameters; default grid/browser fleet is two of each | Grid drones have visual altitude but 2D movement. ROS physics demo is a separate execution path; its default is two drones plus one rover, with a four-agent exploration profile available. |
-| Decentralized cooperative MARL | Python PPO with two type-shared policies, private observations, team reward, recurrent GPU-v1 support, behavior-cloning warm start and checkpoint evaluation | No claim that the browser executes PPO. The GPU phase has not been completed in this review. Goal planning is decentralized; simulator collision shielding uses privileged occupancy information. |
+| Decentralized cooperative MARL | Python PPO with two type-shared policies, private observations, team reward, recurrent GPU-v1 support, behavior-cloning warm start and checkpoint evaluation | No claim that the browser executes PPO. The selected 753664-step GPU policy has development evidence; final-test seeds remain sealed. Goal planning is decentralized; simulator collision shielding uses privileged occupancy information. |
 | Unknown GPS-denied exploration | Private occupancy beliefs, local scans, frontier choices, A*, drifting odometry and common-entry alignment | Exact own-cell planning/common-grid registration remain idealized. This is not validated collaborative SLAM or unknown-start alignment. |
 | Thermal/acoustic survivor mapping | Seeded noisy thermal sectors and acoustic cues; evidence fusion and close confirmation | Synthetic sensor models, not real thermal images, microphones or perception accuracy measurements. “Saved” in the UI means location confirmed; evacuation is absent. |
 | Peer-to-peer topological sharing | Python per-agent topology and graph/message information, goal claims, evidence, range/loss/delay/expiry/partition/recovery behavior | Browser transport shares occupancy deltas and evidence, not a full learned graph communication system. NetworkX is not a GNN. Physical radio behavior is unvalidated. |
@@ -40,11 +40,11 @@ The latest local checks passed:
 - **154 Python tests passed, 2 ROS/xacro-dependent tests skipped**, with two PettingZoo deprecation warnings.
 - **30 frozen baseline file hashes verified** and GPU-v1 policy contract verified: `c5dff01368e1bb3a77112884c5d545457830097b11aefe54e0d412fc874c57c5`.
 - Audited GPU training source manifest verified: **94 files**, manifest SHA-256 `554f1bc621d0b2144113e75a94fa6668ef73e02f1ce7ee2d308637b14ab920ef`. This UI/report pass leaves those training sources and the expert dataset unchanged.
-- GPU pipeline `--plan` succeeds without starting training. CUDA/A5000 execution has not been tested here.
+- GPU pipeline `--plan` succeeds without starting training. The supplied A5000 handoff now records GPU execution; local review verified archive and checkpoint provenance hashes rather than rerunning CUDA.
 
 Browser interaction evidence is recorded in [browser_controls_validation.json](browser_controls_validation.json). It covers count 100, real click placement/removal, camera stability during editing, moving-robot focus, clean viewing and mobile restoration. The earlier [200-mission browser audit](browser_swarm_audit.json) found **563/564 survivors**, with **199/200 complete missions** and zero **post-shield** collisions. It used 50 distinct layouts under four network conditions. The one failure depleted the fleet with one survivor remaining at 30% loss; these are bounded synthetic results, not field accuracy or an all-missions guarantee.
 
-For trained-model evidence, [GPU architecture review](gpu_architecture_review.md) reports the corrected CPU diagnostic BC policy at **74.82% mean cohort recall** versus **87.13%** for the policy-compatible expert over 72 development missions. Those are historical CPU diagnostic results, not the planned GPU PPO result. The older Step 3 PPO checkpoint and stronger frontier comparisons have their own run identities in [the readiness audit](hackathon_readiness_audit.md).
+For trained-model evidence, [GPU architecture review](gpu_architecture_review.md) reports the corrected CPU diagnostic BC policy at **74.82% mean cohort recall** versus **87.13%** for the policy-compatible expert over 72 development missions. Those are historical CPU diagnostic results, distinct from the GPU PPO handoff described below. The older Step 3 PPO checkpoint and stronger frontier comparisons have their own run identities in [the readiness audit](hackathon_readiness_audit.md).
 
 Audio browser evidence is recorded in [browser_audio_validation.json](browser_audio_validation.json). Chrome checks cover explicit startup, independent volumes, mute, rover/drone focus, autonomous survivor and completion cues, reset without replay, clean viewing, mobile layout and unchanged simulation state. A full music progression remained audible across 155 samples with at most 18 active tones; tab suspension/resumption also passed. These checks establish playback behavior, not subjective listening quality or certification across browsers.
 
@@ -54,17 +54,45 @@ Zoom refinement: wheel input now uses one cursor-anchored easing path, normalize
 
 ## GPU phase and remaining work
 
-The user scheduled GPU PPO/MARL testing for **30 October 2026**. Keep that experiment separate from frontend refinement. The existing isolated `gpu-training` branch remains unchanged. [GPU_TRANSFER_CHECKLIST.md](GPU_TRANSFER_CHECKLIST.md) describes the immutable audited combined-release training workflow; the isolated branch also has its own `gpu_train.md`. Use the guide corresponding to the chosen branch rather than mixing source manifests and checkpoints.
+The GPU experiment ran on 29 October 2026 using audited source commit
+`92121ce81ac44c0feb7fd43dcccfdfa7bec3dc05`. The verified handoff is stored in
+[artifacts/trained/ppo_754k](../artifacts/trained/ppo_754k/README.md). The selected
+753664-step checkpoint has tree SHA-256
+`23696e6cf3b0821b6c01235a3911cb5cb87d0707589efce6ec43cb58b5340040`.
+Its review reports 89.29% fixed-development mean cohort recall, 88.22% shadow
+mean cohort recall and 88.80% combined mean cohort recall. The paired expert
+scores are 87.43% fixed and 87.13% combined. These small development samples,
+used for checkpoint selection, do not establish statistical superiority or
+real-world reliability. Final-test seeds remain sealed.
 
-For the combined release, clone the pinned tag and create the local `rashiyaom` branch as instructed in the checklist. Later UI/report commits on `main` and `rashiyaom` do not move that audited tag. No GPU job or final-test unsealing was started during this completion pass.
+The default 20-runner production configuration failed Ray batch validation.
+The runtime override to 16 runners preserves the model/observation contract
+and is recorded in the effective training definition; the audited source tag
+and configuration files were not rewritten. The pilot completed 262144 steps;
+continuation reached 1015808 steps and paused on worst-cohort recall/coverage.
+The 753664-step checkpoint is selected instead of the final checkpoint.
 
-The next measured milestone is a GPU checkpoint with documented provenance and performance:
+The selected model found 5/18 maze survivors versus the expert's 4/18, but
+explored only 19.15% versus 33.66%. Tunnel results were 15/21 versus 13/21.
+Both comparisons use eight development episodes and carry substantial
+uncertainty. Battery exhaustion and poor large-maze exploration remain known
+limitations. Zero recorded collisions are post-shield outcomes, not proof of
+learned collision avoidance. No communication benefit has been established.
 
-1. Verify CUDA backward pass, source/data hashes, checkpoint round trips and both optimizing policies.
-2. Run BC qualification, closed-loop baseline comparisons and the bounded PPO pilot. Continue only under the existing quality gates.
-3. Evaluate the same frozen development cohorts with network on/off, communication faults, sensor/pose stress, maze/tunnel layouts and swarm-scale changes. Report recall, time, coverage, invalid actions, post-shield collisions, message traffic and uncertainty.
-4. Select and freeze a model before the explicitly acknowledged final evaluation. Preserve failures and the selected checkpoint hashes; do not claim a training curve or reward score proves rescue generalization.
-5. For a single learned end-to-end visible demo, implement and validate a PPO-to-browser or PPO-to-ROS adapter. The three runtimes are not connected simply because their files share a repository.
+Next milestones:
+
+1. Preserve the selected handoff and reproduce one checkpoint-driven Python mission.
+2. Implement and validate a PPO-to-browser or PPO-to-ROS adapter for a visible
+   learned-policy demo; the browser still runs its separate heuristic.
+3. Run a versioned maze curriculum experiment only after keeping this candidate
+   as a fallback. Retain the original batteries, budgets and held-out definitions.
+4. Confirm candidate performance across additional training seeds and freeze
+   model selection before an explicitly acknowledged sealed final evaluation.
+
+The isolated `gpu-training` branch and immutable audited release tag remain
+unchanged. Refer to [GPU_TRANSFER_CHECKLIST.md](GPU_TRANSFER_CHECKLIST.md)
+for the original release workflow; it does not automatically resume an aborted
+pipeline or incorporate the 16-runner override.
 
 ## Sensor decision before GPU testing
 
