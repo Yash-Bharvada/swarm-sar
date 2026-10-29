@@ -11,7 +11,7 @@ import { Rng, hashString } from '../core/Rng';
 import type { Point } from '../core/types';
 import { FREE, GridMap, Material, RUBBLE, WALL, bfsDistances, closeUnreachable } from './GridMap';
 
-export type PresetId = 'office' | 'mine' | 'apartment' | 'random' | 'demo';
+export type PresetId = 'office' | 'mine' | 'apartment' | 'random' | 'maze' | 'demo';
 
 export interface PresetInfo {
   id: PresetId;
@@ -20,6 +20,7 @@ export interface PresetInfo {
 }
 
 export const PRESETS: PresetInfo[] = [
+  { id: 'maze', name: 'Custom Maze', disaster: 'A maze you can generate, reshape and explore.' },
   {
     id: 'office',
     name: 'Collapsed Office',
@@ -97,9 +98,19 @@ export interface Scenario {
   batteryScale: number;
 }
 
+export interface MapSize { width: number; height: number }
+export interface CustomTerrain extends MapSize { cells: number[] }
+export const MIN_MAP_SIDE = 16;
+export const MAX_MAP_SIDE = 96;
+export function validMapSize(size: MapSize): boolean {
+  return [size.width, size.height].every((n) => Number.isInteger(n) && n >= MIN_MAP_SIDE && n <= MAX_MAP_SIDE);
+}
+
 export interface ScenarioOptions {
   preset: PresetId;
   seed: number;
+  mapSize?: MapSize;
+  customTerrain?: CustomTerrain;
   survivorCount?: [number, number];
   /** Exact operator-selected count; unlike the legacy range, dense placement is allowed. */
   survivorTargetCount?: number;
@@ -464,6 +475,31 @@ function clamp(v: number, lo: number, hi: number): number {
   return Math.max(lo, Math.min(hi, v));
 }
 
+function layoutMaze(b: Builder): Rect {
+  const stack: Point[] = [{ x: 1, y: 1 }];
+  b.setCell(1, 1, FREE);
+  while (stack.length) {
+    const p = stack[stack.length - 1];
+    const choices = [[0, -2], [2, 0], [0, 2], [-2, 0]]
+      .map(([dx, dy]) => ({ x: p.x + dx, y: p.y + dy }))
+      .filter((q) => b.interior(q.x, q.y) && b.grid.get(q.x, q.y) === WALL);
+    if (!choices.length) { stack.pop(); continue; }
+    const next = b.rng.pick(choices);
+    b.setCell((p.x + next.x) / 2, (p.y + next.y) / 2, FREE);
+    b.setCell(next.x, next.y, FREE);
+    stack.push(next);
+  }
+  const spawn = { x: 2, y: 2, size: 4 };
+  b.rect(2, 2, 5, 5, FREE);
+  // A few loops give the swarm alternate routes through narrow corridors.
+  for (let y = 2; y < b.height - 2; y++) for (let x = 2; x < b.width - 2; x++) {
+    if (b.grid.get(x, y) === WALL && b.rng.random() < 0.04 &&
+      ((b.grid.get(x - 1, y) === FREE && b.grid.get(x + 1, y) === FREE) ||
+       (b.grid.get(x, y - 1) === FREE && b.grid.get(x, y + 1) === FREE))) b.setCell(x, y, FREE);
+  }
+  return spawn;
+}
+
 function dimensions(preset: PresetId, rng: Rng): [number, number] {
   switch (preset) {
     case 'office':
@@ -478,6 +514,8 @@ function dimensions(preset: PresetId, rng: Rng): [number, number] {
       const b2 = rng.integers(42, 56);
       return rng.random() < 0.5 ? [a, b2] : [b2, a];
     }
+    case 'maze':
+      return [32, 32];
     case 'demo':
       return [40, 26];
   }
@@ -553,6 +591,7 @@ function operatorVictims(scenario: Scenario, options: ScenarioOptions): Victim[]
 
 export function generateScenario(options: ScenarioOptions): Scenario {
   const { preset, seed } = options;
+  if (options.mapSize && !validMapSize(options.mapSize)) throw new Error('Choose a width and height between 16 and 96.');
   if (options.survivorPositions === undefined && options.survivorTargetCount !== undefined && (!Number.isSafeInteger(options.survivorTargetCount) || options.survivorTargetCount < 0)) {
     throw new Error('Survivor count must be a non-negative whole number.');
   }
@@ -561,7 +600,9 @@ export function generateScenario(options: ScenarioOptions): Scenario {
   const survivorRange = options.survivorCount ?? DEFAULT_WORLD.numVictims;
 
   for (let attempt = 0; attempt < DEFAULT_WORLD.maxGenerationRetries; attempt++) {
-    const [W, H] = dimensions(preset, rng);
+    const [defaultW, defaultH] = dimensions(preset, rng);
+    const W = preset === 'maze' && options.mapSize ? options.mapSize.width : defaultW;
+    const H = preset === 'maze' && options.mapSize ? options.mapSize.height : defaultH;
     const b = new Builder(W, H, rng, preset === 'mine' || preset === 'random' ? Material.Rock : Material.Concrete);
     const spawn =
       preset === 'office'
@@ -572,7 +613,7 @@ export function generateScenario(options: ScenarioOptions): Scenario {
             ? layoutApartment(b)
             : preset === 'demo'
               ? layoutDemo(b)
-              : layoutRandom(b);
+              : preset === 'maze' ? layoutMaze(b) : layoutRandom(b);
     if (preset !== 'demo') b.rubblePatches(DEFAULT_WORLD.rubblePatches, DEFAULT_WORLD.rubblePatchRadius, spawn);
     const spawnCenter = { x: spawn.x + Math.floor(spawn.size / 2), y: spawn.y + Math.floor(spawn.size / 2) };
     const distances = closeUnreachable(b.grid, spawnCenter.x, spawnCenter.y);
@@ -655,12 +696,48 @@ export function generateScenario(options: ScenarioOptions): Scenario {
       maxSteps: Math.max(400, Math.round((400 * area) / 1024)),
       batteryScale: Math.max(1, area / 1024),
     };
+    if (options.customTerrain) {
+      applyCustomTerrain(scenario, options.customTerrain);
+      // Automatic placement must use the edited paths, not locations from the
+      // original generated floorplan. Explicit authored positions stay fixed.
+      if (options.survivorPositions === undefined && options.survivorTargetCount === undefined) {
+        scenario.victims = operatorVictims(scenario, { ...options, survivorTargetCount: Math.min(victims.length, survivorPlacementCells(scenario).length) });
+      }
+    }
     // Finish the legacy generation stream before changing operator targets. A
     // count or placement edit must never reshape the map, scenery or spawn.
     if (options.survivorPositions !== undefined || options.survivorTargetCount !== undefined) scenario.victims = operatorVictims(scenario, options);
+    if (options.customTerrain && scenario.victims.some((v) => scenario.distances[v.y * W + v.x] < 0)) throw new Error('Keep survivors on connected paths.');
     return scenario;
   }
   throw new Error(`Could not generate a valid ${preset} scenario for seed ${seed}`);
+}
+
+/** Validate and apply an authored layout before the simulation is initialized. */
+function applyCustomTerrain(scenario: Scenario, terrain: CustomTerrain): void {
+  const { width: W, height: H, spawn } = scenario;
+  if (terrain.width !== W || terrain.height !== H || terrain.cells.length !== W * H ||
+      terrain.cells.some((cell) => ![FREE, WALL, RUBBLE].includes(cell))) throw new Error('This layout no longer matches the map.');
+  const grid = new GridMap(W, H, WALL, Int8Array.from(terrain.cells));
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+    if ((x === 0 || y === 0 || x === W - 1 || y === H - 1) && grid.get(x, y) !== WALL) throw new Error('Keep the outer boundary closed.');
+    if (inRect(spawn, x, y) && grid.get(x, y) !== FREE) throw new Error('Keep the team starting area clear.');
+  }
+  const distances = bfsDistances(grid, scenario.spawnCenter.x, scenario.spawnCenter.y);
+  let accessible = 0;
+  for (let i = 0; i < grid.cells.length; i++) if (grid.cells[i] !== WALL) {
+    if (distances[i] < 0) throw new Error('Some paths are cut off. Join them to the team starting area before saving.');
+    accessible++;
+  }
+  if (accessible <= spawn.size * spawn.size) throw new Error('Draw a path outside the team starting area.');
+  for (let i = 0; i < grid.cells.length; i++) {
+    if (grid.cells[i] !== WALL) { scenario.material[i] = Material.None; scenario.wallHeight[i] = 0; }
+    else if (scenario.grid.cells[i] !== WALL) { scenario.material[i] = Material.Concrete; scenario.wallHeight[i] = 1.9; }
+  }
+  scenario.grid = grid; scenario.distances = distances; scenario.stairwell = null;
+  scenario.props = scenario.props.filter((p) => grid.isTraversable(p.x, p.y));
+  scenario.openings = scenario.openings.filter((p) => grid.isTraversable(p.x, p.y));
+  scenario.emergencyLights = scenario.emergencyLights.filter((p) => grid.isTraversable(p.x, p.y));
 }
 
 /** Stable fingerprint used by tests and the debug panel. */

@@ -58,7 +58,7 @@ function NetworkLog() {
   const m = engine.network.metrics;
   return (
     <div className="netlog">
-      {isPPO && <p className="explain">Python delivery snapshots. Drop totals are authoritative; individual drop traces and reconnect events are unavailable in this view.</p>}
+      {isPPO && <p className="explain">Delivery totals are shown. Some individual radio events are unavailable.</p>}
       <div className="netlog-bar">
         {(['all', 'delivered', 'dropped', 'maps'] as Filter[]).map((f) => (
           <button key={f} className={filter === f ? 'on' : ''} onClick={() => setFilter(f)}>

@@ -178,3 +178,23 @@ The production build/TypeScript compilation passed; no tests or evaluation
 missions were run as requested. Existing browser navigation scripts were updated
 but not executed; prior reports retain their earlier provenance. Training sources
 and checkpoint weights were not changed.
+
+
+Custom map authoring and simplified simulation controls: heuristic mode now
+offers a Custom Maze site with independent width/height (16–96 tiles per side),
+Generate map and a plan editor for paths, walls and low debris. Drawing is
+stroke-based with undo/redo, zoom, Clear walls, Save and Cancel. The boundary,
+team start and survivor positions are protected. Applying a draft checks
+connectivity and survivor reachability, rebuilds the actual engine world and
+updates material, collision, sensing and coverage data. Unreachable drafts are
+rejected rather than silently erased. The saved grid survives resets, changes
+to fleet/battery settings and controller switches; generating a new map or
+changing sites clears it. Custom dimensions and terrain remain heuristic-only.
+
+End-user controls now hide raw seed fields/ranges, checkpoint step counts,
+verification hashes and observation sizes. PPO uses friendly map labels and
+Shuffle; heuristic uses Generate map. The underlying deterministic seeds,
+development/final split and trained checkpoint remain intact. The production
+build and TypeScript compilation passed. No tests, benchmark episodes or
+training were run, as requested; runtime behavior has not been newly validated.
+Historical browser result files were preserved.

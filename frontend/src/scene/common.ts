@@ -106,11 +106,12 @@ function hash2(x: number, y: number, seed: number): number {
   return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
 }
 
-type FloorStyle = 'office' | 'mine' | 'apartment' | 'random' | 'demo';
+type FloorStyle = 'office' | 'mine' | 'apartment' | 'random' | 'maze' | 'demo';
 
 /** Sand palettes per site: [light tile, dark tile, grout]. Mines run darker ochre. */
 const TILE_PALETTE: Record<FloorStyle, [string, string, string]> = {
   office: [COLORS.sand, COLORS.sandDark, COLORS.grout],
+  maze: [COLORS.sand, COLORS.sandDark, COLORS.grout],
   apartment: ['#ead3a8', '#d8bf8e', '#a88c62'],
   demo: [COLORS.sand, COLORS.sandDark, COLORS.grout],
   random: ['#dcc596', '#c9b27f', '#9a8458'],

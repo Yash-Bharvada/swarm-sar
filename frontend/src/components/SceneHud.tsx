@@ -44,11 +44,11 @@ export function SceneHud({ onOpenPanel }: { onOpenPanel: (panel: Panel) => void 
       <div className="scene-eyebrow"><span className="tiny-square" />FIELD OPERATIONS <span className="eyebrow-divider">/</span> SANDBOX</div>
       <h1>{engine.scenario.name.replace('Collapsed ', '').replace('Earthquake ', '')}</h1>
       <p>Amber beacons: survivors awaiting discovery.</p>
-      <div className="scene-tags"><span><i className={`connection-dot ${health.tone}`} />{!engine.network.enabled ? 'Radio offline' : `Network ${health.label.toLowerCase()}`}</span><span className="mono">SEED {engine.scenario.seed}</span><span>{engine.options.batteryLimited === false ? '∞ Unlimited battery' : 'Limited battery'}</span></div>
+      <div className="scene-tags"><span><i className={`connection-dot ${health.tone}`} />{!engine.network.enabled ? 'Radio offline' : `Network ${health.label.toLowerCase()}`}</span><span>{controllerMode === 'ppo' ? 'Swarm mission' : settings.terrain ? 'Custom layout' : 'Generated map'}</span><span>{engine.options.batteryLimited === false ? '∞ Unlimited battery' : 'Limited battery'}</span></div>
     </div>
 
     <div className="scene-top-right">
-      <button className={`scene-button controller-button ${controllerMode === 'ppo' ? 'active' : ''}`} aria-label="Controller settings" onClick={() => onOpenPanel('setup')}><span className={`status-dot ${ppoPhase === 'error' ? 'controller-offline' : ''}`} /><span>{controllerMode === 'ppo' ? 'PPO · 754k' : 'Heuristic'}</span><Icon name="chevron" size={12} /></button>
+      <button className={`scene-button controller-button ${controllerMode === 'ppo' ? 'active' : ''}`} aria-label="Controller settings" onClick={() => onOpenPanel('setup')}><span className={`status-dot ${ppoPhase === 'error' ? 'controller-offline' : ''}`} /><span>{controllerMode === 'ppo' ? 'PPO' : 'Heuristic'}</span><Icon name="chevron" size={12} /></button>
       <SoundControls />
       <button className="scene-button watch-maze" onClick={toggleCleanView} disabled={editingSurvivors} title="Hide interface and overlays (H)"><Icon name="overview" size={17} /><span>Watch maze</span></button>
       <button className="team-pill" onClick={() => onOpenPanel('fleet')} title="Inspect your fleet"><span className="team-icons"><Icon name="rover" size={17} /><Icon name="drone" size={17} /></span><span>{rovers} rovers <b>·</b> {drones} drones</span><Icon name="chevron" size={13} /></button>
@@ -58,7 +58,7 @@ export function SceneHud({ onOpenPanel }: { onOpenPanel: (panel: Panel) => void 
       </div>
     </div>
 
-    {controllerMode === 'ppo' && ppoPhase !== 'ready' && <div className="ppo-connection" role="status"><strong>{ppoPhase === 'connecting' ? 'Connecting to the PPO swarm…' : 'PPO mission paused'}</strong><p>{ppoError ?? 'Loading the verified checkpoint and Python world.'}</p>{ppoPhase === 'error' && <button className="btn" onClick={reset}>Reset PPO mission</button>}</div>}
+    {controllerMode === 'ppo' && ppoPhase !== 'ready' && <div className="ppo-connection" role="status"><strong>{ppoPhase === 'connecting' ? 'Preparing your swarm…' : 'PPO mission paused'}</strong><p>{ppoError ?? 'Preparing the map and your team.'}</p>{ppoPhase === 'error' && <button className="btn" onClick={reset}>Reconnect</button>}</div>}
     {overlays.truth && <div className="debug-banner">Debug view · Hidden survivor locations revealed to the operator.</div>}
     {overlays.coverage && <div className="map-mode-label"><Icon name="map" size={14} />{selectedRobot ? `${selectedRobot.label}’s private map` : 'Combined explored map'} · Mint: explored / Sand: unseen<button aria-label="Hide explored map" onClick={() => toggleOverlay('coverage')}><Icon name="close" size={13} /></button></div>}
     {overlays.graph && <NetworkGraph />}
@@ -81,6 +81,6 @@ export function SceneHud({ onOpenPanel }: { onOpenPanel: (panel: Panel) => void 
       <div className="mission-timeline"><div className="timeline-label"><span>{status === 'ready' ? 'Ready when you are' : status === 'running' ? 'Exploring together' : status === 'paused' ? 'Take your time' : 'Exploration complete'}</span><span className="mono">{missionTime(engine.step)} <b>/ {missionTime(engine.maxSteps)}</b></span></div><div className="timeline-track" role="progressbar" aria-label="Mission elapsed time" aria-valuenow={engine.step} aria-valuemin={0} aria-valuemax={engine.maxSteps}><i style={{ width: `${100 * engine.step / engine.maxSteps}%` }} /></div></div>
       <div className="reset-wrap"><button className="reset-button" aria-label="Reset mission" title="Reset mission" onClick={() => status === 'ready' ? reset() : setConfirmReset(!confirmReset)}><Icon name="reset" size={18} /></button>{confirmReset && <div className="reset-popover"><strong>Start this mission again?</strong><p>Your current progress will be cleared.</p><div><button className="btn" onClick={() => setConfirmReset(false)}>Keep exploring</button><button className="btn primary" onClick={() => { reset(); setConfirmReset(false); }}>Reset</button></div></div>}</div>
     </div>
-    <div className="scene-footnote"><span><Icon name="mouse" size={12} /><b>Drag</b> to orbit <i>·</i> <b>Right-drag</b> to pan <i>·</i> <b>Scroll</b> to zoom</span><span><span className="status-dot" />BROWSER SIMULATION <span className="footnote-divider">/</span> {engine.scenario.width} × {engine.scenario.height} M</span></div>
+    <div className="scene-footnote"><span><Icon name="mouse" size={12} /><b>Drag</b> to orbit <i>·</i> <b>Right-drag</b> to pan <i>·</i> <b>Scroll</b> to zoom</span><span><span className="status-dot" />SWARM SIMULATION <span className="footnote-divider">/</span> {engine.scenario.width} × {engine.scenario.height}</span></div>
   </div>;
 }

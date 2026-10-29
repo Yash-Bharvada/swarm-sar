@@ -13,7 +13,7 @@ import {
   type EngineOptions,
 } from '../simulation/core/SimulationEngine';
 import type { MissionStatus, OperationMode } from '../simulation/core/types';
-import { survivorPlacementCells, type PresetId } from '../simulation/world/ScenarioGenerator';
+import { survivorPlacementCells, validMapSize, type CustomTerrain, type PresetId } from '../simulation/world/ScenarioGenerator';
 import type { Point } from '../simulation/core/types';
 
 export type Quality = 'low' | 'medium' | 'high';
@@ -36,6 +36,9 @@ export interface Settings {
   speed: Speed;
   mode: OperationMode;
   survivorCount: number | null;
+  mapWidth: number;
+  mapHeight: number;
+  terrain: CustomTerrain | null;
 }
 
 export interface Overlays {
@@ -85,6 +88,11 @@ interface Store {
   following: boolean;
   cleanView: boolean;
   toggleCleanView: () => void;
+  editingTerrain: boolean;
+  mapMessage: string | null;
+  configureMaze: (width: number, height: number) => void;
+  setEditingTerrain: (editing: boolean) => void;
+  applyTerrain: (cells: number[]) => void;
   editingSurvivors: boolean;
   survivorCapacity: number;
   survivorMessage: string | null;
@@ -126,6 +134,7 @@ const initialSettings: Settings = {
   speed: 1,
   mode: 'autonomous',
   survivorCount: null,
+  mapWidth: 32, mapHeight: 32, terrain: null,
 };
 
 function optionsFrom(s: Settings, demo: boolean, selected: string | null, customSurvivors: Point[] | null = null): EngineOptions {
@@ -144,6 +153,8 @@ function optionsFrom(s: Settings, demo: boolean, selected: string | null, custom
   return {
     ...base,
     batteryLimited: s.batteryLimited,
+    ...(s.preset === 'maze' && !demo ? { mapSize: { width: s.mapWidth, height: s.mapHeight } } : {}),
+    ...(s.terrain ? { customTerrain: s.terrain } : {}),
     ...(demo ? { sensorNoise: s.sensorNoise, mode: s.mode, manualRobot: selected } : {}),
     ...(s.survivorCount !== null ? { survivorTargetCount: s.survivorCount } : {}),
     ...(customSurvivors !== null ? { survivorPositions: customSurvivors } : {}),
@@ -160,6 +171,32 @@ const clearCameraTarget = { ...clearEncounters, selected: null, focus: null, cam
 export const useSim = create<Store>((set, get) => ({
   controllerMode: 'heuristic', ppoPhase: 'off', ppoError: null, ppoOptions: DEFAULT_PPO_OPTIONS, ppoRevision: 0,
   ...clearEncounters,
+  editingTerrain: false, mapMessage: null,
+  configureMaze: (width, height) => {
+    const state = get();
+    if (state.controllerMode !== 'heuristic' || state.status !== 'ready') return;
+    if (!validMapSize({ width, height })) { set({ mapMessage: 'Choose a width and height between 16 and 96.' }); return; }
+    const settings = { ...state.settings, preset: 'maze' as PresetId, mapWidth: width, mapHeight: height, terrain: null, survivorCount: null, seed: (state.settings.seed + 1 + Math.floor(Math.random() * 99999)) >>> 0 };
+    try {
+      const engine = new SimulationEngine(optionsFrom(settings, false, null));
+      set({ ...clearCameraTarget, settings, engine, demo: false, customSurvivors: null, editingSurvivors: false, editingTerrain: false, survivorCapacity: capacityOf(engine), survivorMessage: null, mapMessage: null, version: state.version + 1 });
+    } catch { set({ mapMessage: 'Could not create this map. Try generating it again.' }); }
+  },
+  setEditingTerrain: (editing) => {
+    const state = get();
+    if (state.controllerMode !== 'heuristic' || (editing && state.status !== 'ready')) return;
+    set({ editingTerrain: editing, editingSurvivors: false, cleanView: false, mapMessage: null });
+  },
+  applyTerrain: (cells) => {
+    const state = get();
+    if (state.controllerMode !== 'heuristic' || state.status !== 'ready' || !state.editingTerrain) return;
+    const customSurvivors = state.engine.scenario.victims.map(({ x, y }) => ({ x, y }));
+    const settings = { ...state.settings, terrain: { width: state.engine.scenario.width, height: state.engine.scenario.height, cells: [...cells] }, survivorCount: customSurvivors.length };
+    try {
+      const engine = new SimulationEngine(optionsFrom(settings, state.demo, null, customSurvivors));
+      set({ ...clearCameraTarget, settings, engine, customSurvivors, editingTerrain: false, editingSurvivors: false, mapMessage: null, survivorMessage: null, survivorCapacity: capacityOf(engine), version: state.version + 1 });
+    } catch (error) { set({ mapMessage: error instanceof Error ? error.message : 'Could not save this layout.' }); }
+  },
   inspectSurvivor: (id) => {
     const state = get();
     if (state.encounter || !state.engine.discoveredSurvivors().some((v) => v.id === id)) return;
@@ -310,7 +347,7 @@ export const useSim = create<Store>((set, get) => ({
       if (status !== 'ready') return;
       const demo = key === 'preset' ? false : get().demo;
       const terrainChanged = key === 'preset' || key === 'seed';
-      const nextSettings = terrainChanged ? { ...next, survivorCount: null } : next;
+      const nextSettings = terrainChanged ? { ...next, survivorCount: null, terrain: null } : next;
       const customSurvivors = terrainChanged ? null : get().customSurvivors;
       const nextEngine = new SimulationEngine(optionsFrom(nextSettings, demo, null, customSurvivors));
       set({ settings: nextSettings, demo, customSurvivors, editingSurvivors: terrainChanged ? false : get().editingSurvivors, survivorCapacity: capacityOf(nextEngine), survivorMessage: null, engine: nextEngine, selected: null, focus: null, cameraRequest: null, following: false, version: get().version + 1 });
@@ -336,6 +373,7 @@ export const useSim = create<Store>((set, get) => ({
   toggleOverlay: (key) => set({ overlays: { ...get().overlays, [key]: !get().overlays[key] } }),
 
   launch: () => {
+    if (get().editingTerrain) return;
     if (get().controllerMode === 'ppo' && get().ppoPhase !== 'ready') return;
     if (get().status === 'ready') {
       if (!get().engine.scenario.victims.length) { set({ survivorMessage: 'Add at least one survivor before launching.' }); return; }
@@ -349,6 +387,7 @@ export const useSim = create<Store>((set, get) => ({
     if (get().status === 'paused' && !get().encounter && (get().controllerMode === 'heuristic' || get().ppoPhase === 'ready')) set({ status: 'running' });
   },
   reset: () => {
+    set({ editingTerrain: false, mapMessage: null });
     if (get().controllerMode === 'ppo') {
       set({ ...clearEncounters, ...clearCameraTarget, status: 'ready', ppoPhase: 'connecting', ppoError: null, ppoRevision: get().ppoRevision + 1 });
       return;
@@ -373,13 +412,13 @@ export const useSim = create<Store>((set, get) => ({
   randomizeSeed: () => {
     if (get().controllerMode === 'ppo') return;
     if (get().status !== 'ready') return;
-    get().setSetting('seed', Math.floor(Math.random() * 100000));
+    get().setSetting('seed', (get().settings.seed + 1 + Math.floor(Math.random() * 99999)) >>> 0);
   },
   loadDemo: () => {
     if (get().controllerMode === 'ppo') return;
     const settings: Settings = {
       ...get().settings,
-      preset: 'demo',
+      preset: 'demo', terrain: null,
       seed: 11,
       rovers: 2,
       drones: 2,

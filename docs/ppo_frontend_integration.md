@@ -30,9 +30,9 @@ npm install
 npm run dev -- --host 127.0.0.1 --port 5173 --strictPort
 ```
 
-Open http://127.0.0.1:5173. Open **Mission → Exploration controller → PPO · 754k**. Configure the seed,
+Open http://127.0.0.1:5173. Open **Mission → Exploration controller → PPO**. Configure the seed,
 map size, site, fleet, radio and battery mode in that same side panel, then
-click **New PPO mission** to apply your choices.
+click **Create mission** to apply your choices.
 Wait for **PPO · 754k** and the ready mission, then click **Launch mission**.
 Defaults are seed 10000, 32×32 rooms and two rovers/two drones, matching the
 recorded nominal development example. Camera, follow, audio, clean viewing,
@@ -127,7 +127,7 @@ none of those rules or the verified checkpoint.
 Mission settings offer **Limited** (the default) and **Unlimited** for both
 heuristic and PPO missions. Changing the heuristic mode resets the current
 mission on the same map; launch again to explore. For PPO, choose the mode in
-the side panel and apply it with **New PPO mission**. The selection survives
+the side panel and apply it with **Create mission**. The selection survives
 mission resets.
 
 Limited retains the existing budgets and consumption. Unlimited sets movement,
@@ -161,3 +161,30 @@ The production build and TypeScript compilation passed. No tests or evaluation
 missions were run, per the user's instruction. Existing browser QA scripts were
 adapted to the drawer navigation, but were not executed; their tracked results
 remain historical evidence for the earlier UI.
+
+## Friendly map controls and terrain authoring
+
+The visible simulator now uses Generate map, Edit layout and friendly PPO map
+labels (Map 01, Map 02, …). Raw seed entry, accepted seed ranges, checkpoint step
+counts, observation dimensions and verification digests are removed from the
+main controls. The underlying seeds, split restrictions and checkpoint remain
+unchanged and are still recorded in developer artifacts.
+
+In heuristic mode choose Search site → Custom Maze, enter width and height
+(16–96 tiles per side), then Generate map. A deterministic iterative maze carver
+produces connected passages with a protected 4×4 team start; ordinary simulation
+time and energy scaling still apply. Edit layout opens a separate plan editor
+for any heuristic site. Draw Path, Wall or Debris; undo/redo a stroke, zoom, or
+Clear walls to start from open terrain. Save layout validates the full grid,
+keeps the boundary and starting area clear of edits, preserves survivor positions
+and rejects disconnected paths. Cancel discards the draft. Launch uses the
+authored cells for physics, pathfinding, sensing and coverage, not just artwork.
+Layouts survive resets, fleet/battery changes and controller round trips; a new
+map or a different site clears the authored terrain. Terrain stays outside the
+robots' private observations until sensed or delivered by peers.
+
+Custom terrain and custom dimensions are heuristic features. PPO continues to
+use the Python service's supported maps and displays its own configuration. No
+training source, model weights or evaluation results were changed. Production
+build/TypeScript compilation passed; no tests or evaluation missions were run at
+the user's request. Existing optional browser scripts were adapted but not run.

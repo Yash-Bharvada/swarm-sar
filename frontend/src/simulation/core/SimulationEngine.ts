@@ -14,7 +14,7 @@
 import { DEFAULT_CONTROLLER, DEFAULT_NETWORK, FRAME_ID, type NetworkConfig, type PartitionWindow } from './config';
 import { Rng, hashString, isWorldSeed } from './Rng';
 import { HOLD, INVESTIGATE, MOVE_DELTAS, movementAction, type OperationMode, type Point } from './types';
-import { generateScenario, type PresetId, type Scenario, type Victim } from '../world/ScenarioGenerator';
+import { generateScenario, type CustomTerrain, type MapSize, type PresetId, type Scenario, type Victim } from '../world/ScenarioGenerator';
 import { UNKNOWN } from '../world/GridMap';
 import { WorldState } from '../world/WorldState';
 import { createRobot, type RobotState } from '../robots/RobotState';
@@ -57,6 +57,8 @@ export interface EngineOptions {
   survivorPositions?: Point[];
   messageTtl?: number;
   maxSteps?: number;
+  mapSize?: MapSize;
+  customTerrain?: CustomTerrain;
 }
 
 export type Command =
@@ -162,6 +164,8 @@ export class SimulationEngine {
     if (!isWorldSeed(options.seed)) throw new Error('World seed must be a whole number from 0 to 4294967295');
     this.options = {
       ...options,
+      ...(options.mapSize ? { mapSize: { ...options.mapSize } } : {}),
+      ...(options.customTerrain ? { customTerrain: { ...options.customTerrain, cells: [...options.customTerrain.cells] } } : {}),
       delaySteps: [...options.delaySteps] as [number, number],
       ...(options.survivorPositions !== undefined ? {
         survivorPositions: Array.isArray(options.survivorPositions) ? options.survivorPositions.map((point) => ({ ...point })) : options.survivorPositions,
@@ -174,6 +178,8 @@ export class SimulationEngine {
     this.scenario = generateScenario({
       preset: options.preset,
       seed: options.seed,
+      mapSize: this.options.mapSize,
+      customTerrain: this.options.customTerrain,
       survivorCount: options.survivorCount,
       survivorTargetCount: options.survivorTargetCount,
       survivorPositions: this.options.survivorPositions,

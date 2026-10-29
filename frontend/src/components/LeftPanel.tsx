@@ -1,7 +1,7 @@
 import { useEffect, useId, useState } from 'react';
 import { BatterySettings } from './BatterySettings';
 import { ControllerControls } from './ControllerControls';
-import { WorldSeedInput } from './WorldSeedInput';
+import { MazeControls } from './MazeControls';
 import { useSim, type Overlays, type Quality } from '../store/simStore';
 import { PRESETS, type PresetId } from '../simulation/world/ScenarioGenerator';
 import type { OperationMode } from '../simulation/core/types';
@@ -78,10 +78,10 @@ export function LeftPanel() {
   ];
 
   if (controllerMode === 'ppo') return <aside className="panel left" aria-label="Mission settings">
-    <div className="panel-header"><span className="panel-eyebrow">TRAINED SWARM · GPU-V1</span><h2>Mission setup</h2><p className="panel-intro">Configure your trained swarm.</p></div>
+    <div className="panel-header"><span className="panel-eyebrow">LEARNED EXPLORATION</span><h2>Mission setup</h2><p className="panel-intro">Choose a map and build your team.</p></div>
     <ControllerControls />
-    <div className="objective-card"><strong>{ppoPhase === 'ready' ? 'PPO connected' : ppoPhase === 'error' ? 'PPO disconnected' : 'Connecting to Python'}</strong><p className="explain">{ppoPhase === 'ready' ? `Current mission: seed ${settings.seed} · ${engine.scenario.width} × ${engine.scenario.height} · ${settings.rovers} rovers · ${settings.drones} drones` : 'Start the local PPO service if the connection is unavailable.'}</p></div>
-    <button className="btn" onClick={reset} disabled={ppoPhase === 'connecting'}>Reset PPO mission</button>
+    <div className="objective-card"><strong>{ppoPhase === 'ready' ? 'Ready to explore' : ppoPhase === 'error' ? 'Connection needed' : 'Preparing your mission'}</strong><p className="explain">{ppoPhase === 'ready' ? `Current map: ${engine.scenario.width} × ${engine.scenario.height} · ${settings.rovers} rovers · ${settings.drones} drones` : 'The mission service needs to be running.'}</p></div>
+    <button className="btn" onClick={reset} disabled={ppoPhase === 'connecting'}>Restart mission</button>
     <details className="disclosure" open><summary>Graphics</summary><Segmented<Quality> label="Graphics quality" value={settings.quality} onChange={(v) => setSetting('quality', v)} options={[{ value: 'low', label: 'Low' }, { value: 'medium', label: 'Medium' }, { value: 'high', label: 'High' }]} /></details>
   </aside>;
 
@@ -99,7 +99,7 @@ export function LeftPanel() {
           {PRESETS.filter((p) => p.id !== 'demo').map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
           {demo && <option value="demo">Validation Demo</option>}
         </select>
-        <WorldSeedInput locked={locked} />
+        <MazeControls locked={locked} />
         <label className="field-label">Search team <span className="faint">{settings.rovers + settings.drones} / 10</span></label>
         <Stepper label="Rovers" icon="rover" value={settings.rovers} min={settings.drones ? 0 : 1} max={10 - settings.drones} disabled={locked || demo} onChange={(v) => setSetting('rovers', v)} />
         <Stepper label="Drones" icon="drone" value={settings.drones} min={settings.rovers ? 0 : 1} max={10 - settings.rovers} disabled={locked || demo} onChange={(v) => setSetting('drones', v)} />
@@ -107,7 +107,7 @@ export function LeftPanel() {
       <BatterySettings />
       <section className="section survivor-setup" aria-label="Survivor setup">
         <label className="field-label" htmlFor={`${fieldId}-survivors`}>
-          Survivors <span className="hint">{locked ? 'Reset to edit' : customSurvivors ? 'Custom placement' : settings.survivorCount === null ? 'Automatic · 2–4' : 'Custom count'}</span>
+          Survivors <span className="hint">{locked ? 'Reset to edit' : customSurvivors ? 'Custom placement' : settings.survivorCount === null ? 'Automatic' : 'Custom count'}</span>
         </label>
         <div className="seed-row survivor-count-row">
           <input
@@ -130,8 +130,8 @@ export function LeftPanel() {
           />
           <button className="btn" onClick={applySurvivorCount} disabled={locked}>Apply count</button>
         </div>
-        <p className="explain" id={`${fieldId}-survivor-help`}>{survivorCapacity.toLocaleString()} available tiles. One survivor per reachable tile outside the staging area.</p>
-        {engine.scenario.victims.length > 10 && <p className="explain">Large survivor counts increase sensing and rendering work. The mission time and selected battery mode stay unchanged; finding everyone is not guaranteed.</p>}
+        <p className="explain" id={`${fieldId}-survivor-help`}>Choose how many people need help, or place them on the map.</p>
+        {engine.scenario.victims.length > 10 && <p className="explain">Larger groups may take longer to find.</p>}
         <div className="survivor-actions">
           <button className={`btn ${editingSurvivors ? 'primary' : ''}`} disabled={locked} aria-pressed={editingSurvivors} onClick={() => setEditingSurvivors(!editingSurvivors)}>
             {editingSurvivors ? 'Finish placing' : 'Place on map'}
@@ -146,7 +146,7 @@ export function LeftPanel() {
             <button className="btn ghost" disabled={locked || engine.scenario.victims.length === 0} onClick={clearSurvivors}>Clear survivors</button>
             <button className="btn ghost" disabled={locked} onClick={useAutomaticSurvivors}>Use automatic</button>
           </div>
-          <p className="explain">Automatic restores the standard seeded 2–4 survivors. Empty the map to start a custom layout; add at least one survivor before launch.</p>
+          <p className="explain">Automatic adds a small group. Place at least one survivor before launch.</p>
         </details>
       </section>
       <section className="section">

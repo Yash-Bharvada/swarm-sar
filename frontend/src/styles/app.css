@@ -449,11 +449,24 @@ button:focus-visible, summary:focus-visible { outline: 2px solid #6f9259; outlin
 .controller-seed-row input[aria-invalid=true] { border-color: #ba8263; }
 .terrain-guide { padding: 12px; background: #f0f3e5; border: 1px solid #dfe6d1; border-radius: 12px; }
 
-.world-seed-row input { width: 100%; min-width: 0; min-height: 37px; flex: 1; border: 1px solid #dbe2ce; background: #fafbf3; padding: 8px 10px; border-radius: 6px; font-size: 11px; }
-.world-seed-row input[aria-invalid=true] { border-color: #ba8263; }
-.world-seed-row .btn { flex-shrink: 0; padding-inline: 9px; }
 .controller-settings .segmented { margin-top: 8px; }
 .controller-settings .ppo-choice { margin-top: 14px; }
 .controller-settings .controller-fields { min-width: 0; }
 .controller-settings .controller-fields label { min-width: 0; }
 .controller-settings input[type=number] { min-width: 0; }
+
+.maze-controls .controller-fields input { margin-top: 7px; }
+.maze-editor { position: fixed; inset: 0; margin: auto; width: min(960px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); padding: 22px; border: 1px solid #c8d7b9; border-radius: 20px; color: #4d6945; background: #fffef3; box-shadow: 0 16px 70px #243d3250; overflow: auto; }
+.maze-editor::backdrop { background: #24443980; backdrop-filter: blur(5px); }
+.maze-editor-head { display: flex; justify-content: space-between; align-items: start; gap: 15px; }
+.maze-editor-head h2 { margin: 6px 0; font-size: 24px; }
+.maze-editor-head p { margin: 7px 0 15px; font-size: 12px; color: #7d9070; }
+.maze-editor-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 14px; }
+.maze-editor-toolbar .segmented { min-width: 210px; }
+.maze-editor-zoom { margin-left: auto; display: flex; align-items: center; gap: 8px; font-size: 11px; }
+.maze-editor-zoom select { width: 64px; }
+.maze-editor-viewport { max-height: 58dvh; overflow: auto; border: 1px solid #cbd7bc; border-radius: 10px; background: #dfe8d0; padding: 12px; }
+.maze-editor-viewport canvas { display: block; margin: auto; max-width: none; image-rendering: pixelated; touch-action: none; cursor: crosshair; }
+.maze-editor-footer > div { display: flex; gap: 10px; justify-content: flex-end; }
+.maze-editor-error { font-size: 12px; color: #a15d40; }
+@media (max-width: 600px) { .maze-editor { padding: 15px; }.maze-editor-toolbar .segmented { flex: 1; }.maze-editor-viewport { max-height: 50dvh; }.maze-editor-zoom { margin-left: 0; } }
