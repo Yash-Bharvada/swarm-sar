@@ -7,6 +7,8 @@ import { SceneHud } from '../components/SceneHud';
 import { SceneRoot } from '../scene/SceneRoot';
 import { useSim } from '../store/simStore';
 import { Icon, type IconName } from '../components/Icon';
+import { AudioBridge } from '../audio/AudioBridge';
+import { soundscape } from '../audio/Soundscape';
 
 export type Panel = 'setup' | 'fleet' | 'activity' | 'help' | null;
 
@@ -33,6 +35,11 @@ function useKeyboard() {
       }
       if (e.metaKey || e.ctrlKey || e.altKey) return;
       const target = e.target as HTMLElement | null;
+      if (e.code === 'KeyM' && !target?.closest('input:not([type="range"]):not([type="checkbox"]), select, textarea, [contenteditable="true"]')) {
+        e.preventDefault();
+        if (!e.repeat) soundscape.toggleMute();
+        return;
+      }
       if (target?.closest('input, select, textarea, [contenteditable="true"]')) return;
       if (e.code === 'Space' && target?.closest('button')) return;
       if (e.code === 'KeyH') { e.preventDefault(); if (!e.repeat) useSim.getState().toggleCleanView(); return; }
@@ -85,6 +92,7 @@ export function App() {
   ];
   return (
     <div className={`app ${cleanView ? 'clean-view' : ''}`}>
+      <AudioBridge />
       {!cleanView && <TopBar />}
       {!cleanView && <nav className="command-rail" aria-label="Workspace">
         <div className="rail-navigation">
@@ -120,7 +128,7 @@ function ControlsGuide() {
     <h3>Move your camera</h3>
     <dl className="shortcut-list"><dt>Orbit</dt><dd>Left mouse drag</dd><dt>Pan</dt><dd>Right mouse drag</dd><dt>Zoom at cursor</dt><dd>Scroll or <kbd>+</kbd> <kbd>−</kbd></dd><dt>Overview</dt><dd><kbd>R</kbd></dd><dt>Focus robot</dt><dd>Select, then <kbd>F</kbd></dd></dl>
     <h3>Run your mission</h3>
-    <dl className="shortcut-list"><dt>Launch / pause</dt><dd><kbd>Space</kbd></dd><dt>Inspect robot</dt><dd>Click a robot</dd><dt>Watch maze / UI</dt><dd><kbd>H</kbd></dd><dt>Close / restore</dt><dd><kbd>Esc</kbd></dd></dl>
+    <dl className="shortcut-list"><dt>Launch / pause</dt><dd><kbd>Space</kbd></dd><dt>Inspect robot</dt><dd>Click a robot</dd><dt>Mute / enable sound</dt><dd><kbd>M</kbd></dd><dt>Watch maze / UI</dt><dd><kbd>H</kbd></dd><dt>Close / restore</dt><dd><kbd>Esc</kbd></dd></dl>
     <details className="disclosure"><summary>Manual driving</summary><p className="explain">Choose Manual or Mixed in Mission settings, then select a robot. Click a walkable tile to set a waypoint.</p><dl className="shortcut-list"><dt>Move</dt><dd><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> or arrows</dd><dt>Scan</dt><dd><kbd>E</kbd></dd><dt>Stop</dt><dd><kbd>X</kbd></dd></dl></details>
     <p className="guide-note"><Icon name="layers" size={18} />Use Layers to reveal paths, radio links, or the robots’ explored map.</p>
   </div>;

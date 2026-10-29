@@ -137,6 +137,34 @@ Reduced-motion preferences suppress confetti, waving, and flag animation.
 The **Activity → Radio log** lists sender, recipient, sequence, message type, delivery state,
 delay, expiry, drop reason, and map-delta size. Aggregate counters are expandable.
 
+### Music and sound
+
+Use the speaker button near **Watch maze**, or press **M**, to enable sound. A fresh page waits
+for that explicit interaction. The adjacent settings button opens independent **Master volume**,
+**Ambient music**, **Fleet sounds** and **Event sounds** sliders. Levels are remembered locally;
+playback permission is not assumed on the next visit. M also mutes/unmutes during clean viewing.
+
+The original synthesized soundtrack combines slow, overlapping chords with gentle bell-like
+melodies. It continues through mission pauses and resets. Rovers have low motor/wheel sounds;
+drones have airy rotor sounds. Their stereo position and volume follow the camera view, and
+focusing a robot brings that unit forward with a distinct rover/drone focus cue.
+
+Short effects mark launch, pause/resume, reset, survivor confirmations, completion, investigation,
+manual waypoints, placement/removal, radio loss/recovery, low batteries and common UI actions.
+Frequent map-sharing/replanning cues are rate-limited and coalesced. Important discoveries soften
+the music briefly. Vehicle sounds fade when paused or depleted. Switching away from the tab
+suspends audio, and returning does not replay an event backlog. Survivor sounds do not replay
+when changing graphics quality or selecting robots.
+
+All audio is generated locally with Web Audio: no external soundtrack requests, downloaded
+samples or new runtime packages. Audio observes presentation state and actual events; it never
+changes the simulation, consumes its random generator, or reveals hidden survivor positions.
+
+With the dev server running, optional browser audio checks run with
+`python3 frontend/scripts/audio_qa.py --full-cycle` from the repository root (requires Python
+Playwright and Chrome). Results are written to `docs/browser_audio_validation.json`; this
+checks actual audio output and interactions, rather than subjective listening quality.
+
 ### Validation scenario
 
 Before launch, open **Mission → Mission tools → Load validation scenario**. Rover 1 is
@@ -214,6 +242,7 @@ Rendering reads the engine and interpolation clock; camera changes do not change
 | `demo.test.ts` | Validation scenario loss, partition, recovery, sharing, survivor detection, safe convoy traffic |
 | `missions.test.ts` | Complete missions on every preset with recall, coverage, and collision guards |
 | `presentation.test.ts` | Clean defaults, repeated camera requests, view/follow/focus behavior, camera-target cleanup, simulation isolation |
+| `audio.test.ts` | Explicit startup, volume boundaries, event priorities, rate limiting, history suppression and simulation isolation |
 
 ## Browser requirements
 

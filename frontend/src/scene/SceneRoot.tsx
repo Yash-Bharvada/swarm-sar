@@ -11,6 +11,7 @@ import { RobotPaths, Robots } from './Robots';
 import { CommEvents, CommRanges, MapMergeFlash, NetworkLinks, PacketPulses, PartitionAndReconnect } from './Network';
 import { CoverageFog, Dust, EvidenceMarkers, PlacementMarkers, Survivors, TruthDebug } from './Overlays';
 import { applyAnchoredZoom, captureGroundAnchor, overviewOffset, type GroundZoomAnchor } from './cameraMath';
+import { soundscape } from '../audio/Soundscape';
 
 /** Fixed ticks stay deterministic; pausing preserves the exact rendered pose. */
 function SimDriver({ engine }: { engine: SimulationEngine }) {
@@ -217,6 +218,7 @@ function CameraRig({ engine }: { engine: SimulationEngine }) {
     camera.position.z += clampedZ - controls.target.z;
     controls.target.x = clampedX; controls.target.z = clampedZ;
     controls.update();
+    soundscape.updateSpatial(controls.target.x, controls.target.z, camera.matrix.elements[0], camera.matrix.elements[2], span / Math.max(1, camera.zoom / fitZoom.current) * 0.6);
     if (state.clock.elapsedTime - telemetryAt.current > 0.12) {
       telemetryAt.current = state.clock.elapsedTime;
       const percent = Math.round(camera.zoom / fitZoom.current * 100);

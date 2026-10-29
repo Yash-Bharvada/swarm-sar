@@ -338,3 +338,29 @@ input[type=range] { width: 100%; accent-color: #688953; height: 14px; }
 .restore-interface kbd { margin-left: 7px; }
 @media (max-width: 960px) { .watch-maze span { display: none; } }
 @media (max-width: 760px) { .placement-banner { left: 12px; right: 12px; top: 155px; max-width: none; flex-wrap: wrap; padding: 11px; }.placement-banner span { font-size: 9px; } }
+
+/* Sound controls share the quiet cream/green tools palette. */
+.sound-wrap { position: relative; pointer-events: auto; }
+.sound-buttons { display: flex; align-items: center; height: 39px; border: 1px solid #dce5ce; border-radius: 8px; background: #f9fbefed; box-shadow: 0 3px 10px #355b3510; color: #89977b; }
+.sound-buttons.sound-on { color: #59794a; border-color: #bfd0ac; background: #f1f7e8ed; }
+.sound-buttons button { display: grid; place-items: center; border: 0; background: transparent; color: inherit; height: 31px; border-radius: 5px; }
+.sound-toggle { width: 32px; margin-left: 3px; }
+.sound-settings { width: 25px; margin-right: 3px; border-left: 1px solid #dfe6d4 !important; border-radius: 0 5px 5px 0 !important; }
+.sound-buttons button:hover, .sound-settings.active { background: #e5edd8; color: #43643a; }
+.sound-panel { position: absolute; top: 48px; right: 0; width: 280px; padding: 18px; background: #fffef7; border: 1px solid #d8e2ce; border-radius: 12px; box-shadow: 0 12px 40px #24402520; }
+.sound-panel .popover-heading { color: #526d45; }
+.sound-panel .popover-heading > svg { margin-right: 5px; }
+.sound-enable { display: flex; align-items: center; gap: 8px; width: 100%; background: #f1f4e8; border: 1px solid #dfe6d2; color: #8b9879; border-radius: 7px; padding: 9px 10px; font-size: 10px; }
+.sound-enable.enabled { background: #e7efd9; color: #5b7a45; border-color: #ccddba; }
+.sound-enable kbd { margin-left: auto; }
+.sound-channel { display: block; margin-top: 17px; cursor: default; }
+.sound-channel-label { display: flex; justify-content: space-between; align-items: center; color: #60794f; font-size: 10px; }
+.sound-channel-label strong { font-weight: 550; }
+.sound-channel-label .mono { color: #97a482; font-size: 9px; }
+.sound-channel input { appearance: none; -webkit-appearance: none; width: 100%; height: 4px; margin: 12px 0 9px; border-radius: 4px; border: 0; cursor: pointer; }
+.sound-channel input::-webkit-slider-thumb { appearance: none; -webkit-appearance: none; width: 13px; height: 13px; background: #819b68; border: 2px solid #fffef7; border-radius: 50%; box-shadow: 0 0 0 1px #a8ba94; }
+.sound-channel input::-moz-range-thumb { width: 10px; height: 10px; background: #819b68; border: 2px solid #fffef7; border-radius: 50%; box-shadow: 0 0 0 1px #a8ba94; }
+.sound-channel small { display: block; color: #9aa58c; font-size: 9px; }
+.sound-note { margin: 18px 0 0; padding-top: 13px; border-top: 1px solid #e7ebdc; color: #93a180; font-size: 9px; line-height: 1.7; }
+.sound-error { font-size: 10px; line-height: 1.6; color: #ab775e; }
+@media (max-width: 760px) { .sound-buttons { height: 34px; }.sound-buttons button { height: 28px; }.sound-toggle { width: 27px; }.sound-settings { width: 20px; }.sound-panel { position: fixed; top: 125px; right: 21px; width: min(280px, calc(100vw - 87px)); max-height: calc(100dvh - 170px); overflow-y: auto; } }

@@ -3,6 +3,7 @@ import { useSim, type Overlays, type Speed } from '../store/simStore';
 import { missionTime, networkHealth, pct } from '../app/format';
 import { NetworkGraph } from './NetworkGraph';
 import { Icon } from './Icon';
+import { SoundControls } from './SoundControls';
 import type { Panel } from '../app/App';
 
 const layerOptions: { key: keyof Overlays; label: string; detail: string }[] = [
@@ -44,6 +45,7 @@ export function SceneHud({ onOpenPanel }: { onOpenPanel: (panel: Panel) => void 
     </div>
 
     <div className="scene-top-right">
+      <SoundControls />
       <button className="scene-button watch-maze" onClick={toggleCleanView} disabled={editingSurvivors} title="Hide interface and overlays (H)"><Icon name="overview" size={17} /><span>Watch maze</span></button>
       <button className="team-pill" onClick={() => onOpenPanel('fleet')} title="Inspect your fleet"><span className="team-icons"><Icon name="rover" size={17} /><Icon name="drone" size={17} /></span><span>{rovers} rovers <b>·</b> {drones} drones</span><Icon name="chevron" size={13} /></button>
       <div className="layers-wrap" ref={layers}>
