@@ -1,18 +1,21 @@
 # Swarm Mission Control: browser 3D simulator
 
-A standalone, browser-only 3D simulator for the swarm-sar disaster-response project. Rovers and
-drones search a collapsed site, share maps over a lossy peer-to-peer radio, and locate
-survivors. The mission-control interface explains what is happening in plain language.
+A standalone browser simulation for the swarm-sar disaster-response project. Rovers and drones
+search a site, share maps over a lossy peer-to-peer radio, and locate survivors. The world is a
+bright isometric island with warm sandstone paths, terracotta ruins, blocky greenery, turquoise
+water, and daylight. The presentation update changes the interface, camera, art, and animation;
+the deterministic search, sensing, communication, and collision mechanics are unchanged.
 
-- **Separate from ROS 2 and Gazebo.** This simulator does not use ROS 2, Gazebo, the Python runtime, WebSockets, a backend, a database or any cloud service. Everything runs in the browser tab.
-- **Autonomous Mode is not RL.** *Decentralized Autonomous Mode* is a TypeScript implementation of the Step 4 decentralized frontier controller principles (`src/swarm_sar/baselines/decentralized.py`). It is not PPO, RL, MARL or a GNN.
-- **No global knowledge.** Every robot decides from its own belief map, its own sensors, its own battery and pose, and messages that actually reached its inbox. There is no central planner, reservation table or access to survivor positions.
+- **Separate from ROS 2 and Gazebo.** Everything runs in the browser tab. No Python runtime, backend, WebSockets, database, or cloud service is required.
+- **Autonomous Mode is not RL.** *Decentralized Autonomous Mode* implements the Step 4 decentralized frontier-controller principles (`src/swarm_sar/baselines/decentralized.py`) in TypeScript. It is not PPO, RL, MARL, or a GNN.
+- **Robots use local knowledge.** Each robot decides from its private map, sensors, battery, pose, and messages that actually reached its inbox. There is no central planner, reservation table, or access to hidden survivor positions.
 
-See [CONTROLLER_COMPATIBILITY.md](CONTROLLER_COMPATIBILITY.md) for the field-by-field mapping to the Python reference and the list of intentional differences.
+See [CONTROLLER_COMPATIBILITY.md](CONTROLLER_COMPATIBILITY.md) for the mapping to the Python
+reference and the intentional differences.
 
 ## Install and run
 
-Requires Node.js 18 or newer (tested with Node 24).
+Requires Node.js 18 or newer.
 
 ```bash
 cd frontend
@@ -20,158 +23,183 @@ npm install
 npm run dev          # http://localhost:5173
 ```
 
-Other commands:
-
 ```bash
-npm run test         # Vitest simulation suite (headless, no browser needed)
-npm run build        # type-check + production bundle in dist/
-npm run preview      # serve the production bundle locally
+npm test             # Headless simulation and presentation-state tests
+npm run build        # Type-check and build dist/
+npm run preview      # Serve the production bundle locally
 ```
+
+## Using the simulator
+
+The world occupies the workspace. A command rail opens one panel at a time; select **World**
+or close the panel to return to the full scene.
+
+- **Mission:** choose the site, world seed, rover/drone team, and control mode. Radio, sensor, graphics, and mission tools are expandable sections.
+- **Fleet:** inspect each robot's objective, battery, and connection. Expand its local map, sensor readings, communication, or technical details when needed. Selecting a robot in the world opens its fleet details.
+- **Activity:** review recent mission events or open the **Radio log** for packet details and communication counters.
+- **Controls:** see camera shortcuts and manual-driving instructions.
+
+1. Open **Mission** and choose a site: Collapsed Office, Mine Tunnel, Earthquake Apartment, or Random Irregular Site.
+2. Keep the default two rovers and two drones, or choose any mix of 1–10 robots. World settings lock after launch; reset the mission to change them.
+3. Press **Launch mission** or Space. Playback controls offer pause, resume, reset, and 0.5×, 1×, 2×, or 4× speed.
+4. Watch the compact mission counters and the team explore. Open **Fleet** or select a robot to inspect a particular decision.
+5. Enable **Layers** when you want routes, radio activity, sensor evidence, or explored-map information.
+
+The mission reset control asks before clearing an active mission. Camera reset simply restores
+the world overview.
+
+### Camera and keyboard controls
+
+The orthographic camera starts in a level, north-up angled view, so the map edges stay
+horizontal. On-screen controls provide smooth zoom with a visible **60–400%** readout, angled and top-down views, **Fit world
+to view**, and **Follow** for the selected robot. **Focus camera** in robot details frames that
+robot once. Dragging the camera or changing its view releases follow mode. Scrolling zooms
+around the ground under your cursor; the +/− buttons and keyboard zoom around the last point
+you indicated in the world, falling back to the view centre before the first pointer interaction.
+
+| Input | Action |
+|---|---|
+| Left-drag | Orbit |
+| Right-drag | Pan |
+| Wheel or + / − | Zoom at the cursor / last indicated world point |
+| R | Fit the world to the isometric overview |
+| Select a robot, then F | Focus the camera on that robot |
+| Click a robot | Select it; click again to deselect |
+| Space | Launch, pause, or resume |
+| Esc | Close the panel and deselect |
+| Manual or Mixed mode, robot selected | Click a walkable tile to set a waypoint |
+| Arrow keys or WASD | Step the selected manual robot |
+| E / X | Scan for a survivor / stop |
+
+Camera and driving shortcuts do not fire while typing in a field or using Ctrl/Command/Alt.
+Space on a focused button retains its native button action; driving keys still work after selecting a robot.
+
+Control modes:
+
+- **Auto:** every robot runs Decentralized Autonomous Mode.
+- **Manual:** the operator drives the selected robot while the others hold.
+- **Mixed:** the operator drives the selected robot while the others stay autonomous.
+
+Manual commands pass through the same collision-safety layer and physics as autonomous moves.
+
+### Layers and maps
+
+Only compact robot badges, such as R1 and D1, are enabled initially; the selected robot shows its full label.
+The terrain starts clear, with optional information
+available through **Layers** or **Mission → Graphics & overlays**:
+
+- planned routes, shown for the selected robot;
+- radio links, message activity, ranges, and a network graph;
+- thermal and acoustic evidence;
+- explored map;
+- robot labels;
+- hidden-survivor debug view.
+
+The explored-map layer applies a pale ground tint to unknown cells. With a robot selected it
+shows that robot's private belief; without a selection it combines the team's explored maps.
+It does not place a dark mask over the world. The local mini-map inside robot details also
+uses pale unknown terrain, sand paths, green walls, and contrasting rover/drone markers.
+Teammates appear at their last delivered reported position.
+
+The hidden-survivor debug view displays a banner. Its information is never supplied to robots.
+Confirmed survivors appear as seated human figures, with a small one-time confetti burst and
+a persistent **SURVIVOR SAVED** flag. The subtitle **Location confirmed** is deliberate: this
+feedback celebrates locating a survivor. Treatment and physical evacuation are not modeled.
+Reduced-motion preferences suppress confetti, waving, and flag animation.
+The **Activity → Radio log** lists sender, recipient, sequence, message type, delivery state,
+delay, expiry, drop reason, and map-delta size. Aggregate counters are expandable.
+
+### Validation scenario
+
+Before launch, open **Mission → Mission tools → Load validation scenario**. Rover 1 is
+partitioned from step 20 to step 60, with 15% packet loss and a 1–3-tick message delay, on a
+map containing a long one-cell-wide corridor. Launch, then enable radio and sensor layers
+when you want to inspect them. The scenario demonstrates packet loss, temporary isolation,
+reconnection, map sharing, survivor confirmation, and safe single-file movement.
+
+`src/tests/demo.test.ts` verifies those behaviors headlessly.
+
+## Rendering and performance
+
+Graphics quality is under **Mission → Graphics & overlays**. The default is **Balanced**
+(the `medium` setting in code).
+
+| Quality | Pixel ratio | Sun shadows |
+|---|---|---|
+| Low | 1 | Off |
+| Balanced | 1–1.5 | 1024 × 1024 |
+| High | 1–2 | 2048 × 2048 |
+
+Canvas antialiasing stays enabled across quality changes so the current camera and
+interpolated motion are preserved without recreating the WebGL context.
+
+All profiles use direct daylight rendering without a postprocessing chain. There is no
+vignette, cloud cover, light-shaft effect, or robot spotlight pass. Terrain, rubble, vegetation,
+and other repeated objects use instanced geometry. Textures are generated locally rather
+than downloaded. The atmosphere setting controls light distance haze and restrained particles.
+
+The engine advances at **4 ticks per real second at 1×**, up to **16 ticks per second at 4×**;
+each tick represents one second of mission time. Robot rendering interpolates positions
+linearly between ticks, with smooth turning, rover-wheel animation, and drone-rotor animation.
+Pausing preserves the current interpolated pose. These visual motions do not alter physics.
+
+Frame rate depends on the browser, GPU, viewport size, robot count, and enabled layers. For
+slower hardware, choose Low, reduce playback speed, and disable radio message effects.
+No particular frame rate is guaranteed.
 
 ## Architecture
 
 ```text
- ┌──────────────────────── React UI (src/components, src/app) ────────────────────────┐
- │ TopBar · LeftPanel (scenario/network/mode) · RightPanel (fleet, robot, mini-map)    │
- │ EventFeed (plain language + Advanced Network Log) · SceneHud                        │
- └───────────────▲─────────────────────────────────────────────┬──────────────────────┘
-                 │ version counter (re-render)                 │ commands (recorded)
-        ┌────────┴──────── Zustand store (src/store) ──────────▼────────┐
-        │ settings · overlays · status · selected robot · engine        │
-        └────────▲─────────────────────────────────────────────┬────────┘
-                 │ positions + alpha (read-only)               │ tick() at 4 Hz × speed
- ┌───────────────┴──── React Three Fiber scene (src/scene) ────▼────────────────────────┐
- │ World (instanced walls/rubble/props) · Robots (rover, drone) · NetworkLinks ·       │
- │ PacketPulses · Partition/Reconnect · Survivors · Evidence · CoverageFog · Dust      │
- └──────────────────────────────────────────────────────────────────────────────────────┘
-                                       │
- ┌──────────────────── Deterministic simulation core (src/simulation) ──────────────────┐
- │ core/SimulationEngine ── fixed tick:                                                  │
- │   commands → per-robot AgentBrain(LocalView) / ManualController                       │
- │   → CollisionSafety.safetyFilter → applyMovements (physics)                           │
- │   → Vision + SensorModel (truth → noisy readings) → investigate / confirm             │
- │   → broadcast PeerMessage → PeerNetwork (range, walls, loss, delay, TTL, partition)   │
- │   → merge delivered map cells into private beliefs                                    │
- │ world/ (GridMap, ScenarioGenerator, WorldState)  robots/  sensing/  planning/         │
- │ network/  controller/  telemetry/ (HumanReadableEventFormatter)                       │
- └──────────────────────────────────────────────────────────────────────────────────────┘
+React UI (src/app, src/components)
+  command rail → Mission / Fleet / Activity / Controls
+  compact mission HUD, playback, camera tools, optional layers
+                        │
+Zustand store (src/store)
+  settings, overlays, selection, camera requests, status, engine
+                        │
+React Three Fiber scene (src/scene)
+  orthographic camera, daylight, instanced island world
+  interpolated robots, optional network/evidence/map layers
+                        │
+Deterministic simulation core (src/simulation)
+  commands → local controller → collision safety → movement
+  → sensing → survivor investigation/confirmation
+  → peer broadcasts and actual deliveries → private-map merge
 ```
 
-The simulation core has no React or Three.js imports, so it runs unchanged in Vitest. Given
-the same options and command log, the engine produces the same result
-(`SimulationEngine.stateHash()`). Rendering interpolates between the previous and current
-tick and never mutates simulation state.
-
-## Using the simulator
-
-1. Pick a **disaster site** (Collapsed Office, Mine Tunnel, Earthquake Apartment, Random Irregular Site) and a **seed**, or press 🎲.
-2. Choose 1–10 robots with any rover/drone mix (default 2 + 2), sensor noise, and radio settings.
-3. Press **Launch mission** (or Space).
-4. Watch the top bar for survivors found, coverage, time, network health and packet loss. The scene brief explains what the swarm is doing now.
-5. Click a robot, or its fleet card, to see its objective, battery, links, sensors, recent messages and **private map**: what that robot believes, including teammates drawn where their last delivered message placed them.
-
-**Validation demo.** Press **★ Load validation demo**, then launch. Rover 1 is partitioned
-from step 20 to step 60, with 15% packet loss and 1–3 ticks of delay, on a map with a 12-cell
-one-cell-wide corridor. Watch for:
-
-- red packet pulses and red links;
-- the red partition ring and the "Critical" network state;
-- the green reconnection burst and "Network restored…" feed message;
-- map-sharing messages and snapshot catch-up;
-- heat and sound markers, then survivor beacons;
-- "moved through a narrow passage in single file" convoys, with zero collisions.
-
-`src/tests/demo.test.ts` asserts all of these headlessly.
-
-### Controls
-
-| Input | Action |
-|---|---|
-| Left-drag / right-drag / wheel | Orbit / pan / zoom |
-| Click robot | Select (click again to deselect); **Focus** in the robot panel moves the camera to it |
-| Space | Launch / pause / resume |
-| Esc | Deselect |
-| Manual or Mixed mode, robot selected | Click the floor to set a waypoint |
-| Arrow keys or WASD | Step the selected manual robot |
-| E / X | Scan here (confirm survivor) / stop |
-
-Modes:
-
-- **Auto**: every robot runs Decentralized Autonomous Mode.
-- **Manual**: the operator drives the selected robot and the others hold.
-- **Mixed**: the operator drives the selected robot and the others stay autonomous.
-
-Manual commands always pass through the same collision-safety shield and physics.
-
-### Overlays
-
-The View section toggles:
-
-- network links: green healthy, yellow weak or lossy, red lost or partitioned;
-- network graph overlay: a 2D graph of robots and their live links, with a blinking red ring on isolated robots (off by default; click a node to select it);
-- packet pulses;
-- radio ranges;
-- planned paths;
-- heat and sound evidence;
-- unexplored fog / local map;
-- robot labels;
-- **Truth map — Debug Only**, which reveals hidden survivors in magenta and shows a banner. Robots never read this data.
-
-The bottom panel's **Advanced network log** tab lists, per packet: sender, recipient,
-sequence, type, state, delay, expiry, drop reason and map-delta size. Next to it are
-reconnect events and aggregate counters.
-
-## Browser requirements
-
-- A desktop browser with WebGL 2: current Chrome, Edge, Firefox or Safari 16+.
-- Hardware acceleration enabled. Check `chrome://gpu` and look for "WebGL2: Hardware accelerated".
-- At least a 1280×720 window. Panels stack below 1180 px wide and on phones.
-
-## GTX 1650 / 16 GB RAM performance guidance
-
-- The app starts on Medium. **Low** is the safe choice for a GTX 1650 laptop:
-  - device pixel ratio 1;
-  - no antialiasing and no shadows;
-  - 2 emergency lights and 120 dust particles;
-  - no robot spotlights or light shafts.
-- **Medium** adds antialiasing, light shafts and more particles, and usually holds 60 fps on a GTX 1650 with 4–6 robots.
-- **High** adds 2048² moon shadows, robot and drone spotlights, and up to 2× pixel ratio. Use it for screenshots or on stronger GPUs.
-- On Windows laptops:
-  - go to Settings → System → Display → Graphics, and set your browser to **High performance** so it uses the GTX 1650 rather than the integrated GPU;
-  - keep the laptop on mains power.
-- 10 robots at 4× speed is the heaviest case. If frames drop, use Low, turn off packet pulses, or lower Smoke & dust.
-- Walls, rubble and props are instanced (a handful of draw calls). Textures are generated procedurally at load; nothing is downloaded.
+The simulation core has no React or Three.js imports and runs unchanged in Vitest. With the
+same options and command log, `SimulationEngine.stateHash()` produces the same result.
+Rendering reads the engine and interpolation clock; camera changes do not change mission state.
 
 ## Tests
 
-`npm run test` runs these suites:
+`npm test` runs these suites:
 
 | Suite | Covers |
 |---|---|
-| `scenario.test.ts` | same seed → identical scenario for every preset; portrait and landscape maps; reachable, separated survivors; clear spawn |
-| `determinism.test.ts` | same seed + command script (mode switches, waypoints, partitions, loss changes) → identical state hash, network metrics and feed; command-log replay |
-| `network.test.ts` | packet loss drops; delay queues; TTL expiry; range and wall attenuation; partition isolation; reconnection; operator partition toggle; de-duplication; deterministic transport |
-| `autonomy.test.ts` | robots never see truth survivors; `LocalView` has no truth fields; relocating hidden survivors does not change autonomous trajectories; network-off autonomy; maps spread only through delivered messages |
-| `collision.test.ts` | same-cell overlap prevented; swaps blocked; convoys advance through one-cell corridors; holding robots yield; turning robots are followed, not pushed; walls respected; manual movement passes the shield |
-| `controller.test.ts` | deterministic rendezvous branch ownership and reassignment; thermal/acoustic corroboration; no reservation table; priority claim release; never selects a masked frontier action (mirrors the upstream Python test); controller source never references truth data |
-| `demo.test.ts` | the validation demo shows loss, delay, partition, reconnection, map sharing, survivor detection and convoy traffic with zero collisions |
-| `missions.test.ts` | complete missions on every preset at 10% loss: zero collisions, recall guard, coverage guard |
+| `scenario.test.ts` | Seeded reproducibility, portrait/landscape maps, reachable survivors, clear spawn |
+| `determinism.test.ts` | Matching state hashes, network metrics, feed, and command-log replay |
+| `network.test.ts` | Loss, delay, expiry, range/wall attenuation, partitions, recovery, deduplication |
+| `autonomy.test.ts` | Private observations, hidden-survivor isolation, network-off autonomy, delivered map sharing |
+| `collision.test.ts` | No overlaps or swaps, narrow-corridor convoys, yielding, wall constraints, manual safety |
+| `controller.test.ts` | Frontier ownership, corroboration, claim release, action masking, no truth access |
+| `demo.test.ts` | Validation scenario loss, partition, recovery, sharing, survivor detection, safe convoy traffic |
+| `missions.test.ts` | Complete missions on every preset with recall, coverage, and collision guards |
+| `presentation.test.ts` | Clean defaults, repeated camera requests, view/follow/focus behavior, camera-target cleanup, simulation isolation |
 
-## Screenshots and recordings
+## Browser requirements
 
-- **Screenshot:** load the validation demo, set quality to High, launch at 1× and pause (Space) during steps 20–60 to capture the partition. Then press Win+Shift+S (Windows) or Cmd+Shift+4 (macOS).
-- **Recording:**
-  - Windows: Win+Alt+R (Xbox Game Bar) or OBS.
-  - macOS: Cmd+Shift+5.
-  - Record at 1× with Medium quality for smooth output, and turn on Radio ranges for network-focused clips.
+Use a browser with WebGL 2 and hardware acceleration. A desktop viewport provides the most
+space for the world and controls; the interface also adapts to narrower viewports with a
+compact rail and panels. A keyboard and mouse offer the complete driving and camera controls.
 
 ## Known limitations
 
-- The simulator is grid-based with discrete one-second ticks. Smooth motion is interpolation only.
-- Drones are 2D proxies with visual altitude. They never cross walls, as in Python Step 4.
-- Radio, thermal and acoustic models are seeded abstractions, not calibrated RF or sensor models.
-- Random streams differ from numpy, so browser runs are not bit-identical to Python runs on the same seed. See CONTROLLER_COMPATIBILITY.md for this and other deviations, including the yield-rule livelock fix.
-- Robots can be added or removed only before launch. Mid-mission spawning is not implemented.
-- No PPO/ONNX learned policy is included. The `LocalView` → `Decision` interface is the intended slot for one.
-- Map sizes are kept browser-friendly (about 28–56 cells per side). Python Step 4 audits used much larger sites.
-- Browser recall is a regression guard on small maps, not a reproduction of the Python Step 4 audit numbers.
+- Movement remains grid-based. Smooth animation is a visual interpolation, not a continuous physics model.
+- Drones remain 2D proxies with visual altitude. They obey the same wall constraints as Python Step 4 and do not perform full flight dynamics.
+- The island art is a presentation of the generated search grid; decorative terrain does not add new navigable areas or change controller mechanics.
+- Radio, thermal, and acoustic models are seeded abstractions, not calibrated physical sensors or RF propagation models.
+- Browser and NumPy random streams differ, so runs are not bit-identical to Python for the same seed. See [CONTROLLER_COMPATIBILITY.md](CONTROLLER_COMPATIBILITY.md).
+- Robots can be added or removed only before launch.
+- No PPO/ONNX learned policy is included. `LocalView → Decision` remains the integration point.
+- Maps stay browser-friendly, around 28–56 cells per side. Browser recall is a regression guard, not a reproduction of the much larger Python Step 4 audit.

@@ -101,6 +101,10 @@ export interface ScenarioOptions {
   preset: PresetId;
   seed: number;
   survivorCount?: [number, number];
+  /** Exact operator-selected count; unlike the legacy range, dense placement is allowed. */
+  survivorTargetCount?: number;
+  /** Explicit operator placement overrides both count settings, including an empty draft. */
+  survivorPositions?: Point[];
 }
 
 class Builder {
@@ -505,8 +509,53 @@ function placeVictims(
   return chosen.map((p, id) => ({ id, x: p.x, y: p.y, found: false, foundBy: null, foundStep: null }));
 }
 
+/** All reachable walkable cells except the reserved robot staging square. */
+export function survivorPlacementCells(scenario: Pick<Scenario, 'grid' | 'distances' | 'spawn'>): Point[] {
+  const { grid, distances, spawn } = scenario;
+  const cells: Point[] = [];
+  for (let y = 0; y < grid.height; y++) {
+    for (let x = 0; x < grid.width; x++) {
+      if (grid.isTraversable(x, y) && distances[y * grid.width + x] >= 0 && !inRect(spawn, x, y)) cells.push({ x, y });
+    }
+  }
+  return cells;
+}
+
+function operatorVictims(scenario: Scenario, options: ScenarioOptions): Victim[] {
+  const cells = survivorPlacementCells(scenario);
+  let chosen: Point[];
+  if (options.survivorPositions !== undefined) {
+    if (!Array.isArray(options.survivorPositions)) throw new Error('Survivor positions must be an array of grid coordinates.');
+    const eligible = new Set(cells.map(({ x, y }) => y * scenario.width + x));
+    const occupied = new Set<number>();
+    chosen = options.survivorPositions.map((position, index) => {
+      if (!position || !Number.isSafeInteger(position.x) || !Number.isSafeInteger(position.y)) {
+        throw new Error(`Survivor ${index + 1} must use whole-number grid coordinates.`);
+      }
+      const { x, y } = position;
+      if (!scenario.grid.inBounds(x, y)) throw new Error(`Survivor ${index + 1} is outside the search site.`);
+      if (inRect(scenario.spawn, x, y)) throw new Error('The staging area is reserved for robots. Place survivors on another walkable tile.');
+      const key = y * scenario.width + x;
+      if (!eligible.has(key)) throw new Error(`Survivor ${index + 1} must be on a reachable walkable tile.`);
+      if (occupied.has(key)) throw new Error(`Only one survivor can occupy tile (${x}, ${y}).`);
+      occupied.add(key);
+      return { x, y };
+    });
+  } else {
+    const count = options.survivorTargetCount!;
+    if (!Number.isSafeInteger(count) || count < 0) throw new Error('Survivor count must be a non-negative whole number.');
+    if (count > cells.length) throw new Error(`This site has room for ${cells.length} survivors, one per reachable walkable tile outside staging.`);
+    const rng = new Rng((options.seed ^ hashString(`${options.preset}:survivor-editor`)) >>> 0);
+    chosen = rng.permutation(cells.length).slice(0, count).map((index) => cells[index]);
+  }
+  return chosen.map(({ x, y }, id) => ({ id, x, y, found: false, foundBy: null, foundStep: null }));
+}
+
 export function generateScenario(options: ScenarioOptions): Scenario {
   const { preset, seed } = options;
+  if (options.survivorPositions === undefined && options.survivorTargetCount !== undefined && (!Number.isSafeInteger(options.survivorTargetCount) || options.survivorTargetCount < 0)) {
+    throw new Error('Survivor count must be a non-negative whole number.');
+  }
   const info = PRESETS.find((p) => p.id === preset)!;
   const rng = new Rng((seed ^ hashString(preset)) >>> 0);
   const survivorRange = options.survivorCount ?? DEFAULT_WORLD.numVictims;
@@ -584,7 +633,7 @@ export function generateScenario(options: ScenarioOptions): Scenario {
     }
 
     const area = W * H;
-    return {
+    const scenario: Scenario = {
       preset,
       seed,
       name: info.name,
@@ -606,6 +655,10 @@ export function generateScenario(options: ScenarioOptions): Scenario {
       maxSteps: Math.max(400, Math.round((400 * area) / 1024)),
       batteryScale: Math.max(1, area / 1024),
     };
+    // Finish the legacy generation stream before changing operator targets. A
+    // count or placement edit must never reshape the map, scenery or spawn.
+    if (options.survivorPositions !== undefined || options.survivorTargetCount !== undefined) scenario.victims = operatorVictims(scenario, options);
+    return scenario;
   }
   throw new Error(`Could not generate a valid ${preset} scenario for seed ${seed}`);
 }

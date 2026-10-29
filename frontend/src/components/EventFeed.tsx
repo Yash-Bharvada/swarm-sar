@@ -3,13 +3,13 @@ import { useSim } from '../store/simStore';
 import { missionTime } from '../app/format';
 import type { TransmissionRecord } from '../simulation/network/PeerNetwork';
 
-const TONE_ICON = { info: '💬', success: '✅', warning: '⚠️', danger: '⛔', network: '📡' } as const;
+const TONE_ICON = { info: '·', success: '✓', warning: '!', danger: '!', network: '↗' } as const;
 
 function Feed() {
   useSim((s) => s.version);
   const engine = useSim((s) => s.engine);
   const select = useSim((s) => s.select);
-  const items = engine.feed.slice(-60).reverse();
+  const items = engine.feed.slice(-35).reverse();
   // Peer messages that carried new map cells, keyed so 'network' rows can be matched to them.
   const oldest = items.length ? items[items.length - 1].step : 0;
   const shares = new Set<string>();
@@ -18,17 +18,26 @@ function Feed() {
     if (event.type === 'map_shared' && event.cells > 0) shares.add(`${step}|${event.from}|${event.to}`);
   }
   return (
-    <ol className="feed">
+    <ol className="feed" aria-label="Recent mission events">
+      {!items.length && <li className="empty-state">Your mission story starts when the team launches.</li>}
       {items.map((f) => (
         <li
           key={f.id}
           className={`tone-${f.tone} ${f.tone === 'network' && shares.has(`${f.step}|${f.robots[0]}|${f.robots[1]}`) ? 'peer-share' : ''}`}
-          onClick={() => f.robots[0] && select(f.robots[0])}
         >
-
-          <span className="feed-time mono">{missionTime(f.step)}</span>
-          <span className="feed-icon">{TONE_ICON[f.tone]}</span>
-          <span className="feed-text">{f.text}</span>
+          {f.robots[0] ? (
+            <button className="feed-event-button" onClick={() => select(f.robots[0])} title={`Inspect ${engine.label(f.robots[0])}`}>
+              <span className="feed-time mono">{missionTime(f.step)}</span>
+              <span className="feed-icon" aria-hidden>{TONE_ICON[f.tone]}</span>
+              <span className="feed-text">{f.text}</span>
+            </button>
+          ) : (
+            <>
+              <span className="feed-time mono">{missionTime(f.step)}</span>
+              <span className="feed-icon" aria-hidden>{TONE_ICON[f.tone]}</span>
+              <span className="feed-text">{f.text}</span>
+            </>
+          )}
         </li>
       ))}
     </ol>
@@ -54,13 +63,13 @@ function NetworkLog() {
             {f === 'maps' ? 'map deltas' : f}
           </button>
         ))}
-        <span className="faint small">
-          loss {m.droppedLoss} · partition {m.droppedPartition} · range {m.droppedRange} · wall {m.droppedWall} · stale {m.droppedStale} · dup{' '}
-          {m.duplicatesSuppressed} · reconnects {m.reconnections} · merged {engine.mapCellsMerged} cells · refused {engine.mapMergesRefused}
-        </span>
+        <details className="network-counters faint small">
+          <summary>{engine.mapCellsMerged.toLocaleString()} map cells shared · {m.reconnections} reconnections</summary>
+          <p>Lost {m.droppedLoss} · isolated {m.droppedPartition} · out of range {m.droppedRange} · obstructed {m.droppedWall} · expired {m.droppedStale} · duplicates {m.duplicatesSuppressed} · map merges refused {engine.mapMergesRefused}</p>
+        </details>
       </div>
       <div className="netlog-body">
-        <table>
+        <table aria-label="Radio transmissions">
           <thead>
             <tr>
               <th>Sent</th>
@@ -76,6 +85,7 @@ function NetworkLog() {
             </tr>
           </thead>
           <tbody>
+            {!rows.length && <tr><td colSpan={10} className="empty-state">No transmissions in this view yet.</td></tr>}
             {rows.map((r) => (
               <tr key={r.id} className={`st-${r.state}`}>
                 <td className="mono">{r.step}</td>
@@ -111,13 +121,13 @@ export function EventFeed() {
   const netLog = useSim((s) => s.overlays.netLog);
   const toggle = useSim((s) => s.toggleOverlay);
   return (
-    <footer className="bottom">
-      <div className="bottom-tabs">
-        <button className={!netLog ? 'on' : ''} onClick={() => netLog && toggle('netLog')}>
+    <footer className="bottom" aria-label="Mission activity">
+      <div className="bottom-tabs" role="tablist" aria-label="Activity view">
+        <button role="tab" aria-selected={!netLog} className={!netLog ? 'on' : ''} onClick={() => netLog && toggle('netLog')}>
           Mission events
         </button>
-        <button className={netLog ? 'on' : ''} onClick={() => !netLog && toggle('netLog')}>
-          Advanced network log
+        <button role="tab" aria-selected={netLog} className={netLog ? 'on' : ''} onClick={() => !netLog && toggle('netLog')}>
+          Radio log
         </button>
       </div>
       {netLog ? <NetworkLog /> : <Feed />}

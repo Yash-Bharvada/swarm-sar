@@ -13,7 +13,7 @@ function Battery({ robot }: { robot: RobotState }) {
   const p = batteryPct(robot);
   return (
     <div className="battery" title={`${p}% battery`}>
-      <div className="battery-track">
+      <div className="battery-track" role="progressbar" aria-label={`${robot.label} battery`} aria-valuenow={p} aria-valuemin={0} aria-valuemax={100}>
         <div className="battery-fill" style={batteryFillStyle(p)} />
       </div>
       <span>{p}%</span>
@@ -25,14 +25,15 @@ function FleetCard({ engine, robot }: { engine: SimulationEngine; robot: RobotSt
   const select = useSim((s) => s.select);
   const conn = robotConnection(engine, robot);
   return (
-    <button className={`fleet-card ${robot.type} ${robot.alive ? '' : 'dead'}`} onClick={() => select(robot.name)}>
+    <button className={`fleet-card ${robot.type} ${robot.alive ? '' : 'dead'}`} onClick={() => select(robot.name)} aria-label={`Inspect ${robot.label}: ${describeObjective(robot.objective)}`}>
       <div className="fleet-head">
         <span className={`type-icon ${robot.type}`} aria-hidden />
         <strong>{robot.label}</strong>
         {robot.manual && <span className="pill manual">Manual</span>}
-        <span className={`conn-dot ${conn.tone}`} title={conn.label} />
+        <span className={`conn-dot ${conn.tone}`} title={conn.label} aria-label={conn.label} />
+        <span className="fleet-chevron" aria-hidden>›</span>
       </div>
-      <div className="fleet-objective">{describeObjective(robot.objective)}</div>
+      <div className="fleet-objective">{robot.alive ? describeObjective(robot.objective) : 'Battery depleted'}</div>
       <Battery robot={robot} />
     </button>
   );
@@ -40,6 +41,7 @@ function FleetCard({ engine, robot }: { engine: SimulationEngine; robot: RobotSt
 
 function SensorBars({ robot }: { robot: RobotState }) {
   const sectors = ['N', 'E', 'S', 'W'];
+  const thermal = maxThermal(robot.thermal);
   return (
     <div className="sensors">
       <div className="sensor-row">
@@ -52,13 +54,11 @@ function SensorBars({ robot }: { robot: RobotState }) {
             </div>
           ))}
         </div>
-        <span className="sensor-val">{maxThermal(robot.thermal) >= 0.32 ? 'Strong' : maxThermal(robot.thermal) >= 0.16 ? 'Weak' : 'None'}</span>
+        <span className="sensor-val">{thermal >= 0.32 ? 'Strong' : thermal >= 0.16 ? 'Weak' : 'None'}</span>
       </div>
       <div className="sensor-row">
         <span className="sensor-name">Sound</span>
-        <div className="meter">
-          <div className="meter-fill sound" style={{ width: `${Math.min(100, (robot.acoustic / 0.6) * 100)}%` }} />
-        </div>
+        <div className="meter"><div className="meter-fill sound" style={{ width: `${Math.min(100, (robot.acoustic / 0.6) * 100)}%` }} /></div>
         <span className="sensor-val">{robot.acoustic >= 0.2 ? 'Heard' : 'Quiet'}</span>
       </div>
     </div>
@@ -70,145 +70,104 @@ function RobotDetail({ engine, robot, version }: { engine: SimulationEngine; rob
   const mode = useSim((s) => s.settings.mode);
   const issue = useSim((s) => s.issue);
   const conn = robotConnection(engine, robot);
-  const received = [...(engine.network.recentReceived.get(robot.name) ?? [])].reverse().slice(0, 6);
+  const received = [...(engine.network.recentReceived.get(robot.name) ?? [])].reverse().slice(0, 4);
   const links = engine.linksFor(robot.name);
   const known = robot.belief.cells.length - robot.belief.count(UNKNOWN);
   const brain = engine.controller.brains.get(robot.name);
-  const remaining = robot.path.length ? robot.path.length - 1 : 0;
+  const remaining = Math.max(0, robot.path.length - 1);
   const canDrive = mode !== 'autonomous' && robot.manual && robot.alive;
 
   return (
     <div className="robot-detail">
+      <button className="btn ghost small fleet-back" onClick={() => select(null)}>← All robots</button>
       <div className="detail-head">
         <span className={`type-icon big ${robot.type}`} aria-hidden />
         <div>
           <h2>{robot.label}</h2>
-          <div className="faint">{robot.type === 'rover' ? 'Ground rover' : 'Quadcopter drone'} · id {robot.name}</div>
+          <div className="faint">{robot.type === 'rover' ? 'Ground exploration' : 'Aerial reconnaissance'}</div>
         </div>
-        <button className="btn ghost small" onClick={() => useSim.getState().focusOn(robot.name)} title="Move the camera to this robot">
-          Focus
-        </button>
-        <button className="btn ghost small" onClick={() => select(null)} aria-label="Back to fleet">
-          ✕
-        </button>
       </div>
-
       <div className="objective-card">
-        <div className="label">Current objective</div>
+        <div className="label">CURRENT OBJECTIVE</div>
         <div className="objective">{describeObjective(robot.objective)}</div>
-        {remaining > 0 && (
-          <div className="faint">
-            {remaining} cell{remaining > 1 ? 's' : ''} to {robot.manual ? 'waypoint' : 'goal'}
-            {robot.activeGoal && ` (${robot.activeGoal.x}, ${robot.activeGoal.y})`}
-          </div>
-        )}
+        {remaining > 0 && <div className="faint small">{remaining} steps to {robot.manual ? 'your waypoint' : 'the next goal'}</div>}
       </div>
-
       <div className="kv">
-        <span>Battery</span>
-        <Battery robot={robot} />
-        <span>Network</span>
-        <span className={`tone-${conn.tone}`}>{conn.label}</span>
-        <span>Map known</span>
-        <span>{known} cells (own + shared)</span>
+        <span>Battery</span><Battery robot={robot} />
+        <span>Radio</span><span className={`tone-${conn.tone}`}>{conn.label}</span>
+        <span>Local map</span><span>{Math.round(known / robot.belief.cells.length * 100)}% known</span>
       </div>
-
+      <button className="btn focus-button" onClick={() => useSim.getState().focusOn(robot.name)} title="Bring this robot into view">◎ Focus camera</button>
       {canDrive && (
         <div className="drive">
-          <div className="label">Manual control</div>
+          <div className="label">Drive {robot.label}</div>
           <div className="dpad">
-            <button onClick={() => issue({ kind: 'manualStep', robot: robot.name, direction: 1 })} aria-label="Up">▲</button>
-            <button onClick={() => issue({ kind: 'manualStep', robot: robot.name, direction: 3 })} aria-label="Left">◀</button>
+            <button onClick={() => issue({ kind: 'manualStep', robot: robot.name, direction: 1 })} aria-label="Move north">▲</button>
+            <button onClick={() => issue({ kind: 'manualStep', robot: robot.name, direction: 3 })} aria-label="Move west">◀</button>
             <button onClick={() => issue({ kind: 'manualStop', robot: robot.name })} aria-label="Stop">■</button>
-            <button onClick={() => issue({ kind: 'manualStep', robot: robot.name, direction: 4 })} aria-label="Right">▶</button>
-            <button onClick={() => issue({ kind: 'manualStep', robot: robot.name, direction: 2 })} aria-label="Down">▼</button>
+            <button onClick={() => issue({ kind: 'manualStep', robot: robot.name, direction: 4 })} aria-label="Move east">▶</button>
+            <button onClick={() => issue({ kind: 'manualStep', robot: robot.name, direction: 2 })} aria-label="Move south">▼</button>
           </div>
-          <button className="btn small" onClick={() => issue({ kind: 'manualScan', robot: robot.name })}>
-            Scan here (confirm survivor)
-          </button>
-          <p className="faint small">Click the floor to set a waypoint. Keys: arrows/WASD, E scan, X stop.</p>
+          <button className="btn small" onClick={() => issue({ kind: 'manualScan', robot: robot.name })}>Scan for survivors</button>
+          <p className="faint small">Click the terrain for a waypoint. WASD moves · E scans · X stops.</p>
         </div>
       )}
-
-      <div className="block">
-        <div className="label">Sensors</div>
-        <SensorBars robot={robot} />
-      </div>
-
-      <div className="block">
-        <div className="label">
-          Private map <span className="faint">— what {robot.label} believes</span>
-        </div>
+      <details className="advanced disclosure">
+        <summary>Local map</summary>
+        <p className="explain">What {robot.label} has sensed and learned from delivered messages.</p>
         <MiniMap engine={engine} robot={robot} version={version} />
         <div className="legend-row faint small">
-          <span className="sw free" /> free <span className="sw wall" /> wall <span className="sw rubble" /> rubble <span className="sw unk" /> unknown ○ teammate (last report)
+          <span className="sw free" /> Path <span className="sw wall" /> Wall <span className="sw rubble" /> Rubble <span className="sw unk" /> Unknown
         </div>
-      </div>
-
-      <div className="block">
-        <div className="label">Communication peers</div>
-        {!engine.network.enabled && <div className="faint">Radio disabled</div>}
+        <p className="faint small">Outlined markers show teammates at their last reported position.</p>
+      </details>
+      <details className="advanced disclosure">
+        <summary>Sensor readings</summary>
+        <p className="explain">Heat and sound are clues. A close scan confirms a survivor.</p>
+        <SensorBars robot={robot} />
+      </details>
+      <details className="advanced disclosure">
+        <summary>Team communication</summary>
+        {!engine.network.enabled && <p className="faint small">Radio is disabled.</p>}
         <ul className="peers">
-          {engine.robots
-            .filter((r) => r.name !== robot.name)
-            .map((peer) => {
-              const link = links.find((l) => l.a === peer.name || l.b === peer.name);
-              const health = link?.health ?? 'down';
-              const reason = link && link.health === 'down' ? (link.reason === 'range' ? 'out of range' : link.reason === 'wall' ? 'blocked by walls' : link.reason) : null;
-              return (
-                <li key={peer.name}>
-                  <span className={`conn-dot ${health === 'healthy' ? 'good' : health === 'weak' ? 'warn' : 'bad'}`} />
-                  {peer.label}
-                  <span className="faint">{health === 'down' ? reason ?? 'no link' : health === 'weak' ? 'weak / lossy' : 'healthy'}</span>
-                </li>
-              );
-            })}
+          {engine.robots.filter((r) => r.name !== robot.name).map((peer) => {
+            const link = links.find((l) => l.a === peer.name || l.b === peer.name);
+            const health = link?.health ?? 'down';
+            const reason = link && link.health === 'down' ? (link.reason === 'range' ? 'Out of range' : link.reason === 'wall' ? 'Obstructed' : link.reason) : null;
+            return (
+              <li key={peer.name}>
+                <span className={`conn-dot ${health === 'healthy' ? 'good' : health === 'weak' ? 'warn' : 'bad'}`} />
+                {peer.label}<span className="faint">{health === 'down' ? reason ?? 'No link' : health === 'weak' ? 'Weak signal' : 'Connected'}</span>
+              </li>
+            );
+          })}
         </ul>
-      </div>
-
-      <div className="block">
-        <div className="label">Recently received</div>
-        {!received.length && <div className="faint small">Nothing received yet.</div>}
-        <ul className="received">
-          {received.map((m) => (
-            <li key={`${m.senderId}:${m.sequence}`}>
-              <strong>{engine.label(m.senderId)}</strong>
-              <span className="faint"> · {engine.step - m.sentStep} s ago</span>
-              <div className="small">
-                {m.mapCells.length ? `${m.mapCells.length} map cells${m.isSnapshot ? ' (recovery snapshot)' : ''}` : 'position update'}
-                {m.claimedGoal && ` · heading to (${m.claimedGoal[0]}, ${m.claimedGoal[1]})`}
-                {m.evidence.thermal >= 0.35 && ' · heat report'}
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <details className="advanced">
-        <summary>Advanced</summary>
+        <div className="block">
+          <div className="label">Recent messages</div>
+          {!received.length && <p className="faint small">Waiting for the first team update.</p>}
+          <ul className="received">
+            {received.map((m) => (
+              <li key={`${m.senderId}:${m.sequence}`}>
+                <strong>{engine.label(m.senderId)}</strong><span className="faint small"> · {engine.step - m.sentStep} s ago</span>
+                <div className="small">{m.mapCells.length ? `${m.mapCells.length} map cells shared${m.isSnapshot ? ' · recovery snapshot' : ''}` : 'Position update'}{m.evidence.thermal >= 0.35 && ' · heat detected'}</div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </details>
+      <details className="advanced disclosure">
+        <summary>Technical details</summary>
         <div className="kv mono small">
-          <span>Odometry pose</span>
-          <span>
-            ({robot.odomX.toFixed(2)}, {robot.odomY.toFixed(2)})
-          </span>
-          <span>Pose uncertainty</span>
-          <span>{robot.odomUncertainty.toFixed(3)}</span>
-          <span>Brain goal</span>
-          <span>{brain?.localGoal ? `(${brain.localGoal.x}, ${brain.localGoal.y})` : '—'}</span>
-          <span>Next seq</span>
-          <span>{engine.network.nextSeq.get(robot.name) ?? 0}</span>
-          <span>Thermal N/E/S/W</span>
-          <span>{robot.thermal.map((v) => v.toFixed(2)).join(' / ')}</span>
-          <span>Acoustic</span>
-          <span>{robot.acoustic.toFixed(3)}</span>
-          <span>Vision / radio</span>
-          <span>
-            {robot.config.visionRadius} / {robot.config.commRadius} cells
-          </span>
-          <span>Distance moved</span>
-          <span>{robot.distanceTravelled} cells</span>
-          <span>Last action</span>
-          <span>{['hold', 'up', 'down', 'left', 'right'][robot.lastAction]}</span>
+          <span>Robot ID</span><span>{robot.name}</span>
+          <span>Odometry</span><span>({robot.odomX.toFixed(2)}, {robot.odomY.toFixed(2)})</span>
+          <span>Uncertainty</span><span>{robot.odomUncertainty.toFixed(3)}</span>
+          <span>Local goal</span><span>{brain?.localGoal ? `(${brain.localGoal.x}, ${brain.localGoal.y})` : '—'}</span>
+          <span>Message sequence</span><span>{engine.network.nextSeq.get(robot.name) ?? 0}</span>
+          <span>Heat N/E/S/W</span><span>{robot.thermal.map((v) => v.toFixed(2)).join(' / ')}</span>
+          <span>Acoustic</span><span>{robot.acoustic.toFixed(3)}</span>
+          <span>Vision / radio</span><span>{robot.config.visionRadius} / {robot.config.commRadius} cells</span>
+          <span>Distance traveled</span><span>{robot.distanceTravelled} cells</span>
+          <span>Last action</span><span>{['Hold', 'North', 'South', 'West', 'East'][robot.lastAction]}</span>
         </div>
         <p className="faint small">{robot.type === 'rover' ? ROVER_DESCRIPTION : DRONE_DESCRIPTION}</p>
       </details>
@@ -222,18 +181,16 @@ export function RightPanel() {
   const selected = useSim((s) => s.selected);
   const robot = selected ? engine.robots.find((r) => r.name === selected) : null;
   return (
-    <aside className="panel right">
-      {robot ? (
-        <RobotDetail engine={engine} robot={robot} version={version} />
-      ) : (
+    <aside className="panel right" aria-label="Robot fleet">
+      {robot ? <RobotDetail key={robot.name} engine={engine} robot={robot} version={version} /> : (
         <>
-          <h3 className="panel-title">Fleet overview</h3>
-          <p className="faint small">Click a robot card or a robot in the scene for details.</p>
-          <div className="fleet">
-            {engine.robots.map((r) => (
-              <FleetCard key={r.name} engine={engine} robot={r} />
-            ))}
+          <div className="panel-header">
+            <span className="panel-eyebrow">BETTER TOGETHER</span>
+            <h2>Your fleet <span className="fleet-count">{engine.robots.length}</span></h2>
+            <p className="panel-intro">Select a robot to see what it knows.</p>
           </div>
+          <div className="fleet-summary"><span className="conn-dot good" />{engine.robots.filter((r) => r.alive).length} robots operational</div>
+          <div className="fleet">{engine.robots.map((r) => <FleetCard key={r.name} engine={engine} robot={r} />)}</div>
         </>
       )}
     </aside>

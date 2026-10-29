@@ -18,7 +18,7 @@ export function worldToCell(engine: SimulationEngine, p: THREE.Vector3): { x: nu
 export function robotRenderPosition(engine: SimulationEngine, id: number, target = new THREE.Vector3()): THREE.Vector3 {
   const r = engine.robots[id];
   const prev = engine.prevPositions.get(id) ?? r;
-  const a = smoothstep(simClock.alpha);
+  const a = Math.min(1, Math.max(0, simClock.alpha));
   return cellToWorld(engine, prev.x + (r.x - prev.x) * a, prev.y + (r.y - prev.y) * a, target);
 }
 
@@ -33,14 +33,9 @@ export interface QualityProfile {
   shadows: boolean;
   shadowMapSize: number;
   dust: number;
-  emergencyLights: number;
-  robotSpotlights: boolean;
-  lightShafts: boolean;
   rubblePerCell: number;
-  /** Drifting clouds, robot glow lights, bloom/vignette and comm arcs: Medium and High only. */
-  clouds: boolean;
-  robotGlow: boolean;
-  postFx: boolean;
+  /** Subtle water animation is disabled on the lightest profile. */
+  animatedWater: boolean;
   commFx: boolean;
 }
 
@@ -50,14 +45,9 @@ export const QUALITY: Record<Quality, QualityProfile> = {
     antialias: false,
     shadows: false,
     shadowMapSize: 1024,
-    dust: 120,
-    emergencyLights: 2,
-    robotSpotlights: false,
-    lightShafts: false,
+    dust: 0,
     rubblePerCell: 2,
-    clouds: false,
-    robotGlow: false,
-    postFx: false,
+    animatedWater: false,
     commFx: false,
   },
   medium: {
@@ -65,14 +55,9 @@ export const QUALITY: Record<Quality, QualityProfile> = {
     antialias: true,
     shadows: true,
     shadowMapSize: 1024,
-    dust: 320,
-    emergencyLights: 4,
-    robotSpotlights: false,
-    lightShafts: true,
+    dust: 36,
     rubblePerCell: 3,
-    clouds: true,
-    robotGlow: true,
-    postFx: true,
+    animatedWater: true,
     commFx: true,
   },
   high: {
@@ -80,40 +65,35 @@ export const QUALITY: Record<Quality, QualityProfile> = {
     antialias: true,
     shadows: true,
     shadowMapSize: 2048,
-    dust: 700,
-    emergencyLights: 6,
-    robotSpotlights: true,
-    lightShafts: true,
+    dust: 72,
     rubblePerCell: 4,
-    clouds: true,
-    robotGlow: true,
-    postFx: true,
+    animatedWater: true,
     commFx: true,
   },
 };
 
 export const COLORS = {
-  rover: '#ff9a3c',
-  drone: '#46d9ff',
+  rover: '#d78136',
+  drone: '#2cafa7',
   healthy: '#38f28a',
   weak: '#ffd23f',
   down: '#ff3b4a',
-  survivor: '#7dffb2',
+  survivor: '#309b64',
   heat: '#ff6a2b',
   sound: '#b48cff',
   manual: '#f5f5ff',
   // Warm game-art palette for the environment and comm effects.
-  sand: '#e8d5a3',
-  sandDark: '#d4c48a',
-  grout: '#a8925f',
+  sand: '#f1d9a0',
+  sandDark: '#e9cc8d',
+  grout: '#dfc18b',
   terracotta: '#cd853f',
   sienna: '#a0522d',
   saddle: '#8b4513',
   leaf: '#4caf50',
   leafDark: '#2e7d32',
-  water: '#26c6da',
+  water: '#2bafa9',
   sun: '#fff5e0',
-  sky: '#c8e6f5',
+  sky: '#d7f0e9',
   ember: '#ff7043',
   discovery: '#ffeb3b',
   merge: '#80deea',
@@ -150,7 +130,7 @@ function shade(hex: string, k: number): string {
  * checker tone, a lit top/left rim and a shaded bottom/right rim, so a flat
  * plane reads like raised isometric blocks. Pebbles and grass tufts add life.
  */
-export function makeIsoTileTexture(width: number, height: number, style: FloorStyle, seed: number): THREE.CanvasTexture {
+export function makeIsoTileTexture(width: number, height: number, style: FloorStyle, seed: number, cells?: Int8Array): THREE.CanvasTexture {
   const ppc = Math.max(8, Math.min(32, Math.floor(2048 / Math.max(width, height))));
   const canvas = document.createElement('canvas');
   canvas.width = width * ppc;
@@ -159,19 +139,39 @@ export function makeIsoTileTexture(width: number, height: number, style: FloorSt
   const [light, dark, grout] = TILE_PALETTE[style];
   ctx.fillStyle = grout;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-  const bevel = Math.max(1, Math.round(ppc / 10));
+  const bevel = 1;
   for (let y = 0; y < height; y++)
     for (let x = 0; x < width; x++) {
       const px = x * ppc;
       const py = y * ppc;
-      const base = shade((x + y) % 2 ? dark : light, 0.94 + hash2(x, y, seed) * 0.12);
+      // The overgrown courtyards remain traversable. Their sandy borders and
+      // cross-paths make the actual walls and open routes easy to distinguish.
+      const openInterior = cells?.[y * width + x] === 0 && x > 2 && y > 2 && x < width - 3 && y < height - 3
+        && [[-2, 0], [2, 0], [0, -2], [0, 2], [-1, 0], [1, 0], [0, -1], [0, 1]].every(([dx, dy]) => cells[(y + dy) * width + x + dx] === 0);
+      const meadow = style !== 'mine' && openInterior && hash2(Math.floor(x / 8), Math.floor(y / 8), seed + 55) > 0.25
+        && x % 9 !== 4 && y % 10 !== 5;
+      const base = shade(meadow ? (hash2(x, y, seed + 21) > 0.5 ? '#84ab32' : '#7da22b') : hash2(x, y, seed + 2) > 0.72 ? dark : light, 0.96 + hash2(x, y, seed) * 0.08);
+      if (meadow) {
+        ctx.fillStyle = base;
+        ctx.fillRect(px, py, ppc, ppc);
+        for (let blade = 0; blade < 4; blade++) {
+          const s = Math.max(1, Math.round(ppc / 12));
+          ctx.fillStyle = shade(base, blade % 2 ? 1.11 : 0.91);
+          ctx.fillRect(px + hash2(x + blade, y, seed + 25) * (ppc - s), py + hash2(x, y + blade, seed + 26) * (ppc - s), s, s * 2);
+        }
+        if (hash2(x, y, seed + 27) > 0.9) {
+          ctx.fillStyle = '#f9e9bb';
+          ctx.fillRect(px + ppc * 0.35, py + ppc * 0.4, Math.max(2, ppc / 10), Math.max(2, ppc / 10));
+        }
+        continue;
+      }
       // Inset by 1px of grout, then paint top face, highlight rim and shadow rim.
       ctx.fillStyle = base;
       ctx.fillRect(px + 1, py + 1, ppc - 2, ppc - 2);
-      ctx.fillStyle = shade(base, 1.12);
+      ctx.fillStyle = shade(base, 1.035);
       ctx.fillRect(px + 1, py + 1, ppc - 2, bevel);
       ctx.fillRect(px + 1, py + 1, bevel, ppc - 2);
-      ctx.fillStyle = shade(base, 0.8);
+      ctx.fillStyle = shade(base, 0.96);
       ctx.fillRect(px + 1, py + ppc - 1 - bevel, ppc - 2, bevel);
       ctx.fillRect(px + ppc - 1 - bevel, py + 1, bevel, ppc - 2);
       const roll = hash2(x, y, seed + 7);
@@ -229,74 +229,6 @@ export function makeWaterNormalTexture(): THREE.DataTexture {
   return t;
 }
 
-/** Glowing hexagon outline for the selection marker. */
-export function makeHexTexture(): THREE.CanvasTexture {
-  const size = 128;
-  const canvas = document.createElement('canvas');
-  canvas.width = canvas.height = size;
-  const ctx = canvas.getContext('2d')!;
-  const hex = (r: number) => {
-    ctx.beginPath();
-    for (let i = 0; i < 6; i++) {
-      const a = (Math.PI / 3) * i + Math.PI / 6;
-      const x = size / 2 + Math.cos(a) * r;
-      const y = size / 2 + Math.sin(a) * r;
-      if (i) ctx.lineTo(x, y);
-      else ctx.moveTo(x, y);
-    }
-    ctx.closePath();
-  };
-  // Soft outer glow via shadowBlur, a crisp rim, and a faint filled face.
-  ctx.shadowColor = 'rgba(255,255,255,0.9)';
-  ctx.shadowBlur = 14;
-  ctx.strokeStyle = 'rgba(255,255,255,1)';
-  ctx.lineWidth = 5;
-  hex(48);
-  ctx.stroke();
-  ctx.shadowBlur = 0;
-  ctx.fillStyle = 'rgba(255,255,255,0.12)';
-  hex(46);
-  ctx.fill();
-  const t = new THREE.CanvasTexture(canvas);
-  t.colorSpace = THREE.SRGBColorSpace;
-  return t;
-}
-
-/** Night-ops sky: deep navy overhead fading to a faint blue horizon glow. */
-export function makeSkyTexture(): THREE.CanvasTexture {
-  const canvas = document.createElement('canvas');
-  canvas.width = 4;
-  canvas.height = 256;
-  const ctx = canvas.getContext('2d')!;
-  const g = ctx.createLinearGradient(0, 0, 0, 256);
-  g.addColorStop(0, '#070b14');
-  g.addColorStop(0.65, '#0f1830');
-  g.addColorStop(1, '#1a2744');
-  ctx.fillStyle = g;
-  ctx.fillRect(0, 0, 4, 256);
-  const t = new THREE.CanvasTexture(canvas);
-  t.colorSpace = THREE.SRGBColorSpace;
-  return t;
-}
-
-/** Repeating horizontal scanlines used as an alpha map on the coverage fog. */
-export function makeScanlineTexture(): THREE.CanvasTexture {
-  const canvas = document.createElement('canvas');
-  canvas.width = 2;
-  canvas.height = 4;
-  const ctx = canvas.getContext('2d')!;
-  ctx.fillStyle = '#ffffff';
-  ctx.fillRect(0, 0, 2, 4);
-  ctx.fillStyle = '#c4c4c4';
-  ctx.fillRect(0, 0, 2, 1);
-  const t = new THREE.CanvasTexture(canvas);
-  t.wrapS = t.wrapT = THREE.RepeatWrapping;
-  t.magFilter = THREE.NearestFilter;
-  t.minFilter = THREE.NearestFilter;
-  t.generateMipmaps = false;
-  return t;
-}
-
 /** Soft radial sprite used for dust, glows and floor light pools. */
 export function makeGlowTexture(): THREE.CanvasTexture {
   const size = 64;
@@ -314,36 +246,8 @@ export function makeGlowTexture(): THREE.CanvasTexture {
   return t;
 }
 
-/** Yellow/black hazard stripes for the staging zone. */
-export function makeHazardTexture(): THREE.CanvasTexture {
-  const canvas = document.createElement('canvas');
-  canvas.width = canvas.height = 128;
-  const ctx = canvas.getContext('2d')!;
-  ctx.fillStyle = '#16140f';
-  ctx.fillRect(0, 0, 128, 128);
-  ctx.fillStyle = '#e2b414';
-  for (let i = -128; i < 256; i += 32) {
-    ctx.beginPath();
-    ctx.moveTo(i, 0);
-    ctx.lineTo(i + 16, 0);
-    ctx.lineTo(i + 16 + 128, 128);
-    ctx.lineTo(i + 128, 128);
-    ctx.fill();
-  }
-  const t = new THREE.CanvasTexture(canvas);
-  t.colorSpace = THREE.SRGBColorSpace;
-  t.wrapS = t.wrapT = THREE.RepeatWrapping;
-  return t;
-}
-
 let glow: THREE.CanvasTexture | null = null;
 export function glowTexture(): THREE.CanvasTexture {
   if (!glow) glow = makeGlowTexture();
   return glow;
-}
-
-let hexTex: THREE.CanvasTexture | null = null;
-export function hexTexture(): THREE.CanvasTexture {
-  if (!hexTex) hexTex = makeHexTexture();
-  return hexTex;
 }

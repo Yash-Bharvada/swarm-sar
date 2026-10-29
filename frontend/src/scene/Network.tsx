@@ -16,7 +16,7 @@ const c = new THREE.Color();
 const c2 = new THREE.Color();
 
 /** Height of each robot's antenna tip, where links and arcs attach. */
-const antennaHeight = (engine: SimulationEngine, id: number) => (engine.robots[id].type === 'drone' ? 1.6 : 0.95);
+const antennaHeight = (engine: SimulationEngine, id: number) => (engine.robots[id].type === 'drone' ? 1.4 : 0.83);
 
 const pairKey = (x: string, y: string) => (x < y ? `${x}|${y}` : `${y}|${x}`);
 
@@ -98,18 +98,25 @@ export function NetworkLinks({ engine }: { engine: SimulationEngine }) {
       b.y = antennaHeight(engine, fromA ? ib : ia);
       const offset = (offsets.current.get(key) ?? 0) + dt * speed;
       offsets.current.set(key, offset % 100);
-      positions.set([a.x, a.y, a.z, b.x, b.y, b.z], n * 6);
+      const base = n * 6;
+      positions[base] = a.x;
+      positions[base + 1] = a.y;
+      positions[base + 2] = a.z;
+      positions[base + 3] = b.x;
+      positions[base + 4] = b.y;
+      positions[base + 5] = b.z;
       distances[n * 2] = -offset;
       distances[n * 2 + 1] = a.distanceTo(b) - offset;
       c.set(col).multiplyScalar(fade);
-      colors.set([c.r, c.g, c.b, c.r, c.g, c.b], n * 6);
+      colors[base] = colors[base + 3] = c.r;
+      colors[base + 1] = colors[base + 4] = c.g;
+      colors[base + 2] = colors[base + 5] = c.b;
       n++;
     }
     geometry.setDrawRange(0, n * 2);
     geometry.attributes.position.needsUpdate = true;
     geometry.attributes.color.needsUpdate = true;
     geometry.attributes.lineDistance.needsUpdate = true;
-    geometry.computeBoundingSphere();
   });
 
   return (
@@ -228,16 +235,25 @@ export function PacketPulses({ engine, arcs }: { engine: SimulationEngine; arcs:
       links.current = linkIndex(engine);
       // Keep loss/partition packets and anything carrying map data or evidence;
       // skip pure heartbeats when the team is large to avoid visual noise.
-      const fresh = engine.packets.filter((p) => p.outcome !== 'in-flight' || p.mapCells > 0 || engine.robots.length <= 4);
-      active.current = [...active.current, ...fresh].slice(-MAX_PACKETS);
+      for (const packet of engine.packets) {
+        if (packet.outcome !== 'in-flight' || packet.mapCells > 0 || engine.robots.length <= 4) active.current.push(packet);
+      }
+      const overflow = active.current.length - MAX_PACKETS;
+      if (overflow > 0) {
+        for (let i = 0; i < overflow; i++) arrived.current.delete(active.current[i].id);
+        active.current.copyWithin(0, overflow);
+        active.current.length = MAX_PACKETS;
+      }
     }
     const now = engine.step - 1 + simClock.alpha;
     const positions = arcBuffer.geometry.attributes.position.array as Float32Array;
     const colors = arcBuffer.geometry.attributes.color.array as Float32Array;
     let n = 0;
     let arcCount = 0;
-    const keep: PacketVisual[] = [];
-    for (const p of active.current) {
+    const packets = active.current;
+    let retained = 0;
+    for (let i = 0; i < packets.length; i++) {
+      const p = packets[i];
       const duration = Math.max(1, p.arriveStep - p.sentStep);
       const t = (now - (p.sentStep - 1)) / duration;
       const lost = p.outcome === 'lost' || p.outcome === 'partition' || p.outcome === 'stale';
@@ -246,7 +262,7 @@ export function PacketPulses({ engine, arcs }: { engine: SimulationEngine; arcs:
         arrived.current.delete(p.id);
         continue;
       }
-      keep.push(p);
+      packets[retained++] = p;
       const ia = index.get(p.from);
       const ib = index.get(p.to);
       if (ia === undefined || ib === undefined) continue;
@@ -314,7 +330,7 @@ export function PacketPulses({ engine, arcs }: { engine: SimulationEngine; arcs:
       m.setColorAt(n, c);
       n++;
     }
-    active.current = keep;
+    packets.length = retained;
     m.count = n;
     m.instanceMatrix.needsUpdate = true;
     if (m.instanceColor) m.instanceColor.needsUpdate = true;
@@ -326,8 +342,15 @@ export function PacketPulses({ engine, arcs }: { engine: SimulationEngine; arcs:
     // Reception ripples: scale 0 → 2 and fade out over RIPPLE_TIME seconds.
     const r = rippleMesh.current;
     if (r) {
-      ripples.current = ripples.current.filter((x) => clock.elapsedTime - x.born < RIPPLE_TIME).slice(-MAX_RIPPLES);
-      ripples.current.forEach((x, i) => {
+      const liveRipples = ripples.current;
+      let count = 0;
+      for (let i = Math.max(0, liveRipples.length - MAX_RIPPLES); i < liveRipples.length; i++) {
+        const ripple = liveRipples[i];
+        if (clock.elapsedTime - ripple.born < RIPPLE_TIME) liveRipples[count++] = ripple;
+      }
+      liveRipples.length = count;
+      for (let i = 0; i < count; i++) {
+        const x = liveRipples[i];
         const k = (clock.elapsedTime - x.born) / RIPPLE_TIME;
         tmp.position.set(x.x, 0.09, x.z);
         tmp.rotation.set(-Math.PI / 2, 0, 0);
@@ -335,9 +358,9 @@ export function PacketPulses({ engine, arcs }: { engine: SimulationEngine; arcs:
         tmp.updateMatrix();
         r.setMatrixAt(i, tmp.matrix);
         r.setColorAt(i, c.set(x.color).multiplyScalar(1.4 * (1 - k)));
-      });
+      }
       tmp.rotation.set(0, 0, 0);
-      r.count = ripples.current.length;
+      r.count = count;
       r.instanceMatrix.needsUpdate = true;
       if (r.instanceColor) r.instanceColor.needsUpdate = true;
     }
@@ -423,8 +446,19 @@ export function CommEvents({ engine }: { engine: SimulationEngine }) {
       lastMapFlash.current.set(p.from, now);
       next.push({ id: `map-${robot.name}-${engine.step}`, robotId: robot.id, text: '🗺 Map update', born: now });
     }
-    setFlashes((prev) => [...prev.filter((f) => now - f.born < FLASH_LIFETIME), ...next]);
+    if (next.length) setFlashes((prev) => [...prev.filter((f) => now - f.born < FLASH_LIFETIME), ...next]);
   }, [engine, version]);
+
+  // Use real time so pausing a mission cannot leave an expired toast onscreen.
+  useEffect(() => {
+    if (!flashes.length) return;
+    const expiresAt = Math.min(...flashes.map((flash) => flash.born + FLASH_LIFETIME));
+    const timer = window.setTimeout(() => {
+      const now = performance.now() / 1000;
+      setFlashes((previous) => previous.filter((flash) => now - flash.born < FLASH_LIFETIME));
+    }, Math.max(1, (expiresAt - performance.now() / 1000) * 1000));
+    return () => window.clearTimeout(timer);
+  }, [flashes]);
 
   return (
     <>
@@ -601,8 +635,8 @@ function ReconnectBurst() {
     const m = ref.current;
     if (!m) return;
     if (start.current === null) start.current = clock.elapsedTime;
-    const t = Math.min(1, (clock.elapsedTime - start.current) / 1.4);
-    const s = 0.6 + t * 4;
+    const t = Math.min(1, (clock.elapsedTime - start.current) / 0.9);
+    const s = 0.6 + t * 0.9;
     m.scale.set(s, s, s);
     (m.material as THREE.MeshBasicMaterial).opacity = 1 - t;
   });

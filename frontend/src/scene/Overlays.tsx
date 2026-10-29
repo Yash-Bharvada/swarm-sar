@@ -5,13 +5,14 @@ import * as THREE from 'three';
 import type { SimulationEngine } from '../simulation/core/SimulationEngine';
 import { evidencePosition, maxThermal } from '../simulation/sensing/SensorModel';
 import { UNKNOWN } from '../simulation/world/GridMap';
-import { cellToWorld, COLORS, glowTexture, makeScanlineTexture, type QualityProfile } from './common';
+import { cellToWorld, COLORS, glowTexture, type QualityProfile } from './common';
 import { RobotAnchor } from './Network';
 import { useSim } from '../store/simStore';
+import { SurvivorRescue } from './SurvivorRescue';
 
 /**
- * Darkens space no robot has sensed yet. With a robot selected it shows that
- * robot's private belief instead, so the operator sees what *it* knows.
+ * A pale ground tint marks space that has not been sensed. Selecting a robot
+ * shows its private belief; otherwise the tint combines delivered observations.
  */
 export function CoverageFog({ engine, robot }: { engine: SimulationEngine; robot: string | null }) {
   const version = useSim((s) => s.version);
@@ -21,16 +22,10 @@ export function CoverageFog({ engine, robot }: { engine: SimulationEngine; robot
     t.magFilter = THREE.LinearFilter;
     t.minFilter = THREE.LinearFilter;
     t.flipY = false;
+    t.colorSpace = THREE.SRGBColorSpace;
     return t;
   }, [width, height]);
   useEffect(() => () => texture.dispose(), [texture]);
-  // Faint scanlines (two per cell) multiplied into the fog's alpha for a "sensor mode" feel.
-  const scanlines = useMemo(() => {
-    const t = makeScanlineTexture();
-    t.repeat.set(1, height * 2);
-    return t;
-  }, [height]);
-  useEffect(() => () => scanlines.dispose(), [scanlines]);
 
   useEffect(() => {
     const data = texture.image.data as Uint8Array;
@@ -47,101 +42,49 @@ export function CoverageFog({ engine, robot }: { engine: SimulationEngine; robot
       const x = i % width;
       const y = Math.floor(i / width);
       const o = ((height - 1 - y) * width + x) * 4;
-      data[o] = only ? 6 : 3;
-      data[o + 1] = only ? 10 : 5;
-      data[o + 2] = only ? 26 : 10;
-      // Strong enough to dim the bright sand tiles so explored ground clearly stands out.
-      data[o + 3] = known ? 0 : only ? 215 : 185;
+      data[o] = only ? 214 : 226;
+      data[o + 1] = only ? 226 : 234;
+      data[o + 2] = only ? 220 : 216;
+      // An understated sage tint keeps terrain and agents readable, even before launch.
+      data[o + 3] = known ? 0 : only ? 100 : 88;
     }
     texture.needsUpdate = true;
   }, [engine, robot, texture, version, width, height]);
 
   return (
-    <mesh rotation-x={-Math.PI / 2} position={[0, 2.85, 0]} renderOrder={5}>
+    <mesh rotation-x={-Math.PI / 2} position={[0, 0.035, 0]} renderOrder={1}>
       <planeGeometry args={[width, height]} />
-      <meshBasicMaterial map={texture} alphaMap={scanlines} transparent depthWrite={false} toneMapped={false} />
+      <meshBasicMaterial map={texture} transparent depthWrite={false} toneMapped={false} />
     </mesh>
   );
 }
 
-/**
- * SOS beacon for a confirmed survivor: a thin pulsing light beam that grows
- * out of the floor, topped with a spinning star-of-life cross.
- */
-function SurvivorBeacon({ position, quality, index }: { position: THREE.Vector3; quality: QualityProfile; index: number }) {
-  const beam = useRef<THREE.Mesh>(null);
-  const cross = useRef<THREE.Group>(null);
-  const ring = useRef<THREE.Mesh>(null);
-  const born = useRef<number | null>(null);
-  useFrame(({ clock }) => {
-    if (born.current === null) born.current = clock.elapsedTime;
-    const age = clock.elapsedTime - born.current;
-    const t = clock.elapsedTime + index;
-    const grow = Math.min(1, age / 0.8);
-    if (beam.current) {
-      beam.current.scale.set(1, grow, 1);
-      beam.current.position.y = 2 * grow;
-      (beam.current.material as THREE.MeshBasicMaterial).opacity = 0.65 + 0.35 * Math.sin(t * 4);
-    }
-    if (cross.current) {
-      cross.current.position.y = 4 * grow + 0.35;
-      cross.current.rotation.y = clock.elapsedTime * 1.8;
-      cross.current.scale.setScalar(grow * (1 + 0.08 * Math.sin(t * 4)));
-    }
-    if (ring.current) {
-      const p = (t % 1.6) / 1.6;
-      ring.current.scale.setScalar(0.4 + p * 2.2);
-      (ring.current.material as THREE.MeshBasicMaterial).opacity = 0.8 * (1 - p);
-    }
-  });
-  return (
-    <group position={position}>
-      {/* Casualty lying on the floor */}
-      <mesh position={[0, 0.16, 0]} rotation-z={Math.PI / 2} rotation-y={index * 1.3} castShadow>
-        <capsuleGeometry args={[0.13, 0.5, 4, 8]} />
-        <meshStandardMaterial color="#c9a27e" roughness={0.8} emissive="#ff6a2b" emissiveIntensity={0.25} />
-      </mesh>
-      <mesh ref={beam}>
-        <cylinderGeometry args={[0.05, 0.05, 4, 10]} />
-        <meshBasicMaterial color={COLORS.survivor} transparent depthWrite={false} blending={THREE.AdditiveBlending} toneMapped={false} />
-      </mesh>
-      <group ref={cross}>
-        <mesh>
-          <boxGeometry args={[0.6, 0.18, 0.06]} />
-          <meshBasicMaterial color={COLORS.survivor} toneMapped={false} />
-        </mesh>
-        <mesh>
-          <boxGeometry args={[0.18, 0.6, 0.06]} />
-          <meshBasicMaterial color={COLORS.survivor} toneMapped={false} />
-        </mesh>
-      </group>
-
-      <mesh ref={ring} rotation-x={-Math.PI / 2} position={[0, 0.05, 0]}>
-        <ringGeometry args={[0.85, 1, 40]} />
-        <meshBasicMaterial color={COLORS.survivor} transparent depthWrite={false} toneMapped={false} />
-      </mesh>
-      <mesh rotation-x={-Math.PI / 2} position={[0, 0.03, 0]}>
-        <planeGeometry args={[2.4, 2.4]} />
-        <meshBasicMaterial map={glowTexture()} color={COLORS.survivor} transparent opacity={0.5} depthWrite={false} blending={THREE.AdditiveBlending} toneMapped={false} />
-      </mesh>
-      {quality.emergencyLights > 2 && <pointLight position={[0, 1.2, 0]} color={COLORS.survivor} intensity={3} distance={5} />}
-      <Html position={[0, 1.4, 0]} center style={{ pointerEvents: 'none' }} zIndexRange={[15, 0]}>
-        <div className="survivor-tag">SURVIVOR</div>
-      </Html>
-    </group>
-  );
-}
-
-/** Only survivors already confirmed by a robot are rendered. */
+/** Only actual confirmation events create human figures and rescue celebrations. */
 export function Survivors({ engine, quality }: { engine: SimulationEngine; quality: QualityProfile }) {
   useSim((s) => s.version);
-  return (
-    <>
-      {engine.discoveredSurvivors().map((v) => (
-        <SurvivorBeacon key={v.id} index={v.id} quality={quality} position={cellToWorld(engine, v.x, v.y)} />
-      ))}
-    </>
-  );
+  return <>{engine.discoveredSurvivors().map((victim) => <SurvivorRescue key={victim.id} engine={engine} index={victim.id} quality={quality} position={cellToWorld(engine, victim.x, victim.y)} />)}</>;
+}
+
+/** Draft positions are visible only while the operator is editing the mission. */
+export function PlacementMarkers({ engine }: { engine: SimulationEngine }) {
+  return <>
+    {engine.scenario.victims.map((victim) => {
+      const p = cellToWorld(engine, victim.x, victim.y);
+      return <group key={victim.id} position={p}>
+        <mesh position={[0, 0.22, 0]} onClick={(event) => {
+          if (event.delta > 4) return;
+          event.stopPropagation();
+          useSim.getState().toggleSurvivorAt({ x: victim.x, y: victim.y });
+        }}>
+          <sphereGeometry args={[0.27, 12, 10]} />
+          <meshBasicMaterial color="#f97316" toneMapped={false} />
+        </mesh>
+        <Html position={[0, 0.85, 0]} center style={{ pointerEvents: 'none' }}>
+          <div className="debug-tag">PLACED · {victim.id + 1}</div>
+        </Html>
+      </group>;
+    })}
+  </>;
 }
 
 /** DEBUG ONLY: ground-truth survivor positions, never shown in the normal operator view. */

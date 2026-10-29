@@ -52,6 +52,8 @@ export interface EngineOptions {
   manualRobot?: string | null;
   partitionWindows?: PartitionWindow[];
   survivorCount?: [number, number];
+  survivorTargetCount?: number;
+  survivorPositions?: Point[];
   messageTtl?: number;
   maxSteps?: number;
 }
@@ -155,12 +157,24 @@ export class SimulationEngine {
   private noFrontier = new Set<string>();
 
   constructor(options: EngineOptions) {
-    this.options = { ...options, delaySteps: [...options.delaySteps] as [number, number] };
+    this.options = {
+      ...options,
+      delaySteps: [...options.delaySteps] as [number, number],
+      ...(options.survivorPositions !== undefined ? {
+        survivorPositions: Array.isArray(options.survivorPositions) ? options.survivorPositions.map((point) => ({ ...point })) : options.survivorPositions,
+      } : {}),
+    };
     this.mode = options.mode;
     this.manualRobot = options.manualRobot ?? null;
     const count = options.rovers + options.drones;
     if (count < 1 || count > 10) throw new Error('Team size must be between 1 and 10 robots');
-    this.scenario = generateScenario({ preset: options.preset, seed: options.seed, survivorCount: options.survivorCount });
+    this.scenario = generateScenario({
+      preset: options.preset,
+      seed: options.seed,
+      survivorCount: options.survivorCount,
+      survivorTargetCount: options.survivorTargetCount,
+      survivorPositions: this.options.survivorPositions,
+    });
     this.world = new WorldState(this.scenario);
     this.maxSteps = options.maxSteps ?? this.scenario.maxSteps;
     this.rng = new Rng((options.seed * 2654435761) ^ hashString(`world:${options.preset}`));
