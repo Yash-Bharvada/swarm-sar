@@ -11,8 +11,8 @@ maximum experiment budget, not a commitment to keep training after a failure.
 
 ## Transfer identity and branch
 
-Use the `rashiyaom` branch and the `rashiyaom-gpu-dataset-included` tag. `main` is
-deliberately unchanged by this refinement. Verify the exact code and dataset
+Use the `rashiyaom` branch and the `rashiyaom-gpu-browser-integrated` tag. Both
+`rashiyaom` and `main` include this revision. Verify the exact code and dataset
 using the tracked records:
 
 - `artifacts/gpu_v2/source_manifest.json`: every training source/config file
@@ -45,14 +45,14 @@ On a clean Linux clone, with NVIDIA drivers, Python's venv support, pip and GNU
 ```bash
 git clone --branch rashiyaom --single-branch https://github.com/rashiyaom/swarm-sar.git
 cd swarm-sar
-git fetch origin tag rashiyaom-gpu-dataset-included
+git fetch origin tag rashiyaom-gpu-browser-integrated
 ```
 
 The launcher requires branch `rashiyaom`. Verify its HEAD matches the audited
 tag, then launch:
 
 ```bash
-test "$(git rev-parse HEAD)" = "$(git rev-list -n 1 rashiyaom-gpu-dataset-included)"
+test "$(git rev-parse HEAD)" = "$(git rev-list -n 1 rashiyaom-gpu-browser-integrated)"
 bash scripts/launch_gpu.sh --hours 15
 ```
 
