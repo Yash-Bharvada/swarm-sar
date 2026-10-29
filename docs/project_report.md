@@ -148,3 +148,17 @@ units versus 1 on ordinary ground, while drone entry costs 1. This is an abstrac
 terrain/energy distinction, not validated obstacle climbing or flight dynamics.
 No movement, reward, sensor, checkpoint or audited training-source changes were
 made. Browser seed validation, the production build and 137 frontend tests passed.
+
+
+Battery mode setting: both browser heuristic and Python PPO missions now expose
+Limited / Unlimited in Mission settings, with Limited remaining the default.
+Switching modes resets the mission; resets retain the selected mode. The PPO
+controller menu also selects a mode for a new mission. Unlimited uses zero
+movement/rubble/idle consumption, keeps battery observations finite and full,
+and displays infinity in fleet indicators. Existing mission deadlines remain.
+The override is mission-local; audited training files, policy weights and the
+recorded limited-battery results remain unchanged. No tests, evaluation runs or
+additional training were performed for this addition, as requested by the user.
+The frontend production build and TypeScript compilation passed; the Python
+service passed syntax parsing and was restarted with the new option. Runtime
+behavior has not been newly validated for this change.

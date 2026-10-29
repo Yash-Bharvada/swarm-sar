@@ -45,7 +45,7 @@ export function SceneHud({ onOpenPanel }: { onOpenPanel: (panel: Panel) => void 
       <div className="scene-eyebrow"><span className="tiny-square" />FIELD OPERATIONS <span className="eyebrow-divider">/</span> SANDBOX</div>
       <h1>{engine.scenario.name.replace('Collapsed ', '').replace('Earthquake ', '')}</h1>
       <p>Amber beacons: survivors awaiting discovery.</p>
-      <div className="scene-tags"><span><i className={`connection-dot ${health.tone}`} />{!engine.network.enabled ? 'Radio offline' : `Network ${health.label.toLowerCase()}`}</span><span className="mono">SEED {engine.scenario.seed}</span></div>
+      <div className="scene-tags"><span><i className={`connection-dot ${health.tone}`} />{!engine.network.enabled ? 'Radio offline' : `Network ${health.label.toLowerCase()}`}</span><span className="mono">SEED {engine.scenario.seed}</span><span>{engine.options.batteryLimited === false ? '∞ Unlimited battery' : 'Limited battery'}</span></div>
     </div>
 
     <div className="scene-top-right">

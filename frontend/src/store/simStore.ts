@@ -29,6 +29,7 @@ export interface Settings {
   partition: boolean;
   sensorNoise: boolean;
   networkEnabled: boolean;
+  batteryLimited: boolean;
   fog: number; // 0..1
   quality: Quality;
   speed: Speed;
@@ -118,6 +119,7 @@ const initialSettings: Settings = {
   partition: false,
   sensorNoise: true,
   networkEnabled: true,
+  batteryLimited: true,
   fog: 0.08,
   quality: 'medium',
   speed: 1,
@@ -140,6 +142,7 @@ function optionsFrom(s: Settings, demo: boolean, selected: string | null, custom
   });
   return {
     ...base,
+    batteryLimited: s.batteryLimited,
     ...(demo ? { sensorNoise: s.sensorNoise, mode: s.mode, manualRobot: selected } : {}),
     ...(s.survivorCount !== null ? { survivorTargetCount: s.survivorCount } : {}),
     ...(customSurvivors !== null ? { survivorPositions: customSurvivors } : {}),
@@ -281,6 +284,14 @@ export const useSim = create<Store>((set, get) => ({
   },
 
   setSetting: (key, value) => {
+    if (key === 'batteryLimited') {
+      const state = get();
+      if (typeof value !== 'boolean' || state.settings.batteryLimited === value || (state.controllerMode === 'ppo' && state.ppoPhase === 'connecting')) return;
+      set({ settings: { ...state.settings, batteryLimited: value },
+        ...(state.controllerMode === 'ppo' ? { ppoOptions: { ...state.ppoOptions, batteryLimited: value } } : {}) });
+      get().reset();
+      return;
+    }
     if (get().controllerMode === 'ppo' && !['quality', 'fog', 'speed'].includes(key)) return;
     if (key === 'survivorCount') {
       if (value === null) get().useAutomaticSurvivors();

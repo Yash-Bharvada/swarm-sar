@@ -47,6 +47,7 @@ export interface EngineOptions {
   packetLoss: number;
   delaySteps: [number, number];
   networkEnabled: boolean;
+  batteryLimited?: boolean;
   sensorNoise: boolean;
   mode: OperationMode;
   manualRobot?: string | null;
@@ -94,6 +95,7 @@ export function defaultOptions(partial: Partial<EngineOptions> = {}): EngineOpti
     packetLoss: 0.05,
     delaySteps: [1, 2],
     networkEnabled: true,
+    batteryLimited: true,
     sensorNoise: true,
     mode: 'autonomous',
     manualRobot: null,
@@ -188,6 +190,9 @@ export class SimulationEngine {
     this.robots = types.map((type, id) => {
       const cell = cells[order[id]];
       const config = type === 'rover' ? roverConfig(options.sensorNoise) : droneConfig(options.sensorNoise);
+      if (options.batteryLimited === false) {
+        config.moveCost = 0; config.rubbleCost = 0; config.idleCost = 0;
+      }
       const typeIndex = type === 'rover' ? roverIndex++ : droneIndex++;
       return createRobot(id, type, typeIndex, cell.x, cell.y, config, this.scenario.batteryScale, this.scenario.width, this.scenario.height);
     });
@@ -700,6 +705,7 @@ export class SimulationEngine {
       h = Math.imul(h ^ (n | 0), 0x01000193) >>> 0;
     };
     mix(this.step);
+    if (this.options.batteryLimited === false) mix(0x554e4c);
     for (const r of this.robots) {
       mix(r.x);
       mix(r.y);

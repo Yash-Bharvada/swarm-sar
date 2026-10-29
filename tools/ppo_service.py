@@ -71,7 +71,7 @@ def integer(data, key, default, low, high):
 
 
 def options(data):
-    if not isinstance(data, dict) or set(data) - {'seed', 'rovers', 'drones', 'size', 'layout', 'network'}:
+    if not isinstance(data, dict) or set(data) - {'seed', 'rovers', 'drones', 'size', 'layout', 'network', 'batteryLimited'}:
         raise ValueError('Unknown mission options')
     seed = integer(data, 'seed', 10000, 10000, 10099)
     if seed not in load_seed_splits()['development']:
@@ -84,7 +84,11 @@ def options(data):
     layout, network = data.get('layout', 'rooms'), data.get('network', True)
     if layout not in ('rooms', 'maze', 'cave') or type(network) is not bool:
         raise ValueError('Invalid layout or radio setting')
-    return dict(seed=seed, rovers=rovers, drones=drones, size=size, layout=layout, network=network)
+    battery_limited = data.get('batteryLimited', True)
+    if type(battery_limited) is not bool:
+        raise ValueError('batteryLimited must be a boolean')
+    return dict(seed=seed, rovers=rovers, drones=drones, size=size, layout=layout, network=network,
+                batteryLimited=battery_limited)
 
 
 class Mission:
@@ -99,6 +103,12 @@ class Mission:
             'network_enabled': config['network'], 'max_steps': 400,
             'world_overrides': {'layout': config['layout'], 'footprint': 'full', 'max_generation_retries': 100},
         })
+        # Mission-local override: keep the audited training sources and the
+        # 229-value observation contract intact. Zero costs keep battery full
+        # without infinities, refilling between ticks, or reviving dead agents.
+        if not config.get('batteryLimited', True):
+            for robot in self.env.base_robots.values():
+                robot.update(move_cost=0.0, rubble_cost=0.0, idle_cost=0.0)
         try:
             self.observations, _ = self.env.reset(seed=config['seed'])
             self.states = {agent: initial_policy_state(modules[policy_mapping_fn(agent)]) for agent in self.env.agents}

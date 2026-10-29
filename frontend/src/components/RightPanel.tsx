@@ -11,13 +11,14 @@ import { batteryFillStyle, batteryPct, robotConnection } from '../app/format';
 import { MiniMap } from './MiniMap';
 
 function Battery({ robot }: { robot: RobotState }) {
+  const unlimited = useSim((s) => s.engine.options.batteryLimited === false);
   const p = batteryPct(robot);
   return (
-    <div className="battery" title={`${p}% battery`}>
-      <div className="battery-track" role="progressbar" aria-label={`${robot.label} battery`} aria-valuenow={p} aria-valuemin={0} aria-valuemax={100}>
+    <div className="battery" title={unlimited ? 'Unlimited battery' : `${p}% battery`}>
+      <div className="battery-track" role="progressbar" aria-label={`${robot.label} battery`} aria-valuenow={p} aria-valuemin={0} aria-valuemax={100} aria-valuetext={unlimited ? 'Unlimited' : `${p}%`}>
         <div className="battery-fill" style={batteryFillStyle(p)} />
       </div>
-      <span>{p}%</span>
+      <span aria-label={unlimited ? 'Unlimited battery' : undefined}>{unlimited ? '∞' : `${p}%`}</span>
     </div>
   );
 }

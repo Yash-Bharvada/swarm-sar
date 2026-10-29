@@ -1,4 +1,5 @@
 import { useEffect, useId, useState } from 'react';
+import { BatterySettings } from './BatterySettings';
 import { useSim, type Overlays, type Quality } from '../store/simStore';
 import { PRESETS, type PresetId } from '../simulation/world/ScenarioGenerator';
 import type { OperationMode } from '../simulation/core/types';
@@ -74,7 +75,7 @@ export function LeftPanel() {
     ['coverage', 'Unexplored terrain'], ['labels', 'Robot labels'],
   ];
 
-  if (controllerMode === 'ppo') return <aside className="panel left" aria-label="Mission settings"><div className="panel-header"><span className="panel-eyebrow">TRAINED SWARM · GPU-V1</span><h2>Python mission</h2><p className="panel-intro">The verified 754k checkpoint controls this world. Use Controller settings above the map to create a new PPO mission.</p></div><div className="objective-card"><strong>{ppoPhase === 'ready' ? 'PPO connected' : 'PPO connection pending'}</strong><p className="explain">Seed {settings.seed} · {engine.scenario.width} × {engine.scenario.height}<br />{settings.rovers} rovers · {settings.drones} drones</p></div><p className="explain">Python owns physics, sensing and peer-message delivery. Camera, audio, survivor conversations and rendering are browser presentation. Manual driving and survivor authoring are available in heuristic mode.</p><button className="btn" onClick={reset}>Reset PPO mission</button><details className="disclosure" open><summary>Graphics</summary><Segmented<Quality> label="Graphics quality" value={settings.quality} onChange={(v) => setSetting('quality', v)} options={[{ value: 'low', label: 'Low' }, { value: 'medium', label: 'Medium' }, { value: 'high', label: 'High' }]} /></details></aside>;
+  if (controllerMode === 'ppo') return <aside className="panel left" aria-label="Mission settings"><div className="panel-header"><span className="panel-eyebrow">TRAINED SWARM · GPU-V1</span><h2>Python mission</h2><p className="panel-intro">The verified 754k checkpoint controls this world. Use Controller settings above the map to create a new PPO mission.</p></div><div className="objective-card"><strong>{ppoPhase === 'ready' ? 'PPO connected' : 'PPO connection pending'}</strong><p className="explain">Seed {settings.seed} · {engine.scenario.width} × {engine.scenario.height}<br />{settings.rovers} rovers · {settings.drones} drones</p></div><p className="explain">Python owns physics, sensing and peer-message delivery. Camera, audio, survivor conversations and rendering are browser presentation. Manual driving and survivor authoring are available in heuristic mode.</p><BatterySettings /><button className="btn" onClick={reset}>Reset PPO mission</button><details className="disclosure" open><summary>Graphics</summary><Segmented<Quality> label="Graphics quality" value={settings.quality} onChange={(v) => setSetting('quality', v)} options={[{ value: 'low', label: 'Low' }, { value: 'medium', label: 'Medium' }, { value: 'high', label: 'High' }]} /></details></aside>;
 
   return (
     <aside className="panel left" aria-label="Mission settings">
@@ -98,6 +99,7 @@ export function LeftPanel() {
         <Stepper label="Rovers" icon="rover" value={settings.rovers} min={settings.drones ? 0 : 1} max={10 - settings.drones} disabled={locked || demo} onChange={(v) => setSetting('rovers', v)} />
         <Stepper label="Drones" icon="drone" value={settings.drones} min={settings.rovers ? 0 : 1} max={10 - settings.rovers} disabled={locked || demo} onChange={(v) => setSetting('drones', v)} />
       </section>
+      <BatterySettings />
       <section className="section survivor-setup" aria-label="Survivor setup">
         <label className="field-label" htmlFor={`${fieldId}-survivors`}>
           Survivors <span className="hint">{locked ? 'Reset to edit' : customSurvivors ? 'Custom placement' : settings.survivorCount === null ? 'Automatic · 2–4' : 'Custom count'}</span>
@@ -124,7 +126,7 @@ export function LeftPanel() {
           <button className="btn" onClick={applySurvivorCount} disabled={locked}>Apply count</button>
         </div>
         <p className="explain" id={`${fieldId}-survivor-help`}>{survivorCapacity.toLocaleString()} available tiles. One survivor per reachable tile outside the staging area.</p>
-        {engine.scenario.victims.length > 10 && <p className="explain">Large survivor counts increase sensing and rendering work. The mission time and robot batteries stay unchanged; finding everyone is not guaranteed.</p>}
+        {engine.scenario.victims.length > 10 && <p className="explain">Large survivor counts increase sensing and rendering work. The mission time and selected battery mode stay unchanged; finding everyone is not guaranteed.</p>}
         <div className="survivor-actions">
           <button className={`btn ${editingSurvivors ? 'primary' : ''}`} disabled={locked} aria-pressed={editingSurvivors} onClick={() => setEditingSurvivors(!editingSurvivors)}>
             {editingSurvivors ? 'Finish placing' : 'Place on map'}

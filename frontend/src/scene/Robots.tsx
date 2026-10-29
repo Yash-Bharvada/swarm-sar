@@ -93,6 +93,7 @@ function SelectionMarker({ selected, color, airborne = false }: { selected: bool
 function RobotLabel({ robot, selected }: { robot: RobotState; selected: boolean }) {
   const show = useSim((s) => s.overlays.labels);
   const cleanView = useSim((s) => s.cleanView);
+  const unlimitedBattery = useSim((s) => s.engine.options.batteryLimited === false);
   if (cleanView || (!show && !selected)) return null;
   const percentage = robot.alive ? batteryPct(robot) : 0;
   return (
@@ -101,7 +102,7 @@ function RobotLabel({ robot, selected }: { robot: RobotState; selected: boolean 
         <span className="tag-icon" aria-hidden />
         {robot.manual && <span className="tag-manual">MANUAL</span>}
         {selected ? robot.label : robot.label.replace('Rover ', 'R').replace('Drone ', 'D')}
-        {selected && <span className="tag-battery" title={`${percentage}% battery`}><span style={batteryFillStyle(percentage)} /></span>}
+        {selected && <span className="tag-battery" title={unlimitedBattery ? 'Unlimited battery' : `${percentage}% battery`}><span style={batteryFillStyle(percentage)} /></span>}
       </div>
     </Html>
   );

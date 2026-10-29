@@ -119,3 +119,23 @@ physical calibration. Wheel climbing, suspension/contact dynamics and flight
 over walls are not simulated here. Changing traversal/energy rules would require
 new evaluation and potentially fine-tuning; this presentation correction changes
 none of those rules or the verified checkpoint.
+
+## Battery modes
+
+Mission settings now offer **Limited** (the default) and **Unlimited** for both
+heuristic and PPO missions. The PPO controller menu also offers a battery mode
+for new missions. Changing the mode in settings resets the current mission on
+the same map; launch again to explore. The selection survives mission resets.
+
+Limited retains the existing budgets and consumption. Unlimited sets movement,
+rubble and idle costs to zero in the mission's own robot configuration. Battery
+therefore stays at its finite full value, and the policy still receives the same
+229-value observation contract. Fleet indicators show infinity and the scene
+labels its battery mode. Time limits, sensing, navigation and radio rules still
+apply. The Python service applies this override before creating the world;
+training source files, checkpoint weights and prior evaluation evidence are
+unchanged. Unlimited runs are a different condition from the recorded limited
+battery benchmark. Restart an already-running Python service after updating.
+
+No tests or evaluation missions were run for this change, at the user's request.
+Compilation/build checks are recorded separately from behavioral validation.

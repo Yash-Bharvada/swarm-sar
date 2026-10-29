@@ -298,3 +298,9 @@ PPO map seeds accept **10000–10099**, with an inline error for invalid values 
 a Shuffle button. The terrain guide distinguishes low traversable debris from
 blocking walls: rover rubble entry costs twice ordinary ground. The rubble art
 uses low chips; wheel climbing and flight over walls are not modeled by the grid.
+
+Battery mode is available in **Mission settings → Battery mode** for both
+controllers. Choose **Limited** (default) or **Unlimited**. Changing mode resets
+the current mission; launch again. Unlimited keeps energy full, shows ∞ in the
+fleet, and retains the mission time limit. The PPO controller menu also provides
+this choice before creating a mission. Restart the Python service after updating.
