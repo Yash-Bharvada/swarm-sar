@@ -3,7 +3,11 @@
 __pycache__/
 *.pyc
 *.egg-info/
-results/
+/results/*
+!/results/expert_train_gpu_v2/
+/results/expert_train_gpu_v2/*
+!/results/expert_train_gpu_v2/chunk_*.npz
+!/results/expert_train_gpu_v2/manifest.json
 .pytest_cache/
 .ipynb_checkpoints/
 ros2_ws/build/

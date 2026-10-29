@@ -11,7 +11,7 @@ maximum experiment budget, not a commitment to keep training after a failure.
 
 ## Transfer identity and branch
 
-Use the `rashiyaom` branch and the `rashiyaom-step5-integrated` tag. `main` is
+Use the `rashiyaom` branch and the `rashiyaom-gpu-dataset-included` tag. `main` is
 deliberately unchanged by this refinement. Verify the exact code and dataset
 using the tracked records:
 
@@ -30,12 +30,11 @@ is `610fe2e0ed6462f8a97036cb581c7af5e5edd2884c176be52d865cd0132bbdae`.
 The local transferable archive has SHA-256
 `f1701522a6e1255863ca23d544454c18169424479bde132a56c3f71496e792dc`.
 
-The large expert data lives in ignored `results/expert_train_gpu_v2/`.
-Transfer that complete directory separately. An optional archive can be made
-with `tar -czf results/expert_train_gpu_v2.tar.gz -C results expert_train_gpu_v2`.
-The preflight checks every chunk; copying only the Git repository does not
-copy the dataset. If the directory is absent, the launcher regenerates it from
-the exact source before training. A partial or mismatched directory causes a
+The verified expert dataset is tracked as 18 compressed chunks and a manifest
+under `results/expert_train_gpu_v2/`. A clean clone includes it, so no separate
+archive transfer or regeneration is needed. The larger tar archive remains
+ignored because it exceeds GitHub's per-file limit and duplicates these chunks.
+The preflight checks every chunk. A partial or mismatched directory causes a
 stop; it is never overwritten or silently accepted.
 
 ## One-command server workflow
@@ -46,14 +45,14 @@ On a clean Linux clone, with NVIDIA drivers, Python's venv support, pip and GNU
 ```bash
 git clone --branch rashiyaom --single-branch https://github.com/rashiyaom/swarm-sar.git
 cd swarm-sar
-git fetch origin tag rashiyaom-step5-integrated
+git fetch origin tag rashiyaom-gpu-dataset-included
 ```
 
 The launcher requires branch `rashiyaom`. Verify its HEAD matches the audited
 tag, then launch:
 
 ```bash
-test "$(git rev-parse HEAD)" = "$(git rev-list -n 1 rashiyaom-step5-integrated)"
+test "$(git rev-parse HEAD)" = "$(git rev-list -n 1 rashiyaom-gpu-dataset-included)"
 bash scripts/launch_gpu.sh --hours 15
 ```
 
