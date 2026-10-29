@@ -8,10 +8,11 @@ import { UNKNOWN } from '../simulation/world/GridMap';
 import { cellToWorld, COLORS, glowTexture, type QualityProfile } from './common';
 import { RobotAnchor } from './Network';
 import { useSim } from '../store/simStore';
+import { coverageColor } from '../presentation/survivorStories';
 import { SurvivorRescue } from './SurvivorRescue';
 
 /**
- * A pale ground tint marks space that has not been sensed. Selecting a robot
+ * Mint tiles mark sensed ground; warm tiles mark unsensed ground. Selecting a robot
  * shows its private belief; otherwise the tint combines delivered observations.
  */
 export function CoverageFog({ engine, robot }: { engine: SimulationEngine; robot: string | null }) {
@@ -19,8 +20,8 @@ export function CoverageFog({ engine, robot }: { engine: SimulationEngine; robot
   const { width, height } = engine.scenario;
   const texture = useMemo(() => {
     const t = new THREE.DataTexture(new Uint8Array(width * height * 4), width, height, THREE.RGBAFormat);
-    t.magFilter = THREE.LinearFilter;
-    t.minFilter = THREE.LinearFilter;
+    t.magFilter = THREE.NearestFilter;
+    t.minFilter = THREE.NearestFilter;
     t.flipY = false;
     t.colorSpace = THREE.SRGBColorSpace;
     return t;
@@ -42,11 +43,7 @@ export function CoverageFog({ engine, robot }: { engine: SimulationEngine; robot
       const x = i % width;
       const y = Math.floor(i / width);
       const o = ((height - 1 - y) * width + x) * 4;
-      data[o] = only ? 214 : 226;
-      data[o + 1] = only ? 226 : 234;
-      data[o + 2] = only ? 220 : 216;
-      // An understated sage tint keeps terrain and agents readable, even before launch.
-      data[o + 3] = known ? 0 : only ? 100 : 88;
+      data.set(coverageColor(known), o);
     }
     texture.needsUpdate = true;
   }, [engine, robot, texture, version, width, height]);
@@ -57,6 +54,31 @@ export function CoverageFog({ engine, robot }: { engine: SimulationEngine; robot
       <meshBasicMaterial map={texture} transparent depthWrite={false} toneMapped={false} />
     </mesh>
   );
+}
+
+/** Amber operator beacons never enter any robot observation or controller. */
+export function SurvivorBeacons({ engine }: { engine: SimulationEngine }) {
+  const version = useSim((s) => s.version);
+  const ref = useRef<THREE.InstancedMesh>(null);
+  useEffect(() => {
+    if (!ref.current) return;
+    const object = new THREE.Object3D();
+    let count = 0;
+    for (const victim of engine.scenario.victims) {
+      if (victim.found) continue;
+      cellToWorld(engine, victim.x, victim.y, object.position);
+      object.position.y = 1.8;
+      object.updateMatrix();
+      ref.current.setMatrixAt(count++, object.matrix);
+    }
+    ref.current.count = count;
+    ref.current.instanceMatrix.needsUpdate = true;
+    ref.current.computeBoundingSphere();
+  }, [engine, version]);
+  return <instancedMesh ref={ref} args={[undefined, undefined, Math.max(1, engine.scenario.victims.length)]} name="awaiting-survivor-beacons" onClick={(e) => e.stopPropagation()}>
+    <octahedronGeometry args={[0.34]} />
+    <meshStandardMaterial color="#ed9b32" emissive="#d77b20" emissiveIntensity={0.35} roughness={0.6} />
+  </instancedMesh>;
 }
 
 /** Only actual confirmation events create human figures and rescue celebrations. */

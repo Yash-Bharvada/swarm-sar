@@ -58,7 +58,7 @@ the world overview.
 
 Before launch, use **Mission → Survivors** to apply an exact count, randomize positions, or
 choose **Place on map**. The placement view shows amber markers: click a reachable tile to add
-a survivor, or click a marker to remove it. **Done placing** hides these authored locations;
+a survivor, or click a marker to remove it. **Done placing** replaces editor markers with amber viewer beacons;
 robots still learn survivor locations only through their sensors. Editing preserves your camera.
 
 There is no fixed small survivor cap. Capacity is the number of reachable walkable cells outside
@@ -123,7 +123,7 @@ available through **Layers** or **Mission → Graphics & overlays**:
 - robot labels;
 - hidden-survivor debug view.
 
-The explored-map layer applies a pale ground tint to unknown cells. With a robot selected it
+The explored-map layer gives sensed ground a strong mint tint and unsensed ground a warm sand tint, with crisp tile boundaries. With a robot selected it
 shows that robot's private belief; without a selection it combines the team's explored maps.
 It does not place a dark mask over the world. The local mini-map inside robot details also
 uses pale unknown terrain, sand paths, green walls, and contrasting rover/drone markers.
@@ -131,8 +131,20 @@ Teammates appear at their last delivered reported position.
 
 The hidden-survivor debug view displays a banner. Its information is never supplied to robots.
 Confirmed survivors appear as seated human figures, with a small one-time confetti burst and
-a persistent **SURVIVOR SAVED** flag. The subtitle **Location confirmed** is deliberate: this
-feedback celebrates locating a survivor. Treatment and physical evacuation are not modeled.
+a persistent **SURVIVOR SAVED** flag. This celebrates locating a survivor; treatment and
+physical evacuation are not modeled. Amber beacons show unconfirmed positions to the viewer
+from the start, without exposing those positions to robot observations or planning.
+
+Every real discovery pauses simulation time, frames that survivor and announces **Survivor
+found** with a seeded fictional story. **Continue exploration** restores the overview and
+resumes the team. Simultaneous discoveries are shown in sequence before exploration resumes;
+the final story leads to the mission report. Tap a confirmed human or their **Tap to hear their
+story** label to revisit the same dialogue. Previously paused/completed missions retain their
+status after a revisit. Story cards also appear during Watch maze and are keyboard accessible.
+Stories are flavor text: they do not create extra people, supplies or rescue objectives.
+
+Run `python3 frontend/scripts/survivor_qa.py` from the repository root with Vite on port 5173
+to reproduce the Chrome discovery-loop checks in `docs/browser_survivor_validation.json`.
 Reduced-motion preferences suppress confetti, waving, and flag animation.
 The **Activity → Radio log** lists sender, recipient, sequence, message type, delivery state,
 delay, expiry, drop reason, and map-delta size. Aggregate counters are expandable.
@@ -242,6 +254,7 @@ Rendering reads the engine and interpolation clock; camera changes do not change
 | `demo.test.ts` | Validation scenario loss, partition, recovery, sharing, survivor detection, safe convoy traffic |
 | `missions.test.ts` | Complete missions on every preset with recall, coverage, and collision guards |
 | `presentation.test.ts` | Clean defaults, repeated camera requests, view/follow/focus behavior, camera-target cleanup, simulation isolation |
+| `survivorEncounter.test.ts` | Discovery pause/continue queues, stable dialogue, revisit status and identical final simulation state |
 | `audio.test.ts` | Explicit startup, volume boundaries, event priorities, rate limiting, history suppression and simulation isolation |
 
 ## Browser requirements

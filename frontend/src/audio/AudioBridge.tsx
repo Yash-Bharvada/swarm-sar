@@ -26,6 +26,10 @@ export function AudioBridge() {
         if (state.status === 'running') soundscape.play(previous.status === 'paused' ? 'resume' : 'launch');
         else if (state.status === 'paused') soundscape.play('pause');
       }
+      if (state.encounter !== previous.encounter) {
+        if (state.encounter && !state.encounter.automatic) soundscape.play('open');
+        else if (!state.encounter && previous.encounter) soundscape.play('close');
+      }
       if (state.focus && state.focus !== previous.focus) robotCue(state.focus.robot, true);
       else if (state.selected !== previous.selected && state.selected) robotCue(state.selected, state.following);
       else if (state.following && !previous.following) robotCue(state.selected, true);

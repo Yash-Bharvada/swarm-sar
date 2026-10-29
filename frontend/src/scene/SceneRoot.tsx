@@ -5,11 +5,11 @@ import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 import * as THREE from 'three';
 import { simClock, TICKS_PER_SECOND, useSim } from '../store/simStore';
 import type { SimulationEngine } from '../simulation/core/SimulationEngine';
-import { COLORS, QUALITY, robotRenderPosition, worldToCell, type QualityProfile } from './common';
+import { COLORS, QUALITY, cellToWorld, robotRenderPosition, worldToCell, type QualityProfile } from './common';
 import { World } from './World';
 import { RobotPaths, Robots } from './Robots';
 import { CommEvents, CommRanges, MapMergeFlash, NetworkLinks, PacketPulses, PartitionAndReconnect } from './Network';
-import { CoverageFog, Dust, EvidenceMarkers, PlacementMarkers, Survivors, TruthDebug } from './Overlays';
+import { CoverageFog, Dust, EvidenceMarkers, PlacementMarkers, SurvivorBeacons, Survivors, TruthDebug } from './Overlays';
 import { applyAnchoredZoom, captureGroundAnchor, overviewOffset, type GroundZoomAnchor } from './cameraMath';
 import { soundscape } from '../audio/Soundscape';
 
@@ -30,6 +30,7 @@ function SimDriver({ engine }: { engine: SimulationEngine }) {
     if (ticks) {
       acc.current -= ticks * interval;
       advance(ticks);
+      if (useSim.getState().encounter) { acc.current = 0; simClock.alpha = 1; return; }
     }
     simClock.alpha = Math.min(1, acc.current / interval);
   }, -100);
@@ -43,6 +44,7 @@ function CameraRig({ engine }: { engine: SimulationEngine }) {
   const canvas = useThree((s) => s.gl.domElement);
   const request = useSim((s) => s.cameraRequest);
   const focus = useSim((s) => s.focus);
+  const encounter = useSim((s) => s.encounter);
   const fitZoom = useRef(1);
   const desired = useRef<{ target: THREE.Vector3; position: THREE.Vector3; zoom: number; following?: boolean; zoomOnly?: boolean; anchor?: GroundZoomAnchor | null } | null>(null);
   const lastPointer = useRef<THREE.Vector2 | null>(null);
@@ -181,9 +183,23 @@ function CameraRig({ engine }: { engine: SimulationEngine }) {
     desired.current = { target, position: target.clone().add(offset), zoom: fitZoom.current * 3.2, following: true };
   }, [focus, controls, engine, camera]);
 
+  useEffect(() => {
+    if (!encounter || !controls) return;
+    const victim = engine.discoveredSurvivors().find((v) => v.id === encounter.id);
+    if (!victim) return;
+    const target = cellToWorld(engine, victim.x, victim.y);
+    const offset = overviewOffset(span);
+    const zoom = Math.max(fitZoom.current * 4, Math.min(56, size.width / 8));
+    // On phones, place the person above the story card rather than behind it.
+    if (size.width < 700) target.z += Math.min(5, size.height * 0.2 / zoom);
+    controls.maxZoom = Math.max(controls.maxZoom, zoom);
+    desired.current = { target, position: target.clone().add(offset), zoom };
+  }, [encounter, engine, controls, size.width, size.height]);
+
   useFrame((state, dt) => {
     if (!controls) return;
     const follow = useSim.getState();
+    if (!follow.encounter && camera.zoom <= fitZoom.current * 4) controls.maxZoom = fitZoom.current * 4;
     if (desired.current?.following && !follow.following) desired.current = null;
     const glide = desired.current;
     const factor = 1 - Math.exp(-dt * 7);
@@ -294,6 +310,7 @@ function Scene() {
       {overlays.evidence && <EvidenceMarkers engine={engine} />}
       </>}
       <Survivors engine={engine} quality={quality} />
+      {!cleanView && !editingSurvivors && <SurvivorBeacons engine={engine} />}
       {editingSurvivors && !cleanView && <PlacementMarkers engine={engine} />}
       {overlays.truth && !cleanView && <TruthDebug engine={engine} />}
       {overlays.coverage && !cleanView && <CoverageFog engine={engine} robot={selected} />}

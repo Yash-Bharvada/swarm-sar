@@ -22,8 +22,8 @@ The project has a working heterogeneous swarm simulator, a cooperative PPO train
 - Bright, readable terrain and a compact interface with panels opened on demand; dark coverage mask and vignette removed.
 - Level, north-up default map framing; wheel zoom anchors to the pointed area, and button/keyboard zoom uses the last indicated world point.
 - Distinct rover/drone models, smooth turning and movement, stable pause/resume interpolation.
-- Human survivor figures, a finite one-time confetti burst and persistent “Survivor Saved / Location confirmed” feedback after actual confirmation.
-- **Survivor authoring before launch:** exact count up to the map's eligible capacity, randomize, clear/automatic placement, and click-to-add/remove. No small arbitrary cap: one survivor per reachable walkable tile outside staging. Invalid placement is rejected. Markers disappear on leaving the editor or launching; authored coordinates remain outside controller observations. Reset retains the layout; changing terrain restores defaults.
+- Human survivor figures, a finite one-time confetti burst and persistent saved flags after actual confirmation. Amber viewer beacons reveal unconfirmed positions without entering robot observations. Each discovery pauses the swarm, frames the survivor, announces “Survivor found” and shows seeded fictional dialogue. Continue restores the overview and resumes; simultaneous discoveries queue and the final story leads to the report. Confirmed people can be tapped to revisit their story without restarting paused/completed missions.
+- **Survivor authoring before launch:** exact count up to the map's eligible capacity, randomize, clear/automatic placement, and click-to-add/remove. No small arbitrary cap: one survivor per reachable walkable tile outside staging. Invalid placement is rejected. Editor markers become amber viewer beacons on leaving the editor; authored coordinates remain outside controller observations. Reset retains the layout; changing terrain restores defaults.
 - **Persistent focus:** Focus camera follows that robot as it moves. Selecting another robot transfers focus; deselection or explicit camera manipulation releases it.
 - **Watch maze:** hide the interface, labels, selection markers and diagnostic overlays while the simulation and focus continue. H, Esc or Show interface restores the controls and retained layer settings.
 - **Soundscape:** optional continuous ambient music, stereo rover/drone loops, distinct focus cues, survivor/mission feedback, restrained warnings and UI effects. M enables/mutes sound; independent channel sliders remember levels. Audio stays outside deterministic sensing, planning and training.
@@ -34,7 +34,7 @@ Custom survivor counts do not increase batteries or mission time. Large layouts 
 
 The latest local checks passed:
 
-- Production frontend build and **120 frontend tests across 14 files**, including audio event routing and simulation-isolation checks.
+- Production frontend build and **124 frontend tests across 15 files**, including audio routing, discovery queues, paused-state protection, stable fictional dialogue and an identical final engine state with/without encounter pauses.
 - **152 Python tests passed, 2 ROS/xacro-dependent tests skipped**, with two PettingZoo deprecation warnings.
 - **30 frozen baseline file hashes verified** and GPU-v1 policy contract verified: `c5dff01368e1bb3a77112884c5d545457830097b11aefe54e0d412fc874c57c5`.
 - Audited GPU training source manifest verified: **94 files**, manifest SHA-256 `554f1bc621d0b2144113e75a94fa6668ef73e02f1ce7ee2d308637b14ab920ef`. This UI/report pass leaves those training sources and the expert dataset unchanged.
@@ -45,6 +45,8 @@ Browser interaction evidence is recorded in [browser_controls_validation.json](b
 For trained-model evidence, [GPU architecture review](gpu_architecture_review.md) reports the corrected CPU diagnostic BC policy at **74.82% mean cohort recall** versus **87.13%** for the policy-compatible expert over 72 development missions. Those are historical CPU diagnostic results, not the planned GPU PPO result. The older Step 3 PPO checkpoint and stronger frontier comparisons have their own run identities in [the readiness audit](hackathon_readiness_audit.md).
 
 Audio browser evidence is recorded in [browser_audio_validation.json](browser_audio_validation.json). Chrome checks cover explicit startup, independent volumes, mute, rover/drone focus, autonomous survivor and completion cues, reset without replay, clean viewing, mobile layout and unchanged simulation state. A full music progression remained audible across 155 samples with at most 18 active tones; tab suspension/resumption also passed. These checks establish playback behavior, not subjective listening quality or certification across browsers.
+
+Discovery UI evidence is recorded in [browser_survivor_validation.json](browser_survivor_validation.json): three real autonomous discoveries each received a camera/story pause, tap-to-revisit preserved the story, Continue restored the overview, and completed-mission revisits, mobile framing and clean viewing passed. Explored-map tiles now use crisp mint versus sand; generic clicks use a quieter, lower pitched sound. Python/training code remains unchanged.
 
 ## GPU phase and remaining work
 

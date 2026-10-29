@@ -7,6 +7,7 @@ import { SceneHud } from '../components/SceneHud';
 import { SceneRoot } from '../scene/SceneRoot';
 import { useSim } from '../store/simStore';
 import { Icon, type IconName } from '../components/Icon';
+import { SurvivorEncounter } from '../components/SurvivorEncounter';
 import { AudioBridge } from '../audio/AudioBridge';
 import { soundscape } from '../audio/Soundscape';
 
@@ -26,6 +27,10 @@ const KEY_DIRECTIONS: Record<string, number> = {
 function useKeyboard() {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      if (useSim.getState().encounter && e.code !== 'KeyM') {
+        if (e.code === 'Space' && !(e.target as HTMLElement)?.closest('button')) e.preventDefault();
+        return;
+      }
       if (e.code === 'Escape') {
         const state = useSim.getState();
         if (state.cleanView) state.toggleCleanView();
@@ -75,8 +80,10 @@ export function App() {
   const [panel, setPanel] = useState<Panel>(null);
   const selected = useSim((s) => s.selected);
   const cleanView = useSim((s) => s.cleanView);
+  const encounter = useSim((s) => s.encounter);
   const editingSurvivors = useSim((s) => s.editingSurvivors);
   const toggleCleanView = useSim((s) => s.toggleCleanView);
+  useEffect(() => { if (encounter) setPanel(null); }, [encounter]);
   useEffect(() => { if (selected) setPanel('fleet'); }, [selected]);
   useEffect(() => { if (editingSurvivors || cleanView) setPanel(null); }, [editingSurvivors, cleanView]);
   useEffect(() => {
@@ -104,7 +111,8 @@ export function App() {
       <main className={`workspace ${panel && !cleanView ? 'has-panel' : ''}`}>
         <section className="stage" aria-label="Interactive simulation world">
           <SceneRoot />
-          {!cleanView && <SceneHud onOpenPanel={setPanel} />}
+          <SurvivorEncounter />
+          {!cleanView && !encounter && <SceneHud onOpenPanel={setPanel} />}
           {cleanView && <button className="restore-interface" onClick={toggleCleanView} aria-label="Show interface" title="Show interface (H or Esc)"><Icon name="overview" size={17} /><span>Show interface <kbd>H</kbd></span></button>}
         </section>
         {panel && !cleanView && <aside className="workspace-drawer" aria-label={`${panel} panel`}>

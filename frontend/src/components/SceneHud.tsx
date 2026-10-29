@@ -40,7 +40,7 @@ export function SceneHud({ onOpenPanel }: { onOpenPanel: (panel: Panel) => void 
     <div className="world-heading">
       <div className="scene-eyebrow"><span className="tiny-square" />FIELD OPERATIONS <span className="eyebrow-divider">/</span> SANDBOX</div>
       <h1>{engine.scenario.name.replace('Collapsed ', '').replace('Earthquake ', '')}</h1>
-      <p>A little teamwork. A world of difference.</p>
+      <p>Amber beacons: survivors awaiting discovery.</p>
       <div className="scene-tags"><span><i className={`connection-dot ${health.tone}`} />{!engine.network.enabled ? 'Radio offline' : `Network ${health.label.toLowerCase()}`}</span><span className="mono">SEED {engine.scenario.seed}</span></div>
     </div>
 
@@ -55,7 +55,7 @@ export function SceneHud({ onOpenPanel }: { onOpenPanel: (panel: Panel) => void 
     </div>
 
     {overlays.truth && <div className="debug-banner">Debug view · Hidden survivor locations revealed to the operator.</div>}
-    {overlays.coverage && <div className="map-mode-label"><Icon name="map" size={14} />{selectedRobot ? `${selectedRobot.label}’s private map` : 'Combined explored map'}<button aria-label="Hide explored map" onClick={() => toggleOverlay('coverage')}><Icon name="close" size={13} /></button></div>}
+    {overlays.coverage && <div className="map-mode-label"><Icon name="map" size={14} />{selectedRobot ? `${selectedRobot.label}’s private map` : 'Combined explored map'} · Mint: explored / Sand: unseen<button aria-label="Hide explored map" onClick={() => toggleOverlay('coverage')}><Icon name="close" size={13} /></button></div>}
     {overlays.graph && <NetworkGraph />}
 
     {status === 'ready' && !editingSurvivors && <div className="mission-brief"><span className="brief-index">YOUR MISSION <span>SEARCH & RESCUE</span></span><h2>Send a little help.</h2><p>Your autonomous team is ready. Explore the site, share discoveries, and locate every survivor.</p><button className="brief-configure" onClick={() => onOpenPanel('setup')}><Icon name="settings" size={15} />Configure mission<Icon name="chevron" size={13} /></button></div>}

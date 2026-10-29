@@ -364,3 +364,21 @@ input[type=range] { width: 100%; accent-color: #688953; height: 14px; }
 .sound-note { margin: 18px 0 0; padding-top: 13px; border-top: 1px solid #e7ebdc; color: #93a180; font-size: 9px; line-height: 1.7; }
 .sound-error { font-size: 10px; line-height: 1.6; color: #ab775e; }
 @media (max-width: 760px) { .sound-buttons { height: 34px; }.sound-buttons button { height: 28px; }.sound-toggle { width: 27px; }.sound-settings { width: 20px; }.sound-panel { position: fixed; top: 125px; right: 21px; width: min(280px, calc(100vw - 87px)); max-height: calc(100dvh - 170px); overflow-y: auto; } }
+
+/* Discovery pauses keep the world visible while giving the story room to breathe. */
+.encounter-stage { position: absolute; inset: 0; z-index: 90; display: flex; align-items: flex-end; justify-content: center; padding: 28px 24px 110px; pointer-events: auto; }
+.encounter-card { width: min(580px, 100%); padding: 25px 28px; border-radius: 20px; border: 1px solid #b7cba6; background: #fffef1; color: #354b38; box-shadow: 0 14px 55px #28472c30; animation: encounter-arrive 240ms ease-out; }
+.encounter-eyebrow { display: flex; justify-content: space-between; gap: 10px; font-size: 12px; font-weight: 700; color: #47714d; }
+.encounter-eyebrow span { font-weight: 400; color: #73816a; }
+.encounter-card h2 { font-size: 28px; margin: 13px 0; letter-spacing: -1px; }
+.encounter-card h2 small { font-size: 12px; letter-spacing: 0; font-weight: 400; color: #73816a; margin-left: 10px; }
+.encounter-card p { font-size: 17px; line-height: 1.65; margin: 12px 0 22px; }
+.encounter-footer { display: flex; align-items: center; justify-content: space-between; gap: 18px; border-top: 1px solid #e1e7d2; padding-top: 17px; font-size: 11px; }
+.encounter-footer small { display: block; color: #77866d; font-size: 10px; margin-top: 6px; }
+.encounter-footer button { flex-shrink: 0; min-height: 44px; gap: 12px; }
+.survivor-saved-tag { cursor: pointer; text-align: left; font-family: inherit; }
+.survivor-saved-tag:hover { border-color: #628b50; background: #f2f8df; }
+.survivor-saved-tag:focus-visible { outline: 3px solid #638f50; outline-offset: 3px; }
+@keyframes encounter-arrive { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 700px) { .encounter-stage { padding: 15px 12px 100px; } .encounter-card { padding: 18px; } .encounter-card p { font-size: 15px; } .encounter-footer { flex-direction: column; align-items: stretch; gap: 12px; } .encounter-footer button { justify-content: center; } .encounter-eyebrow { font-size: 11px; } }
+@media (prefers-reduced-motion: reduce) { .encounter-card { animation: none; } }

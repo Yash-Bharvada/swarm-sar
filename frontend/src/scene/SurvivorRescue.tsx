@@ -224,7 +224,10 @@ export function SurvivorRescue({ engine, position, quality, index }: { engine: S
   const cleanView = useSim((s) => s.cleanView);
   const reducedMotion = useReducedMotion();
   const [start] = useState(() => rescueCelebrationStart(engine, index, performance.now() / 1000));
-  return <group position={position} name={'confirmed-survivor-' + index}>
+  return <group position={position} name={'confirmed-survivor-' + index} onClick={(event) => {
+    event.stopPropagation();
+    if (event.delta <= 4) useSim.getState().inspectSurvivor(index);
+  }}>
     <mesh rotation-x={-Math.PI / 2} position={[0, 0.025, 0]}>
       <ringGeometry args={[0.49, 0.53, 32]} />
       <meshBasicMaterial color="#6a9d67" transparent opacity={0.65} depthWrite={false} toneMapped={false} />
@@ -232,8 +235,8 @@ export function SurvivorRescue({ engine, position, quality, index }: { engine: S
     <SurvivorPerson index={index} start={start} reducedMotion={reducedMotion} shadows={quality.shadows} />
     <RescueFlag reducedMotion={reducedMotion} shadows={quality.shadows} index={index} />
     {!reducedMotion && <RescueConfetti start={start} count={quality.shadows ? 36 : 20} index={index} />}
-    {!cleanView && <Html position={[0.25, 2.45, -0.08]} center style={{ pointerEvents: 'none' }} zIndexRange={[15, 0]}>
-      <div className="survivor-saved-tag"><span className="saved-check" aria-hidden>✓</span><span><strong>SURVIVOR SAVED</strong><small>Location confirmed</small></span></div>
+    {!cleanView && <Html position={[0.25, 2.45, -0.08]} center zIndexRange={[15, 0]}>
+      <button type="button" className="survivor-saved-tag" aria-label={`Talk to survivor ${index + 1}`} onClick={(event) => { event.stopPropagation(); useSim.getState().inspectSurvivor(index); }}><span className="saved-check" aria-hidden>✓</span><span><strong>SURVIVOR SAVED</strong><small>Tap to hear their story</small></span></button>
     </Html>}
   </group>;
 }

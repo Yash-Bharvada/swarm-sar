@@ -55,6 +55,12 @@ export const TICKS_PER_SECOND = 4;
 export const simClock = { alpha: 1, lastTickAt: 0 };
 
 interface Store {
+  encounter: { id: number; automatic: boolean } | null;
+  encounterQueue: number[];
+  announcedSurvivors: number[];
+  encounterReturnStatus: MissionStatus;
+  inspectSurvivor: (id: number) => void;
+  continueExploration: () => void;
   settings: Settings;
   overlays: Overlays;
   engine: SimulationEngine;
@@ -138,9 +144,28 @@ function optionsFrom(s: Settings, demo: boolean, selected: string | null, custom
 const WORLD_KEYS: Array<keyof Settings> = ['preset', 'seed', 'rovers', 'drones', 'sensorNoise', 'networkEnabled'];
 const initialEngine = new SimulationEngine(optionsFrom(initialSettings, false, null));
 const capacityOf = (engine: SimulationEngine) => survivorPlacementCells(engine.scenario).length;
-const clearCameraTarget = { selected: null, focus: null, cameraRequest: null, following: false };
+const clearEncounters = { encounter: null, encounterQueue: [], announcedSurvivors: [], encounterReturnStatus: 'ready' as MissionStatus };
+const clearCameraTarget = { ...clearEncounters, selected: null, focus: null, cameraRequest: null, following: false };
 
 export const useSim = create<Store>((set, get) => ({
+  ...clearEncounters,
+  inspectSurvivor: (id) => {
+    const state = get();
+    if (state.encounter || !state.engine.discoveredSurvivors().some((v) => v.id === id)) return;
+    set({ encounter: { id, automatic: false }, encounterReturnStatus: state.status,
+      status: state.status === 'running' ? 'paused' : state.status, focus: null, following: false, cameraRequest: null });
+  },
+  continueExploration: () => {
+    const state = get();
+    if (!state.encounter) return;
+    const [next, ...rest] = state.encounterQueue;
+    if (next !== undefined) {
+      set({ encounter: { id: next, automatic: true }, encounterQueue: rest });
+      return;
+    }
+    get().moveCamera('reset');
+    set({ encounter: null, status: state.engine.done ? 'complete' : state.encounterReturnStatus });
+  },
   settings: initialSettings,
   overlays: {
     links: false,
@@ -293,12 +318,13 @@ export const useSim = create<Store>((set, get) => ({
     if (get().status === 'running') set({ status: 'paused' });
   },
   resume: () => {
-    if (get().status === 'paused') set({ status: 'running' });
+    if (get().status === 'paused' && !get().encounter) set({ status: 'running' });
   },
   reset: () => {
     const { settings, demo, customSurvivors } = get();
     const engine = new SimulationEngine(optionsFrom({ ...settings, partition: false, mode: settings.mode }, demo, null, customSurvivors));
     set({
+      ...clearEncounters,
       engine,
       status: 'ready',
       selected: null,
@@ -332,6 +358,7 @@ export const useSim = create<Store>((set, get) => ({
     };
     const engine = new SimulationEngine(optionsFrom(settings, true, null));
     set({
+      ...clearEncounters,
       settings,
       demo: true,
       engine,
@@ -363,7 +390,18 @@ export const useSim = create<Store>((set, get) => ({
   advance: (ticks) => {
     const { engine, status } = get();
     if (status !== 'running' || ticks <= 0) return;
-    for (let i = 0; i < ticks && !engine.done; i++) engine.tick();
+    const announced = new Set(get().announcedSurvivors);
+    for (let i = 0; i < ticks && !engine.done; i++) {
+      engine.tick();
+      const fresh = engine.discoveredSurvivors().filter((victim) => !announced.has(victim.id)).map((v) => v.id);
+      if (fresh.length) {
+        set({ encounter: { id: fresh[0], automatic: true }, encounterQueue: fresh.slice(1),
+          announcedSurvivors: [...get().announcedSurvivors, ...fresh], encounterReturnStatus: 'running',
+          focus: null, following: false, cameraRequest: null, status: 'paused', version: get().version + 1 });
+        simClock.alpha = 1;
+        return;
+      }
+    }
     set({ version: get().version + 1, status: engine.done ? 'complete' : 'running' });
   },
 }));

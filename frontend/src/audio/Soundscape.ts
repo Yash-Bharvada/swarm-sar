@@ -245,7 +245,8 @@ export class Soundscape {
       case 'map': score = notes([1174.66, 1479.98], 0.035, 0.12, 0.024); break;
       case 'explore': score = notes([587.33], 0, 0.32, 0.025); break;
       case 'zoom': score = [{ frequency: 470, endFrequency: 587, offset: 0, duration: 0.09, volume: 0.023 }]; break;
-      case 'toggle': score = notes([739.99], 0, 0.095, 0.04); break;
+      case 'toggle': score = [{ frequency: 520, endFrequency: 390, offset: 0, duration: 0.085, volume: 0.022 }]; break;
+      case 'ui': score = [{ frequency: 420, endFrequency: 285, offset: 0, duration: 0.065, volume: 0.024 }, { frequency: 840, endFrequency: 570, offset: 0.008, duration: 0.04, volume: 0.004 }]; break;
       default: score = notes([587.33], 0, 0.07, 0.03);
     }
     if (cue === 'survivor' || cue === 'complete' || cue === 'warning') this.duckUntil = when + (cue === 'complete' ? 3 : 1.5);
