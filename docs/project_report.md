@@ -1,0 +1,68 @@
+# Swarm SAR project report
+
+Status reviewed on **29 October 2026** against the [exact Problem Statement 5](problem_statement.md). This report distinguishes implemented functionality, measured simulation results and work still pending. It supersedes the earlier conclusion that meeting the internal baseline-only blueprint proves fulfillment of the entire problem statement.
+
+## Assessment against the actual challenge
+
+The project has a working heterogeneous swarm simulator, a cooperative PPO training framework, peer communication, a browser demonstration and a separate ROS 2/Gazebo physics workspace. The **MARL requirement is central**: the browser's frontier heuristic alone does not fulfill it. A new GPU experiment and paired learned-policy evaluation are still needed before claiming the new trained system meets the challenge end to end.
+
+| Problem statement capability | Implemented evidence | Remaining boundary |
+|---|---|---|
+| Heterogeneous drones and rovers | Separate rover/drone policies, sensing and traversal parameters; default grid/browser fleet is two of each | Grid drones have visual altitude but 2D movement. ROS physics demo is a separate execution path; its default is two drones plus one rover, with a four-agent exploration profile available. |
+| Decentralized cooperative MARL | Python PPO with two type-shared policies, private observations, team reward, recurrent GPU-v1 support, behavior-cloning warm start and checkpoint evaluation | No claim that the browser executes PPO. The GPU phase has not been completed in this review. Goal planning is decentralized; simulator collision shielding uses privileged occupancy information. |
+| Unknown GPS-denied exploration | Private occupancy beliefs, local scans, frontier choices, A*, drifting odometry and common-entry alignment | Exact own-cell planning/common-grid registration remain idealized. This is not validated collaborative SLAM or unknown-start alignment. |
+| Thermal/acoustic survivor mapping | Seeded noisy thermal sectors and acoustic cues; evidence fusion and close confirmation | Synthetic sensor models, not real thermal images, microphones or perception accuracy measurements. “Saved” in the UI means location confirmed; evacuation is absent. |
+| Peer-to-peer topological sharing | Python per-agent topology and graph/message information, goal claims, evidence, range/loss/delay/expiry/partition/recovery behavior | Browser transport shares occupancy deltas and evidence, not a full learned graph communication system. NetworkX is not a GNN. Physical radio behavior is unvalidated. |
+| Efficiency and scalability | Existing baseline/scalability cohorts, fixed action/observation interfaces, variable robot counts and reproducible evaluation tooling | The browser stress sample does not establish a communication speedup. Learned efficiency and generalization must be evaluated against paired baselines, particularly maze/tunnel and larger-team cohorts. |
+| Real-world applicability | ROS 2/Gazebo packages, simulated sensor streams, models, bridge/controller launch files and recorded Ubuntu physics evidence | Learned-policy transfer, hardware sensor calibration, independent deployed collision avoidance and field trials are not established. ROS runtime was not rerun on this Mac. |
+| GNN, ROS 2/Gazebo/Isaac and collaborative SLAM hints | ROS 2/Gazebo workspace exists | GNN and full collaborative SLAM are not implemented. The statement lists these as hints; do not present graphs or common-frame map union as either capability. |
+
+## Completed browser work from this conversation
+
+- Bright, readable terrain and a compact interface with panels opened on demand; dark coverage mask and vignette removed.
+- Level, north-up default map framing; wheel zoom anchors to the pointed area, and button/keyboard zoom uses the last indicated world point.
+- Distinct rover/drone models, smooth turning and movement, stable pause/resume interpolation.
+- Human survivor figures, a finite one-time confetti burst and persistent “Survivor Saved / Location confirmed” feedback after actual confirmation.
+- **Survivor authoring before launch:** exact count up to the map's eligible capacity, randomize, clear/automatic placement, and click-to-add/remove. No small arbitrary cap: one survivor per reachable walkable tile outside staging. Invalid placement is rejected. Markers disappear on leaving the editor or launching; authored coordinates remain outside controller observations. Reset retains the layout; changing terrain restores defaults.
+- **Persistent focus:** Focus camera follows that robot as it moves. Selecting another robot transfers focus; deselection or explicit camera manipulation releases it.
+- **Watch maze:** hide the interface, labels, selection markers and diagnostic overlays while the simulation and focus continue. H, Esc or Show interface restores the controls and retained layer settings.
+
+Custom survivor counts do not increase batteries or mission time. Large layouts can take longer, consume more memory/rendering work, or end before every survivor is found. These authoring controls do not change the Python training distribution, sensor contract or Step 4 network protocol.
+
+## Validation and result provenance
+
+The latest local checks passed:
+
+- Production frontend build and **106 frontend tests across 13 files**.
+- **152 Python tests passed, 2 ROS/xacro-dependent tests skipped**, with two PettingZoo deprecation warnings.
+- **30 frozen baseline file hashes verified** and GPU-v1 policy contract verified: `c5dff01368e1bb3a77112884c5d545457830097b11aefe54e0d412fc874c57c5`.
+- Audited GPU training source manifest verified: **94 files**, manifest SHA-256 `554f1bc621d0b2144113e75a94fa6668ef73e02f1ce7ee2d308637b14ab920ef`. This UI/report pass leaves those training sources and the expert dataset unchanged.
+- GPU pipeline `--plan` succeeds without starting training. CUDA/A5000 execution has not been tested here.
+
+Browser interaction evidence is recorded in [browser_controls_validation.json](browser_controls_validation.json). It covers count 100, real click placement/removal, camera stability during editing, moving-robot focus, clean viewing and mobile restoration. The earlier [200-mission browser audit](browser_swarm_audit.json) found **563/564 survivors**, with **199/200 complete missions** and zero **post-shield** collisions. It used 50 distinct layouts under four network conditions. The one failure depleted the fleet with one survivor remaining at 30% loss; these are bounded synthetic results, not field accuracy or an all-missions guarantee.
+
+For trained-model evidence, [GPU architecture review](gpu_architecture_review.md) reports the corrected CPU diagnostic BC policy at **74.82% mean cohort recall** versus **87.13%** for the policy-compatible expert over 72 development missions. Those are historical CPU diagnostic results, not the planned GPU PPO result. The older Step 3 PPO checkpoint and stronger frontier comparisons have their own run identities in [the readiness audit](hackathon_readiness_audit.md).
+
+## GPU phase and remaining work
+
+The user scheduled GPU PPO/MARL testing for **30 October 2026**. Keep that experiment separate from frontend refinement. The existing isolated `gpu-training` branch remains unchanged. [GPU_TRANSFER_CHECKLIST.md](GPU_TRANSFER_CHECKLIST.md) describes the immutable audited combined-release training workflow; the isolated branch also has its own `gpu_train.md`. Use the guide corresponding to the chosen branch rather than mixing source manifests and checkpoints.
+
+For the combined release, clone the pinned tag and create the local `rashiyaom` branch as instructed in the checklist. Later UI/report commits on `main` and `rashiyaom` do not move that audited tag. No GPU job or final-test unsealing was started during this completion pass.
+
+The next measured milestone is a GPU checkpoint with documented provenance and performance:
+
+1. Verify CUDA backward pass, source/data hashes, checkpoint round trips and both optimizing policies.
+2. Run BC qualification, closed-loop baseline comparisons and the bounded PPO pilot. Continue only under the existing quality gates.
+3. Evaluate the same frozen development cohorts with network on/off, communication faults, sensor/pose stress, maze/tunnel layouts and swarm-scale changes. Report recall, time, coverage, invalid actions, post-shield collisions, message traffic and uncertainty.
+4. Select and freeze a model before the explicitly acknowledged final evaluation. Preserve failures and the selected checkpoint hashes; do not claim a training curve or reward score proves rescue generalization.
+5. For a single learned end-to-end visible demo, implement and validate a PPO-to-browser or PPO-to-ROS adapter. The three runtimes are not connected simply because their files share a repository.
+
+## Sensor decision before GPU testing
+
+Both grid robot types already have occupancy sensing, directional thermal evidence, acoustic evidence, odometry/uncertainty and battery telemetry. Rover/drone radii are respectively **4/7 cells for occupancy, 6/8 for thermal, 10/12 for acoustic**, with confirmation radius **2/2**. Step 5 additionally has separate simulated LiDAR/IMU/camera/range streams; they are not automatically PPO inputs.
+
+**Keep the current training sensor interface for this GPU phase.** The challenge explicitly calls for thermal and acoustic sensing, which are already present in the simulation. Extra modalities are not a substitute for learned-policy validation. A new sensor does not require rebuilding all of Step 4: preserve the baseline, implement an adapter/fusion path, version any changed observations or message schema, and rerun affected sensing/autonomy/network and mission tests. Input dimensions or semantics changing requires a compatible model and retraining/fine-tuning/evaluation; even unchanged dimensions can create a distribution shift. See [sensor_extension_plan.md](sensor_extension_plan.md) for the full impact matrix.
+
+## Branch delivery
+
+This completion is intended to leave `main` and `rashiyaom` at the same reviewed commit containing these controls and reports. Branch spelling in the repository is **`rashiyaom`**. The GPU-only branch and all existing audited training tags are retained. Historical evidence remains labelled by its original run rather than overwritten by this status report.

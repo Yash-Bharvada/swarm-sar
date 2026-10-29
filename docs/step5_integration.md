@@ -3,7 +3,8 @@
 Integrated from [PR #1](https://github.com/rashiyaom/swarm-sar/pull/1),
 `Yash-Bharvada:ubuntu_simulations`, commit
 `f565468aaf78f063222d4b5394c8f4e638b6f3ac`.
-The integration target is `rashiyaom`; `main` remains unchanged.
+The original integration target was `rashiyaom`. The integration is now included
+in both `rashiyaom` and `main`; this document retains the original integration evidence.
 
 ## Included functionality
 

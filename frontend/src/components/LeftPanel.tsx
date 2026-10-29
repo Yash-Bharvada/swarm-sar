@@ -102,6 +102,7 @@ export function LeftPanel() {
           <input
             id={`${fieldId}-survivors`}
             type="number"
+            aria-label="Survivor count"
             min={0}
             max={survivorCapacity}
             step={1}
@@ -119,6 +120,7 @@ export function LeftPanel() {
           <button className="btn" onClick={applySurvivorCount} disabled={locked}>Apply count</button>
         </div>
         <p className="explain" id={`${fieldId}-survivor-help`}>{survivorCapacity.toLocaleString()} available tiles. One survivor per reachable tile outside the staging area.</p>
+        {engine.scenario.victims.length > 10 && <p className="explain">Large survivor counts increase sensing and rendering work. The mission time and robot batteries stay unchanged; finding everyone is not guaranteed.</p>}
         <div className="survivor-actions">
           <button className={`btn ${editingSurvivors ? 'primary' : ''}`} disabled={locked} aria-pressed={editingSurvivors} onClick={() => setEditingSurvivors(!editingSurvivors)}>
             {editingSurvivors ? 'Finish placing' : 'Place on map'}

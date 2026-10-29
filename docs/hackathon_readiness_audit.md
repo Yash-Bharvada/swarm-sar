@@ -2,7 +2,7 @@
 
 Reviewed on 29 October 2026 on branch `rashiyaom`. Base commit: `7e64f0c981fa9aec02880057d8bd2fec8825072c`; frontend working-tree changes were present. This is a source and simulator audit, not a hardware validation or certification against an organizer's judging rubric.
 
-**Current repository update:** This audit's measurements and commit reference are a historical snapshot. The later Step 5 merge added a separate ROS 2/Gazebo physics demo; it does not execute the learned policy. The current validation has 98 frontend tests passing and a production build, plus 152 Python tests passing with 2 ROS-dependent skips. See [Step 5 integration](step5_integration.md) and the [GPU architecture review](gpu_architecture_review.md) for the current boundaries.
+**Current review, 29 October 2026:** The exact [Problem Statement 5](problem_statement.md) is now available. It explicitly requests a decentralized cooperative **MARL framework**, so the internal baseline-only MVP is insufficient to establish full compliance. Python shared PPO infrastructure exists, but the browser remains a separate heuristic demonstration. GPU testing is planned for 30 October; its results and learned-policy runtime integration remain pending. The latest local build and 106 frontend tests pass; 152 Python tests pass with 2 ROS-dependent skips. Read [the current project report](project_report.md) for the requirement matrix, completed interaction controls, fresh checks and remaining milestones. Earlier measurements below retain their original provenance. Step 5 has separately added the ROS/Gazebo workspace; it is not a learned-policy deployment.
 
 ## Verdict
 
@@ -18,7 +18,7 @@ The local [implementation blueprint](../Autonomous_Disaster_Response_Swarm_Imple
 
 The same page explicitly makes MAPPO, GNN, unknown-start alignment, full PX4 flight dynamics and a physical mesh stretch work. It says to keep the 2D demo primary and use Gazebo only if stable and repeatable. Page 1 defines the target as locating **simulated** trapped survivors and explicitly excludes claims of real thermal SLAM or 3D flight.
 
-This is the repository's build blueprint, not the official problem statement or scoring rubric. The latter is not available here, so full judging and eligibility compliance cannot be certified from these files. The older Part 1 plan and the PDF also contain different build schedules; neither should substitute for organizer rules.
+This is the repository's internal build blueprint. The user later supplied the exact [problem statement](problem_statement.md), which requires MARL in addition to the working baseline demonstration. No detailed scoring rubric is present; do not substitute this internal checklist for the actual challenge or treat the planned GPU evaluation as completed.
 
 | Blueprint requirement | Evidence in the repository | Assessment |
 |---|---|---|
@@ -96,4 +96,4 @@ The tracked Step 4 summary's SHA-256 at audit time was `c72dd274c6d5988afe7b0e62
 
 Present this as a **validated heterogeneous swarm search-and-rescue simulation prototype with decentralized goal selection and fault-tolerant peer information exchange**. Demonstrate one reproducible seed, the private maps, a communication partition and recovery, a survivor confirmation, and the resulting metrics.
 
-Before submission, confirm the actual organizer rubric, package a single reproducible evaluation bundle, and explain the fallback from weaker PPO to the stronger frontier controller. If the rubric requires live ROS robots, learned control in the visible demo, evacuation mechanics, or actual decentralized sensing-based collision avoidance, those remain separate implementation tasks rather than presentation refinements.
+Before submission, package a single reproducible learned-policy evaluation bundle against the supplied problem statement, and explain the fallback from weaker PPO to the stronger frontier controller. A baseline fallback remains useful demonstration evidence but does not replace the statement's MARL requirement. If the rubric requires live ROS robots, learned control in the visible demo, evacuation mechanics, or actual decentralized sensing-based collision avoidance, those remain separate implementation tasks rather than presentation refinements.

@@ -5,7 +5,7 @@ import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 import * as THREE from 'three';
 import { simClock, TICKS_PER_SECOND, useSim } from '../store/simStore';
 import type { SimulationEngine } from '../simulation/core/SimulationEngine';
-import { COLORS, QUALITY, cellToWorld, robotRenderPosition, worldToCell, type QualityProfile } from './common';
+import { COLORS, QUALITY, robotRenderPosition, worldToCell, type QualityProfile } from './common';
 import { World } from './World';
 import { RobotPaths, Robots } from './Robots';
 import { CommEvents, CommRanges, MapMergeFlash, NetworkLinks, PacketPulses, PartitionAndReconnect } from './Network';
@@ -92,7 +92,9 @@ function CameraRig({ engine }: { engine: SimulationEngine }) {
 
   useLayoutEffect(() => {
     if (!controls || !size.width || !size.height) return;
-    if (initialized.current !== engine) {
+    const previous = initialized.current;
+    const preserveEditorView = previous && useSim.getState().editingSurvivors && previous.scenario.seed === engine.scenario.seed && previous.scenario.preset === engine.scenario.preset;
+    if (initialized.current !== engine && !preserveEditorView) {
       initialized.current = engine;
       desired.current = null;
       controls.target.set(0, 0, 0);
@@ -111,6 +113,7 @@ function CameraRig({ engine }: { engine: SimulationEngine }) {
       camera.updateProjectionMatrix();
       if (desired.current) desired.current.zoom = Math.max(fitZoom.current * 0.6, Math.min(fitZoom.current * 4, desired.current.zoom));
     }
+    initialized.current = engine;
     controls.minZoom = fitZoom.current * 0.6;
     controls.maxZoom = fitZoom.current * 4;
     previousSize.current = { width: size.width, height: size.height };
@@ -119,9 +122,28 @@ function CameraRig({ engine }: { engine: SimulationEngine }) {
   useEffect(() => {
     if (!controls) return;
     const stopGlide = () => { desired.current = null; useSim.getState().updateCamera(Math.round(camera.zoom / fitZoom.current * 100), false); };
-    controls.addEventListener('start', stopGlide);
-    return () => controls.removeEventListener('start', stopGlide);
-  }, [controls, camera]);
+    let drag: { x: number; y: number; pointer: number } | null = null;
+    const down = (event: PointerEvent) => { drag = { x: event.clientX, y: event.clientY, pointer: event.pointerId }; };
+    const move = (event: PointerEvent) => {
+      if (!drag || event.pointerId !== drag.pointer) return;
+      if (Math.hypot(event.clientX - drag.x, event.clientY - drag.y) > 4) { stopGlide(); drag = null; }
+    };
+    const up = () => { drag = null; };
+    // A click can select the next robot without cancelling the existing lock.
+    // Only actual camera dragging or scrolling releases it.
+    canvas.addEventListener('pointerdown', down);
+    canvas.addEventListener('wheel', stopGlide, { capture: true, passive: true });
+    canvas.ownerDocument.addEventListener('pointermove', move);
+    canvas.ownerDocument.addEventListener('pointerup', up);
+    canvas.ownerDocument.addEventListener('pointercancel', up);
+    return () => {
+      canvas.removeEventListener('pointerdown', down);
+      canvas.removeEventListener('wheel', stopGlide, true);
+      canvas.ownerDocument.removeEventListener('pointermove', move);
+      canvas.ownerDocument.removeEventListener('pointerup', up);
+      canvas.ownerDocument.removeEventListener('pointercancel', up);
+    };
+  }, [controls, camera, canvas]);
 
   useEffect(() => {
     if (!request || !controls || useSim.getState().cameraRequest !== request) return;
@@ -149,12 +171,13 @@ function CameraRig({ engine }: { engine: SimulationEngine }) {
   }, [request, controls, engine, camera]);
 
   useEffect(() => {
-    if (!focus || !controls) return;
+    if (!focus || !controls || useSim.getState().focus !== focus || !useSim.getState().following) return;
     const robot = engine.robots.find((r) => r.name === focus.robot);
     if (!robot) return;
-    const target = cellToWorld(engine, robot.x, robot.y);
+    const target = robotRenderPosition(engine, robot.id);
     const offset = camera.position.clone().sub(controls.target);
-    desired.current = { target, position: target.clone().add(offset), zoom: fitZoom.current * 3.2 };
+    cameraOffset.current.copy(offset);
+    desired.current = { target, position: target.clone().add(offset), zoom: fitZoom.current * 3.2, following: true };
   }, [focus, controls, engine, camera]);
 
   useFrame((state, dt) => {
@@ -221,6 +244,7 @@ function Scene() {
   const overlays = useSim((s) => s.overlays);
   const selected = useSim((s) => s.selected);
   const editingSurvivors = useSim((s) => s.editingSurvivors);
+  const cleanView = useSim((s) => s.cleanView);
   const qualityName = useSim((s) => s.settings.quality);
   const fog = useSim((s) => s.settings.fog);
   const quality = QUALITY[qualityName];
@@ -257,6 +281,7 @@ function Scene() {
     <group key={generation.current.revision}>
       <World engine={engine} quality={quality} onFloorClick={onFloorClick} />
       <Robots engine={engine} quality={quality} />
+      {!cleanView && <>
       {overlays.paths && <RobotPaths engine={engine} />}
       {overlays.links && <NetworkLinks engine={engine} />}
       {overlays.packets && <PacketPulses engine={engine} arcs={quality.commFx} />}
@@ -265,10 +290,11 @@ function Scene() {
       <PartitionAndReconnect engine={engine} />
       {overlays.ranges && <CommRanges engine={engine} only={null} />}
       {overlays.evidence && <EvidenceMarkers engine={engine} />}
+      </>}
       <Survivors engine={engine} quality={quality} />
-      {editingSurvivors && <PlacementMarkers engine={engine} />}
-      {overlays.truth && <TruthDebug engine={engine} />}
-      {overlays.coverage && <CoverageFog engine={engine} robot={selected} />}
+      {editingSurvivors && !cleanView && <PlacementMarkers engine={engine} />}
+      {overlays.truth && !cleanView && <TruthDebug engine={engine} />}
+      {overlays.coverage && !cleanView && <CoverageFog engine={engine} robot={selected} />}
       {quality.dust > 0 && fog > 0.15 && <Dust engine={engine} count={quality.dust} fog={fog} />}
     </group>
     <OrbitControls makeDefault enableDamping dampingFactor={0.085} enableZoom zoomToCursor zoomSpeed={0.8} rotateSpeed={0.55} panSpeed={0.7}

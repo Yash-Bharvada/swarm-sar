@@ -320,3 +320,21 @@ input[type=range] { width: 100%; accent-color: #688953; height: 14px; }
   .camera-tools { bottom: 157px; }
   .map-mode-label { bottom: 157px; }
 }
+
+/* Authored survivor layouts and a scene-only viewing mode. */
+.survivor-count-row .btn { flex-shrink: 0; }
+.survivor-actions { display: flex; flex-wrap: wrap; gap: 7px; margin: 10px 0; }
+.survivor-actions .btn { padding: 8px 10px; font-size: 10px; }
+.survivor-editor-message { padding: 9px 10px; background: #edf2df; border-radius: 6px; color: #6b8055; }
+.placement-banner { position: absolute; left: 24px; top: 168px; max-width: 370px; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 13px 16px; background: #fff6e6f5; border: 1px solid #d5bf99; border-radius: 9px; color: #886b42; }
+.placement-banner strong { display: block; font-size: 12px; font-weight: 550; }
+.placement-banner span { display: block; font-size: 10px; margin-top: 5px; }
+.placement-banner .btn { pointer-events: auto; flex-shrink: 0; }
+.app.clean-view { display: block; }
+.clean-view .workspace { height: 100%; padding: 0; }
+.clean-view .stage { border-radius: 0; border: 0; }
+.restore-interface { position: absolute; right: 18px; bottom: 18px; z-index: 60; display: flex; gap: 8px; align-items: center; padding: 9px 11px; border: 1px solid #dce5ce; border-radius: 8px; background: #fbfdf1e8; color: #5d7155; opacity: .6; font-size: 10px; }
+.restore-interface:hover, .restore-interface:focus-visible { opacity: 1; }
+.restore-interface kbd { margin-left: 7px; }
+@media (max-width: 960px) { .watch-maze span { display: none; } }
+@media (max-width: 760px) { .placement-banner { left: 12px; right: 12px; top: 155px; max-width: none; flex-wrap: wrap; padding: 11px; }.placement-banner span { font-size: 9px; } }

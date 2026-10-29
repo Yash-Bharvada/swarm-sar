@@ -29,6 +29,12 @@ npm run build        # Type-check and build dist/
 npm run preview      # Serve the production bundle locally
 ```
 
+Optional interaction verification, with Python Playwright and local Chrome already installed:
+start `npm run dev -- --host 127.0.0.1 --port 5174`, then run
+`python3 scripts/browser_controls_qa.py` from `frontend/`. It checks real placement clicks,
+moving-robot focus, focus transfer, scene-only viewing and mobile restoration. It writes
+`docs/browser_controls_validation.json` at the repository root and temporary screenshots.
+
 ## Using the simulator
 
 The world occupies the workspace. A command rail opens one panel at a time; select **World**
@@ -48,12 +54,28 @@ or close the panel to return to the full scene.
 The mission reset control asks before clearing an active mission. Camera reset simply restores
 the world overview.
 
+### Custom survivors
+
+Before launch, use **Mission → Survivors** to apply an exact count, randomize positions, or
+choose **Place on map**. The placement view shows amber markers: click a reachable tile to add
+a survivor, or click a marker to remove it. **Done placing** hides these authored locations;
+robots still learn survivor locations only through their sensors. Editing preserves your camera.
+
+There is no fixed small survivor cap. Capacity is the number of reachable walkable cells outside
+the robot staging square, with one survivor per tile. Walls, staging and duplicate placements
+are rejected. Clear the layout to start from zero, then place at least one survivor before launch.
+Changes lock during a mission. Reset preserves the authored layout; changing the site or seed
+restores automatic placement. Automatic uses the standard seeded 2–4 survivors (the validation
+scenario uses its own fixed count). Large counts increase computation and do not increase mission
+time or battery budgets, so placing many survivors does not guarantee finding all of them.
+
 ### Camera and keyboard controls
 
 The orthographic camera starts in a level, north-up angled view, so the map edges stay
 horizontal. On-screen controls provide smooth zoom with a visible **60–400%** readout, angled and top-down views, **Fit world
-to view**, and **Follow** for the selected robot. **Focus camera** in robot details frames that
-robot once. Dragging the camera or changing its view releases follow mode. Scrolling zooms
+to view**, and **Follow** for the selected robot. **Focus camera** in robot details frames and
+continuously follows that robot. Selecting another robot transfers the lock. Deselecting,
+dragging/zooming the camera, changing its view, or stopping Follow releases it. Scrolling zooms
 around the ground under your cursor; the +/− buttons and keyboard zoom around the last point
 you indicated in the world, falling back to the view centre before the first pointer interaction.
 
@@ -70,6 +92,12 @@ you indicated in the world, falling back to the view centre before the first poi
 | Manual or Mixed mode, robot selected | Click a walkable tile to set a waypoint |
 | Arrow keys or WASD | Step the selected manual robot |
 | E / X | Scan for a survivor / stop |
+| H | Hide / restore the interface and diagnostic overlays |
+
+**Watch maze** fills the workspace with the scene, hiding panels, labels, selection rings and
+diagnostic layers while retaining their settings. It keeps the mission and camera follow running.
+Use H, Esc or **Show interface** to return. It is unavailable during survivor placement so the
+authoring status cannot disappear accidentally.
 
 Camera and driving shortcuts do not fire while typing in a field or using Ctrl/Command/Alt.
 Space on a focused button retains its native button action; driving keys still work after selecting a robot.

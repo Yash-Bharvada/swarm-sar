@@ -16,7 +16,7 @@ const layerOptions: { key: keyof Overlays; label: string; detail: string }[] = [
 
 export function SceneHud({ onOpenPanel }: { onOpenPanel: (panel: Panel) => void }) {
   useSim((s) => s.version);
-  const { engine, status, overlays, settings, selected, cameraView, cameraZoom, following, moveCamera, toggleOverlay, launch, pause, resume, reset, setSetting } = useSim();
+  const { engine, status, overlays, settings, selected, cameraView, cameraZoom, following, editingSurvivors, survivorMessage, setEditingSurvivors, moveCamera, toggleOverlay, toggleCleanView, launch, pause, resume, reset, setSetting } = useSim();
   const [layersOpen, setLayersOpen] = useState(false);
   const [confirmReset, setConfirmReset] = useState(false);
   const layers = useRef<HTMLDivElement>(null);
@@ -44,6 +44,7 @@ export function SceneHud({ onOpenPanel }: { onOpenPanel: (panel: Panel) => void 
     </div>
 
     <div className="scene-top-right">
+      <button className="scene-button watch-maze" onClick={toggleCleanView} disabled={editingSurvivors} title="Hide interface and overlays (H)"><Icon name="overview" size={17} /><span>Watch maze</span></button>
       <button className="team-pill" onClick={() => onOpenPanel('fleet')} title="Inspect your fleet"><span className="team-icons"><Icon name="rover" size={17} /><Icon name="drone" size={17} /></span><span>{rovers} rovers <b>·</b> {drones} drones</span><Icon name="chevron" size={13} /></button>
       <div className="layers-wrap" ref={layers}>
         <button className={`scene-button ${layersOpen ? 'active' : ''}`} aria-label="Layers" onClick={() => setLayersOpen(!layersOpen)} aria-expanded={layersOpen} aria-controls="layer-menu"><Icon name="layers" size={17} />Layers{layerOptions.some((l) => l.key !== 'labels' && overlays[l.key]) && <span className="layer-count">{layerOptions.filter((l) => l.key !== 'labels' && overlays[l.key]).length}</span>}</button>
@@ -55,7 +56,8 @@ export function SceneHud({ onOpenPanel }: { onOpenPanel: (panel: Panel) => void 
     {overlays.coverage && <div className="map-mode-label"><Icon name="map" size={14} />{selectedRobot ? `${selectedRobot.label}’s private map` : 'Combined explored map'}<button aria-label="Hide explored map" onClick={() => toggleOverlay('coverage')}><Icon name="close" size={13} /></button></div>}
     {overlays.graph && <NetworkGraph />}
 
-    {status === 'ready' && <div className="mission-brief"><span className="brief-index">YOUR MISSION <span>SEARCH & RESCUE</span></span><h2>Send a little help.</h2><p>Your autonomous team is ready. Explore the site, share discoveries, and locate every survivor.</p><button className="brief-configure" onClick={() => onOpenPanel('setup')}><Icon name="settings" size={15} />Configure mission<Icon name="chevron" size={13} /></button></div>}
+    {status === 'ready' && !editingSurvivors && <div className="mission-brief"><span className="brief-index">YOUR MISSION <span>SEARCH & RESCUE</span></span><h2>Send a little help.</h2><p>Your autonomous team is ready. Explore the site, share discoveries, and locate every survivor.</p><button className="brief-configure" onClick={() => onOpenPanel('setup')}><Icon name="settings" size={15} />Configure mission<Icon name="chevron" size={13} /></button></div>}
+    {editingSurvivors && <div className="placement-banner" role="status"><div><strong>Place survivors · {engine.scenario.victims.length} placed</strong><span>{survivorMessage ?? 'Click an empty path to add; click a marker to remove.'}</span></div><button className="btn" onClick={() => setEditingSurvivors(false)}>Done placing</button></div>}
     {status === 'complete' && <div className="mission-brief complete-card"><span className="brief-index"><Icon name="check" size={14} />MISSION REPORT</span><h2>{engine.doneReason === 'all_found' ? 'Everyone accounted for.' : 'Mission finished.'}</h2><p>{engine.survivorsFound()} of {engine.scenario.victims.length} survivors found. {pct(engine.coverage())} of the site explored, with {engine.collisions} collisions.</p><button className="brief-configure" onClick={reset}><Icon name="reset" size={15} />Start a new mission</button></div>}
 
     <div className="camera-tools">
@@ -66,7 +68,7 @@ export function SceneHud({ onOpenPanel }: { onOpenPanel: (panel: Panel) => void 
 
     {selectedRobot?.manual && status !== 'complete' && <div className="manual-hint"><Icon name={selectedRobot.type === 'drone' ? 'drone' : 'rover'} size={16} />Driving {selectedRobot.label} · Click a path to move · WASD · E to scan</div>}
     <div className="playback">
-      <button className={`launch-button ${status === 'running' ? 'running' : ''}`} aria-label={runLabel} onClick={run} disabled={status === 'complete'} title={`${runLabel} (Space)`}><Icon name={status === 'running' ? 'pause' : status === 'complete' ? 'check' : 'play'} size={18} /><span>{runLabel}</span><kbd>SPACE</kbd></button>
+      <button className={`launch-button ${status === 'running' ? 'running' : ''}`} aria-label={runLabel} onClick={run} disabled={status === 'complete' || (status === 'ready' && !engine.scenario.victims.length)} title={status === 'ready' && !engine.scenario.victims.length ? 'Place at least one survivor before launching' : `${runLabel} (Space)`}><Icon name={status === 'running' ? 'pause' : status === 'complete' ? 'check' : 'play'} size={18} /><span>{runLabel}</span><kbd>SPACE</kbd></button>
       <div className="playback-divider" />
       <div className="speed-control" aria-label="Simulation speed">{([0.5, 1, 2, 4] as Speed[]).map((speed) => <button key={speed} className={settings.speed === speed ? 'active' : ''} aria-label={`${speed} times speed`} aria-pressed={settings.speed === speed} onClick={() => setSetting('speed', speed)}>{speed}×</button>)}</div>
       <div className="mission-timeline"><div className="timeline-label"><span>{status === 'ready' ? 'Ready when you are' : status === 'running' ? 'Exploring together' : status === 'paused' ? 'Take your time' : 'Exploration complete'}</span><span className="mono">{missionTime(engine.step)} <b>/ {missionTime(engine.maxSteps)}</b></span></div><div className="timeline-track" role="progressbar" aria-label="Mission elapsed time" aria-valuenow={engine.step} aria-valuemin={0} aria-valuemax={engine.maxSteps}><i style={{ width: `${100 * engine.step / engine.maxSteps}%` }} /></div></div>

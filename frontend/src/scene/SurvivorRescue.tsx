@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import type { SimulationEngine } from '../simulation/core/SimulationEngine';
 import type { QualityProfile } from './common';
 import { RESCUE_CELEBRATION_SECONDS, rescueCelebrationProgress, rescueCelebrationStart } from './rescueCelebration';
+import { useSim } from '../store/simStore';
 
 function useReducedMotion() {
   const [reduced, setReduced] = useState(() => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -220,6 +221,7 @@ function RescueConfetti({ start, count, index }: { start: number; count: number;
 
 /** Found-only presentation; a saved flag denotes confirmation, not physical extraction. */
 export function SurvivorRescue({ engine, position, quality, index }: { engine: SimulationEngine; position: THREE.Vector3; quality: QualityProfile; index: number }) {
+  const cleanView = useSim((s) => s.cleanView);
   const reducedMotion = useReducedMotion();
   const [start] = useState(() => rescueCelebrationStart(engine, index, performance.now() / 1000));
   return <group position={position} name={'confirmed-survivor-' + index}>
@@ -230,8 +232,8 @@ export function SurvivorRescue({ engine, position, quality, index }: { engine: S
     <SurvivorPerson index={index} start={start} reducedMotion={reducedMotion} shadows={quality.shadows} />
     <RescueFlag reducedMotion={reducedMotion} shadows={quality.shadows} index={index} />
     {!reducedMotion && <RescueConfetti start={start} count={quality.shadows ? 36 : 20} index={index} />}
-    <Html position={[0.25, 2.45, -0.08]} center style={{ pointerEvents: 'none' }} zIndexRange={[15, 0]}>
+    {!cleanView && <Html position={[0.25, 2.45, -0.08]} center style={{ pointerEvents: 'none' }} zIndexRange={[15, 0]}>
       <div className="survivor-saved-tag"><span className="saved-check" aria-hidden>✓</span><span><strong>SURVIVOR SAVED</strong><small>Location confirmed</small></span></div>
-    </Html>
+    </Html>}
   </group>;
 }

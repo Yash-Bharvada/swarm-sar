@@ -2,6 +2,14 @@
 
 This repository implements Blueprint Steps 1–4: a deterministic heterogeneous disaster simulator, frontier and PPO policies, irregular-world scalability, and a decentralized lossy peer network. Agents use local maps, noisy sensors, relative pose, received peer messages and fixed action spaces; no server assigns goals or exposes global state.
 
+## Current project report
+
+See [docs/project_report.md](docs/project_report.md) for status against the exact
+[Problem Statement 5](docs/problem_statement.md), completed browser controls,
+measured validation, sensor decisions and the pending GPU PPO/MARL phase.
+The browser heuristic, Python learned-policy pipeline and ROS/Gazebo demo remain
+separate execution paths. The report does not claim they are already connected.
+
 ## Step 5: ROS 2 and Gazebo
 
 The ROS 2 / Gazebo integration lives in `ros2_ws/`, validated locally with ROS 2 Lyrical and Gazebo Sim 10. The default demo runs exactly two drones and one rover in a disaster world, with physical rotor thrust and wheel contact, waypoint motion, a grayscale RViz map, and green dots for confirmed survivor detections. See [`docs/physics_demo.md`](docs/physics_demo.md) for launch commands, camera controls and validation limits; [`docs/ros2_gazebo.md`](docs/ros2_gazebo.md) contains the original Jazzy / Harmonic setup notes.

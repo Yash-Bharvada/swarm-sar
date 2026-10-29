@@ -64,28 +64,28 @@ describe('Simulation presentation', () => {
     expect(useSim.getState().following).toBe(false);
   });
 
-  it('stops following when the selection changes or is cleared', () => {
+  it('transfers focus to a new robot and stops following when selection is cleared', () => {
     const state = useSim.getState();
     const [first, second] = state.engine.robots;
     state.select(first.name);
     state.moveCamera('follow');
     state.select(second.name);
     expect(useSim.getState().selected).toBe(second.name);
-    expect(useSim.getState().following).toBe(false);
-    state.moveCamera('follow');
+    expect(useSim.getState().following).toBe(true);
+    expect(useSim.getState().focus?.robot).toBe(second.name);
     state.select(null);
     expect(useSim.getState().selected).toBeNull();
     expect(useSim.getState().following).toBe(false);
   });
 
-  it('focuses a robot again after repeated clicks without enabling follow', () => {
+  it('keeps a focused robot followed and delivers repeated focus requests', () => {
     const state = useSim.getState();
     const robot = state.engine.robots[0].name;
     state.select(robot);
     state.moveCamera('follow');
     state.focusOn(robot);
     const first = useSim.getState().focus!;
-    expect(useSim.getState().following).toBe(false);
+    expect(useSim.getState().following).toBe(true);
     state.focusOn(robot);
     const second = useSim.getState().focus!;
     expect(second.robot).toBe(robot);

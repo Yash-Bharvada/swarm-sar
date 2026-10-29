@@ -86,7 +86,8 @@ function SelectionMarker({ selected, color, airborne = false }: { selected: bool
 
 function RobotLabel({ robot, selected }: { robot: RobotState; selected: boolean }) {
   const show = useSim((s) => s.overlays.labels);
-  if (!show && !selected) return null;
+  const cleanView = useSim((s) => s.cleanView);
+  if (cleanView || (!show && !selected)) return null;
   const percentage = robot.alive ? batteryPct(robot) : 0;
   return (
     <Html position={[0, robot.type === 'drone' ? 0.5 : 1.02, 0]} center zIndexRange={[20, 0]} style={{ pointerEvents: 'none' }}>
@@ -269,6 +270,7 @@ interface RobotProps {
 
 export function Robots({ engine, quality }: { engine: SimulationEngine; quality: QualityProfile }) {
   const selected = useSim((s) => s.selected);
+  const cleanView = useSim((s) => s.cleanView);
   const select = useSim((s) => s.select);
   useSim((s) => s.version);
   return <>{engine.robots.map((robot) => {
@@ -278,10 +280,10 @@ export function Robots({ engine, quality }: { engine: SimulationEngine; quality:
       engine={engine}
       robot={robot}
       quality={quality}
-      selected={selected === robot.name}
+      selected={!cleanView && selected === robot.name}
       onSelect={(event) => {
         event.stopPropagation();
-        if (event.delta < 4) select(selected === robot.name ? null : robot.name);
+        if (event.delta < 4 && !useSim.getState().editingSurvivors && !useSim.getState().cleanView) select(selected === robot.name ? null : robot.name);
       }}
     />;
   })}</>;

@@ -11,8 +11,9 @@ maximum experiment budget, not a commitment to keep training after a failure.
 
 ## Transfer identity and branch
 
-Use the `rashiyaom` branch and the `rashiyaom-gpu-browser-integrated` tag. Both
-`rashiyaom` and `main` include this revision. Verify the exact code and dataset
+Use the immutable `rashiyaom-gpu-browser-integrated` tag for the audited training
+revision. Both `rashiyaom` and `main` contain it and may have later UI/report commits;
+their latest HEAD need not equal the tag. Verify the exact code and dataset
 using the tracked records:
 
 - `artifacts/gpu_v2/source_manifest.json`: every training source/config file
@@ -43,13 +44,14 @@ On a clean Linux clone, with NVIDIA drivers, Python's venv support, pip and GNU
 `timeout` available:
 
 ```bash
-git clone --branch rashiyaom --single-branch https://github.com/rashiyaom/swarm-sar.git
+git clone --branch rashiyaom-gpu-browser-integrated --single-branch https://github.com/rashiyaom/swarm-sar.git
 cd swarm-sar
-git fetch origin tag rashiyaom-gpu-browser-integrated
+git switch -c rashiyaom
 ```
 
-The launcher requires branch `rashiyaom`. Verify its HEAD matches the audited
-tag, then launch:
+The tag clone starts detached; creating the local `rashiyaom` branch above satisfies
+the launcher's branch guard without moving an existing branch or modifying the tag.
+Verify its HEAD matches the audited tag, then launch:
 
 ```bash
 test "$(git rev-parse HEAD)" = "$(git rev-list -n 1 rashiyaom-gpu-browser-integrated)"

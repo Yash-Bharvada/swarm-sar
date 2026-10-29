@@ -69,6 +69,8 @@ interface Store {
   cameraView: 'isometric' | 'top';
   cameraZoom: number;
   following: boolean;
+  cleanView: boolean;
+  toggleCleanView: () => void;
   editingSurvivors: boolean;
   survivorCapacity: number;
   survivorMessage: string | null;
@@ -136,6 +138,7 @@ function optionsFrom(s: Settings, demo: boolean, selected: string | null, custom
 const WORLD_KEYS: Array<keyof Settings> = ['preset', 'seed', 'rovers', 'drones', 'sensorNoise', 'networkEnabled'];
 const initialEngine = new SimulationEngine(optionsFrom(initialSettings, false, null));
 const capacityOf = (engine: SimulationEngine) => survivorPlacementCells(engine.scenario).length;
+const clearCameraTarget = { selected: null, focus: null, cameraRequest: null, following: false };
 
 export const useSim = create<Store>((set, get) => ({
   settings: initialSettings,
@@ -161,18 +164,28 @@ export const useSim = create<Store>((set, get) => ({
   cameraView: 'isometric',
   cameraZoom: 100,
   following: false,
+  cleanView: false,
+  toggleCleanView: () => {
+    if (get().editingSurvivors) return;
+    set({ cleanView: !get().cleanView });
+  },
   editingSurvivors: false,
   survivorCapacity: capacityOf(initialEngine),
   survivorMessage: null,
   customSurvivors: null,
-  focusOn: (robot) => set({ focus: { robot, nonce: (get().focus?.nonce ?? 0) + 1 }, following: false }),
+  focusOn: (robot) => {
+    if (!get().engine.robots.some((unit) => unit.name === robot)) return;
+    get().select(robot);
+    set({ focus: { robot, nonce: (get().focus?.nonce ?? 0) + 1 }, cameraRequest: null, following: true });
+  },
   moveCamera: (action) => set({
     cameraRequest: { action, nonce: (get().cameraRequest?.nonce ?? 0) + 1 },
     ...(action === 'top' || action === 'isometric' ? { cameraView: action } : {}),
     ...(action === 'reset' ? { cameraView: 'isometric' } : {}),
     following: action === 'follow' && get().selected !== null ? !get().following : false,
+    focus: null,
   }),
-  updateCamera: (zoom, following) => set({ cameraZoom: zoom, ...(following === undefined ? {} : { following }) }),
+  updateCamera: (zoom, following) => set({ cameraZoom: zoom, ...(following === undefined ? {} : { following }), ...(following === false ? { focus: null } : {}) }),
 
   setSurvivorCount: (count) => {
     const state = get();
@@ -182,7 +195,7 @@ export const useSim = create<Store>((set, get) => ({
       return;
     }
     const settings = { ...state.settings, survivorCount: count };
-    set({ settings, customSurvivors: null, engine: new SimulationEngine(optionsFrom(settings, state.demo, null)), survivorMessage: null, version: state.version + 1 });
+    set({ ...clearCameraTarget, settings, customSurvivors: null, engine: new SimulationEngine(optionsFrom(settings, state.demo, null)), survivorMessage: null, version: state.version + 1 });
   },
   randomizeSurvivors: () => {
     const state = get();
@@ -195,7 +208,7 @@ export const useSim = create<Store>((set, get) => ({
     }
     const customSurvivors = cells.slice(0, count);
     const settings = { ...state.settings, survivorCount: count };
-    set({ settings, customSurvivors, engine: new SimulationEngine(optionsFrom(settings, state.demo, null, customSurvivors)), survivorMessage: null, version: state.version + 1 });
+    set({ ...clearCameraTarget, settings, customSurvivors, engine: new SimulationEngine(optionsFrom(settings, state.demo, null, customSurvivors)), survivorMessage: null, version: state.version + 1 });
   },
   setEditingSurvivors: (editing) => {
     const state = get();
@@ -203,7 +216,7 @@ export const useSim = create<Store>((set, get) => ({
     if (!editing) { set({ editingSurvivors: false, survivorMessage: null }); return; }
     const customSurvivors = state.engine.scenario.victims.map(({ x, y }) => ({ x, y }));
     const settings = { ...state.settings, survivorCount: customSurvivors.length };
-    set({ settings, customSurvivors, editingSurvivors: true, engine: new SimulationEngine(optionsFrom(settings, state.demo, null, customSurvivors)), survivorMessage: 'Click a reachable tile to add or remove a survivor.', version: state.version + 1 });
+    set({ ...clearCameraTarget, cleanView: false, settings, customSurvivors, editingSurvivors: true, engine: new SimulationEngine(optionsFrom(settings, state.demo, null, customSurvivors)), survivorMessage: 'Click a reachable tile to add or remove a survivor.', version: state.version + 1 });
   },
   toggleSurvivorAt: (point) => {
     const state = get();
@@ -214,22 +227,27 @@ export const useSim = create<Store>((set, get) => ({
     const present = current.some(({ x, y }) => x === point.x && y === point.y);
     const customSurvivors = present ? current.filter(({ x, y }) => x !== point.x || y !== point.y) : [...current, { ...point }];
     const settings = { ...state.settings, survivorCount: customSurvivors.length };
-    set({ settings, customSurvivors, engine: new SimulationEngine(optionsFrom(settings, state.demo, null, customSurvivors)), survivorMessage: `${present ? 'Removed' : 'Placed'} survivor at (${point.x}, ${point.y}).`, version: state.version + 1 });
+    set({ ...clearCameraTarget, settings, customSurvivors, engine: new SimulationEngine(optionsFrom(settings, state.demo, null, customSurvivors)), survivorMessage: `${present ? 'Removed' : 'Placed'} survivor at (${point.x}, ${point.y}).`, version: state.version + 1 });
   },
   clearSurvivors: () => {
     const state = get();
     if (state.status !== 'ready') return;
     const settings = { ...state.settings, survivorCount: 0 };
-    set({ settings, customSurvivors: [], engine: new SimulationEngine(optionsFrom(settings, state.demo, null, [])), survivorMessage: 'Add a survivor before launching.', version: state.version + 1 });
+    set({ ...clearCameraTarget, settings, customSurvivors: [], engine: new SimulationEngine(optionsFrom(settings, state.demo, null, [])), survivorMessage: 'Add a survivor before launching.', version: state.version + 1 });
   },
   useAutomaticSurvivors: () => {
     const state = get();
     if (state.status !== 'ready') return;
     const settings = { ...state.settings, survivorCount: null };
-    set({ settings, customSurvivors: null, editingSurvivors: false, engine: new SimulationEngine(optionsFrom(settings, state.demo, null)), survivorMessage: null, version: state.version + 1 });
+    set({ ...clearCameraTarget, settings, customSurvivors: null, editingSurvivors: false, engine: new SimulationEngine(optionsFrom(settings, state.demo, null)), survivorMessage: null, version: state.version + 1 });
   },
 
   setSetting: (key, value) => {
+    if (key === 'survivorCount') {
+      if (value === null) get().useAutomaticSurvivors();
+      else get().setSurvivorCount(value as number);
+      return;
+    }
     const { settings, status, engine, selected } = get();
     const next = { ...settings, [key]: value };
     if (key === 'rovers' || key === 'drones') {
@@ -330,8 +348,10 @@ export const useSim = create<Store>((set, get) => ({
     });
   },
   select: (name) => {
-    const { engine, settings } = get();
-    set({ selected: name, following: false });
+    const { engine, settings, following, focus } = get();
+    if (name !== null && !engine.robots.some((robot) => robot.name === name)) return;
+    const keepFollowing = following && name !== null;
+    set({ selected: name, following: keepFollowing, focus: keepFollowing ? { robot: name, nonce: (focus?.nonce ?? 0) + 1 } : null });
     // In mixed mode the selected robot becomes the manually driven one.
     if (settings.mode === 'mixed' && name) engine.issue({ kind: 'setMode', mode: 'mixed', manualRobot: name });
     if (settings.mode === 'manual' && name) engine.issue({ kind: 'setMode', mode: 'manual', manualRobot: name });

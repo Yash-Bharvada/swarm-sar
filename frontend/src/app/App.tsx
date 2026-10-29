@@ -24,11 +24,18 @@ const KEY_DIRECTIONS: Record<string, number> = {
 function useKeyboard() {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.code === 'Escape') { useSim.getState().select(null); return; }
+      if (e.code === 'Escape') {
+        const state = useSim.getState();
+        if (state.cleanView) state.toggleCleanView();
+        else if (state.editingSurvivors) state.setEditingSurvivors(false);
+        else state.select(null);
+        return;
+      }
       if (e.metaKey || e.ctrlKey || e.altKey) return;
       const target = e.target as HTMLElement | null;
       if (target?.closest('input, select, textarea, [contenteditable="true"]')) return;
       if (e.code === 'Space' && target?.closest('button')) return;
+      if (e.code === 'KeyH') { e.preventDefault(); if (!e.repeat) useSim.getState().toggleCleanView(); return; }
       const { status, selected, engine, settings, issue, pause, resume, launch } = useSim.getState();
       if (e.code === 'Space') {
         e.preventDefault();
@@ -60,7 +67,11 @@ export function App() {
   useKeyboard();
   const [panel, setPanel] = useState<Panel>(null);
   const selected = useSim((s) => s.selected);
+  const cleanView = useSim((s) => s.cleanView);
+  const editingSurvivors = useSim((s) => s.editingSurvivors);
+  const toggleCleanView = useSim((s) => s.toggleCleanView);
   useEffect(() => { if (selected) setPanel('fleet'); }, [selected]);
+  useEffect(() => { if (editingSurvivors || cleanView) setPanel(null); }, [editingSurvivors, cleanView]);
   useEffect(() => {
     const close = (event: KeyboardEvent) => { if (event.code === 'Escape') setPanel(null); };
     window.addEventListener('keydown', close);
@@ -73,21 +84,22 @@ export function App() {
     { panel: 'activity', label: 'Activity', icon: 'activity' },
   ];
   return (
-    <div className="app">
-      <TopBar />
-      <nav className="command-rail" aria-label="Workspace">
+    <div className={`app ${cleanView ? 'clean-view' : ''}`}>
+      {!cleanView && <TopBar />}
+      {!cleanView && <nav className="command-rail" aria-label="Workspace">
         <div className="rail-navigation">
           {items.map((item) => <button key={item.label} className={`rail-button ${panel === item.panel ? 'active' : ''}`} onClick={() => setPanel(panel === item.panel ? null : item.panel)} aria-label={item.label === 'World' ? 'World overview' : `Open ${item.label.toLowerCase()} panel`} aria-pressed={panel === item.panel} title={item.label}><Icon name={item.icon} /><span>{item.label}</span></button>)}
         </div>
         <button className={`rail-button ${panel === 'help' ? 'active' : ''}`} onClick={() => setPanel(panel === 'help' ? null : 'help')} aria-label="Open controls guide" aria-pressed={panel === 'help'}><Icon name="help" /><span>Controls</span></button>
         <div className="rail-version">LOCAL</div>
-      </nav>
-      <main className={`workspace ${panel ? 'has-panel' : ''}`}>
+      </nav>}
+      <main className={`workspace ${panel && !cleanView ? 'has-panel' : ''}`}>
         <section className="stage" aria-label="Interactive simulation world">
           <SceneRoot />
-          <SceneHud onOpenPanel={setPanel} />
+          {!cleanView && <SceneHud onOpenPanel={setPanel} />}
+          {cleanView && <button className="restore-interface" onClick={toggleCleanView} aria-label="Show interface" title="Show interface (H or Esc)"><Icon name="overview" size={17} /><span>Show interface <kbd>H</kbd></span></button>}
         </section>
-        {panel && <aside className="workspace-drawer" aria-label={`${panel} panel`}>
+        {panel && !cleanView && <aside className="workspace-drawer" aria-label={`${panel} panel`}>
           <button className="drawer-close icon-button" aria-label="Close panel" title="Close panel (Esc)" onClick={() => setPanel(null)}><Icon name="close" size={18} /></button>
           {panel === 'setup' && <LeftPanel />}
           {panel === 'fleet' && <RightPanel />}
@@ -108,7 +120,7 @@ function ControlsGuide() {
     <h3>Move your camera</h3>
     <dl className="shortcut-list"><dt>Orbit</dt><dd>Left mouse drag</dd><dt>Pan</dt><dd>Right mouse drag</dd><dt>Zoom at cursor</dt><dd>Scroll or <kbd>+</kbd> <kbd>−</kbd></dd><dt>Overview</dt><dd><kbd>R</kbd></dd><dt>Focus robot</dt><dd>Select, then <kbd>F</kbd></dd></dl>
     <h3>Run your mission</h3>
-    <dl className="shortcut-list"><dt>Launch / pause</dt><dd><kbd>Space</kbd></dd><dt>Inspect robot</dt><dd>Click a robot</dd><dt>Close / deselect</dt><dd><kbd>Esc</kbd></dd></dl>
+    <dl className="shortcut-list"><dt>Launch / pause</dt><dd><kbd>Space</kbd></dd><dt>Inspect robot</dt><dd>Click a robot</dd><dt>Watch maze / UI</dt><dd><kbd>H</kbd></dd><dt>Close / restore</dt><dd><kbd>Esc</kbd></dd></dl>
     <details className="disclosure"><summary>Manual driving</summary><p className="explain">Choose Manual or Mixed in Mission settings, then select a robot. Click a walkable tile to set a waypoint.</p><dl className="shortcut-list"><dt>Move</dt><dd><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> or arrows</dd><dt>Scan</dt><dd><kbd>E</kbd></dd><dt>Stop</dt><dd><kbd>X</kbd></dd></dl></details>
     <p className="guide-note"><Icon name="layers" size={18} />Use Layers to reveal paths, radio links, or the robots’ explored map.</p>
   </div>;

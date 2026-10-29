@@ -67,24 +67,30 @@ export function Survivors({ engine, quality }: { engine: SimulationEngine; quali
 
 /** Draft positions are visible only while the operator is editing the mission. */
 export function PlacementMarkers({ engine }: { engine: SimulationEngine }) {
-  return <>
-    {engine.scenario.victims.map((victim) => {
-      const p = cellToWorld(engine, victim.x, victim.y);
-      return <group key={victim.id} position={p}>
-        <mesh position={[0, 0.22, 0]} onClick={(event) => {
-          if (event.delta > 4) return;
-          event.stopPropagation();
-          useSim.getState().toggleSurvivorAt({ x: victim.x, y: victim.y });
-        }}>
-          <sphereGeometry args={[0.27, 12, 10]} />
-          <meshBasicMaterial color="#f97316" toneMapped={false} />
-        </mesh>
-        <Html position={[0, 0.85, 0]} center style={{ pointerEvents: 'none' }}>
-          <div className="debug-tag">PLACED · {victim.id + 1}</div>
-        </Html>
-      </group>;
-    })}
-  </>;
+  const ref = useRef<THREE.InstancedMesh>(null);
+  const victims = engine.scenario.victims;
+  useEffect(() => {
+    if (!ref.current) return;
+    const object = new THREE.Object3D();
+    for (let i = 0; i < victims.length; i++) {
+      cellToWorld(engine, victims[i].x, victims[i].y, object.position);
+      object.position.y = 0.3;
+      object.updateMatrix();
+      ref.current.setMatrixAt(i, object.matrix);
+    }
+    ref.current.count = victims.length;
+    ref.current.instanceMatrix.needsUpdate = true;
+    ref.current.computeBoundingSphere();
+  }, [engine, victims]);
+  return <instancedMesh ref={ref} args={[undefined, undefined, Math.max(1, victims.length)]} name="survivor-placement-markers" onClick={(event) => {
+    if (event.delta > 4 || event.instanceId === undefined) return;
+    event.stopPropagation();
+    const victim = victims[event.instanceId];
+    if (victim) useSim.getState().toggleSurvivorAt({ x: victim.x, y: victim.y });
+  }}>
+    <sphereGeometry args={[0.3, 10, 8]} />
+    <meshBasicMaterial color="#d88742" toneMapped={false} />
+  </instancedMesh>;
 }
 
 /** DEBUG ONLY: ground-truth survivor positions, never shown in the normal operator view. */
