@@ -41,7 +41,7 @@ async def main():
     await page.screenshot(path=str(Path(tempfile.gettempdir())/'swarm-map-controls.png'))
     assert not errors,errors
     report={'generatedAt':datetime.now(timezone.utc).isoformat(),'rawSeedFieldsHidden':True,'friendlyMapLabels':True,'shuffleChoosesDifferentMap':True,'pythonMapSelectionApplied':True,'terrainExplanationAvailable':True,'errors':errors}
-    (ROOT/'docs/browser_map_controls_validation.json').write_text(json.dumps(report,indent=2)+'\n')
+    (ROOT/'docs/validation/browser_map_controls_validation.json').write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps(report))
     await browser.close()
 

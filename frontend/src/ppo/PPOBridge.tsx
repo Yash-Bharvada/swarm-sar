@@ -11,7 +11,7 @@ export async function ppoRequest(path: string, method = 'GET', data?: unknown, s
   try {
     const response = await fetch(`/api/ppo${path}`, { method, signal: abort.signal, headers: data === undefined ? undefined : { 'Content-Type': 'application/json' }, body: data === undefined ? undefined : JSON.stringify(data) });
     const payload = await response.json().catch(() => null);
-    if (!response.ok || !payload) throw new Error(payload?.error ?? 'Python PPO service is unavailable. Start tools/ppo_service.py, then reset this mission.');
+    if (!response.ok || !payload) throw new Error(payload?.error ?? 'Python PPO service is unavailable. Start backend/ppo_service.py, then reset this mission.');
     return payload;
   } finally { clearTimeout(timer); signal?.removeEventListener('abort', stop); }
 }

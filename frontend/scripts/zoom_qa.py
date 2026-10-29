@@ -38,7 +38,7 @@ async def main():
     assert not errors,errors
     await page.evaluate('collect=false')
     report={'wheelAnchorErrorNdc':first['error'],'monotonicZoom':True,'drawerPreservesScale':True,'reverseRestoresZoom':True,'errors':errors,'browserVersion':browser.version}
-    (Path(__file__).resolve().parents[2]/'docs/browser_zoom_validation.json').write_text(json.dumps(report,indent=2)+'\n')
+    (Path(__file__).resolve().parents[2]/'docs/validation/browser_zoom_validation.json').write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps(report))
     await browser.close()
 

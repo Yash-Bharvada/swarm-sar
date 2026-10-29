@@ -16,7 +16,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--url', default='http://127.0.0.1:5173/')
-parser.add_argument('--output', type=Path, default=ROOT / 'docs/browser_audio_validation.json')
+parser.add_argument('--output', type=Path, default=ROOT / 'docs/validation/browser_audio_validation.json')
 parser.add_argument('--full-cycle', action='store_true', help='Also sample a complete 31-second soundtrack progression')
 args = parser.parse_args()
 SCREENSHOTS = Path(tempfile.gettempdir()) / 'swarm-audio-qa'

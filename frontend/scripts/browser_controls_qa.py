@@ -17,7 +17,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--url', default='http://127.0.0.1:5174/')
-parser.add_argument('--output', type=Path, default=ROOT / 'docs/browser_controls_validation.json')
+parser.add_argument('--output', type=Path, default=ROOT / 'docs/validation/browser_controls_validation.json')
 args = parser.parse_args()
 SCREENSHOTS = Path(tempfile.gettempdir()) / 'swarm-controls-qa'
 SCREENSHOTS.mkdir(exist_ok=True)

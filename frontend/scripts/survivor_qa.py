@@ -83,7 +83,7 @@ async def main():
     assert await page.evaluate('qaSim.useSim.getState().cleanView')
     assert not errors,errors
     report = {'generatedAt':datetime.now(timezone.utc).isoformat(),'browserVersion':browser.version,'initialBeacons':initial,'firstDiscovery':first,'allSurvivorsShown':seen,'storyStableOnTap':True,'pausedUntilContinue':True,'overviewRestored':True,'mobileDialogVisible':True,'completedMissionRevisit':True,'cleanViewDiscoveryWorks':True,'errors':errors,'scope':'Chrome UI and real autonomous simulation discovery; not field rescue validation.','sourceHashes':{str(f.relative_to(ROOT)):hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted((ROOT/'frontend/src').rglob('*')) if f.suffix in ('.ts','.tsx','.css')}}
-    (ROOT/'docs/browser_survivor_validation.json').write_text(json.dumps(report,indent=2)+'\n')
+    (ROOT/'docs/validation/browser_survivor_validation.json').write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps({k:v for k,v in report.items() if k!='sourceHashes'},indent=2))
     await browser.close()
 

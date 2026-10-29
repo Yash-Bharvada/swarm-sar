@@ -30,7 +30,7 @@ The project has a working heterogeneous swarm simulator, a cooperative PPO train
 
 Custom survivor counts do not increase batteries or mission time. Large layouts can take longer, consume more memory/rendering work, or end before every survivor is found. These authoring controls do not change the Python training distribution, sensor contract or Step 4 network protocol.
 
-Fleet/menu refinement adds rotating rover/drone previews using the actual world models, a larger selected-unit turntable, cream/sage panels, rounded disclosure sections and subtle control animations. Previews share one additional renderer for up to ten robots and release it when Fleet closes; reduced-motion preferences disable rotation. [Fleet browser checks](browser_fleet_validation.json) verify visible animation, selection/focus, renderer cleanup, ten-unit scrolling and mobile layout. The production build and 127 tests pass; Python/training sources remain unchanged.
+Fleet/menu refinement adds rotating rover/drone previews using the actual world models, a larger selected-unit turntable, cream/sage panels, rounded disclosure sections and subtle control animations. Previews share one additional renderer for up to ten robots and release it when Fleet closes; reduced-motion preferences disable rotation. [Fleet browser checks](validation/browser_fleet_validation.json) verify visible animation, selection/focus, renderer cleanup, ten-unit scrolling and mobile layout. The production build and 127 tests pass; Python/training sources remain unchanged.
 
 ## Validation and result provenance
 
@@ -42,21 +42,21 @@ The latest local checks passed:
 - Audited GPU training source manifest verified: **94 files**, manifest SHA-256 `554f1bc621d0b2144113e75a94fa6668ef73e02f1ce7ee2d308637b14ab920ef`. This UI/report pass leaves those training sources and the expert dataset unchanged.
 - GPU pipeline `--plan` succeeds without starting training. The supplied A5000 handoff now records GPU execution; local review verified archive and checkpoint provenance hashes rather than rerunning CUDA.
 
-Browser interaction evidence is recorded in [browser_controls_validation.json](browser_controls_validation.json). It covers count 100, real click placement/removal, camera stability during editing, moving-robot focus, clean viewing and mobile restoration. The earlier [200-mission browser audit](browser_swarm_audit.json) found **563/564 survivors**, with **199/200 complete missions** and zero **post-shield** collisions. It used 50 distinct layouts under four network conditions. The one failure depleted the fleet with one survivor remaining at 30% loss; these are bounded synthetic results, not field accuracy or an all-missions guarantee.
+Browser interaction evidence is recorded in [browser_controls_validation.json](validation/browser_controls_validation.json). It covers count 100, real click placement/removal, camera stability during editing, moving-robot focus, clean viewing and mobile restoration. The earlier [200-mission browser audit](validation/browser_swarm_audit.json) found **563/564 survivors**, with **199/200 complete missions** and zero **post-shield** collisions. It used 50 distinct layouts under four network conditions. The one failure depleted the fleet with one survivor remaining at 30% loss; these are bounded synthetic results, not field accuracy or an all-missions guarantee.
 
-For trained-model evidence, [GPU architecture review](gpu_architecture_review.md) reports the corrected CPU diagnostic BC policy at **74.82% mean cohort recall** versus **87.13%** for the policy-compatible expert over 72 development missions. Those are historical CPU diagnostic results, distinct from the GPU PPO handoff described below. The older Step 3 PPO checkpoint and stronger frontier comparisons have their own run identities in [the readiness audit](hackathon_readiness_audit.md).
+For trained-model evidence, [GPU architecture review](architecture/gpu_architecture_review.md) reports the corrected CPU diagnostic BC policy at **74.82% mean cohort recall** versus **87.13%** for the policy-compatible expert over 72 development missions. Those are historical CPU diagnostic results, distinct from the GPU PPO handoff described below. The older Step 3 PPO checkpoint and stronger frontier comparisons have their own run identities in [the readiness audit](audits/hackathon_readiness_audit.md).
 
-Audio browser evidence is recorded in [browser_audio_validation.json](browser_audio_validation.json). Chrome checks cover explicit startup, independent volumes, mute, rover/drone focus, autonomous survivor and completion cues, reset without replay, clean viewing, mobile layout and unchanged simulation state. A full music progression remained audible across 155 samples with at most 18 active tones; tab suspension/resumption also passed. These checks establish playback behavior, not subjective listening quality or certification across browsers.
+Audio browser evidence is recorded in [browser_audio_validation.json](validation/browser_audio_validation.json). Chrome checks cover explicit startup, independent volumes, mute, rover/drone focus, autonomous survivor and completion cues, reset without replay, clean viewing, mobile layout and unchanged simulation state. A full music progression remained audible across 155 samples with at most 18 active tones; tab suspension/resumption also passed. These checks establish playback behavior, not subjective listening quality or certification across browsers.
 
-Discovery UI evidence is recorded in [browser_survivor_validation.json](browser_survivor_validation.json): three real autonomous discoveries each received a camera/story pause, tap-to-revisit preserved the story, Continue restored the overview, and completed-mission revisits, mobile framing and clean viewing passed. Explored-map tiles now use crisp mint versus sand; generic clicks use a quieter, lower pitched sound. Python/training code remains unchanged.
+Discovery UI evidence is recorded in [browser_survivor_validation.json](validation/browser_survivor_validation.json): three real autonomous discoveries each received a camera/story pause, tap-to-revisit preserved the story, Continue restored the overview, and completed-mission revisits, mobile framing and clean viewing passed. Explored-map tiles now use crisp mint versus sand; generic clicks use a quieter, lower pitched sound. Python/training code remains unchanged.
 
-Zoom refinement: wheel input now uses one cursor-anchored easing path, normalizes wheel units, preserves world scale when drawers resize, and bounds animation progress after stalled frames. [Browser zoom checks](browser_zoom_validation.json) cover monotonic zoom, cursor anchoring, reversal and drawer stability. Survivor transition browser checks were rerun.
+Zoom refinement: wheel input now uses one cursor-anchored easing path, normalizes wheel units, preserves world scale when drawers resize, and bounds animation progress after stalled frames. [Browser zoom checks](validation/browser_zoom_validation.json) cover monotonic zoom, cursor anchoring, reversal and drawer stability. Survivor transition browser checks were rerun.
 
 ## GPU phase and remaining work
 
 The GPU experiment ran on 29 October 2026 using audited source commit
 `92121ce81ac44c0feb7fd43dcccfdfa7bec3dc05`. The verified handoff is stored in
-[artifacts/trained/ppo_754k](../artifacts/trained/ppo_754k/README.md). The selected
+[models/ppo_754k](../models/ppo_754k/README.md). The selected
 753664-step checkpoint has tree SHA-256
 `23696e6cf3b0821b6c01235a3911cb5cb87d0707589efce6ec43cb58b5340040`.
 Its review reports 89.29% fixed-development mean cohort recall, 88.22% shadow
@@ -81,15 +81,15 @@ learned collision avoidance. No communication benefit has been established.
 
 Next milestones:
 
-1. Completed: preserve the selected handoff and reproduce one checkpoint-driven Python mission. [Demo instructions](ppo_demo.md), [CPU inference evidence](ppo_demo_validation.json) and a [recorded mission GIF](media/ppo_754k_seed10000.gif) are available. Seed 10000 matched its recorded review outcome: 4/4 survivors in 94 steps, 90.48% coverage and zero invalid actions/post-shield collisions. This is one development example, not additional benchmark or field validation.
-2. Completed locally: the [PPO-to-browser adapter](ppo_frontend_integration.md) reproduces the Python mission through the 3D frontend. [Browser checks](browser_ppo_validation.json) cover real snapshots, pause/discovery, reset, failure without fallback and mobile options. ROS learned-policy execution remains pending.
+1. Completed: preserve the selected handoff and reproduce one checkpoint-driven Python mission. [Demo instructions](guides/ppo_demo.md), [CPU inference evidence](validation/ppo_demo_validation.json) and a [recorded mission GIF](media/ppo_754k_seed10000.gif) are available. Seed 10000 matched its recorded review outcome: 4/4 survivors in 94 steps, 90.48% coverage and zero invalid actions/post-shield collisions. This is one development example, not additional benchmark or field validation.
+2. Completed locally: the [PPO-to-browser adapter](guides/ppo_frontend_integration.md) reproduces the Python mission through the 3D frontend. [Browser checks](validation/browser_ppo_validation.json) cover real snapshots, pause/discovery, reset, failure without fallback and mobile options. ROS learned-policy execution remains pending.
 3. Run a versioned maze curriculum experiment only after keeping this candidate
    as a fallback. Retain the original batteries, budgets and held-out definitions.
 4. Confirm candidate performance across additional training seeds and freeze
    model selection before an explicitly acknowledged sealed final evaluation.
 
 The isolated `gpu-training` branch and immutable audited release tag remain
-unchanged. Refer to [GPU_TRANSFER_CHECKLIST.md](GPU_TRANSFER_CHECKLIST.md)
+unchanged. Refer to [GPU_TRANSFER_CHECKLIST.md](guides/GPU_TRANSFER_CHECKLIST.md)
 for the original release workflow; it does not automatically resume an aborted
 pipeline or incorporate the 16-runner override.
 
@@ -97,7 +97,7 @@ pipeline or incorporate the 16-runner override.
 
 Both grid robot types already have occupancy sensing, directional thermal evidence, acoustic evidence, odometry/uncertainty and battery telemetry. Rover/drone radii are respectively **4/7 cells for occupancy, 6/8 for thermal, 10/12 for acoustic**, with confirmation radius **2/2**. Step 5 additionally has separate simulated LiDAR/IMU/camera/range streams; they are not automatically PPO inputs.
 
-**Keep the current training sensor interface for this GPU phase.** The challenge explicitly calls for thermal and acoustic sensing, which are already present in the simulation. Extra modalities are not a substitute for learned-policy validation. A new sensor does not require rebuilding all of Step 4: preserve the baseline, implement an adapter/fusion path, version any changed observations or message schema, and rerun affected sensing/autonomy/network and mission tests. Input dimensions or semantics changing requires a compatible model and retraining/fine-tuning/evaluation; even unchanged dimensions can create a distribution shift. See [sensor_extension_plan.md](sensor_extension_plan.md) for the full impact matrix.
+**Keep the current training sensor interface for this GPU phase.** The challenge explicitly calls for thermal and acoustic sensing, which are already present in the simulation. Extra modalities are not a substitute for learned-policy validation. A new sensor does not require rebuilding all of Step 4: preserve the baseline, implement an adapter/fusion path, version any changed observations or message schema, and rerun affected sensing/autonomy/network and mission tests. Input dimensions or semantics changing requires a compatible model and retraining/fine-tuning/evaluation; even unchanged dimensions can create a distribution shift. See [sensor_extension_plan.md](planning/sensor_extension_plan.md) for the full impact matrix.
 
 ## Branch delivery
 
@@ -114,7 +114,7 @@ scripted encounters, not exhaustive autonomous search or learned-policy deployme
 
 Integration fixes select the active profile's scan topic for RViz readiness (including
 drone-only launches), bound readiness to 120 wall-clock seconds, and place the
-subscribe-only probe at `ros2_ws/tools/ros2_encounter_probe.py` to preserve the audited
+subscribe-only probe at `simulation/ros2_ws/tools/ros2_encounter_probe.py` to preserve the audited
 GPU source manifest. Validation: 154 local Python tests passed, two ROS/xacro tests
 skipped; all 94 GPU source hashes verified unchanged. ROS/Gazebo executables are
 unavailable on this Mac, so live ROS package tests and physics were not rerun here.
@@ -215,3 +215,27 @@ or checkpoint weights were changed. No tests or evaluation runs were performed.
 The frontend production build and TypeScript compilation passed, and the
 Python service passed syntax parsing. Runtime changes have not been newly
 validated, in accordance with the request to skip tests.
+
+
+## Repository organization and visual documentation — 29 October 2026
+
+The full project now separates frontend, backend, simulation, training, models,
+shared configuration, documentation and tests. Existing model weights, dataset
+chunks, archives and original evidence are preserved. The current source manifest
+was refreshed for relocated code/configuration; original release identity remains
+in history and on the dedicated GPU-training branch/tag.
+
+[The project homepage](../README.md) now provides a visual tour, expandable setup
+guides, an architecture diagram and branch navigation. The [gallery](gallery.md)
+contains fresh real frontend captures, a recorded browser mission, the existing
+2D PPO recording, and the supplied original Gazebo/RViz screenshots. Browser
+PPO seed 10000 reproduced four survivors at step 94. These presentation captures
+do not replace historical benchmarks. Supplied ROS actor hashes differ from
+the selected grid-policy bundle, and the corresponding host implementation is
+absent from this checkout; its learned-policy execution is not claimed as a
+reproducible checked-in integration.
+
+Delivery scope is documented in [branches.md](branches.md): full-project branches
+are synchronized; frontend/browser-simulator branches retain their runnable
+workspaces; the GPU-training branch retains its audited runtime; the 754k handoff
+branch contains only the model delivery package and its associated evidence.

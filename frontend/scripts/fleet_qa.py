@@ -58,7 +58,7 @@ async def main():
     await page.wait_for_timeout(500)
     assert not errors,errors
     report={'rotatingPreview':True,'sharedCanvasForTenRobots':True,'detailSelectionAndFocus':True,'canvasReleasedOnClose':True,'controlsGuideAvailable':True,'mobileNoOverflow':True,'reducedMotionSupported':True,'errors':errors,'browserVersion':browser.version}
-    (Path(__file__).resolve().parents[2]/'docs/browser_fleet_validation.json').write_text(json.dumps(report,indent=2)+'\n')
+    (Path(__file__).resolve().parents[2]/'docs/validation/browser_fleet_validation.json').write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps(report))
     await browser.close()
 

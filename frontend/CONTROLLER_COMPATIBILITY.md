@@ -2,7 +2,7 @@
 
 The historical TypeScript/Python comparison below applies to **Browser heuristic**
 mode. Optional **PPO · 754k** mode uses Python's authoritative world and recurrent
-policies through the [mission service](../docs/ppo_frontend_integration.md); the
+policies through the [mission service](../docs/guides/ppo_frontend_integration.md); the
 TypeScript controller does not execute there.
 
 
@@ -24,23 +24,23 @@ Gazebo.
 
 | Python reference | Browser implementation |
 |---|---|
-| `src/swarm_sar/world/cells.py` | `world/GridMap.ts` (`UNKNOWN`, `FREE`, `WALL`, `RUBBLE`) |
-| `src/swarm_sar/world/generator.py`, `victims.py`, `reachability.py` | `world/ScenarioGenerator.ts`, `GridMap.ts` (`bfsDistances`, `closeUnreachable`) |
-| `src/swarm_sar/robots/robot.py` | `robots/RobotState.ts` |
+| `simulation/src/swarm_sar/world/cells.py` | `world/GridMap.ts` (`UNKNOWN`, `FREE`, `WALL`, `RUBBLE`) |
+| `simulation/src/swarm_sar/world/generator.py`, `victims.py`, `reachability.py` | `world/ScenarioGenerator.ts`, `GridMap.ts` (`bfsDistances`, `closeUnreachable`) |
+| `simulation/src/swarm_sar/robots/robot.py` | `robots/RobotState.ts` |
 | `configs/robots.yaml` | `core/config.ts` `ROBOT_CONFIGS`, `robots/RoverRobot.ts`, `robots/DroneRobot.ts` |
-| `src/swarm_sar/sensing/vision.py` | `sensing/Vision.ts` |
-| `src/swarm_sar/sensing/victim_sensor.py` | `sensing/SensorModel.ts` |
-| `src/swarm_sar/sim/planning.py` | `planning/AStar.ts`, `planning/FrontierPlanner.ts` |
-| `src/swarm_sar/sim/engine.py` `apply_movements` | `controller/CollisionSafety.ts` `applyMovements` |
-| `src/swarm_sar/sim/env.py` `_safety_filter_movements` | `controller/CollisionSafety.ts` `safetyFilter` |
-| `src/swarm_sar/sim/env.py` (broadcast, merge, investigate, step order) | `core/SimulationEngine.ts` |
-| `src/swarm_sar/network/messages.py` | `network/PeerMessage.ts` |
-| `src/swarm_sar/network/peer.py` | `network/PeerNetwork.ts` |
-| `src/swarm_sar/baselines/decentralized.py` | `controller/DecentralizedController.ts` (`AgentBrain`, `branchOwner`, `shouldInvestigate`) |
+| `simulation/src/swarm_sar/sensing/vision.py` | `sensing/Vision.ts` |
+| `simulation/src/swarm_sar/sensing/victim_sensor.py` | `sensing/SensorModel.ts` |
+| `simulation/src/swarm_sar/sim/planning.py` | `planning/AStar.ts`, `planning/FrontierPlanner.ts` |
+| `simulation/src/swarm_sar/sim/engine.py` `apply_movements` | `controller/CollisionSafety.ts` `applyMovements` |
+| `simulation/src/swarm_sar/sim/env.py` `_safety_filter_movements` | `controller/CollisionSafety.ts` `safetyFilter` |
+| `simulation/src/swarm_sar/sim/env.py` (broadcast, merge, investigate, step order) | `core/SimulationEngine.ts` |
+| `simulation/src/swarm_sar/network/messages.py` | `network/PeerMessage.ts` |
+| `simulation/src/swarm_sar/network/peer.py` | `network/PeerNetwork.ts` |
+| `simulation/src/swarm_sar/baselines/decentralized.py` | `controller/DecentralizedController.ts` (`AgentBrain`, `branchOwner`, `shouldInvestigate`) |
 | `configs/network.yaml` | `core/config.ts` `DEFAULT_CONTROLLER` |
 | `configs/sim.yaml` `network_*` keys | `core/config.ts` `DEFAULT_NETWORK` |
-| `tests/test_network.py` | `src/tests/network.test.ts` |
-| `tests/test_decentralized_controller.py` | `src/tests/controller.test.ts`, `autonomy.test.ts`, `determinism.test.ts` |
+| `tests/simulation/test_network.py` | `src/tests/network.test.ts` |
+| `tests/simulation/test_decentralized_controller.py` | `src/tests/controller.test.ts`, `autonomy.test.ts`, `determinism.test.ts` |
 
 ## World cell values
 
@@ -216,7 +216,7 @@ Tests enforce this:
 
 A PPO/ONNX policy could be added as another `Decision` producer behind the same `LocalView`
 interface: build the versioned observation from `LocalView` (the frozen 129-value Step 3
-contract, or upstream's 229-value `gpu-v1` contract in `artifacts/policy_contract_gpu_v1.json`,
+contract, or upstream's 229-value `gpu-v1` contract in `training/artifacts/policy_contract_gpu_v1.json`,
 whose per-peer features come only from delivered messages), run it with `onnxruntime-web`, and
 apply the same seven-action mask. It would sit beside `AgentBrain` without touching the engine,
 network or safety layers. No such mode exists today, and the UI makes no claim to one.

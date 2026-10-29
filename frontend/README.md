@@ -33,7 +33,7 @@ Optional interaction verification, with Python Playwright and local Chrome alrea
 start `npm run dev -- --host 127.0.0.1 --port 5174`, then run
 `python3 scripts/browser_controls_qa.py` from `frontend/`. It checks real placement clicks,
 moving-robot focus, focus transfer, scene-only viewing and mobile restoration. It writes
-`docs/browser_controls_validation.json` at the repository root and temporary screenshots.
+`docs/validation/browser_controls_validation.json` at the repository root and temporary screenshots.
 
 ## Using the simulator
 
@@ -145,7 +145,7 @@ status after a revisit. Story cards also appear during Watch maze and are keyboa
 Stories are flavor text: they do not create extra people, supplies or rescue objectives.
 
 Run `python3 frontend/scripts/survivor_qa.py` from the repository root with Vite on port 5173
-to reproduce the Chrome discovery-loop checks in `docs/browser_survivor_validation.json`.
+to reproduce the Chrome discovery-loop checks in `docs/validation/browser_survivor_validation.json`.
 Reduced-motion preferences suppress confetti, waving, and flag animation.
 The **Activity → Radio log** lists sender, recipient, sequence, message type, delivery state,
 delay, expiry, drop reason, and map-delta size. Aggregate counters are expandable.
@@ -175,7 +175,7 @@ changes the simulation, consumes its random generator, or reveals hidden survivo
 
 With the dev server running, optional browser audio checks run with
 `python3 frontend/scripts/audio_qa.py --full-cycle` from the repository root (requires Python
-Playwright and Chrome). Results are written to `docs/browser_audio_validation.json`; this
+Playwright and Chrome). Results are written to `docs/validation/browser_audio_validation.json`; this
 checks actual audio output and interactions, rather than subjective listening quality.
 
 ### Validation scenario
@@ -228,7 +228,7 @@ Zustand store (src/store)
                         │
 React Three Fiber scene (src/scene)
   orthographic camera, daylight, instanced island world
-  interpolated robots, optional network/evidence/map layers
+  interpolated robots, optional network/docs/evidence/map layers
                         │
 Deterministic simulation core (src/simulation)
   commands → local controller → collision safety → movement
@@ -286,14 +286,14 @@ browser animation, selection, ten-unit fleet, mobile and cleanup checks.
 
 ### Trained PPO missions
 
-Start `.venv/bin/python tools/ppo_service.py` from the repository root, then Vite
+Start `.venv/bin/python backend/ppo_service.py` from the repository root, then Vite
 on port 5173. Open **Mission → Exploration controller → PPO**, configure the mission,
 then select **Create mission → Launch mission**. Python
 owns map generation, sensors, decisions and physics; the browser only presents
 snapshots. Development seed 10000 reproduces 4/4 survivors in 94 steps. Connection
 loss pauses the mission; reset explicitly recovers. Discovery conversations,
 camera/follow and sound remain available. Custom survivor editing/manual driving
-stay in heuristic mode. See [complete setup, scope and tests](../docs/ppo_frontend_integration.md).
+stay in heuristic mode. See [complete setup, scope and tests](../docs/guides/ppo_frontend_integration.md).
 
 PPO map seeds accept **10000–10099**, with an inline error for invalid values and
 a Shuffle button. The terrain guide distinguishes low traversable debris from

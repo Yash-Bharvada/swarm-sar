@@ -1,0 +1,2387 @@
+{
+  "kind": "actual browser captures",
+  "url": "http://127.0.0.1:5173/",
+  "browser": "156.0.8078.48",
+  "viewport_png": [
+    1600,
+    1000
+  ],
+  "viewport_gif": [
+    1280,
+    800
+  ],
+  "page_errors": [],
+  "captures": [
+    {
+      "file": "office-overview.png",
+      "description": "Live browser UI; office seed 7, two rovers and two drones, before launch.",
+      "captured_utc": "2026-10-29T17:42:20.430687+00:00",
+      "state": {
+        "controller": "heuristic",
+        "phase": "off",
+        "status": "ready",
+        "seed": 7,
+        "preset": "office",
+        "width": 45,
+        "height": 31,
+        "robots": [
+          {
+            "name": "rover_0",
+            "type": "rover",
+            "x": 4,
+            "y": 14,
+            "battery": 408.69140625
+          },
+          {
+            "name": "rover_1",
+            "type": "rover",
+            "x": 2,
+            "y": 16,
+            "battery": 408.69140625
+          },
+          {
+            "name": "drone_2",
+            "type": "drone",
+            "x": 3,
+            "y": 16,
+            "battery": 326.953125
+          },
+          {
+            "name": "drone_3",
+            "type": "drone",
+            "x": 1,
+            "y": 14,
+            "battery": 326.953125
+          }
+        ],
+        "step": 0,
+        "found": 0,
+        "total": 3,
+        "coverage": 0.087890625,
+        "collisions": 0,
+        "error": null,
+        "batteryLimited": true,
+        "encounter": null
+      },
+      "sha256": "1ee4b0bfaa7b543d1448a414788152d3832e85c4660031b89011f1b0d4be9a3c"
+    },
+    {
+      "file": "office-fleet.png",
+      "description": "Actual paused browser mission with live fleet telemetry.",
+      "captured_utc": "2026-10-29T17:42:22.818419+00:00",
+      "state": {
+        "controller": "heuristic",
+        "phase": "off",
+        "status": "paused",
+        "seed": 7,
+        "preset": "office",
+        "width": 45,
+        "height": 31,
+        "robots": [
+          {
+            "name": "rover_0",
+            "type": "rover",
+            "x": 4,
+            "y": 6,
+            "battery": 396.69140625
+          },
+          {
+            "name": "rover_1",
+            "type": "rover",
+            "x": 10,
+            "y": 14,
+            "battery": 396.69140625
+          },
+          {
+            "name": "drone_2",
+            "type": "drone",
+            "x": 1,
+            "y": 12,
+            "battery": 314.953125
+          },
+          {
+            "name": "drone_3",
+            "type": "drone",
+            "x": 3,
+            "y": 10,
+            "battery": 314.953125
+          }
+        ],
+        "step": 12,
+        "found": 0,
+        "total": 3,
+        "coverage": 0.1640625,
+        "collisions": 0,
+        "error": null,
+        "batteryLimited": true,
+        "encounter": null
+      },
+      "sha256": "126d375d3ba54c6945f1ac05b08ae0e4d624831849faa44173e6812628e7a891"
+    },
+    {
+      "file": "mine-team.png",
+      "description": "Live browser mine seed 17; one rover and three drones.",
+      "captured_utc": "2026-10-29T17:42:24.954590+00:00",
+      "state": {
+        "controller": "heuristic",
+        "phase": "off",
+        "status": "paused",
+        "seed": 17,
+        "preset": "mine",
+        "width": 51,
+        "height": 31,
+        "robots": [
+          {
+            "name": "rover_0",
+            "type": "rover",
+            "x": 1,
+            "y": 13,
+            "battery": 458.08359375
+          },
+          {
+            "name": "drone_1",
+            "type": "drone",
+            "x": 8,
+            "y": 13,
+            "battery": 365.446875
+          },
+          {
+            "name": "drone_2",
+            "type": "drone",
+            "x": 5,
+            "y": 13,
+            "battery": 365.446875
+          },
+          {
+            "name": "drone_3",
+            "type": "drone",
+            "x": 3,
+            "y": 13,
+            "battery": 365.446875
+          }
+        ],
+        "step": 6,
+        "found": 1,
+        "total": 2,
+        "coverage": 0.1728395061728395,
+        "collisions": 0,
+        "error": null,
+        "batteryLimited": true,
+        "encounter": 0
+      },
+      "sha256": "f4908de5eed0a7fe9b7108ca16efb5dfe5e38a87d75bee1f7963b8d6ff84f239"
+    },
+    {
+      "file": "apartment-team.png",
+      "description": "Live browser apartment seed 23; three rovers and one drone.",
+      "captured_utc": "2026-10-29T17:42:27.623213+00:00",
+      "state": {
+        "controller": "heuristic",
+        "phase": "off",
+        "status": "paused",
+        "seed": 23,
+        "preset": "apartment",
+        "width": 40,
+        "height": 30,
+        "robots": [
+          {
+            "name": "rover_0",
+            "type": "rover",
+            "x": 2,
+            "y": 10,
+            "battery": 341.5625
+          },
+          {
+            "name": "rover_1",
+            "type": "rover",
+            "x": 4,
+            "y": 25,
+            "battery": 341.5625
+          },
+          {
+            "name": "rover_2",
+            "type": "rover",
+            "x": 4,
+            "y": 19,
+            "battery": 341.5625
+          },
+          {
+            "name": "drone_3",
+            "type": "drone",
+            "x": 5,
+            "y": 14,
+            "battery": 271.25
+          }
+        ],
+        "step": 10,
+        "found": 0,
+        "total": 4,
+        "coverage": 0.16398243045387995,
+        "collisions": 0,
+        "error": null,
+        "batteryLimited": true,
+        "encounter": null
+      },
+      "sha256": "53326257b6d67cc0ef8ea399c047870fddac4c175df19a5b3bfc697bf377257f"
+    },
+    {
+      "file": "mission-live.gif",
+      "description": "Chronological real browser frames at 4x playback; discovery dialogs continued through the normal app action. Downscaled and palette-encoded as GIF for documentation. No scene content generated or retouched.",
+      "frames": 42,
+      "frame_times_seconds": [
+        0.18205395900076837,
+        0.5251372499988065,
+        0.8813989589980338,
+        1.2254912919997878,
+        1.5896127089981746,
+        1.9258928339986596,
+        2.274850083998899,
+        2.6218298339990724,
+        2.9579935420006223,
+        3.31508041699999,
+        3.6585277499980293,
+        4.015293791999284,
+        4.358974083999783,
+        4.70885429199916,
+        5.05778308400113,
+        5.408515416998853,
+        5.71264758399775,
+        6.051348708999285,
+        6.389044416999241,
+        6.700057375001052,
+        7.036744541997905,
+        7.384601792000467,
+        7.725493083999027,
+        8.081927708997682,
+        8.426157124999008,
+        8.77559462499994,
+        9.125459791997855,
+        9.475081874999887,
+        9.836472416998731,
+        10.176088249998429,
+        10.527981916999124,
+        10.882597416999488,
+        11.234586167000089,
+        11.584359124997718,
+        11.965426999999181,
+        12.316473167000368,
+        12.661580542000593,
+        13.017463584001234,
+        13.361352459000045,
+        13.718598584000574,
+        14.059055624999019,
+        14.415480667001248
+      ],
+      "frame_states": [
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 6,
+              "y": 14,
+              "battery": 406.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 2,
+              "y": 14,
+              "battery": 406.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 4,
+              "y": 15,
+              "battery": 324.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 1,
+              "y": 12,
+              "battery": 324.953125
+            }
+          ],
+          "step": 2,
+          "found": 0,
+          "total": 3,
+          "coverage": 0.1083984375,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 4,
+              "y": 10,
+              "battery": 400.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 6,
+              "y": 14,
+              "battery": 400.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 2,
+              "y": 15,
+              "battery": 318.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 3,
+              "y": 10,
+              "battery": 318.953125
+            }
+          ],
+          "step": 8,
+          "found": 0,
+          "total": 3,
+          "coverage": 0.142578125,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 4,
+              "y": 4,
+              "battery": 394.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 8,
+              "y": 14,
+              "battery": 394.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 1,
+              "y": 10,
+              "battery": 312.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 3,
+              "y": 12,
+              "battery": 312.953125
+            }
+          ],
+          "step": 14,
+          "found": 0,
+          "total": 3,
+          "coverage": 0.1689453125,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 8,
+              "y": 5,
+              "battery": 389.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 4,
+              "y": 15,
+              "battery": 389.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 1,
+              "y": 5,
+              "battery": 307.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 4,
+              "y": 14,
+              "battery": 307.953125
+            }
+          ],
+          "step": 19,
+          "found": 0,
+          "total": 3,
+          "coverage": 0.1767578125,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 8,
+              "y": 1,
+              "battery": 383.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 4,
+              "y": 21,
+              "battery": 383.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 3,
+              "y": 1,
+              "battery": 301.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 10,
+              "y": 14,
+              "battery": 301.953125
+            }
+          ],
+          "step": 25,
+          "found": 0,
+          "total": 3,
+          "coverage": 0.1962890625,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 6,
+              "y": 4,
+              "battery": 378.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 6,
+              "y": 24,
+              "battery": 378.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 2,
+              "y": 1,
+              "battery": 296.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 13,
+              "y": 14,
+              "battery": 296.953125
+            }
+          ],
+          "step": 30,
+          "found": 0,
+          "total": 3,
+          "coverage": 0.232421875,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 6,
+              "y": 10,
+              "battery": 372.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 4,
+              "y": 28,
+              "battery": 372.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 1,
+              "y": 6,
+              "battery": 290.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 7,
+              "y": 14,
+              "battery": 290.953125
+            }
+          ],
+          "step": 36,
+          "found": 0,
+          "total": 3,
+          "coverage": 0.2431640625,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 3,
+              "y": 12,
+              "battery": 367.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 1,
+              "y": 26,
+              "battery": 366.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 1,
+              "y": 11,
+              "battery": 285.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 4,
+              "y": 14,
+              "battery": 285.953125
+            }
+          ],
+          "step": 41,
+          "found": 0,
+          "total": 3,
+          "coverage": 0.2451171875,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 2,
+              "y": 17,
+              "battery": 361.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 1,
+              "y": 26,
+              "battery": 360.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 1,
+              "y": 17,
+              "battery": 279.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 10,
+              "y": 14,
+              "battery": 279.953125
+            }
+          ],
+          "step": 47,
+          "found": 0,
+          "total": 3,
+          "coverage": 0.2451171875,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 2,
+              "y": 23,
+              "battery": 355.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 4,
+              "y": 29,
+              "battery": 353.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 1,
+              "y": 23,
+              "battery": 273.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 16,
+              "y": 14,
+              "battery": 273.953125
+            }
+          ],
+          "step": 53,
+          "found": 0,
+          "total": 3,
+          "coverage": 0.2841796875,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 5,
+              "y": 25,
+              "battery": 349.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 4,
+              "y": 28,
+              "battery": 348.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 1,
+              "y": 22,
+              "battery": 268.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 21,
+              "y": 14,
+              "battery": 268.953125
+            }
+          ],
+          "step": 58,
+          "found": 0,
+          "total": 3,
+          "coverage": 0.3193359375,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 3,
+              "y": 29,
+              "battery": 343.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 5,
+              "y": 23,
+              "battery": 342.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 1,
+              "y": 16,
+              "battery": 262.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 27,
+              "y": 14,
+              "battery": 262.953125
+            }
+          ],
+          "step": 64,
+          "found": 0,
+          "total": 3,
+          "coverage": 0.3916015625,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 4,
+              "y": 29,
+              "battery": 338.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 5,
+              "y": 18,
+              "battery": 337.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 5,
+              "y": 15,
+              "battery": 257.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 32,
+              "y": 14,
+              "battery": 257.953125
+            }
+          ],
+          "step": 69,
+          "found": 0,
+          "total": 3,
+          "coverage": 0.4169921875,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 1,
+              "y": 26,
+              "battery": 331.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 6,
+              "y": 15,
+              "battery": 331.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 11,
+              "y": 15,
+              "battery": 251.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 37,
+              "y": 14,
+              "battery": 252.853125
+            }
+          ],
+          "step": 75,
+          "found": 0,
+          "total": 3,
+          "coverage": 0.462890625,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 1,
+              "y": 21,
+              "battery": 326.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 11,
+              "y": 15,
+              "battery": 326.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 14,
+              "y": 15,
+              "battery": 246.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 38,
+              "y": 13,
+              "battery": 248.753125
+            }
+          ],
+          "step": 80,
+          "found": 0,
+          "total": 3,
+          "coverage": 0.5068359375,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "paused",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 1,
+              "y": 15,
+              "battery": 320.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 9,
+              "y": 17,
+              "battery": 320.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 16,
+              "y": 13,
+              "battery": 240.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 40,
+              "y": 9,
+              "battery": 242.753125
+            }
+          ],
+          "step": 86,
+          "found": 1,
+          "total": 3,
+          "coverage": 0.5458984375,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": 2
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 1,
+              "y": 14,
+              "battery": 319.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 9,
+              "y": 18,
+              "battery": 319.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 16,
+              "y": 12,
+              "battery": 239.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 40,
+              "y": 8,
+              "battery": 241.753125
+            }
+          ],
+          "step": 87,
+          "found": 1,
+          "total": 3,
+          "coverage": 0.56640625,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 1,
+              "y": 8,
+              "battery": 313.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 11,
+              "y": 22,
+              "battery": 313.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 14,
+              "y": 8,
+              "battery": 233.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 38,
+              "y": 12,
+              "battery": 235.753125
+            }
+          ],
+          "step": 93,
+          "found": 1,
+          "total": 3,
+          "coverage": 0.625,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 1,
+              "y": 3,
+              "battery": 308.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 12,
+              "y": 26,
+              "battery": 308.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 15,
+              "y": 4,
+              "battery": 228.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 38,
+              "y": 15,
+              "battery": 230.753125
+            }
+          ],
+          "step": 98,
+          "found": 1,
+          "total": 3,
+          "coverage": 0.65234375,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 1,
+              "y": 4,
+              "battery": 305.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 12,
+              "y": 23,
+              "battery": 305.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 16,
+              "y": 4,
+              "battery": 225.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 39,
+              "y": 15,
+              "battery": 229.55312500000002
+            }
+          ],
+          "step": 101,
+          "found": 2,
+          "total": 3,
+          "coverage": 0.6572265625,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 1,
+              "y": 9,
+              "battery": 300.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 12,
+              "y": 18,
+              "battery": 300.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 20,
+              "y": 5,
+              "battery": 220.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 38,
+              "y": 15,
+              "battery": 226.35312500000003
+            }
+          ],
+          "step": 106,
+          "found": 2,
+          "total": 3,
+          "coverage": 0.703125,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 2,
+              "y": 14,
+              "battery": 294.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 14,
+              "y": 14,
+              "battery": 294.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 21,
+              "y": 10,
+              "battery": 214.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 32,
+              "y": 15,
+              "battery": 220.35312500000003
+            }
+          ],
+          "step": 112,
+          "found": 2,
+          "total": 3,
+          "coverage": 0.7158203125,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 7,
+              "y": 14,
+              "battery": 289.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 19,
+              "y": 14,
+              "battery": 289.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 24,
+              "y": 10,
+              "battery": 209.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 30,
+              "y": 18,
+              "battery": 215.35312500000003
+            }
+          ],
+          "step": 117,
+          "found": 2,
+          "total": 3,
+          "coverage": 0.7587890625,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 13,
+              "y": 14,
+              "battery": 283.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 23,
+              "y": 16,
+              "battery": 283.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 27,
+              "y": 11,
+              "battery": 203.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 32,
+              "y": 22,
+              "battery": 209.35312500000003
+            }
+          ],
+          "step": 123,
+          "found": 2,
+          "total": 3,
+          "coverage": 0.7900390625,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 18,
+              "y": 14,
+              "battery": 278.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 21,
+              "y": 15,
+              "battery": 278.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 25,
+              "y": 14,
+              "battery": 198.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 31,
+              "y": 24,
+              "battery": 204.35312500000003
+            }
+          ],
+          "step": 128,
+          "found": 2,
+          "total": 3,
+          "coverage": 0.7958984375,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 23,
+              "y": 15,
+              "battery": 272.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 16,
+              "y": 14,
+              "battery": 272.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 23,
+              "y": 14,
+              "battery": 192.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 30,
+              "y": 19,
+              "battery": 198.35312500000003
+            }
+          ],
+          "step": 134,
+          "found": 2,
+          "total": 3,
+          "coverage": 0.7958984375,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 23,
+              "y": 18,
+              "battery": 267.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 18,
+              "y": 11,
+              "battery": 267.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 18,
+              "y": 14,
+              "battery": 187.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 29,
+              "y": 15,
+              "battery": 193.35312500000003
+            }
+          ],
+          "step": 139,
+          "found": 2,
+          "total": 3,
+          "coverage": 0.8076171875,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 25,
+              "y": 14,
+              "battery": 261.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 16,
+              "y": 15,
+              "battery": 261.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 12,
+              "y": 14,
+              "battery": 181.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 25,
+              "y": 15,
+              "battery": 187.35312500000003
+            }
+          ],
+          "step": 145,
+          "found": 2,
+          "total": 3,
+          "coverage": 0.8076171875,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 31,
+              "y": 14,
+              "battery": 255.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 17,
+              "y": 16,
+              "battery": 255.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 6,
+              "y": 14,
+              "battery": 175.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 25,
+              "y": 17,
+              "battery": 181.35312500000003
+            }
+          ],
+          "step": 151,
+          "found": 2,
+          "total": 3,
+          "coverage": 0.8232421875,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 34,
+              "y": 12,
+              "battery": 250.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 20,
+              "y": 14,
+              "battery": 250.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 4,
+              "y": 17,
+              "battery": 170.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 23,
+              "y": 20,
+              "battery": 176.35312500000003
+            }
+          ],
+          "step": 156,
+          "found": 2,
+          "total": 3,
+          "coverage": 0.8427734375,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 35,
+              "y": 15,
+              "battery": 244.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 26,
+              "y": 14,
+              "battery": 244.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 4,
+              "y": 23,
+              "battery": 164.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 23,
+              "y": 20,
+              "battery": 170.35312500000003
+            }
+          ],
+          "step": 162,
+          "found": 2,
+          "total": 3,
+          "coverage": 0.8583984375,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 30,
+              "y": 16,
+              "battery": 238.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 24,
+              "y": 16,
+              "battery": 238.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 4,
+              "y": 29,
+              "battery": 158.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 23,
+              "y": 14,
+              "battery": 164.35312500000003
+            }
+          ],
+          "step": 168,
+          "found": 2,
+          "total": 3,
+          "coverage": 0.8583984375,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 33,
+              "y": 18,
+              "battery": 233.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 26,
+              "y": 19,
+              "battery": 233.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 5,
+              "y": 25,
+              "battery": 153.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 25,
+              "y": 11,
+              "battery": 159.35312500000003
+            }
+          ],
+          "step": 173,
+          "found": 2,
+          "total": 3,
+          "coverage": 0.8583984375,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 35,
+              "y": 22,
+              "battery": 227.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 23,
+              "y": 16,
+              "battery": 227.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 4,
+              "y": 20,
+              "battery": 147.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 27,
+              "y": 9,
+              "battery": 153.35312500000003
+            }
+          ],
+          "step": 179,
+          "found": 2,
+          "total": 3,
+          "coverage": 0.8603515625,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 35,
+              "y": 28,
+              "battery": 221.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 18,
+              "y": 15,
+              "battery": 221.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 5,
+              "y": 15,
+              "battery": 141.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 28,
+              "y": 4,
+              "battery": 147.35312500000003
+            }
+          ],
+          "step": 185,
+          "found": 2,
+          "total": 3,
+          "coverage": 0.876953125,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 31,
+              "y": 26,
+              "battery": 215.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 12,
+              "y": 15,
+              "battery": 215.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 11,
+              "y": 15,
+              "battery": 135.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 28,
+              "y": 4,
+              "battery": 141.35312500000003
+            }
+          ],
+          "step": 191,
+          "found": 2,
+          "total": 3,
+          "coverage": 0.8955078125,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 31,
+              "y": 21,
+              "battery": 210.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 16,
+              "y": 14,
+              "battery": 210.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 12,
+              "y": 17,
+              "battery": 130.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 23,
+              "y": 4,
+              "battery": 136.35312500000003
+            }
+          ],
+          "step": 196,
+          "found": 2,
+          "total": 3,
+          "coverage": 0.8955078125,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 30,
+              "y": 16,
+              "battery": 204.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 16,
+              "y": 8,
+              "battery": 204.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 9,
+              "y": 20,
+              "battery": 124.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 20,
+              "y": 5,
+              "battery": 130.35312500000003
+            }
+          ],
+          "step": 202,
+          "found": 2,
+          "total": 3,
+          "coverage": 0.8955078125,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 27,
+              "y": 14,
+              "battery": 199.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 19,
+              "y": 6,
+              "battery": 199.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 13,
+              "y": 19,
+              "battery": 119.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 16,
+              "y": 6,
+              "battery": 125.35312500000003
+            }
+          ],
+          "step": 207,
+          "found": 2,
+          "total": 3,
+          "coverage": 0.8955078125,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 27,
+              "y": 12,
+              "battery": 193.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 22,
+              "y": 7,
+              "battery": 192.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 15,
+              "y": 15,
+              "battery": 113.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 16,
+              "y": 12,
+              "battery": 119.35312500000003
+            }
+          ],
+          "step": 213,
+          "found": 2,
+          "total": 3,
+          "coverage": 0.8955078125,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 29,
+              "y": 9,
+              "battery": 188.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 25,
+              "y": 7,
+              "battery": 187.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 16,
+              "y": 17,
+              "battery": 108.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 13,
+              "y": 14,
+              "battery": 114.35312500000003
+            }
+          ],
+          "step": 218,
+          "found": 2,
+          "total": 3,
+          "coverage": 0.91015625,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        },
+        {
+          "controller": "heuristic",
+          "phase": "off",
+          "status": "running",
+          "seed": 7,
+          "preset": "office",
+          "width": 45,
+          "height": 31,
+          "robots": [
+            {
+              "name": "rover_0",
+              "type": "rover",
+              "x": 26,
+              "y": 6,
+              "battery": 181.69140625
+            },
+            {
+              "name": "rover_1",
+              "type": "rover",
+              "x": 24,
+              "y": 12,
+              "battery": 181.69140625
+            },
+            {
+              "name": "drone_2",
+              "type": "drone",
+              "x": 15,
+              "y": 22,
+              "battery": 102.953125
+            },
+            {
+              "name": "drone_3",
+              "type": "drone",
+              "x": 7,
+              "y": 14,
+              "battery": 108.35312500000003
+            }
+          ],
+          "step": 224,
+          "found": 2,
+          "total": 3,
+          "coverage": 0.931640625,
+          "collisions": 0,
+          "error": null,
+          "batteryLimited": true,
+          "encounter": null
+        }
+      ],
+      "sha256": "db8d6b14575ba7d59d6a422cfbee915f0b603dae44f2484b16e6e3c883124837"
+    },
+    {
+      "file": "ppo-completed.png",
+      "description": "Real checkpoint-driven Python mission rendered by the browser; development seed 10000.",
+      "captured_utc": "2026-10-29T17:42:54.682058+00:00",
+      "state": {
+        "controller": "ppo",
+        "phase": "ready",
+        "status": "complete",
+        "seed": 10000,
+        "preset": "office",
+        "width": 32,
+        "height": 32,
+        "robots": [
+          {
+            "name": "rover_0",
+            "type": "rover",
+            "x": 8,
+            "y": 14,
+            "battery": 197.69999999999996
+          },
+          {
+            "name": "rover_1",
+            "type": "rover",
+            "x": 14,
+            "y": 20,
+            "battery": 185.7
+          },
+          {
+            "name": "drone_2",
+            "type": "drone",
+            "x": 9,
+            "y": 18,
+            "battery": 148.70000000000002
+          },
+          {
+            "name": "drone_3",
+            "type": "drone",
+            "x": 12,
+            "y": 26,
+            "battery": 155.90000000000006
+          }
+        ],
+        "step": 94,
+        "found": 4,
+        "total": 4,
+        "coverage": 0.9047619047619048,
+        "collisions": 0,
+        "error": null,
+        "batteryLimited": true,
+        "encounter": null
+      },
+      "sha256": "3b6a36f6a89fa47e1ccc1cc290910d8a4240347b84927080202744a7f48235d3"
+    }
+  ],
+  "source_sha256": {
+    "frontend/src/app/App.tsx": "dfc7b60f6fc6219b5157559d3543c2a80b15ff4305add421769a65e3fb140e52",
+    "frontend/src/app/format.ts": "f7872a31b580da6129a938a4f4055b4efcf76740935f2ce285bd6e5662bbaebe",
+    "frontend/src/audio/AudioBridge.tsx": "f815d5df8b98a978e4561fb92f323822a7ce5eff18340e06811797bc1ad353b8",
+    "frontend/src/audio/Soundscape.ts": "892dc8a9028a26d6443467a18dbff9e1f1c5e0bb8c5e075d6b1bcd911da26e24",
+    "frontend/src/audio/audioStore.ts": "37b96954f99234e8138754014f929c8b5585e12d8ddf4cb2a1dd369694ee8f1e",
+    "frontend/src/audio/eventSounds.ts": "d8fef931c8be3df5d6fe7f98e57b14e6544199767b4f28ec8719bef3e20956a6",
+    "frontend/src/components/BatterySettings.tsx": "d984d0860277936aedd1c5d1fe4a9506c86f3d47e048c516266073f9dbf1fa7b",
+    "frontend/src/components/ControllerControls.tsx": "b2951a2f90bad3ddd835125e7618a89c53ff1ff97a1ddcaddd22ef9974186ae4",
+    "frontend/src/components/EventFeed.tsx": "1bc2e6f575560c3fdb794a51e2f30713c2a68e9cfc245500ed09cad221af9475",
+    "frontend/src/components/Icon.tsx": "346966c33e00c2a72b34aea8026a21ca44c3106cce563378c5b99a82eea1df4c",
+    "frontend/src/components/LeftPanel.tsx": "f7f26db3231ea99e3d6cdcbe5836d1861e18aaae6e88ba4ee707bd230420dded",
+    "frontend/src/components/MazeControls.tsx": "b2fb0331e87bb4eea1f7b08c201baaebe41529afd1566820dbc52b6254903bc0",
+    "frontend/src/components/MazeEditor.tsx": "f8cf1ed46d3a4c89b1aad0725d5a724a2454109bfdc5b0bee12644d2d1971d52",
+    "frontend/src/components/MiniMap.tsx": "95a9a81cc72ac6c83dce58d455df86e2e3125d57caeddd75a01a835ff6df3e13",
+    "frontend/src/components/NetworkGraph.tsx": "aa24317dd5a7c8fee2360e99a08acec0cdb94a10a39312a93f13ad3dcdf320cd",
+    "frontend/src/components/RightPanel.tsx": "72b50ad1022008206fc1ec0e4017258815499838961c4b7dfa6c2bb53285f7f0",
+    "frontend/src/components/RobotPreview.tsx": "ae48e47d874029f7e881c68042476d89d44592d300a11763439f0d23a6973dc3",
+    "frontend/src/components/SceneHud.tsx": "b1ec3e950bf2887de66f2d007829d7f2f39814b89b604dd3f2a96248eb77d48c",
+    "frontend/src/components/SoundControls.tsx": "a2b81e9bfb30b3a0670d5b6e8a66e59ac9e0d8e7b21c43adb9d04efb8dd17249",
+    "frontend/src/components/SurvivorEncounter.tsx": "5115a777f9997d2e3ec961b6396936c63b7f3b91a2cf7128075d14bf836d7481",
+    "frontend/src/components/TimeSettings.tsx": "483726d089ab8d9f6b84e9f0b1c83ff6a7dd7c73a84407f001b5aff4b89124c5",
+    "frontend/src/components/TopBar.tsx": "eed1abbe1d37c756510b44ab655ecd307e5d7158dcdce97490b6f4fbfa37f3aa",
+    "frontend/src/main.tsx": "c5a9569586d74e003ba09a0d0fed2801b6637857fdbea99230b64cdd12a65021",
+    "frontend/src/ppo/PPOBridge.tsx": "cdc787580c7df5a55448ecc04d5b6f5732db41996a1f98a0d93797459c36fdcb",
+    "frontend/src/ppo/RemoteEngine.ts": "455b04807f175b4c429b9c9321d890571bd2cb21ed1c72f102b22ff64029216d",
+    "frontend/src/presentation/survivorStories.ts": "7a525c8802574d939c78d194c6a120a129e83e9689c4921bac9eec5b44d08947",
+    "frontend/src/scene/Network.tsx": "2dc5ebf9978ccaccdc327662b78987b76b6af43c23f223c9b9814e7ba866225e",
+    "frontend/src/scene/Overlays.tsx": "690ee4d1ab2738a0d4009696b94114a6d851e9242a41e405df1f1d89542544e7",
+    "frontend/src/scene/Robots.tsx": "5e80682376bd79f84fdeb084a7cf895c86ec630fb53d4f418cbf73b3d8366b7f",
+    "frontend/src/scene/SceneRoot.tsx": "a6ad2a5fa3c3a6a22e2cb64d6d7c4a06026793a664f000bc11202d39865a35d2",
+    "frontend/src/scene/SurvivorRescue.tsx": "56870352c2f8fe1c503825c25baa0ba0c241375f9ec343db3c199e2668c59ed9",
+    "frontend/src/scene/World.tsx": "3b84357e5d60d75651399d1cede1893a670b819c863bbdddcf783b84b578d8f5",
+    "frontend/src/scene/cameraMath.ts": "23cbf9322aff375de99f14683941eb224f98a2575b4bc23389b309526763ad49",
+    "frontend/src/scene/common.ts": "d20eb7bb266042a03e579b6d4cf18c3c79f7b393fa436469481c047c72290ec7",
+    "frontend/src/scene/rescueCelebration.ts": "260d6c1d88d4b1a6c9cb56c5e6d14613e2d09db35b88a49c52216c8fd7727210",
+    "frontend/src/simulation/controller/CollisionSafety.ts": "faf1c67cad99c6bc6da922d59447704faa87a353675be9612e5669695a338d92",
+    "frontend/src/simulation/controller/DecentralizedController.ts": "ac95f22084e095891334277eca52bcfe204248a5e17241257881f60bf45b7dfc",
+    "frontend/src/simulation/controller/ManualController.ts": "4030b34cd6cea536b69d7c2cacbd4ca645df1d78da13a9501d62b3fa50c98b86",
+    "frontend/src/simulation/core/Rng.ts": "e5f2837ef362e3be91e920c1873f7824e63eb5230a1e36a96b7234a1f803e3df",
+    "frontend/src/simulation/core/SimulationEngine.ts": "29a661e6516ae0e7d0e36508f2089fbffeb4c1914cf50308ae7eb3a01ad1c05d",
+    "frontend/src/simulation/core/config.ts": "1b22227b77b5eb65a2ced9980c934c448f23a15ecd43c02d9e788092a0ff1f7f",
+    "frontend/src/simulation/core/types.ts": "a9a337ca387c0245f6a24cb0e5902a7a624942e252a17248b43c15df06d5908f",
+    "frontend/src/simulation/network/PeerMessage.ts": "642a6d95a22cc7801f2892d20a1b55ac2ed32dc42e3ad14fc367f9e428ad022d",
+    "frontend/src/simulation/network/PeerNetwork.ts": "f50924096ab6d1ab938ef0c2c1bfa2cda64ad5e5b9893b21bc02d74822dc7282",
+    "frontend/src/simulation/planning/AStar.ts": "1c3d67b09632249b9ddb4be4dd0a68d18fd0b7b3bb1c2a8e4d9ad0e879d1c65f",
+    "frontend/src/simulation/planning/FrontierPlanner.ts": "2adf2a956e35645041156be24d78e3c5c975f92dabc317de29f555193545a705",
+    "frontend/src/simulation/robots/DroneRobot.ts": "3f6c0ed3e602cccc37603d56205e87d9f3eec6c2a2038ce0683c6b0a8211ee0d",
+    "frontend/src/simulation/robots/RobotState.ts": "3af399be1db2aa5744fc0c80dbbd7c1ed0897d0e617c757dc33f279a69e77785",
+    "frontend/src/simulation/robots/RoverRobot.ts": "0a2e98b1556fc1f1ffd29262ed439f807dd5fd6e989740aa0247370b6f32d9fa",
+    "frontend/src/simulation/sensing/SensorModel.ts": "d00f8001e1c238150bf14c0f14f7018ee1f7cc6719d6da163525c7dc5a60154b",
+    "frontend/src/simulation/sensing/Vision.ts": "2527688265dd9ce09292af31779e60c02cb4c8e4f97ca89e42a41f8a703c60eb",
+    "frontend/src/simulation/telemetry/HumanReadableEventFormatter.ts": "49a62d19b58fabf2609100a67d74ef9b9528de8f4ca833615dcb114e1e553e90",
+    "frontend/src/simulation/world/GridMap.ts": "61d242a0b0c0966a4a0561a8b48b645307c0ccab2339ba62bc9e25308685ec74",
+    "frontend/src/simulation/world/ScenarioGenerator.ts": "a87a90986db8345f0e560b5c5e403d5e9532a42b2c6bc141d3697acbf739dd80",
+    "frontend/src/simulation/world/WorldState.ts": "d3241162136e0253e97fef331d84bd241e66d3713f1af5eff6b1a6830df63bf0",
+    "frontend/src/store/simStore.ts": "fd6992e08c46f10b7668e9c264e050d7df030350ac37bb9af58e815f207bd6cc",
+    "frontend/src/styles/app.css": "5cfb55ead9b5f3098a8325b712b6fe02ece2d3876d6d71d484a9bdc42def2e1e",
+    "frontend/src/tests/audio.test.ts": "13104a972d968822e89bede438531b7b3cfa3725c32386b89e84f31cbd68018d",
+    "frontend/src/tests/autonomy.test.ts": "d11fa7217717ab70a079b9f515d861cfcac24ef91ac3c823df4ec51fb5ea3074",
+    "frontend/src/tests/camera.test.ts": "74b22cc40f94fcba80ef8c05f0aa574614731d8b94502d777846142cc7c3c59e",
+    "frontend/src/tests/collision.test.ts": "41898b90531e687e19bb77553de2230f4270cc40774182098694589dddaafbcc",
+    "frontend/src/tests/controller.test.ts": "a2603aba90856808b2d641d581a357a93340ce6eb80f199165440ebbdf70cb0f",
+    "frontend/src/tests/demo.test.ts": "65fd0db389a356a9adbc0b89ad57742cda2abbf32ee32ba7fccfa2828150b2d6",
+    "frontend/src/tests/determinism.test.ts": "965807e5280b4d0fe6cb51fcf7f2cb452d414105be79155e49e1da56b7f65083",
+    "frontend/src/tests/helpers.ts": "eac05883628d3b4f8744fdb9ee8cd37a7292f53db1b97f78ae0627ea524c64b4",
+    "frontend/src/tests/missionControls.test.ts": "48b094356479c952e9ddfe1c5f2ffde6d85038ca4b633da106190bc9efef3933",
+    "frontend/src/tests/missions.test.ts": "bf470ea7fad2fe83883759bf0da47b05d478802a8597e76d5f930d88963f2b40",
+    "frontend/src/tests/network.test.ts": "e580f582ed9f012cda01023f7c5f7f72e65be96f16b116f934a1edc84ee547b0",
+    "frontend/src/tests/ppo.test.ts": "1d43603b90a63bc3adb0fed7e48651b6d9dabbd59063ee120e6aba4e534eee1a",
+    "frontend/src/tests/presentation.test.ts": "f14a69858f0238fc54d18cac7105599dee98411852eedf4e7a6f5a92ae5111ee",
+    "frontend/src/tests/rescueCelebration.test.ts": "07b5407bc742bde5ff21483a667e64794de68497132ba576302afcee16fa1646",
+    "frontend/src/tests/scenario.test.ts": "cfa7a05897cef93ac125bea7764c429c574e55f0daf69c714a33e49a976a515d",
+    "frontend/src/tests/survivorEncounter.test.ts": "d2519d9560f51e56038fe05dc762ce676bb5e68824195fcc460c507d6c4dcb0d",
+    "frontend/src/tests/survivorPlacement.test.ts": "6390199a81d197360c6018536bbe41b74e704a4a5261dff48d123143f4f0a2c3"
+  },
+  "encoded_gif": [
+    960,
+    600
+  ]
+}

@@ -98,8 +98,8 @@ async def main():
     await page.get_by_role('button',name='Launch mission',exact=True).click()
     await page.wait_for_function('sim.useSim.getState().engine.step>0')
     assert not errors,errors
-    report={'generatedAt':datetime.now(timezone.utc).isoformat(),'browserVersion':browser.version,'controller':'actual saved recurrent PPO via local Python service','pythonServiceSha256':hashlib.sha256((ROOT/'tools/ppo_service.py').read_bytes()).hexdigest(),'initial':initial,'final':final,'discoveryIds':seen,'gridPositionsBatteryAndCoverageMatchPython':True,'pauseAndDiscoveryStopAdvancement':True,'resetStartsFreshPythonMission':True,'connectionLossPausesWithoutHeuristicFallback':True,'recoveryResetWorks':True,'heuristicModeStillRuns':True,'mobileNoOverflow':True,'newMazeSeedTeamAndRadioOptionsWork':True,'errors':errors,'sourceHashes':{str(f.relative_to(ROOT)):hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted((ROOT/'frontend/src').rglob('*')) if f.suffix in ('.ts','.tsx','.css')}}
-    (ROOT/'docs/browser_ppo_validation.json').write_text(json.dumps(report,indent=2)+'\n')
+    report={'generatedAt':datetime.now(timezone.utc).isoformat(),'browserVersion':browser.version,'controller':'actual saved recurrent PPO via local Python service','pythonServiceSha256':hashlib.sha256((ROOT/'backend/ppo_service.py').read_bytes()).hexdigest(),'initial':initial,'final':final,'discoveryIds':seen,'gridPositionsBatteryAndCoverageMatchPython':True,'pauseAndDiscoveryStopAdvancement':True,'resetStartsFreshPythonMission':True,'connectionLossPausesWithoutHeuristicFallback':True,'recoveryResetWorks':True,'heuristicModeStillRuns':True,'mobileNoOverflow':True,'newMazeSeedTeamAndRadioOptionsWork':True,'errors':errors,'sourceHashes':{str(f.relative_to(ROOT)):hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted((ROOT/'frontend/src').rglob('*')) if f.suffix in ('.ts','.tsx','.css')}}
+    (ROOT/'docs/validation/browser_ppo_validation.json').write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps({k:v for k,v in report.items() if k!='sourceHashes'},indent=2))
     await browser.close()
 
