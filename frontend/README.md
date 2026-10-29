@@ -274,3 +274,12 @@ compact rail and panels. A keyboard and mouse offer the complete driving and cam
 - Robots can be added or removed only before launch.
 - No PPO/ONNX learned policy is included. `LocalView → Decision` remains the integration point.
 - Maps stay browser-friendly, around 28–56 cells per side. Browser recall is a regression guard, not a reproduction of the much larger Python Step 4 audit.
+
+### Fleet previews and menus
+
+Fleet cards show rotating miniature versions of the world's rover/drone models. Select a
+teammate for a larger turntable, current objective, battery/radio/map status and Focus camera.
+Cream/sage panels and subtle hover/entrance animations match the simulation. Reduced-motion
+preferences keep previews still. All thumbnails share one extra WebGL renderer, removed when
+the Fleet panel closes. Run `python3 frontend/scripts/fleet_qa.py` with Vite on port 5173 for
+browser animation, selection, ten-unit fleet, mobile and cleanup checks.

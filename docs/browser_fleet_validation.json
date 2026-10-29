@@ -1,0 +1,11 @@
+{
+  "rotatingPreview": true,
+  "sharedCanvasForTenRobots": true,
+  "detailSelectionAndFocus": true,
+  "canvasReleasedOnClose": true,
+  "controlsGuideAvailable": true,
+  "mobileNoOverflow": true,
+  "reducedMotionSupported": true,
+  "errors": [],
+  "browserVersion": "156.0.8078.48"
+}

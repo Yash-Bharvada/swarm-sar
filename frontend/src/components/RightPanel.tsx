@@ -1,3 +1,4 @@
+import { FleetPreviewCanvas, RobotPreview } from './RobotPreview';
 import { useSim } from '../store/simStore';
 import type { SimulationEngine } from '../simulation/core/SimulationEngine';
 import type { RobotState } from '../simulation/robots/RobotState';
@@ -26,7 +27,8 @@ function FleetCard({ engine, robot }: { engine: SimulationEngine; robot: RobotSt
   const conn = robotConnection(engine, robot);
   return (
     <button className={`fleet-card ${robot.type} ${robot.alive ? '' : 'dead'}`} onClick={() => select(robot.name)} aria-label={`Inspect ${robot.label}: ${describeObjective(robot.objective)}`}>
-      <div className="fleet-head">
+      <RobotPreview engine={engine} robot={robot} />
+      <div className="fleet-card-copy"><div className="fleet-head">
         <span className={`type-icon ${robot.type}`} aria-hidden />
         <strong>{robot.label}</strong>
         {robot.manual && <span className="pill manual">Manual</span>}
@@ -34,7 +36,7 @@ function FleetCard({ engine, robot }: { engine: SimulationEngine; robot: RobotSt
         <span className="fleet-chevron" aria-hidden>›</span>
       </div>
       <div className="fleet-objective">{robot.alive ? describeObjective(robot.objective) : 'Battery depleted'}</div>
-      <Battery robot={robot} />
+      <Battery robot={robot} /></div>
     </button>
   );
 }
@@ -81,7 +83,7 @@ function RobotDetail({ engine, robot, version }: { engine: SimulationEngine; rob
     <div className="robot-detail">
       <button className="btn ghost small fleet-back" onClick={() => select(null)}>← All robots</button>
       <div className="detail-head">
-        <span className={`type-icon big ${robot.type}`} aria-hidden />
+        <RobotPreview engine={engine} robot={robot} large />
         <div>
           <h2>{robot.label}</h2>
           <div className="faint">{robot.type === 'rover' ? 'Ground exploration' : 'Aerial reconnaissance'}</div>
@@ -181,18 +183,18 @@ export function RightPanel() {
   const selected = useSim((s) => s.selected);
   const robot = selected ? engine.robots.find((r) => r.name === selected) : null;
   return (
-    <aside className="panel right" aria-label="Robot fleet">
+    <><aside className="panel right" aria-label="Robot fleet">
       {robot ? <RobotDetail key={robot.name} engine={engine} robot={robot} version={version} /> : (
         <>
           <div className="panel-header">
             <span className="panel-eyebrow">BETTER TOGETHER</span>
             <h2>Your fleet <span className="fleet-count">{engine.robots.length}</span></h2>
-            <p className="panel-intro">Select a robot to see what it knows.</p>
+            <p className="panel-intro">Meet your little search party. Pick a teammate to look closer.</p>
           </div>
           <div className="fleet-summary"><span className="conn-dot good" />{engine.robots.filter((r) => r.alive).length} robots operational</div>
           <div className="fleet">{engine.robots.map((r) => <FleetCard key={r.name} engine={engine} robot={r} />)}</div>
         </>
       )}
-    </aside>
+    </aside><FleetPreviewCanvas /></>
   );
 }

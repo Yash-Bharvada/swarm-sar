@@ -381,3 +381,44 @@ input[type=range] { width: 100%; accent-color: #688953; height: 14px; }
 @keyframes encounter-arrive { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 @media (max-width: 700px) { .encounter-stage { padding: 15px 12px 100px; } .encounter-card { padding: 18px; } .encounter-card p { font-size: 15px; } .encounter-footer { flex-direction: column; align-items: stretch; gap: 12px; } .encounter-footer button { justify-content: center; } .encounter-eyebrow { font-size: 11px; } }
 @media (prefers-reduced-motion: reduce) { .encounter-card { animation: none; } }
+
+/* Field-notebook panels and miniature fleet turntables. */
+.workspace-drawer { background: linear-gradient(155deg, #fffef5, #f4f6ec); border-radius: 20px; box-shadow: 0 8px 28px #3553350c; animation: drawer-arrive 260ms ease-out; }
+.panel { padding: 28px 20px; }
+.panel-header h2, .panel-title { font-size: 25px; letter-spacing: -.9px; }
+.panel-eyebrow { color: #7c9569; letter-spacing: 1.8px; }
+.panel-intro { max-width: 230px; line-height: 1.8; }
+.fleet-summary { padding: 10px 12px; background: #eaf1df; border: 1px solid #dbe6cc; border-radius: 12px; color: #6d8558; }
+.fleet { gap: 12px; }
+.fleet-card { display: flex; align-items: center; gap: 12px; padding: 12px 10px; border-radius: 17px; background: #fffef6; box-shadow: 0 3px 0 #e5e9da; transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease; }
+.fleet-card:hover { transform: translateY(-2px); background: #fffef6; border-color: #b7cda3; box-shadow: 0 5px 0 #dce6cd; }
+.fleet-card:active { transform: translateY(1px); box-shadow: 0 1px 0 #dce6cd; }
+.fleet-card-copy { flex: 1; min-width: 0; }
+.fleet-head { gap: 5px; font-size: 12px; }
+.fleet-head .type-icon { display: none; }
+.fleet-objective { margin: 7px 0 9px; font-size: 10px; color: #7c8c72; }
+.robot-preview { position: relative; width: 82px; height: 88px; flex: 0 0 82px; border-radius: 15px; background: radial-gradient(ellipse at 50% 35%, #fff8df, #f0e5ca); border: 1px solid #eadfc8; overflow: hidden; }
+.robot-preview.drone { background: radial-gradient(ellipse at 50% 35%, #f2fbeb, #d9eadd); border-color: #d4e4d1; }
+.robot-preview-view { position: absolute; inset: 0; }
+.preview-orbit { position: absolute; bottom: 9px; left: 15px; right: 15px; height: 14px; border: 1px solid #9cad7b44; border-radius: 50%; }
+.fleet-preview-layer { position: fixed; inset: 0; pointer-events: none; z-index: 80; }
+.fleet-preview-layer * { pointer-events: none !important; }
+.detail-head { flex-direction: column; text-align: center; gap: 15px; padding: 0 0 20px; margin-bottom: 12px; }
+.robot-preview.large { width: 100%; height: 160px; flex-basis: auto; border-radius: 20px; }
+.robot-preview.large .preview-orbit { left: 28%; right: 28%; bottom: 18px; height: 22px; }
+.detail-head h2 { font-size: 25px; }
+.objective-card { border-radius: 14px; padding: 15px; background: #edf2e3; border: 1px solid #dce5cc; }
+.focus-button { width: 100%; min-height: 42px; border-radius: 12px; background: #54744a; color: #fffde9; box-shadow: 0 3px 0 #3f5b38; margin: 10px 0 17px; }
+.focus-button:hover:not(:disabled) { background: #48683f; color: #fffde9; }
+.disclosure { background: #fffef6; border: 1px solid #e1e7d5; padding: 13px; margin: 9px 0; border-radius: 12px; }
+.disclosure:first-of-type { border-top: 1px solid #e1e7d5; }
+.disclosure summary { color: #59714d; }
+.panel select, .panel input[type=number], .segmented, .stepper { border-radius: 10px; }
+.rail-button, .scene-button, .camera-tools button, .btn, .segmented button { transition: background 160ms ease, transform 160ms ease, box-shadow 160ms ease; }
+.rail-button.active { box-shadow: inset 0 1px 0 #ffffffb0, 0 3px 0 #d5dfc6; }
+.rail-button:hover > svg { transform: translateY(-2px) rotate(-5deg); }
+.rail-button svg { transition: transform 180ms ease; }
+.scene-button, .playback, .camera-view-switch, .zoom-controls { box-shadow: 0 3px 0 #4c683514, inset 0 1px 0 #ffffffa0; }
+button:focus-visible, summary:focus-visible { outline: 2px solid #6f9259; outline-offset: 3px; }
+@keyframes drawer-arrive { from { opacity: 0; transform: translateX(12px); } to { opacity: 1; transform: translateX(0); } }
+@media (prefers-reduced-motion: reduce) { .workspace-drawer { animation: none; } .fleet-card, .rail-button, .rail-button svg, .scene-button, .camera-tools button, .btn, .segmented button { transition: none; } .fleet-card:hover, .rail-button:hover > svg { transform: none; } }

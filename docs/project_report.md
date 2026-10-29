@@ -30,6 +30,8 @@ The project has a working heterogeneous swarm simulator, a cooperative PPO train
 
 Custom survivor counts do not increase batteries or mission time. Large layouts can take longer, consume more memory/rendering work, or end before every survivor is found. These authoring controls do not change the Python training distribution, sensor contract or Step 4 network protocol.
 
+Fleet/menu refinement adds rotating rover/drone previews using the actual world models, a larger selected-unit turntable, cream/sage panels, rounded disclosure sections and subtle control animations. Previews share one additional renderer for up to ten robots and release it when Fleet closes; reduced-motion preferences disable rotation. [Fleet browser checks](browser_fleet_validation.json) verify visible animation, selection/focus, renderer cleanup, ten-unit scrolling and mobile layout. The production build and 127 tests pass; Python/training sources remain unchanged.
+
 ## Validation and result provenance
 
 The latest local checks passed:

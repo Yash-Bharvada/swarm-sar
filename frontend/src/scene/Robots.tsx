@@ -22,9 +22,9 @@ function batteryColor(robot: RobotState): string {
 }
 
 /** Rendering follows the physics segment, including its actual direction of travel. */
-function useRobotMotion(engine: SimulationEngine, robot: RobotState, group: React.RefObject<THREE.Group>) {
+function useRobotMotion(engine: SimulationEngine, robot: RobotState, group: React.RefObject<THREE.Group>, preview = false, still = false) {
   const state = useRef({
-    yaw: robot.heading,
+    yaw: preview ? 0.55 : robot.heading,
     travelled: 0,
     speed: 0,
     turn: 0,
@@ -35,6 +35,12 @@ function useRobotMotion(engine: SimulationEngine, robot: RobotState, group: Reac
   useFrame(({ clock }, delta) => {
     const node = group.current;
     if (!node) return;
+    if (preview) {
+      node.position.set(0, robot.type === 'rover' ? -0.4 : 0, 0);
+      if (!still) state.current.yaw += Math.min(delta, 0.05) * 0.35;
+      node.rotation.y = state.current.yaw;
+      return;
+    }
     const motion = state.current;
     const dt = Math.min(delta, 0.1);
     robotRenderPosition(engine, robot.id, motion.position);
@@ -101,18 +107,18 @@ function RobotLabel({ robot, selected }: { robot: RobotState; selected: boolean 
   );
 }
 
-export function Rover({ engine, robot, quality, selected, onSelect }: RobotProps) {
+export function Rover({ engine, robot, quality, selected, onSelect, preview = false, still = false }: RobotProps) {
   const group = useRef<THREE.Group>(null);
   const wheels = useRef<Array<THREE.Group | null>>([]);
   const lidar = useRef<THREE.Group>(null);
-  const motion = useRobotMotion(engine, robot, group);
+  const motion = useRobotMotion(engine, robot, group, preview, still);
   useFrame(({ clock }) => {
     for (const wheel of wheels.current) if (wheel) wheel.rotation.x = motion.current.travelled / 0.17;
-    if (lidar.current && robot.alive) lidar.current.rotation.y = clock.elapsedTime * 3.5;
+    if (lidar.current && robot.alive && !still) lidar.current.rotation.y = clock.elapsedTime * 3.5;
   });
   const body = robot.alive ? '#ed9650' : '#89938a';
   return (
-    <group ref={group} onClick={onSelect}>
+    <group ref={group} name={preview ? `preview-${robot.name}` : undefined} onClick={onSelect}>
       <RoundedBox args={[0.62, 0.3, 0.78]} radius={0.065} smoothness={2} position={[0, 0.35, 0]} castShadow={quality.shadows}>
         <meshStandardMaterial color={body} roughness={0.68} />
       </RoundedBox>
@@ -167,21 +173,20 @@ export function Rover({ engine, robot, quality, selected, onSelect }: RobotProps
         <sphereGeometry args={[0.029, 8, 6]} />
         <meshBasicMaterial color={batteryColor(robot)} toneMapped={false} />
       </mesh>
-      <SelectionMarker selected={selected} color={COLORS.rover} />
-      <RobotLabel robot={robot} selected={selected} />
+      {!preview && <><SelectionMarker selected={selected} color={COLORS.rover} /><RobotLabel robot={robot} selected={selected} /></>}
     </group>
   );
 }
 
-export function Drone({ engine, robot, quality, selected, onSelect }: RobotProps) {
+export function Drone({ engine, robot, quality, selected, onSelect, preview = false, still = false }: RobotProps) {
   const group = useRef<THREE.Group>(null);
   const airframe = useRef<THREE.Group>(null);
   const rotors = useRef<Array<THREE.Group | null>>([]);
   const shadow = useRef<THREE.Mesh>(null);
-  const motion = useRobotMotion(engine, robot, group);
+  const motion = useRobotMotion(engine, robot, group, preview, still);
   useFrame((_, delta) => {
     const dt = Math.min(delta, 0.1);
-    if (robot.alive) rotors.current.forEach((rotor, index) => {
+    if (robot.alive && !still) rotors.current.forEach((rotor, index) => {
       if (rotor) rotor.rotation.y += dt * ROTOR_SPEED * (index % 2 ? -1 : 1);
     });
     if (shadow.current && group.current) shadow.current.position.y = -group.current.position.y + 0.035;
@@ -194,7 +199,7 @@ export function Drone({ engine, robot, quality, selected, onSelect }: RobotProps
     }
   });
   return (
-    <group ref={group} onClick={onSelect}>
+    <group ref={group} name={preview ? `preview-${robot.name}` : undefined} onClick={onSelect}>
       <group ref={airframe}>
         <RoundedBox args={[0.4, 0.14, 0.53]} radius={0.07} smoothness={2} castShadow={quality.shadows}>
           <meshStandardMaterial color={robot.alive ? '#2bafa4' : '#89938a'} roughness={0.65} />
@@ -254,13 +259,14 @@ export function Drone({ engine, robot, quality, selected, onSelect }: RobotProps
         <planeGeometry args={[1.5, 1.5]} />
         <meshBasicMaterial map={glowTexture()} color="#245e4c" transparent opacity={0.24} depthWrite={false} />
       </mesh>
-      <SelectionMarker selected={selected} color={COLORS.drone} airborne />
-      <RobotLabel robot={robot} selected={selected} />
+      {!preview && <><SelectionMarker selected={selected} color={COLORS.drone} airborne /><RobotLabel robot={robot} selected={selected} /></>}
     </group>
   );
 }
 
 interface RobotProps {
+  preview?: boolean;
+  still?: boolean;
   engine: SimulationEngine;
   robot: RobotState;
   quality: QualityProfile;
