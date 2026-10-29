@@ -1,5 +1,7 @@
 import { useEffect, useId, useState } from 'react';
 import { BatterySettings } from './BatterySettings';
+import { ControllerControls } from './ControllerControls';
+import { WorldSeedInput } from './WorldSeedInput';
 import { useSim, type Overlays, type Quality } from '../store/simStore';
 import { PRESETS, type PresetId } from '../simulation/world/ScenarioGenerator';
 import type { OperationMode } from '../simulation/core/types';
@@ -60,7 +62,7 @@ export function LeftPanel() {
   const survivorCapacity = useSim((s) => s.survivorCapacity);
   const survivorMessage = useSim((s) => s.survivorMessage);
   const customSurvivors = useSim((s) => s.customSurvivors);
-  const { setSetting, toggleOverlay, reset, randomizeSeed, loadDemo, setSurvivorCount, randomizeSurvivors, setEditingSurvivors, clearSurvivors, useAutomaticSurvivors } = useSim.getState();
+  const { setSetting, toggleOverlay, reset, loadDemo, setSurvivorCount, randomizeSurvivors, setEditingSurvivors, clearSurvivors, useAutomaticSurvivors } = useSim.getState();
   const [survivorCountDraft, setSurvivorCountDraft] = useState(String(settings.survivorCount ?? engine.scenario.victims.length));
   useEffect(() => {
     setSurvivorCountDraft(String(settings.survivorCount ?? engine.scenario.victims.length));
@@ -75,7 +77,13 @@ export function LeftPanel() {
     ['coverage', 'Unexplored terrain'], ['labels', 'Robot labels'],
   ];
 
-  if (controllerMode === 'ppo') return <aside className="panel left" aria-label="Mission settings"><div className="panel-header"><span className="panel-eyebrow">TRAINED SWARM · GPU-V1</span><h2>Python mission</h2><p className="panel-intro">The verified 754k checkpoint controls this world. Use Controller settings above the map to create a new PPO mission.</p></div><div className="objective-card"><strong>{ppoPhase === 'ready' ? 'PPO connected' : 'PPO connection pending'}</strong><p className="explain">Seed {settings.seed} · {engine.scenario.width} × {engine.scenario.height}<br />{settings.rovers} rovers · {settings.drones} drones</p></div><p className="explain">Python owns physics, sensing and peer-message delivery. Camera, audio, survivor conversations and rendering are browser presentation. Manual driving and survivor authoring are available in heuristic mode.</p><BatterySettings /><button className="btn" onClick={reset}>Reset PPO mission</button><details className="disclosure" open><summary>Graphics</summary><Segmented<Quality> label="Graphics quality" value={settings.quality} onChange={(v) => setSetting('quality', v)} options={[{ value: 'low', label: 'Low' }, { value: 'medium', label: 'Medium' }, { value: 'high', label: 'High' }]} /></details></aside>;
+  if (controllerMode === 'ppo') return <aside className="panel left" aria-label="Mission settings">
+    <div className="panel-header"><span className="panel-eyebrow">TRAINED SWARM · GPU-V1</span><h2>Mission setup</h2><p className="panel-intro">Configure your trained swarm.</p></div>
+    <ControllerControls />
+    <div className="objective-card"><strong>{ppoPhase === 'ready' ? 'PPO connected' : ppoPhase === 'error' ? 'PPO disconnected' : 'Connecting to Python'}</strong><p className="explain">{ppoPhase === 'ready' ? `Current mission: seed ${settings.seed} · ${engine.scenario.width} × ${engine.scenario.height} · ${settings.rovers} rovers · ${settings.drones} drones` : 'Start the local PPO service if the connection is unavailable.'}</p></div>
+    <button className="btn" onClick={reset} disabled={ppoPhase === 'connecting'}>Reset PPO mission</button>
+    <details className="disclosure" open><summary>Graphics</summary><Segmented<Quality> label="Graphics quality" value={settings.quality} onChange={(v) => setSetting('quality', v)} options={[{ value: 'low', label: 'Low' }, { value: 'medium', label: 'Medium' }, { value: 'high', label: 'High' }]} /></details>
+  </aside>;
 
   return (
     <aside className="panel left" aria-label="Mission settings">
@@ -84,17 +92,14 @@ export function LeftPanel() {
         <h2>Mission setup</h2>
         <p className="panel-intro">Choose the terrain. Build your team.</p>
       </div>
+      <ControllerControls />
       <section className="section">
         <label className="field-label" htmlFor={`${fieldId}-site`}>Search site {locked && <span className="hint">Reset to change</span>}</label>
         <select id={`${fieldId}-site`} value={demo ? 'demo' : settings.preset} disabled={locked} onChange={(e) => setSetting('preset', e.target.value as PresetId)}>
           {PRESETS.filter((p) => p.id !== 'demo').map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
           {demo && <option value="demo">Validation Demo</option>}
         </select>
-        <label className="field-label" htmlFor={`${fieldId}-seed`}>World seed</label>
-        <div className="seed-row">
-          <input id={`${fieldId}-seed`} type="number" min={0} step={1} value={settings.seed} disabled={locked} onChange={(e) => setSetting('seed', Math.max(0, Math.floor(Number(e.target.value) || 0)))} />
-          <button className="btn icon" onClick={randomizeSeed} disabled={locked} title="Generate another world" aria-label="Randomize world seed">↻</button>
-        </div>
+        <WorldSeedInput locked={locked} />
         <label className="field-label">Search team <span className="faint">{settings.rovers + settings.drones} / 10</span></label>
         <Stepper label="Rovers" icon="rover" value={settings.rovers} min={settings.drones ? 0 : 1} max={10 - settings.drones} disabled={locked || demo} onChange={(v) => setSetting('rovers', v)} />
         <Stepper label="Drones" icon="drone" value={settings.drones} min={settings.rovers ? 0 : 1} max={10 - settings.rovers} disabled={locked || demo} onChange={(v) => setSetting('drones', v)} />

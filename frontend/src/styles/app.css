@@ -423,9 +423,7 @@ button:focus-visible, summary:focus-visible { outline: 2px solid #6f9259; outlin
 @keyframes drawer-arrive { from { opacity: 0; transform: translateX(12px); } to { opacity: 1; transform: translateX(0); } }
 @media (prefers-reduced-motion: reduce) { .workspace-drawer { animation: none; } .fleet-card, .rail-button, .rail-button svg, .scene-button, .camera-tools button, .btn, .segmented button { transition: none; } .fleet-card:hover, .rail-button:hover > svg { transform: none; } }
 
-.controller-wrap { position: relative; }
 .controller-button { min-height: 36px; gap: 6px; }
-.controller-menu { position: absolute; right: 0; top: 46px; width: 300px; max-height: min(680px, calc(100dvh - 180px)); overflow-y: auto; padding: 16px; border: 1px solid #c8d7b9; border-radius: 17px; background: #fffef3; box-shadow: 0 10px 35px #304e3026; z-index: 50; }
 .controller-choice { display: block; width: 100%; text-align: left; padding: 13px; border: 1px solid #dfe6d1; border-radius: 12px; background: #f7f8ee; margin-top: 12px; color: #4d6945; }
 .controller-choice.chosen { border-color: #9db78a; background: #eff5e4; }
 .controller-choice strong { font-size: 12px; display: flex; justify-content: space-between; gap: 8px; }
@@ -441,7 +439,7 @@ button:focus-visible, summary:focus-visible { outline: 2px solid #6f9259; outlin
 .controller-offline { background: #ba7854; }
 .ppo-connection { position: absolute; top: 165px; left: 50%; transform: translateX(-50%); width: min(350px, calc(100% - 30px)); border: 1px solid #bfcca8; background: #fffef3f5; border-radius: 16px; padding: 20px; color: #567047; pointer-events: auto; box-shadow: 0 6px 25px #46623320; }
 .ppo-connection p { font-size: 12px; line-height: 1.7; }
-@media (max-width: 760px) { .controller-button { font-size: 8px; min-height: 31px; padding: 7px; }.controller-menu { position: fixed; top: 125px; right: 18px; width: min(300px, calc(100vw - 85px)); max-height: calc(100dvh - 160px); }.scene-top-right { gap: 5px; } }
+@media (max-width: 760px) { .controller-button { font-size: 8px; min-height: 31px; padding: 7px; }.scene-top-right { gap: 5px; } }
 
 .controller-seed-row { display: flex; align-items: center; gap: 7px; }
 .controller-seed-row input { min-width: 0; flex: 1; }
@@ -450,3 +448,12 @@ button:focus-visible, summary:focus-visible { outline: 2px solid #6f9259; outlin
 .controller-seed-help.invalid { color: #9c583a; }
 .controller-seed-row input[aria-invalid=true] { border-color: #ba8263; }
 .terrain-guide { padding: 12px; background: #f0f3e5; border: 1px solid #dfe6d1; border-radius: 12px; }
+
+.world-seed-row input { width: 100%; min-width: 0; min-height: 37px; flex: 1; border: 1px solid #dbe2ce; background: #fafbf3; padding: 8px 10px; border-radius: 6px; font-size: 11px; }
+.world-seed-row input[aria-invalid=true] { border-color: #ba8263; }
+.world-seed-row .btn { flex-shrink: 0; padding-inline: 9px; }
+.controller-settings .segmented { margin-top: 8px; }
+.controller-settings .ppo-choice { margin-top: 14px; }
+.controller-settings .controller-fields { min-width: 0; }
+.controller-settings .controller-fields label { min-width: 0; }
+.controller-settings input[type=number] { min-width: 0; }

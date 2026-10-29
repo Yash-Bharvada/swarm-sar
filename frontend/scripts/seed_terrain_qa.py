@@ -15,6 +15,8 @@ async def main():
     page.on('pageerror',lambda error:errors.append(str(error)))
     await page.goto('http://127.0.0.1:5173/')
     await page.get_by_role('button',name='Controller settings',exact=True).click()
+    await page.get_by_role('radio',name='PPO · 754k',exact=True).click()
+    await page.get_by_role('button',name='New PPO mission',exact=True).wait_for(state='visible')
     seed=page.get_by_role('spinbutton',name='PPO seed',exact=True)
     launch=page.get_by_role('button',name='New PPO mission',exact=True)
     await seed.fill('1000')

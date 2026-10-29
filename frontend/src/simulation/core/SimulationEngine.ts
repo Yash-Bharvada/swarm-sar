@@ -12,7 +12,7 @@
  * Rendering never mutates the engine; it reads positions and interpolates.
  */
 import { DEFAULT_CONTROLLER, DEFAULT_NETWORK, FRAME_ID, type NetworkConfig, type PartitionWindow } from './config';
-import { Rng, hashString } from './Rng';
+import { Rng, hashString, isWorldSeed } from './Rng';
 import { HOLD, INVESTIGATE, MOVE_DELTAS, movementAction, type OperationMode, type Point } from './types';
 import { generateScenario, type PresetId, type Scenario, type Victim } from '../world/ScenarioGenerator';
 import { UNKNOWN } from '../world/GridMap';
@@ -159,6 +159,7 @@ export class SimulationEngine {
   private noFrontier = new Set<string>();
 
   constructor(options: EngineOptions) {
+    if (!isWorldSeed(options.seed)) throw new Error('World seed must be a whole number from 0 to 4294967295');
     this.options = {
       ...options,
       delaySteps: [...options.delaySteps] as [number, number],

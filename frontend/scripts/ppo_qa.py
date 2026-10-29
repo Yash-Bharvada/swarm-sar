@@ -19,15 +19,16 @@ async def main():
     page.on('pageerror',lambda error:errors.append(str(error)))
     await page.goto('http://127.0.0.1:5173/')
     await page.get_by_role('button',name='Controller settings',exact=True).click()
-    await page.get_by_role('button',name='New PPO mission',exact=True).click()
+    await page.get_by_role('radio',name='PPO · 754k',exact=True).click()
     await page.wait_for_function("document.querySelector('.world-heading h1')?.textContent.includes('PPO Rescue Site')")
     await page.evaluate('''async()=>{const r=performance.getEntriesByType('resource');window.sim=await import(r.find(e=>e.name.includes('/src/store/simStore.ts')).name);window.remote=await import(r.find(e=>e.name.includes('/src/ppo/RemoteEngine.ts')).name);const f=await import(r.find(e=>e.name.includes('@react-three_fiber.js')).name);window.root=f._roots.get(document.querySelector('.stage canvas')).store}''')
     initial=await page.evaluate('''()=>{const s=sim.useSim.getState();return {mode:s.controllerMode,phase:s.ppoPhase,step:s.engine.step,width:s.engine.scenario.width,instance:s.engine instanceof remote.RemoteEngine,mission:s.engine.mission}}''')
     assert initial=={'mode':'ppo','phase':'ready','step':0,'width':32,'instance':True,'mission':initial['mission']},initial
+    await page.get_by_role('button',name='Close panel',exact=True).click()
     # Local engine ticks must never execute while PPO owns the mission.
     await page.evaluate("()=>{sim.useSim.getState().engine.tick=()=>{throw new Error('Browser attempted PPO physics')}}")
     await page.get_by_role('button',name='Open mission panel',exact=True).click()
-    assert await page.get_by_role('heading',name='Python mission',exact=True).is_visible()
+    assert await page.get_by_role('heading',name='Mission setup',exact=True).is_visible()
     assert await page.get_by_role('button',name='Place on map',exact=False).count()==0
     await page.get_by_role('button',name='Close panel',exact=True).click()
     await page.get_by_role('button',name='Launch mission',exact=True).click()
@@ -91,7 +92,8 @@ async def main():
     profile=await page.evaluate("()=>{const s=sim.useSim.getState();return {seed:s.engine.scenario.seed,robots:s.engine.robots.length,radio:s.engine.network.enabled}}")
     assert profile=={'seed':10001,'robots':2,'radio':False},profile
     await page.get_by_role('button',name='Controller settings',exact=True).click()
-    await page.get_by_role('button',name='Browser heuristic',exact=False).click()
+    await page.get_by_role('radio',name='Heuristic',exact=True).click()
+    await page.get_by_role('button',name='Close panel',exact=True).click()
     assert await page.evaluate("sim.useSim.getState().controllerMode==='heuristic' && sim.useSim.getState().status==='ready'")
     await page.get_by_role('button',name='Launch mission',exact=True).click()
     await page.wait_for_function('sim.useSim.getState().engine.step>0')

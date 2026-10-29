@@ -287,7 +287,8 @@ browser animation, selection, ten-unit fleet, mobile and cleanup checks.
 ### Trained PPO missions
 
 Start `.venv/bin/python tools/ppo_service.py` from the repository root, then Vite
-on port 5173. Select **Heuristic → New PPO mission → Launch mission**. Python
+on port 5173. Open **Mission → Exploration controller → PPO · 754k**, configure the mission,
+then select **New PPO mission → Launch mission**. Python
 owns map generation, sensors, decisions and physics; the browser only presents
 snapshots. Development seed 10000 reproduces 4/4 survivors in 94 steps. Connection
 loss pauses the mission; reset explicitly recovers. Discovery conversations,
@@ -302,5 +303,11 @@ uses low chips; wheel climbing and flight over walls are not modeled by the grid
 Battery mode is available in **Mission settings → Battery mode** for both
 controllers. Choose **Limited** (default) or **Unlimited**. Changing mode resets
 the current mission; launch again. Unlimited keeps energy full, shows ∞ in the
-fleet, and retains the mission time limit. The PPO controller menu also provides
-this choice before creating a mission. Restart the Python service after updating.
+fleet, and retains the mission time limit. The PPO settings in the Mission side panel provide
+this choice; apply it with New PPO mission. Restart the Python service after updating.
+
+Both controller setups now live in the **Mission** side panel. Choose Heuristic
+or PPO to show its own controls; the map's controller button opens this panel.
+Switching restores the last applied setup for that controller and starts a fresh
+mission. Heuristic seeds use **Enter / Apply seed** and accept whole numbers
+0–4294967295. Typing does not regenerate the map; invalid entries leave it intact.

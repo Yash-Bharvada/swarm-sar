@@ -3,7 +3,6 @@ import { useSim, type Overlays, type Speed } from '../store/simStore';
 import { missionTime, networkHealth, pct } from '../app/format';
 import { NetworkGraph } from './NetworkGraph';
 import { Icon } from './Icon';
-import { ControllerControls } from './ControllerControls';
 import { SoundControls } from './SoundControls';
 import type { Panel } from '../app/App';
 
@@ -49,7 +48,7 @@ export function SceneHud({ onOpenPanel }: { onOpenPanel: (panel: Panel) => void 
     </div>
 
     <div className="scene-top-right">
-      <ControllerControls />
+      <button className={`scene-button controller-button ${controllerMode === 'ppo' ? 'active' : ''}`} aria-label="Controller settings" onClick={() => onOpenPanel('setup')}><span className={`status-dot ${ppoPhase === 'error' ? 'controller-offline' : ''}`} /><span>{controllerMode === 'ppo' ? 'PPO · 754k' : 'Heuristic'}</span><Icon name="chevron" size={12} /></button>
       <SoundControls />
       <button className="scene-button watch-maze" onClick={toggleCleanView} disabled={editingSurvivors} title="Hide interface and overlays (H)"><Icon name="overview" size={17} /><span>Watch maze</span></button>
       <button className="team-pill" onClick={() => onOpenPanel('fleet')} title="Inspect your fleet"><span className="team-icons"><Icon name="rover" size={17} /><Icon name="drone" size={17} /></span><span>{rovers} rovers <b>·</b> {drones} drones</span><Icon name="chevron" size={13} /></button>

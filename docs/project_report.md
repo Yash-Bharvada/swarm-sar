@@ -162,3 +162,19 @@ additional training were performed for this addition, as requested by the user.
 The frontend production build and TypeScript compilation passed; the Python
 service passed syntax parsing and was restarted with the new option. Runtime
 behavior has not been newly validated for this change.
+
+
+Mission settings refinement: the controller button now opens the Mission drawer,
+where a Heuristic / PPO selector loads the appropriate settings. PPO seed, map
+size, layout, robot counts, peer radio and battery mode are all configured there
+and applied with New PPO mission. Switching controllers restores each mode's
+last applied setup and starts a fresh mission. The heuristic seed editor now
+uses a draft with Enter / Apply seed, validates unsigned 32-bit integers
+(0–4294967295), normalizes leading zeros, and rejects oversized or malformed
+values without changing the world. Applying an unchanged seed preserves survivor
+authoring. This fixes per-keystroke regeneration and silent seed truncation for
+out-of-range UI values. Store and engine seed guards enforce the same range.
+The production build/TypeScript compilation passed; no tests or evaluation
+missions were run as requested. Existing browser navigation scripts were updated
+but not executed; prior reports retain their earlier provenance. Training sources
+and checkpoint weights were not changed.

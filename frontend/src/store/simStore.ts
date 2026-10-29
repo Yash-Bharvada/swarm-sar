@@ -3,6 +3,7 @@
  * through engine.tick() and engine.issue(); React re-renders on `version`.
  */
 import { create } from 'zustand';
+import { isWorldSeed } from '../simulation/core/Rng';
 import { DEFAULT_PPO_OPTIONS, type PPOOptions } from '../ppo/RemoteEngine';
 import {
   SimulationEngine,
@@ -284,6 +285,7 @@ export const useSim = create<Store>((set, get) => ({
   },
 
   setSetting: (key, value) => {
+    if (key === 'seed' && (typeof value !== 'number' || !isWorldSeed(value))) return;
     if (key === 'batteryLimited') {
       const state = get();
       if (typeof value !== 'boolean' || state.settings.batteryLimited === value || (state.controllerMode === 'ppo' && state.ppoPhase === 'connecting')) return;

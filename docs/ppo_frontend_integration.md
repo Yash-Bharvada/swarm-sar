@@ -30,7 +30,9 @@ npm install
 npm run dev -- --host 127.0.0.1 --port 5173 --strictPort
 ```
 
-Open http://127.0.0.1:5173. Click **Heuristic → New PPO mission** above the map.
+Open http://127.0.0.1:5173. Open **Mission → Exploration controller → PPO · 754k**. Configure the seed,
+map size, site, fleet, radio and battery mode in that same side panel, then
+click **New PPO mission** to apply your choices.
 Wait for **PPO · 754k** and the ready mission, then click **Launch mission**.
 Defaults are seed 10000, 32×32 rooms and two rovers/two drones, matching the
 recorded nominal development example. Camera, follow, audio, clean viewing,
@@ -122,10 +124,11 @@ none of those rules or the verified checkpoint.
 
 ## Battery modes
 
-Mission settings now offer **Limited** (the default) and **Unlimited** for both
-heuristic and PPO missions. The PPO controller menu also offers a battery mode
-for new missions. Changing the mode in settings resets the current mission on
-the same map; launch again to explore. The selection survives mission resets.
+Mission settings offer **Limited** (the default) and **Unlimited** for both
+heuristic and PPO missions. Changing the heuristic mode resets the current
+mission on the same map; launch again to explore. For PPO, choose the mode in
+the side panel and apply it with **New PPO mission**. The selection survives
+mission resets.
 
 Limited retains the existing budgets and consumption. Unlimited sets movement,
 rubble and idle costs to zero in the mission's own robot configuration. Battery
@@ -139,3 +142,22 @@ battery benchmark. Restart an already-running Python service after updating.
 
 No tests or evaluation missions were run for this change, at the user's request.
 Compilation/build checks are recorded separately from behavioral validation.
+
+## Mission drawer and heuristic seed editing
+
+The map controller button opens the Mission side panel. Its Heuristic / PPO
+selector shows only the selected controller's settings. Switching controllers
+starts a fresh mission, retaining the last applied setup for each controller.
+PPO seed, size, layout, fleet, radio and battery configuration live in this panel.
+
+The heuristic seed editor now holds a text draft and rebuilds the world only on
+Enter or **Apply seed**. Its accepted range is 0–4294967295, matching the unsigned
+32-bit generator. Invalid, fractional, exponential and oversized entries cannot
+replace the active world. Leading zeros normalize on apply; applying the current
+seed preserves the world and survivor placements. Shuffle commits a different
+seed. Store and engine validation also reject out-of-range seeds.
+
+The production build and TypeScript compilation passed. No tests or evaluation
+missions were run, per the user's instruction. Existing browser QA scripts were
+adapted to the drawer navigation, but were not executed; their tracked results
+remain historical evidence for the earlier UI.

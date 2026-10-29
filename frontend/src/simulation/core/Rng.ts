@@ -90,3 +90,9 @@ export function hashString(text: string): number {
   h ^= h >>> 16;
   return h >>> 0;
 }
+
+/** The generator consumes unsigned 32-bit integer seeds. */
+export const MAX_WORLD_SEED = 0xffffffff;
+export function isWorldSeed(seed: number): boolean {
+  return Number.isInteger(seed) && seed >= 0 && seed <= MAX_WORLD_SEED;
+}
