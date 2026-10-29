@@ -10,7 +10,7 @@ import { World } from './World';
 import { RobotPaths, Robots } from './Robots';
 import { CommEvents, CommRanges, MapMergeFlash, NetworkLinks, PacketPulses, PartitionAndReconnect } from './Network';
 import { CoverageFog, Dust, EvidenceMarkers, PlacementMarkers, SurvivorBeacons, Survivors, TruthDebug } from './Overlays';
-import { applyAnchoredZoom, captureGroundAnchor, overviewOffset, type GroundZoomAnchor } from './cameraMath';
+import { applyAnchoredZoom, captureGroundAnchor, overviewOffset, smoothZoom, wheelZoom, type GroundZoomAnchor } from './cameraMath';
 import { soundscape } from '../audio/Soundscape';
 
 /** Fixed ticks stay deterministic; pausing preserves the exact rendered pose. */
@@ -109,16 +109,15 @@ function CameraRig({ engine }: { engine: SimulationEngine }) {
       camera.updateProjectionMatrix();
       useSim.setState({ cameraView: 'isometric', following: false, cameraZoom: 100 });
     } else if (previousSize.current.width && previousSize.current.height) {
-      // A drawer or window resize preserves the operator’s current framing.
-      const ratio = camera.zoom / fitZoom.current;
+      // Preserve world scale when a drawer changes the canvas width. Re-fitting
+      // here used to zoom the world unexpectedly and retarget active transitions.
       fitZoom.current = measureFit();
-      camera.zoom = fitZoom.current * ratio;
+      desired.current = null;
       camera.updateProjectionMatrix();
-      if (desired.current) desired.current.zoom = Math.max(fitZoom.current * 0.6, Math.min(fitZoom.current * 4, desired.current.zoom));
     }
     initialized.current = engine;
-    controls.minZoom = fitZoom.current * 0.6;
-    controls.maxZoom = fitZoom.current * 4;
+    controls.minZoom = Math.min(fitZoom.current * 0.6, camera.zoom);
+    controls.maxZoom = Math.max(fitZoom.current * 4, camera.zoom);
     previousSize.current = { width: size.width, height: size.height };
   }, [engine, camera, controls, size.width, size.height]);
 
@@ -132,16 +131,31 @@ function CameraRig({ engine }: { engine: SimulationEngine }) {
       if (Math.hypot(event.clientX - drag.x, event.clientY - drag.y) > 4) { stopGlide(); drag = null; }
     };
     const up = () => { drag = null; };
+    const wheel = (event: WheelEvent) => {
+      event.preventDefault();
+      // OrbitControls also zooms on wheel. Capture this event so only one
+      // camera controller owns zoom, with consistent mouse/trackpad easing.
+      event.stopImmediatePropagation();
+      if (useSim.getState().encounter) return;
+      const rect = canvas.getBoundingClientRect();
+      if (!rect.width || !rect.height || event.deltaY === 0) return;
+      const cursor = new THREE.Vector2((event.clientX - rect.left) / rect.width * 2 - 1, -(event.clientY - rect.top) / rect.height * 2 + 1);
+      lastPointer.current = cursor;
+      const destination = desired.current?.zoomOnly ? desired.current.zoom : camera.zoom;
+      const zoom = wheelZoom(destination, event.deltaY, event.deltaMode, rect.height, fitZoom.current * 0.6, fitZoom.current * 4);
+      useSim.getState().updateCamera(Math.round(camera.zoom / fitZoom.current * 100), false);
+      desired.current = { target: controls.target.clone(), position: camera.position.clone(), zoom, zoomOnly: true, anchor: captureGroundAnchor(camera, cursor) };
+    };
     // A click can select the next robot without cancelling the existing lock.
     // Only actual camera dragging or scrolling releases it.
     canvas.addEventListener('pointerdown', down);
-    canvas.addEventListener('wheel', stopGlide, { capture: true, passive: true });
+    canvas.addEventListener('wheel', wheel, { capture: true, passive: false });
     canvas.ownerDocument.addEventListener('pointermove', move);
     canvas.ownerDocument.addEventListener('pointerup', up);
     canvas.ownerDocument.addEventListener('pointercancel', up);
     return () => {
       canvas.removeEventListener('pointerdown', down);
-      canvas.removeEventListener('wheel', stopGlide, true);
+      canvas.removeEventListener('wheel', wheel, true);
       canvas.ownerDocument.removeEventListener('pointermove', move);
       canvas.ownerDocument.removeEventListener('pointerup', up);
       canvas.ownerDocument.removeEventListener('pointercancel', up);
@@ -202,7 +216,7 @@ function CameraRig({ engine }: { engine: SimulationEngine }) {
     if (!follow.encounter && camera.zoom <= fitZoom.current * 4) controls.maxZoom = fitZoom.current * 4;
     if (desired.current?.following && !follow.following) desired.current = null;
     const glide = desired.current;
-    const factor = 1 - Math.exp(-dt * 7);
+    const factor = 1 - Math.exp(-Math.min(dt, 0.05) * 7);
     if (follow.following && follow.selected) {
       const robot = engine.robots.find((r) => r.name === follow.selected);
       if (robot) {
@@ -216,7 +230,7 @@ function CameraRig({ engine }: { engine: SimulationEngine }) {
       }
     }
     if (glide) {
-      const zoom = THREE.MathUtils.lerp(camera.zoom, glide.zoom, factor);
+      const zoom = smoothZoom(camera.zoom, glide.zoom, dt);
       if (glide.zoomOnly) applyAnchoredZoom(camera, controls.target, zoom, glide.anchor ?? null);
       else {
         controls.target.lerp(glide.target, factor);
@@ -224,7 +238,10 @@ function CameraRig({ engine }: { engine: SimulationEngine }) {
         camera.zoom = zoom;
         camera.updateProjectionMatrix();
       }
-      if ((glide.zoomOnly || camera.position.distanceToSquared(glide.position) < 0.0001) && Math.abs(camera.zoom - glide.zoom) < 0.002) desired.current = null;
+      if ((glide.zoomOnly || camera.position.distanceToSquared(glide.position) < 0.0001) && Math.abs(camera.zoom - glide.zoom) < 0.002) {
+        if (glide.zoomOnly) applyAnchoredZoom(camera, controls.target, glide.zoom, glide.anchor ?? null);
+        desired.current = null;
+      }
     }
     // Bound extreme pans without pulling normal cursor zoom back to the map centre.
     const halfW = span * 3, halfH = span * 3;

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-29T06:09:34.257496+00:00",
+  "generatedAt": "2026-10-29T06:14:47.808994+00:00",
   "browserVersion": "156.0.8078.48",
   "initialBeacons": {
     "count": 3,
@@ -11,9 +11,9 @@
     "step": 86,
     "zoom": 400,
     "target": [
-      18.99939649788978,
+      18.990983157132955,
       0,
-      -6.999777657117286
+      -6.99667800525951
     ],
     "expected": [
       19,
@@ -57,10 +57,10 @@
     "frontend/src/scene/Network.tsx": "2dc5ebf9978ccaccdc327662b78987b76b6af43c23f223c9b9814e7ba866225e",
     "frontend/src/scene/Overlays.tsx": "690ee4d1ab2738a0d4009696b94114a6d851e9242a41e405df1f1d89542544e7",
     "frontend/src/scene/Robots.tsx": "8aef7ac8883f06b240dfe136bfad4d6ba5f4999e86054900197f325ea0c02144",
-    "frontend/src/scene/SceneRoot.tsx": "f4285c11474454304771c0d5ed2a8a0af7037c760ad7dafa5af1674c89c78486",
+    "frontend/src/scene/SceneRoot.tsx": "6b9582b3b6961646bd1159b8b56c942d68251ff2078ca0eb4b1fb47dc1bbedf8",
     "frontend/src/scene/SurvivorRescue.tsx": "5263d12e37f0a8b59784a6f86bba0c931d159d23b64dd34358fa6e7335d65b93",
     "frontend/src/scene/World.tsx": "c59a8bda3f0f39eb0b1ed3dc3a4dd14a971a3382c477d5ea673ba19f42b8be5a",
-    "frontend/src/scene/cameraMath.ts": "efbe1449fc8319498ec1a37913f4c52d85d352204dec4cc284c2ead53ce322ea",
+    "frontend/src/scene/cameraMath.ts": "6b169b4ecad831bef33f3210eef46bedf48441a63e69ffff7592c556aa598729",
     "frontend/src/scene/common.ts": "6a924dcf1ec7fc9f6fdd92dbc86bbfb220a802ca9f79aae1f3a0787fb53b5da6",
     "frontend/src/scene/rescueCelebration.ts": "260d6c1d88d4b1a6c9cb56c5e6d14613e2d09db35b88a49c52216c8fd7727210",
     "frontend/src/simulation/controller/CollisionSafety.ts": "faf1c67cad99c6bc6da922d59447704faa87a353675be9612e5669695a338d92",
@@ -87,7 +87,7 @@
     "frontend/src/styles/app.css": "773636932b0e9bf2d965d42504d79c9d2821c078f1e4f62802c993419161954e",
     "frontend/src/tests/audio.test.ts": "13104a972d968822e89bede438531b7b3cfa3725c32386b89e84f31cbd68018d",
     "frontend/src/tests/autonomy.test.ts": "d11fa7217717ab70a079b9f515d861cfcac24ef91ac3c823df4ec51fb5ea3074",
-    "frontend/src/tests/camera.test.ts": "6643a3b08e904e35690f92204d4ce0b61a76ad1f7fc10a831aa25baf413926d3",
+    "frontend/src/tests/camera.test.ts": "74b22cc40f94fcba80ef8c05f0aa574614731d8b94502d777846142cc7c3c59e",
     "frontend/src/tests/collision.test.ts": "41898b90531e687e19bb77553de2230f4270cc40774182098694589dddaafbcc",
     "frontend/src/tests/controller.test.ts": "a2603aba90856808b2d641d581a357a93340ce6eb80f199165440ebbdf70cb0f",
     "frontend/src/tests/demo.test.ts": "65fd0db389a356a9adbc0b89ad57742cda2abbf32ee32ba7fccfa2828150b2d6",

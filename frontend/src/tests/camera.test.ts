@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { applyAnchoredZoom, captureGroundAnchor, overviewOffset } from '../scene/cameraMath';
+import { applyAnchoredZoom, captureGroundAnchor, overviewOffset, smoothZoom, wheelZoom } from '../scene/cameraMath';
 
 function view(topDown = false) {
   const camera = new THREE.OrthographicCamera(-640, 640, 400, -400, 0.1, 1000);
@@ -54,5 +54,35 @@ describe('Camera framing and cursor zoom', () => {
     expect(camera.zoom).toBe(20);
     expect(camera.position.equals(original)).toBe(true);
     expect(target.length()).toBe(0);
+  });
+});
+
+describe('Continuous zoom intent', () => {
+  it('normalizes wheel units and bounds extreme or invalid input', () => {
+    expect(wheelZoom(20, 3, 1, 800, 8, 60)).toBe(wheelZoom(20, 48, 0, 800, 8, 60));
+    expect(wheelZoom(20, Infinity, 0, 800, 8, 60)).toBe(20);
+    expect(wheelZoom(8, 9000, 0, 800, 8, 60)).toBe(8);
+    expect(wheelZoom(60, -9000, 0, 800, 8, 60)).toBe(60);
+  });
+  it('eases monotonically without overshoot or jumps after a stalled frame', () => {
+    for (const destination of [8, 60]) {
+      let zoom = 20;
+      for (let frame = 0; frame < 120; frame++) {
+        const next = smoothZoom(zoom, destination, 1 / 60);
+        expect(Math.abs(next - destination)).toBeLessThanOrEqual(Math.abs(zoom - destination));
+        zoom = next;
+      }
+      expect(zoom).toBeCloseTo(destination, 5);
+    }
+    expect(smoothZoom(20, 60, 10)).toBe(smoothZoom(20, 60, .05));
+  });
+  it('uses the same easing at 30, 60 and 120 frames per second', () => {
+    const result = [30, 60, 120].map((fps) => {
+      let zoom = 20;
+      for (let frame = 0; frame < fps; frame++) zoom = smoothZoom(zoom, 60, 1 / fps);
+      return zoom;
+    });
+    expect(result[0]).toBeCloseTo(result[1], 9);
+    expect(result[1]).toBeCloseTo(result[2], 9);
   });
 });

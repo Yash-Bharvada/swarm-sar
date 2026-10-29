@@ -35,3 +35,16 @@ export function applyAnchoredZoom(camera: THREE.OrthographicCamera, target: THRE
   target.add(shift);
   camera.updateMatrixWorld();
 }
+
+/** Normalize mouse wheels, line scrolling and trackpads to bounded zoom intent. */
+export function wheelZoom(current: number, delta: number, mode: number, height: number, min: number, max: number): number {
+  const pixels = delta * (mode === 1 ? 16 : mode === 2 ? height : 1);
+  const bounded = THREE.MathUtils.clamp(Number.isFinite(pixels) ? pixels : 0, -240, 240);
+  return THREE.MathUtils.clamp(current * Math.exp(-bounded * 0.0018), min, max);
+}
+
+/** Multiplicative interpolation gives the same perceived speed at every scale. */
+export function smoothZoom(current: number, destination: number, dt: number): number {
+  const factor = 1 - Math.exp(-Math.min(Math.max(dt, 0), 0.05) * 12);
+  return Math.exp(THREE.MathUtils.lerp(Math.log(current), Math.log(destination), factor));
+}

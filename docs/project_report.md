@@ -34,7 +34,7 @@ Custom survivor counts do not increase batteries or mission time. Large layouts 
 
 The latest local checks passed:
 
-- Production frontend build and **124 frontend tests across 15 files**, including audio routing, discovery queues, paused-state protection, stable fictional dialogue and an identical final engine state with/without encounter pauses.
+- Production frontend build and **127 frontend tests across 15 files**, including audio routing, discovery queues, paused-state protection, stable fictional dialogue and an identical final engine state with/without encounter pauses.
 - **152 Python tests passed, 2 ROS/xacro-dependent tests skipped**, with two PettingZoo deprecation warnings.
 - **30 frozen baseline file hashes verified** and GPU-v1 policy contract verified: `c5dff01368e1bb3a77112884c5d545457830097b11aefe54e0d412fc874c57c5`.
 - Audited GPU training source manifest verified: **94 files**, manifest SHA-256 `554f1bc621d0b2144113e75a94fa6668ef73e02f1ce7ee2d308637b14ab920ef`. This UI/report pass leaves those training sources and the expert dataset unchanged.
@@ -47,6 +47,8 @@ For trained-model evidence, [GPU architecture review](gpu_architecture_review.md
 Audio browser evidence is recorded in [browser_audio_validation.json](browser_audio_validation.json). Chrome checks cover explicit startup, independent volumes, mute, rover/drone focus, autonomous survivor and completion cues, reset without replay, clean viewing, mobile layout and unchanged simulation state. A full music progression remained audible across 155 samples with at most 18 active tones; tab suspension/resumption also passed. These checks establish playback behavior, not subjective listening quality or certification across browsers.
 
 Discovery UI evidence is recorded in [browser_survivor_validation.json](browser_survivor_validation.json): three real autonomous discoveries each received a camera/story pause, tap-to-revisit preserved the story, Continue restored the overview, and completed-mission revisits, mobile framing and clean viewing passed. Explored-map tiles now use crisp mint versus sand; generic clicks use a quieter, lower pitched sound. Python/training code remains unchanged.
+
+Zoom refinement: wheel input now uses one cursor-anchored easing path, normalizes wheel units, preserves world scale when drawers resize, and bounds animation progress after stalled frames. [Browser zoom checks](browser_zoom_validation.json) cover monotonic zoom, cursor anchoring, reversal and drawer stability. Survivor transition browser checks were rerun.
 
 ## GPU phase and remaining work
 
