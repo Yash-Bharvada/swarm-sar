@@ -57,11 +57,14 @@ function Ruins({ engine, perCell }: { engine: SimulationEngine; perCell: number 
         cellToWorld(engine, x, y, p);
         if (grid.get(x, y) === RUBBLE) {
           for (let k = 0; k < perCell; k++) {
-            const size = rng.uniform(0.16, 0.34);
+            // RUBBLE is traversable rough ground in the grid model. Draw
+            // low chips below wheel height; tall obstacles belong to WALL.
+            const size = rng.uniform(0.10, 0.20);
+            const height = rng.uniform(0.025, 0.06);
             list.push({
-              position: [p.x + rng.uniform(-0.31, 0.31), size * 0.36, p.z + rng.uniform(-0.31, 0.31)],
-              scale: [size * rng.uniform(0.9, 1.4), size * 0.7, size],
-              rotation: [rng.uniform(-0.1, 0.1), rng.uniform(0, Math.PI), rng.uniform(-0.1, 0.1)],
+              position: [p.x + rng.uniform(-0.31, 0.31), height / 2, p.z + rng.uniform(-0.31, 0.31)],
+              scale: [size * rng.uniform(0.9, 1.4), height, size],
+              rotation: [0, rng.uniform(0, Math.PI), 0],
               color: rng.pick(['#c5ae8a', '#d6c4a4', '#a58e71', '#b49e7e']),
             });
           }

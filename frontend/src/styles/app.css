@@ -442,3 +442,11 @@ button:focus-visible, summary:focus-visible { outline: 2px solid #6f9259; outlin
 .ppo-connection { position: absolute; top: 165px; left: 50%; transform: translateX(-50%); width: min(350px, calc(100% - 30px)); border: 1px solid #bfcca8; background: #fffef3f5; border-radius: 16px; padding: 20px; color: #567047; pointer-events: auto; box-shadow: 0 6px 25px #46623320; }
 .ppo-connection p { font-size: 12px; line-height: 1.7; }
 @media (max-width: 760px) { .controller-button { font-size: 8px; min-height: 31px; padding: 7px; }.controller-menu { position: fixed; top: 125px; right: 18px; width: min(300px, calc(100vw - 85px)); max-height: calc(100dvh - 160px); }.scene-top-right { gap: 5px; } }
+
+.controller-seed-row { display: flex; align-items: center; gap: 7px; }
+.controller-seed-row input { min-width: 0; flex: 1; }
+.controller-seed-row button { flex-shrink: 0; margin-top: 5px; min-height: 37px; }
+.controller-seed-help { font-size: 10px; line-height: 1.6; color: #7a8f6d; margin: 7px 0 0; }
+.controller-seed-help.invalid { color: #9c583a; }
+.controller-seed-row input[aria-invalid=true] { border-color: #ba8263; }
+.terrain-guide { padding: 12px; background: #f0f3e5; border: 1px solid #dfe6d1; border-radius: 12px; }

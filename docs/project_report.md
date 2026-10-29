@@ -140,3 +140,11 @@ restoration. The final checks passed: production build, 137 frontend tests,
 160 Python tests (two ROS-dependent skips), and the unchanged 94-file audited
 GPU manifest. Per-packet drop/reconnect histories, full route export,
 production deployment and ROS policy execution remain outside this adapter.
+
+Seed/terrain clarification: the PPO menu now explains the full development range
+10000–10099 and supports shuffling. Traversable RUBBLE is rendered as low loose
+chips; tall blocking terrain remains WALL. Rover rubble entry costs 2 battery
+units versus 1 on ordinary ground, while drone entry costs 1. This is an abstract
+terrain/energy distinction, not validated obstacle climbing or flight dynamics.
+No movement, reward, sensor, checkpoint or audited training-source changes were
+made. Browser seed validation, the production build and 137 frontend tests passed.

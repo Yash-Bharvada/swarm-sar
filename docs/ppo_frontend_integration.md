@@ -101,3 +101,21 @@ python3 frontend/scripts/ppo_qa.py
 The service lives in `tools/` so all 94 audited training-source hashes, configs,
 source manifests and immutable training tags remain unchanged. The original
 training checkout on the GPU server does not need to be updated.
+
+## Seed selection and traversable rubble
+
+The map seed accepts every integer from 10000 through 10099, not just the default
+10000. A visible validation message explains invalid entries such as 1000, and
+Shuffle chooses another allowed seed. This is an evaluation-separation guardrail:
+0–9999 are training seeds and 20000–20199 are sealed final seeds. The model itself
+is not intrinsically limited to one map seed.
+
+RUBBLE cells mean low, traversable rough debris in the grid simulator. Rovers
+spend 2 battery units entering rubble versus 1 on ordinary ground; drones spend
+1 in either case. Artwork now uses low chips (0.025–0.06 scene units high) so
+traversable cells do not depict tall boulders. WALL cells represent blocking
+obstacles and stop both types in this grid model. Decorative scale is not a
+physical calibration. Wheel climbing, suspension/contact dynamics and flight
+over walls are not simulated here. Changing traversal/energy rules would require
+new evaluation and potentially fine-tuning; this presentation correction changes
+none of those rules or the verified checkpoint.

@@ -293,3 +293,8 @@ snapshots. Development seed 10000 reproduces 4/4 survivors in 94 steps. Connecti
 loss pauses the mission; reset explicitly recovers. Discovery conversations,
 camera/follow and sound remain available. Custom survivor editing/manual driving
 stay in heuristic mode. See [complete setup, scope and tests](../docs/ppo_frontend_integration.md).
+
+PPO map seeds accept **10000–10099**, with an inline error for invalid values and
+a Shuffle button. The terrain guide distinguishes low traversable debris from
+blocking walls: rover rubble entry costs twice ordinary ground. The rubble art
+uses low chips; wheel climbing and flight over walls are not modeled by the grid.

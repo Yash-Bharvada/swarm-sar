@@ -1,0 +1,10 @@
+{
+  "generatedAt": "2026-10-29T13:28:05.416924+00:00",
+  "invalid1000ExplainedAndBlocked": true,
+  "upperBound10099Accepted": true,
+  "shuffleSelectsDifferentAllowedSeed": true,
+  "realPythonSeed10001Loaded": true,
+  "terrainExplanationAvailable": true,
+  "errors": [],
+  "scope": "UI seed validation and terrain presentation; no physics or training changes."
+}
