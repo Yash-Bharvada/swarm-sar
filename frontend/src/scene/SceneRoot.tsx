@@ -18,7 +18,8 @@ function SimDriver({ engine }: { engine: SimulationEngine }) {
   const acc = useRef(0);
   useLayoutEffect(() => { acc.current = 0; simClock.alpha = 1; }, [engine]);
   useFrame((_, dt) => {
-    const { status, settings, advance } = useSim.getState();
+    const { status, settings, advance, controllerMode } = useSim.getState();
+    if (controllerMode === 'ppo') return;
     if (status === 'paused' || status === 'ready') return;
     if (status === 'complete') {
       simClock.alpha = Math.min(1, simClock.alpha + dt * TICKS_PER_SECOND * settings.speed);

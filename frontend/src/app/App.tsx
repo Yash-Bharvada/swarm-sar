@@ -8,6 +8,7 @@ import { SceneRoot } from '../scene/SceneRoot';
 import { useSim } from '../store/simStore';
 import { Icon, type IconName } from '../components/Icon';
 import { SurvivorEncounter } from '../components/SurvivorEncounter';
+import { PPOBridge } from '../ppo/PPOBridge';
 import { AudioBridge } from '../audio/AudioBridge';
 import { soundscape } from '../audio/Soundscape';
 
@@ -100,6 +101,7 @@ export function App() {
   return (
     <div className={`app ${cleanView ? 'clean-view' : ''}`}>
       <AudioBridge />
+      <PPOBridge />
       {!cleanView && <TopBar />}
       {!cleanView && <nav className="command-rail" aria-label="Workspace">
         <div className="rail-navigation">

@@ -37,3 +37,7 @@ CUDA training and the full evaluation were not rerun on the Mac during review.
 
 This artifact does not automatically connect the model to the browser or ROS.
 The original audited training tag/source manifest remains unchanged.
+
+The optional [PPO frontend service](../../../docs/ppo_frontend_integration.md)
+now loads this verified artifact and presents actual Python missions in the 3D
+browser. It is explicitly selected and does not connect the checkpoint to ROS.

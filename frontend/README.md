@@ -6,8 +6,8 @@ bright isometric island with warm sandstone paths, terracotta ruins, blocky gree
 water, and daylight. The presentation update changes the interface, camera, art, and animation;
 the deterministic search, sensing, communication, and collision mechanics are unchanged.
 
-- **Separate from ROS 2 and Gazebo.** Everything runs in the browser tab. No Python runtime, backend, WebSockets, database, or cloud service is required.
-- **Autonomous Mode is not RL.** *Decentralized Autonomous Mode* implements the Step 4 decentralized frontier-controller principles (`src/swarm_sar/baselines/decentralized.py`) in TypeScript. It is not PPO, RL, MARL, or a GNN.
+- **Two explicit controllers.** Browser heuristic mode runs locally without a backend. Optional **PPO · 754k** mode connects to the local Python service, which owns the complete mission. Both remain separate from the ROS/Gazebo waypoint demo.
+- **Heuristic versus learned.** The TypeScript frontier controller implements Step 4 principles. PPO mode executes the verified recurrent GPU-v1 rover/drone policies in Python and renders their authoritative state; it never substitutes heuristic actions. Neither mode implements a GNN.
 - **Robots use local knowledge.** Each robot decides from its private map, sensors, battery, pose, and messages that actually reached its inbox. There is no central planner, reservation table, or access to hidden survivor positions.
 
 See [CONTROLLER_COMPATIBILITY.md](CONTROLLER_COMPATIBILITY.md) for the mapping to the Python
@@ -272,7 +272,7 @@ compact rail and panels. A keyboard and mouse offer the complete driving and cam
 - Radio, thermal, and acoustic models are seeded abstractions, not calibrated physical sensors or RF propagation models.
 - Browser and NumPy random streams differ, so runs are not bit-identical to Python for the same seed. See [CONTROLLER_COMPATIBILITY.md](CONTROLLER_COMPATIBILITY.md).
 - Robots can be added or removed only before launch.
-- No PPO/ONNX learned policy is included. `LocalView → Decision` remains the integration point.
+- PPO requires the Python service and included checkpoint. There is no ONNX/browser-only inference or automatic ROS policy integration; the default local controller remains the heuristic.
 - Maps stay browser-friendly, around 28–56 cells per side. Browser recall is a regression guard, not a reproduction of the much larger Python Step 4 audit.
 
 ### Fleet previews and menus
@@ -283,3 +283,13 @@ Cream/sage panels and subtle hover/entrance animations match the simulation. Red
 preferences keep previews still. All thumbnails share one extra WebGL renderer, removed when
 the Fleet panel closes. Run `python3 frontend/scripts/fleet_qa.py` with Vite on port 5173 for
 browser animation, selection, ten-unit fleet, mobile and cleanup checks.
+
+### Trained PPO missions
+
+Start `.venv/bin/python tools/ppo_service.py` from the repository root, then Vite
+on port 5173. Select **Heuristic → New PPO mission → Launch mission**. Python
+owns map generation, sensors, decisions and physics; the browser only presents
+snapshots. Development seed 10000 reproduces 4/4 survivors in 94 steps. Connection
+loss pauses the mission; reset explicitly recovers. Discovery conversations,
+camera/follow and sound remain available. Custom survivor editing/manual driving
+stay in heuristic mode. See [complete setup, scope and tests](../docs/ppo_frontend_integration.md).

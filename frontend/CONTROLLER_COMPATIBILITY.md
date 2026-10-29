@@ -1,5 +1,11 @@
 # Controller compatibility: Python Step 4 ↔ browser simulator
 
+The historical TypeScript/Python comparison below applies to **Browser heuristic**
+mode. Optional **PPO · 754k** mode uses Python's authoritative world and recurrent
+policies through the [mission service](../docs/ppo_frontend_integration.md); the
+TypeScript controller does not execute there.
+
+
 This document maps the TypeScript simulator in `frontend/src/simulation/` to the validated
 Python Step 4 reference. The Python code is the behavioural source of truth; nothing in the
 Python package was modified.

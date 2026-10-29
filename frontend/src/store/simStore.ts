@@ -3,6 +3,7 @@
  * through engine.tick() and engine.issue(); React re-renders on `version`.
  */
 import { create } from 'zustand';
+import { DEFAULT_PPO_OPTIONS, type PPOOptions } from '../ppo/RemoteEngine';
 import {
   SimulationEngine,
   defaultOptions,
@@ -55,6 +56,11 @@ export const TICKS_PER_SECOND = 4;
 export const simClock = { alpha: 1, lastTickAt: 0 };
 
 interface Store {
+  controllerMode: 'heuristic' | 'ppo';
+  ppoPhase: 'off' | 'connecting' | 'ready' | 'error';
+  ppoError: string | null;
+  ppoOptions: PPOOptions;
+  ppoRevision: number;
   encounter: { id: number; automatic: boolean } | null;
   encounterQueue: number[];
   announcedSurvivors: number[];
@@ -148,6 +154,7 @@ const clearEncounters = { encounter: null, encounterQueue: [], announcedSurvivor
 const clearCameraTarget = { ...clearEncounters, selected: null, focus: null, cameraRequest: null, following: false };
 
 export const useSim = create<Store>((set, get) => ({
+  controllerMode: 'heuristic', ppoPhase: 'off', ppoError: null, ppoOptions: DEFAULT_PPO_OPTIONS, ppoRevision: 0,
   ...clearEncounters,
   inspectSurvivor: (id) => {
     const state = get();
@@ -213,6 +220,7 @@ export const useSim = create<Store>((set, get) => ({
   updateCamera: (zoom, following) => set({ cameraZoom: zoom, ...(following === undefined ? {} : { following }), ...(following === false ? { focus: null } : {}) }),
 
   setSurvivorCount: (count) => {
+    if (get().controllerMode === 'ppo') return;
     const state = get();
     if (state.status !== 'ready') return;
     if (!Number.isSafeInteger(count) || count < 0 || count > state.survivorCapacity) {
@@ -223,6 +231,7 @@ export const useSim = create<Store>((set, get) => ({
     set({ ...clearCameraTarget, settings, customSurvivors: null, engine: new SimulationEngine(optionsFrom(settings, state.demo, null)), survivorMessage: null, version: state.version + 1 });
   },
   randomizeSurvivors: () => {
+    if (get().controllerMode === 'ppo') return;
     const state = get();
     if (state.status !== 'ready') return;
     const count = state.settings.survivorCount ?? state.engine.scenario.victims.length;
@@ -236,6 +245,7 @@ export const useSim = create<Store>((set, get) => ({
     set({ ...clearCameraTarget, settings, customSurvivors, engine: new SimulationEngine(optionsFrom(settings, state.demo, null, customSurvivors)), survivorMessage: null, version: state.version + 1 });
   },
   setEditingSurvivors: (editing) => {
+    if (get().controllerMode === 'ppo') return;
     const state = get();
     if (state.status !== 'ready') return;
     if (!editing) { set({ editingSurvivors: false, survivorMessage: null }); return; }
@@ -244,6 +254,7 @@ export const useSim = create<Store>((set, get) => ({
     set({ ...clearCameraTarget, cleanView: false, settings, customSurvivors, editingSurvivors: true, engine: new SimulationEngine(optionsFrom(settings, state.demo, null, customSurvivors)), survivorMessage: 'Click a reachable tile to add or remove a survivor.', version: state.version + 1 });
   },
   toggleSurvivorAt: (point) => {
+    if (get().controllerMode === 'ppo') return;
     const state = get();
     if (state.status !== 'ready' || !state.editingSurvivors) return;
     const eligible = survivorPlacementCells(state.engine.scenario).some(({ x, y }) => x === point.x && y === point.y);
@@ -255,12 +266,14 @@ export const useSim = create<Store>((set, get) => ({
     set({ ...clearCameraTarget, settings, customSurvivors, engine: new SimulationEngine(optionsFrom(settings, state.demo, null, customSurvivors)), survivorMessage: `${present ? 'Removed' : 'Placed'} survivor at (${point.x}, ${point.y}).`, version: state.version + 1 });
   },
   clearSurvivors: () => {
+    if (get().controllerMode === 'ppo') return;
     const state = get();
     if (state.status !== 'ready') return;
     const settings = { ...state.settings, survivorCount: 0 };
     set({ ...clearCameraTarget, settings, customSurvivors: [], engine: new SimulationEngine(optionsFrom(settings, state.demo, null, [])), survivorMessage: 'Add a survivor before launching.', version: state.version + 1 });
   },
   useAutomaticSurvivors: () => {
+    if (get().controllerMode === 'ppo') return;
     const state = get();
     if (state.status !== 'ready') return;
     const settings = { ...state.settings, survivorCount: null };
@@ -268,6 +281,7 @@ export const useSim = create<Store>((set, get) => ({
   },
 
   setSetting: (key, value) => {
+    if (get().controllerMode === 'ppo' && !['quality', 'fog', 'speed'].includes(key)) return;
     if (key === 'survivorCount') {
       if (value === null) get().useAutomaticSurvivors();
       else get().setSurvivorCount(value as number);
@@ -309,6 +323,7 @@ export const useSim = create<Store>((set, get) => ({
   toggleOverlay: (key) => set({ overlays: { ...get().overlays, [key]: !get().overlays[key] } }),
 
   launch: () => {
+    if (get().controllerMode === 'ppo' && get().ppoPhase !== 'ready') return;
     if (get().status === 'ready') {
       if (!get().engine.scenario.victims.length) { set({ survivorMessage: 'Add at least one survivor before launching.' }); return; }
       set({ status: 'running', editingSurvivors: false, survivorMessage: null });
@@ -318,9 +333,13 @@ export const useSim = create<Store>((set, get) => ({
     if (get().status === 'running') set({ status: 'paused' });
   },
   resume: () => {
-    if (get().status === 'paused' && !get().encounter) set({ status: 'running' });
+    if (get().status === 'paused' && !get().encounter && (get().controllerMode === 'heuristic' || get().ppoPhase === 'ready')) set({ status: 'running' });
   },
   reset: () => {
+    if (get().controllerMode === 'ppo') {
+      set({ ...clearEncounters, ...clearCameraTarget, status: 'ready', ppoPhase: 'connecting', ppoError: null, ppoRevision: get().ppoRevision + 1 });
+      return;
+    }
     const { settings, demo, customSurvivors } = get();
     const engine = new SimulationEngine(optionsFrom({ ...settings, partition: false, mode: settings.mode }, demo, null, customSurvivors));
     set({
@@ -339,10 +358,12 @@ export const useSim = create<Store>((set, get) => ({
     });
   },
   randomizeSeed: () => {
+    if (get().controllerMode === 'ppo') return;
     if (get().status !== 'ready') return;
     get().setSetting('seed', Math.floor(Math.random() * 100000));
   },
   loadDemo: () => {
+    if (get().controllerMode === 'ppo') return;
     const settings: Settings = {
       ...get().settings,
       preset: 'demo',
@@ -380,16 +401,16 @@ export const useSim = create<Store>((set, get) => ({
     const keepFollowing = following && name !== null;
     set({ selected: name, following: keepFollowing, focus: keepFollowing ? { robot: name, nonce: (focus?.nonce ?? 0) + 1 } : null });
     // In mixed mode the selected robot becomes the manually driven one.
-    if (settings.mode === 'mixed' && name) engine.issue({ kind: 'setMode', mode: 'mixed', manualRobot: name });
-    if (settings.mode === 'manual' && name) engine.issue({ kind: 'setMode', mode: 'manual', manualRobot: name });
+    if (get().controllerMode === 'heuristic' && settings.mode === 'mixed' && name) engine.issue({ kind: 'setMode', mode: 'mixed', manualRobot: name });
+    if (get().controllerMode === 'heuristic' && settings.mode === 'manual' && name) engine.issue({ kind: 'setMode', mode: 'manual', manualRobot: name });
     set({ version: get().version + 1 });
   },
   issue: (command) => {
-    get().engine.issue(command);
+    if (get().controllerMode === 'heuristic') get().engine.issue(command);
   },
   advance: (ticks) => {
     const { engine, status } = get();
-    if (status !== 'running' || ticks <= 0) return;
+    if (get().controllerMode === 'ppo' || status !== 'running' || ticks <= 0) return;
     const announced = new Set(get().announcedSurvivors);
     for (let i = 0; i < ticks && !engine.done; i++) {
       engine.tick();

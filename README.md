@@ -6,9 +6,10 @@ This repository implements Blueprint Steps 1–4: a deterministic heterogeneous 
 
 See [docs/project_report.md](docs/project_report.md) for status against the exact
 [Problem Statement 5](docs/problem_statement.md), completed browser controls,
-measured validation, sensor decisions and the pending GPU PPO/MARL phase.
-The browser heuristic, Python learned-policy pipeline and ROS/Gazebo demo remain
-separate execution paths. The report does not claim they are already connected.
+measured validation, sensor decisions and the verified GPU PPO checkpoint.
+The 3D frontend now has an explicit PPO mode backed by the Python mission service;
+the browser heuristic remains available. See [PPO frontend setup](docs/ppo_frontend_integration.md).
+The ROS/Gazebo waypoint demo remains a separate execution path.
 
 ## Step 5: ROS 2 and Gazebo
 

@@ -422,3 +422,23 @@ input[type=range] { width: 100%; accent-color: #688953; height: 14px; }
 button:focus-visible, summary:focus-visible { outline: 2px solid #6f9259; outline-offset: 3px; }
 @keyframes drawer-arrive { from { opacity: 0; transform: translateX(12px); } to { opacity: 1; transform: translateX(0); } }
 @media (prefers-reduced-motion: reduce) { .workspace-drawer { animation: none; } .fleet-card, .rail-button, .rail-button svg, .scene-button, .camera-tools button, .btn, .segmented button { transition: none; } .fleet-card:hover, .rail-button:hover > svg { transform: none; } }
+
+.controller-wrap { position: relative; }
+.controller-button { min-height: 36px; gap: 6px; }
+.controller-menu { position: absolute; right: 0; top: 46px; width: 300px; max-height: min(680px, calc(100dvh - 180px)); overflow-y: auto; padding: 16px; border: 1px solid #c8d7b9; border-radius: 17px; background: #fffef3; box-shadow: 0 10px 35px #304e3026; z-index: 50; }
+.controller-choice { display: block; width: 100%; text-align: left; padding: 13px; border: 1px solid #dfe6d1; border-radius: 12px; background: #f7f8ee; margin-top: 12px; color: #4d6945; }
+.controller-choice.chosen { border-color: #9db78a; background: #eff5e4; }
+.controller-choice strong { font-size: 12px; display: flex; justify-content: space-between; gap: 8px; }
+.controller-choice small { font-size: 10px; line-height: 1.5; display: block; color: #829277; margin: 5px 0 9px; }
+.controller-choice label { font-size: 10px; display: block; margin-top: 10px; color: #627c54; }
+.controller-choice input[type=number], .controller-choice select { margin-top: 5px; background: #fffef6; }
+.controller-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.controller-radio { display: flex !important; align-items: center; gap: 8px; }
+.controller-radio input { accent-color: #648850; }
+.controller-note { font-size: 10px; line-height: 1.7; color: #819174; margin: 13px 0; }
+.ppo-choice > .btn { width: 100%; }
+.controller-provenance { font-size: 9px; color: #809273; line-height: 1.6; }
+.controller-offline { background: #ba7854; }
+.ppo-connection { position: absolute; top: 165px; left: 50%; transform: translateX(-50%); width: min(350px, calc(100% - 30px)); border: 1px solid #bfcca8; background: #fffef3f5; border-radius: 16px; padding: 20px; color: #567047; pointer-events: auto; box-shadow: 0 6px 25px #46623320; }
+.ppo-connection p { font-size: 12px; line-height: 1.7; }
+@media (max-width: 760px) { .controller-button { font-size: 8px; min-height: 31px; padding: 7px; }.controller-menu { position: fixed; top: 125px; right: 18px; width: min(300px, calc(100vw - 85px)); max-height: calc(100dvh - 160px); }.scene-top-right { gap: 5px; } }

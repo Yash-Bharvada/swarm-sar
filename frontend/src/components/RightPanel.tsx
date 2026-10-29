@@ -70,12 +70,14 @@ function SensorBars({ robot }: { robot: RobotState }) {
 function RobotDetail({ engine, robot, version }: { engine: SimulationEngine; robot: RobotState; version: number }) {
   const select = useSim((s) => s.select);
   const mode = useSim((s) => s.settings.mode);
+  const isPPO = useSim((s) => s.controllerMode === 'ppo');
   const issue = useSim((s) => s.issue);
   const conn = robotConnection(engine, robot);
   const received = [...(engine.network.recentReceived.get(robot.name) ?? [])].reverse().slice(0, 4);
   const links = engine.linksFor(robot.name);
   const known = robot.belief.cells.length - robot.belief.count(UNKNOWN);
   const brain = engine.controller.brains.get(robot.name);
+  const localGoal = isPPO ? robot.activeGoal : brain?.localGoal;
   const remaining = Math.max(0, robot.path.length - 1);
   const canDrive = mode !== 'autonomous' && robot.manual && robot.alive;
 
@@ -163,8 +165,8 @@ function RobotDetail({ engine, robot, version }: { engine: SimulationEngine; rob
           <span>Robot ID</span><span>{robot.name}</span>
           <span>Odometry</span><span>({robot.odomX.toFixed(2)}, {robot.odomY.toFixed(2)})</span>
           <span>Uncertainty</span><span>{robot.odomUncertainty.toFixed(3)}</span>
-          <span>Local goal</span><span>{brain?.localGoal ? `(${brain.localGoal.x}, ${brain.localGoal.y})` : '—'}</span>
-          <span>Message sequence</span><span>{engine.network.nextSeq.get(robot.name) ?? 0}</span>
+          <span>Local goal</span><span>{localGoal ? `(${localGoal.x}, ${localGoal.y})` : '—'}</span>
+          <span>Message sequence</span><span>{isPPO ? 'Not exported' : engine.network.nextSeq.get(robot.name) ?? 0}</span>
           <span>Heat N/E/S/W</span><span>{robot.thermal.map((v) => v.toFixed(2)).join(' / ')}</span>
           <span>Acoustic</span><span>{robot.acoustic.toFixed(3)}</span>
           <span>Vision / radio</span><span>{robot.config.visionRadius} / {robot.config.commRadius} cells</span>

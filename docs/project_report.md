@@ -4,12 +4,12 @@ Status reviewed on **29 October 2026** against the [exact Problem Statement 5](p
 
 ## Assessment against the actual challenge
 
-The project has a working heterogeneous swarm simulator, a cooperative PPO training framework, peer communication, a browser demonstration and a separate ROS 2/Gazebo physics workspace. The **MARL requirement is central**: the browser's frontier heuristic alone does not fulfill it. A GPU BC/PPO experiment and paired development evaluation now have a verified checkpoint handoff. Learned-policy demonstration integration and final testing are still needed before claiming the system meets the challenge end to end.
+The project has a working heterogeneous swarm simulator, a cooperative PPO training framework, peer communication, a browser demonstration and a separate ROS 2/Gazebo physics workspace. The **MARL requirement is central**: the browser's frontier heuristic alone does not fulfill it. A GPU BC/PPO experiment and paired development evaluation now have a verified checkpoint handoff. The local Python-to-3D-browser PPO integration is now verified; ROS learned-policy integration and final testing are still needed before claiming the system meets the challenge end to end.
 
 | Problem statement capability | Implemented evidence | Remaining boundary |
 |---|---|---|
 | Heterogeneous drones and rovers | Separate rover/drone policies, sensing and traversal parameters; default grid/browser fleet is two of each | Grid drones have visual altitude but 2D movement. ROS physics demo is a separate execution path; its default is two drones plus one rover, with a four-agent exploration profile available. |
-| Decentralized cooperative MARL | Python PPO with two type-shared policies, private observations, team reward, recurrent GPU-v1 support, behavior-cloning warm start and checkpoint evaluation | No claim that the browser executes PPO. The selected 753664-step GPU policy has development evidence; final-test seeds remain sealed. Goal planning is decentralized; simulator collision shielding uses privileged occupancy information. |
+| Decentralized cooperative MARL | Python PPO with two type-shared policies, private observations, team reward, recurrent GPU-v1 support, behavior-cloning warm start and checkpoint evaluation | PPO mode renders the actual Python checkpoint-driven mission; inference runs in Python, not JavaScript. The selected 753664-step GPU policy has development evidence; final-test seeds remain sealed. Goal planning is decentralized; simulator collision shielding uses privileged occupancy information. |
 | Unknown GPS-denied exploration | Private occupancy beliefs, local scans, frontier choices, A*, drifting odometry and common-entry alignment | Exact own-cell planning/common-grid registration remain idealized. This is not validated collaborative SLAM or unknown-start alignment. |
 | Thermal/acoustic survivor mapping | Seeded noisy thermal sectors and acoustic cues; evidence fusion and close confirmation | Synthetic sensor models, not real thermal images, microphones or perception accuracy measurements. “Saved” in the UI means location confirmed; evacuation is absent. |
 | Peer-to-peer topological sharing | Python per-agent topology and graph/message information, goal claims, evidence, range/loss/delay/expiry/partition/recovery behavior | Browser transport shares occupancy deltas and evidence, not a full learned graph communication system. NetworkX is not a GNN. Physical radio behavior is unvalidated. |
@@ -36,8 +36,8 @@ Fleet/menu refinement adds rotating rover/drone previews using the actual world 
 
 The latest local checks passed:
 
-- Production frontend build and **127 frontend tests across 15 files**, including audio routing, discovery queues, paused-state protection, stable fictional dialogue and an identical final engine state with/without encounter pauses.
-- **154 Python tests passed, 2 ROS/xacro-dependent tests skipped**, with two PettingZoo deprecation warnings.
+- Production frontend build and **137 frontend tests across 16 files**, including audio routing, discovery queues, paused-state protection, stable fictional dialogue and an identical final engine state with/without encounter pauses.
+- **160 Python tests passed, 2 ROS/xacro-dependent tests skipped**, with two PettingZoo deprecation warnings.
 - **30 frozen baseline file hashes verified** and GPU-v1 policy contract verified: `c5dff01368e1bb3a77112884c5d545457830097b11aefe54e0d412fc874c57c5`.
 - Audited GPU training source manifest verified: **94 files**, manifest SHA-256 `554f1bc621d0b2144113e75a94fa6668ef73e02f1ce7ee2d308637b14ab920ef`. This UI/report pass leaves those training sources and the expert dataset unchanged.
 - GPU pipeline `--plan` succeeds without starting training. The supplied A5000 handoff now records GPU execution; local review verified archive and checkpoint provenance hashes rather than rerunning CUDA.
@@ -82,8 +82,7 @@ learned collision avoidance. No communication benefit has been established.
 Next milestones:
 
 1. Completed: preserve the selected handoff and reproduce one checkpoint-driven Python mission. [Demo instructions](ppo_demo.md), [CPU inference evidence](ppo_demo_validation.json) and a [recorded mission GIF](media/ppo_754k_seed10000.gif) are available. Seed 10000 matched its recorded review outcome: 4/4 survivors in 94 steps, 90.48% coverage and zero invalid actions/post-shield collisions. This is one development example, not additional benchmark or field validation.
-2. Implement and validate a PPO-to-browser or PPO-to-ROS adapter for a visible
-   learned-policy demo; the browser still runs its separate heuristic.
+2. Completed locally: the [PPO-to-browser adapter](ppo_frontend_integration.md) reproduces the Python mission through the 3D frontend. [Browser checks](browser_ppo_validation.json) cover real snapshots, pause/discovery, reset, failure without fallback and mobile options. ROS learned-policy execution remains pending.
 3. Run a versioned maze curriculum experiment only after keeping this candidate
    as a fallback. Retain the original batteries, budgets and held-out definitions.
 4. Confirm candidate performance across additional training seeds and freeze
@@ -121,3 +120,23 @@ skipped; all 94 GPU source hashes verified unchanged. ROS/Gazebo executables are
 unavailable on this Mac, so live ROS package tests and physics were not rerun here.
 Existing frontend work, immutable training tags and the server's running training
 checkout are unaffected. No PR CI checks were configured at review time.
+
+## Local trained-policy frontend integration
+
+The selected 754k policy now drives the Python simulation behind an optional
+3D browser mode, with an explicit Heuristic/PPO selector. Python owns the full
+world, sensing, peer transport and recurrent policy state; browser ticks and
+manual commands cannot advance a PPO mission. Development seed 10000 matches
+its recorded review: 4/4 survivors in 94 steps and 90.48% coverage. This verifies
+runtime integration, not a new benchmark. Camera, audio and discovery-story
+pauses do not change the Python step sequence. Reset creates fresh recurrent
+state. Connection loss pauses rather than silently falling back to heuristics.
+
+The localhost service verifies the checkpoint/provenance hashes and restores
+both actor modules on CPU without starting training/Ray workers. Browser tests
+compare actual geometry, positions, batteries and coverage with Python and
+exercise reset, connection failure, new map/team/radio options and heuristic
+restoration. The final checks passed: production build, 137 frontend tests,
+160 Python tests (two ROS-dependent skips), and the unchanged 94-file audited
+GPU manifest. Per-packet drop/reconnect histories, full route export,
+production deployment and ROS policy execution remain outside this adapter.

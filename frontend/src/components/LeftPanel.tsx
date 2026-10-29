@@ -49,6 +49,8 @@ function Stepper({ label, value, onChange, min, max, disabled, icon }: {
 export function LeftPanel() {
   const settings = useSim((s) => s.settings);
   const overlays = useSim((s) => s.overlays);
+  const controllerMode = useSim((s) => s.controllerMode);
+  const ppoPhase = useSim((s) => s.ppoPhase);
   const status = useSim((s) => s.status);
   const demo = useSim((s) => s.demo);
   const selected = useSim((s) => s.selected);
@@ -71,6 +73,8 @@ export function LeftPanel() {
     ['ranges', 'Radio range'], ['paths', 'Planned routes'], ['evidence', 'Sensor evidence'],
     ['coverage', 'Unexplored terrain'], ['labels', 'Robot labels'],
   ];
+
+  if (controllerMode === 'ppo') return <aside className="panel left" aria-label="Mission settings"><div className="panel-header"><span className="panel-eyebrow">TRAINED SWARM · GPU-V1</span><h2>Python mission</h2><p className="panel-intro">The verified 754k checkpoint controls this world. Use Controller settings above the map to create a new PPO mission.</p></div><div className="objective-card"><strong>{ppoPhase === 'ready' ? 'PPO connected' : 'PPO connection pending'}</strong><p className="explain">Seed {settings.seed} · {engine.scenario.width} × {engine.scenario.height}<br />{settings.rovers} rovers · {settings.drones} drones</p></div><p className="explain">Python owns physics, sensing and peer-message delivery. Camera, audio, survivor conversations and rendering are browser presentation. Manual driving and survivor authoring are available in heuristic mode.</p><button className="btn" onClick={reset}>Reset PPO mission</button><details className="disclosure" open><summary>Graphics</summary><Segmented<Quality> label="Graphics quality" value={settings.quality} onChange={(v) => setSetting('quality', v)} options={[{ value: 'low', label: 'Low' }, { value: 'medium', label: 'Medium' }, { value: 'high', label: 'High' }]} /></details></aside>;
 
   return (
     <aside className="panel left" aria-label="Mission settings">

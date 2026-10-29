@@ -49,6 +49,7 @@ type Filter = 'all' | 'dropped' | 'delivered' | 'maps';
 function NetworkLog() {
   useSim((s) => s.version);
   const engine = useSim((s) => s.engine);
+  const isPPO = useSim((s) => s.controllerMode === 'ppo');
   const [filter, setFilter] = useState<Filter>('all');
   const keep = (r: TransmissionRecord) =>
     filter === 'all' || (filter === 'dropped' ? r.state === 'dropped' : filter === 'delivered' ? r.state === 'delivered' : r.mapDeltaSize > 0);
@@ -57,6 +58,7 @@ function NetworkLog() {
   const m = engine.network.metrics;
   return (
     <div className="netlog">
+      {isPPO && <p className="explain">Python delivery snapshots. Drop totals are authoritative; individual drop traces and reconnect events are unavailable in this view.</p>}
       <div className="netlog-bar">
         {(['all', 'delivered', 'dropped', 'maps'] as Filter[]).map((f) => (
           <button key={f} className={filter === f ? 'on' : ''} onClick={() => setFilter(f)}>
