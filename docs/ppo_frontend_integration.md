@@ -188,3 +188,15 @@ use the Python service's supported maps and displays its own configuration. No
 training source, model weights or evaluation results were changed. Production
 build/TypeScript compilation passed; no tests or evaluation missions were run at
 the user's request. Existing optional browser scripts were adapted but not run.
+
+## Custom mission time
+
+Choose Automatic, Custom (minutes), or Unlimited in Mission settings. Apply time
+restarts a heuristic mission; Create mission applies the PPO deadline. Unlimited
+removes the practical timeout using a finite, JSON-safe horizon, while all-found
+and battery-depletion endings remain. The elapsed timer displays ∞ as the limit.
+These are simulated minutes, so playback speed changes wall-clock duration. The
+service step counter now follows each mission horizon rather than a fixed 400.
+A changed PPO deadline also changes mission-progress normalization; the trained
+229-value interface and weights stay intact, and benchmark results remain tied
+to their original configurations. No tests or evaluation missions were run.

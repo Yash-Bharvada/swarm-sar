@@ -10,6 +10,6 @@ export function BatterySettings() {
       <button role="radio" aria-checked={limited} className={limited ? 'on' : ''} disabled={connecting} onClick={() => setSetting('batteryLimited', true)}>Limited</button>
       <button role="radio" aria-checked={!limited} className={!limited ? 'on' : ''} disabled={connecting} onClick={() => setSetting('batteryLimited', false)}>Unlimited</button>
     </div>
-    <p className="explain">{limited ? 'Robots stop when energy runs out.' : 'Energy stays full; the mission timer still applies.'} Changing mode restarts the mission.</p>
+    <p className="explain">{limited ? 'Robots stop when energy runs out.' : 'Energy stays full until the mission ends.'} Changing mode restarts the mission.</p>
   </section>;
 }

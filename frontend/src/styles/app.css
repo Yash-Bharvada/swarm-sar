@@ -470,3 +470,6 @@ button:focus-visible, summary:focus-visible { outline: 2px solid #6f9259; outlin
 .maze-editor-footer > div { display: flex; gap: 10px; justify-content: flex-end; }
 .maze-editor-error { font-size: 12px; color: #a15d40; }
 @media (max-width: 600px) { .maze-editor { padding: 15px; }.maze-editor-toolbar .segmented { flex: 1; }.maze-editor-viewport { max-height: 50dvh; }.maze-editor-zoom { margin-left: 0; } }
+
+.time-settings select, .time-settings input { margin-top: 7px; }
+.time-settings + .btn { margin-top: 10px; }

@@ -59,7 +59,7 @@ export function PPOBridge() {
         const state = useSim.getState();
         simClock.alpha = 1;
         useSim.setState({ engine, status: 'ready', ppoPhase: 'ready', ppoError: null, version: state.version + 1,
-          settings: { ...state.settings, seed: payload.options.seed, rovers: payload.options.rovers, drones: payload.options.drones, mode: 'autonomous', survivorCount: null, packetLoss: payload.transport.packetLoss, delayMax: payload.transport.delay[1], networkEnabled: payload.options.network, batteryLimited: payload.options.batteryLimited !== false, sensorNoise: true },
+          settings: { ...state.settings, seed: payload.options.seed, rovers: payload.options.rovers, drones: payload.options.drones, mode: 'autonomous', survivorCount: null, packetLoss: payload.transport.packetLoss, delayMax: payload.transport.delay[1], networkEnabled: payload.options.network, batteryLimited: payload.options.batteryLimited !== false, timeLimit: payload.options.timeLimit, sensorNoise: true },
           selected: null, following: false, focus: null, cameraRequest: null, encounter: null, encounterQueue: [], announcedSurvivors: [], editingSurvivors: false, survivorMessage: null,
         });
         previousFrame = performance.now();

@@ -321,3 +321,7 @@ all walkable paths must connect before saving. Saved terrain is retained on rese
 Map controls now use Generate/Shuffle and friendly names. Raw seed fields and
 technical model details are kept out of the main interface. PPO maps remain
 Python-controlled; custom terrain editing is available in heuristic mode.
+
+Mission time can be **Automatic**, **Custom** (minutes), or **Unlimited** in
+settings for either controller. Apply time restarts a heuristic mission; Create
+mission applies PPO changes. Unlimited battery is a separate setting.

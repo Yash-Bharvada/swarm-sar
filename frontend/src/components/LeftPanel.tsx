@@ -1,4 +1,5 @@
 import { useEffect, useId, useState } from 'react';
+import { TimeSettings } from './TimeSettings';
 import { BatterySettings } from './BatterySettings';
 import { ControllerControls } from './ControllerControls';
 import { MazeControls } from './MazeControls';
@@ -105,6 +106,7 @@ export function LeftPanel() {
         <Stepper label="Drones" icon="drone" value={settings.drones} min={settings.rovers ? 0 : 1} max={10 - settings.rovers} disabled={locked || demo} onChange={(v) => setSetting('drones', v)} />
       </section>
       <BatterySettings />
+      <TimeSettings />
       <section className="section survivor-setup" aria-label="Survivor setup">
         <label className="field-label" htmlFor={`${fieldId}-survivors`}>
           Survivors <span className="hint">{locked ? 'Reset to edit' : customSurvivors ? 'Custom placement' : settings.survivorCount === null ? 'Automatic' : 'Custom count'}</span>

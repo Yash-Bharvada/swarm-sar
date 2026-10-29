@@ -71,7 +71,7 @@ def integer(data, key, default, low, high):
 
 
 def options(data):
-    if not isinstance(data, dict) or set(data) - {'seed', 'rovers', 'drones', 'size', 'layout', 'network', 'batteryLimited'}:
+    if not isinstance(data, dict) or set(data) - {'seed', 'rovers', 'drones', 'size', 'layout', 'network', 'batteryLimited', 'timeLimit'}:
         raise ValueError('Unknown mission options')
     seed = integer(data, 'seed', 10000, 10000, 10099)
     if seed not in load_seed_splits()['development']:
@@ -87,8 +87,11 @@ def options(data):
     battery_limited = data.get('batteryLimited', True)
     if type(battery_limited) is not bool:
         raise ValueError('batteryLimited must be a boolean')
+    duration = data.get('timeLimit', 400)
+    if duration is not None and (type(duration) is not int or not 1 <= duration <= 86400):
+        raise ValueError('Choose a valid mission duration')
     return dict(seed=seed, rovers=rovers, drones=drones, size=size, layout=layout, network=network,
-                batteryLimited=battery_limited)
+                batteryLimited=battery_limited, **({'timeLimit': duration} if 'timeLimit' in data else {}))
 
 
 class Mission:
@@ -96,11 +99,14 @@ class Mission:
         self.id = secrets.token_urlsafe(24)
         self.config, self.modules, self.provenance = config, modules, provenance
         self.touched = time.monotonic()
+        self.max_steps = config.get('timeLimit', 400)
+        if self.max_steps is None:
+            self.max_steps = (1 << 53) - 1  # JSON-safe, effectively unbounded horizon
         profile = {'rover': config['rovers'], 'drone': config['drones']}
         self.env = VariableSwarmRLlibEnv({
             'curriculum': False, 'domain_randomization': False, 'fixed_team_profile': profile,
             'final_team_profiles': [profile], 'world_sizes': [config['size']],
-            'network_enabled': config['network'], 'max_steps': 400,
+            'network_enabled': config['network'], 'max_steps': self.max_steps,
             'world_overrides': {'layout': config['layout'], 'footprint': 'full', 'max_generation_retries': 100},
         })
         # Mission-local override: keep the audited training sources and the
@@ -182,7 +188,7 @@ class Mission:
             'transport': {'packetLoss': net.packet_loss if net else 0, 'delay': [net.delay_min, net.delay_max] if net else [1, 2], 'ttl': net.ttl if net else 8},
             'network': env.network_metrics(),
             'metrics': {k: metrics[k] for k in ('coverage', 'collisions', 'invalid_actions', 'victims_found', 'survivors_total')},
-            'maxSteps': 400}
+            'maxSteps': self.max_steps}
 
 
 class Service:
@@ -251,7 +257,7 @@ class Service:
             if method == 'POST' and len(parts) == 6 and parts[5] == 'step':
                 if not isinstance(data, dict) or set(data) != {'expectedStep'}:
                     raise ValueError('Only an expected step counter is accepted')
-                expected = integer(data, 'expectedStep', -1, 0, 400)
+                expected = integer(data, 'expectedStep', -1, 0, mission.max_steps)
                 return mission.step(expected)
             raise KeyError('Unknown endpoint')
 

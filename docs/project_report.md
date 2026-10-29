@@ -198,3 +198,20 @@ development/final split and trained checkpoint remain intact. The production
 build and TypeScript compilation passed. No tests, benchmark episodes or
 training were run, as requested; runtime behavior has not been newly validated.
 Historical browser result files were preserved.
+
+
+Mission duration: both controllers now support Automatic, Custom minutes and
+Unlimited in Mission settings. Heuristic changes apply with Apply time and
+restart the mission; PPO duration is applied with Create mission. Automatic
+preserves the previous map-scaled heuristic deadline and 400-step PPO deadline.
+Custom durations accept 1–86400 simulated seconds. Unlimited uses the largest
+JSON-safe integer as an effectively unbounded horizon and displays infinity.
+The Python service now accepts step requests beyond the old hard-coded 400-step
+limit. Saved deadlines survive resets and controller round trips. Battery mode
+is independent; missions still finish when everyone is found or the fleet is
+depleted. Changing a PPO horizon changes its normalized mission-progress input;
+these runs do not replace the original evaluation evidence. No training sources
+or checkpoint weights were changed. No tests or evaluation runs were performed.
+The frontend production build and TypeScript compilation passed, and the
+Python service passed syntax parsing. Runtime changes have not been newly
+validated, in accordance with the request to skip tests.

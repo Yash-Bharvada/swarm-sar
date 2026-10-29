@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSim, type Settings } from '../store/simStore';
 import type { PPOOptions } from '../ppo/RemoteEngine';
+import { TimeLimitFields, timeDraft, timeSeconds } from './TimeSettings';
 import type { Point } from '../simulation/core/types';
 
 let heuristicDraft: { settings: Settings; demo: boolean; customSurvivors: Point[] | null } | null = null;
@@ -12,7 +13,8 @@ export function ControllerControls() {
   const error = useSim((s) => s.ppoError);
   const savedOptions = useSim((s) => s.ppoOptions);
   const [options, setOptions] = useState<PPOOptions>(() => ({ ...savedOptions }));
-  useEffect(() => { setOptions({ ...savedOptions }); }, [savedOptions]);
+  const [duration, setDuration] = useState(() => timeDraft(savedOptions.timeLimit));
+  useEffect(() => { setOptions({ ...savedOptions }); setDuration(timeDraft(savedOptions.timeLimit)); }, [savedOptions]);
   const choosePPO = (next: PPOOptions) => {
     const state = useSim.getState();
     if (state.controllerMode === 'heuristic') heuristicDraft = { settings: state.settings, demo: state.demo, customSurvivors: state.customSurvivors };
@@ -41,8 +43,9 @@ export function ControllerControls() {
       {!validTeam && <p className="controller-seed-help invalid" role="status">Choose whole robot counts, with 1–10 robots in total.</p>}
       <label className="controller-radio"><input aria-label="PPO radio" type="checkbox" checked={options.network} onChange={(e) => change('network', e.target.checked)} />Peer-to-peer radio</label>
       <label>Battery mode<select aria-label="PPO battery mode" value={options.batteryLimited === false ? 'unlimited' : 'limited'} onChange={(e) => change('batteryLimited', e.target.value === 'limited')}><option value="limited">Limited</option><option value="unlimited">Unlimited</option></select></label>
+      <TimeLimitFields draft={duration} onChange={setDuration} />
       <p className="controller-note">Create the mission, then press Launch to explore.</p>
-      <button className="btn primary" disabled={!validSeed || !validTeam || phase === 'connecting'} onClick={() => choosePPO(options)}>{phase === 'connecting' ? 'Connecting…' : 'Create mission'}</button>
+      <button className="btn primary" disabled={!validSeed || !validTeam || Number.isNaN(timeSeconds(duration)) || phase === 'connecting'} onClick={() => choosePPO({ ...options, timeLimit: timeSeconds(duration) })}>{phase === 'connecting' ? 'Connecting…' : 'Create mission'}</button>
       {error && <p className="sound-error" role="status">{error}</p>}
     </div>}
   </section>;

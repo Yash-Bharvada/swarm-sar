@@ -11,7 +11,7 @@ import type { LinkInfo } from '../simulation/network/PeerNetwork';
 import type { PeerMessage } from '../simulation/network/PeerMessage';
 
 export const PPO_CHECKPOINT_SHA = '23696e6cf3b0821b6c01235a3911cb5cb87d0707589efce6ec43cb58b5340040';
-export interface PPOOptions { seed: number; rovers: number; drones: number; size: number; layout: 'rooms' | 'maze' | 'cave'; network: boolean; batteryLimited?: boolean }
+export interface PPOOptions { seed: number; rovers: number; drones: number; size: number; layout: 'rooms' | 'maze' | 'cave'; network: boolean; batteryLimited?: boolean; timeLimit?: number | null }
 export const DEFAULT_PPO_OPTIONS: PPOOptions = { seed: 10000, rovers: 2, drones: 2, size: 32, layout: 'rooms', network: true, batteryLimited: true };
 export interface PPOProvenance { checkpointStep: number; checkpointTreeSha256: string; policyHashes: Record<string, string>; observationVersion: string; observationSize: number; device: string; finalSeedsUsed: boolean }
 interface RemoteRobot { id: number; name: string; type: 'rover' | 'drone'; x: number; y: number; battery: number; maxBattery: number; alive: boolean; belief: number[]; visited: number[]; thermal: [number, number, number, number]; acoustic: number; distanceTravelled: number; lastAction: number; collided: boolean; action: number | null; goal: [number, number] | null; odom_x: number; odom_y: number; odom_uncertainty: number; radii: { vision_radius: number; thermal_radius: number; acoustic_radius: number; comm_radius: number } }
@@ -31,6 +31,7 @@ export function validateSnapshot(value: unknown): asserts value is PPOSnapshot {
   const s = value as PPOSnapshot;
   if (!s || s.protocol !== 1 || s.controller !== 'ppo' || !s.mission || s.provenance?.checkpointTreeSha256 !== PPO_CHECKPOINT_SHA || s.provenance?.observationVersion !== 'gpu-v1' || s.provenance?.observationSize !== 229 || s.provenance?.checkpointStep !== 753664 || s.provenance?.finalSeedsUsed !== false) throw new Error('Incompatible PPO service or checkpoint');
   if (!Number.isInteger(s.step) || s.step < 0 || !Number.isInteger(s.width) || s.width < 24 || s.width > 56 || s.height !== s.width || s.grid?.length !== s.width * s.height || !Array.isArray(s.robots) || !s.robots.length || s.robots.length > 10 || !Array.isArray(s.victims) || !s.transport) throw new Error('Invalid Python world snapshot');
+  if (!Number.isSafeInteger(s.maxSteps) || s.maxSteps < 1) throw new Error('Invalid mission time limit');
   if (!s.options || (s.options.batteryLimited !== undefined && typeof s.options.batteryLimited !== 'boolean')) throw new Error('Invalid Python battery mode');
   if (s.grid.some((v) => ![0, 1, 2].includes(v)) || !Number.isFinite(s.metrics?.coverage) || s.metrics.coverage < 0 || s.metrics.coverage > 1) throw new Error('Invalid Python map or metrics');
   const names = new Set<string>();
@@ -52,7 +53,7 @@ export class RemoteEngine extends SimulationEngine {
   private seenMessages = new Set<string>();
   constructor(snapshot: PPOSnapshot) {
     validateSnapshot(snapshot);
-    super(defaultOptions({ seed: snapshot.options.seed, rovers: snapshot.options.rovers, drones: snapshot.options.drones, networkEnabled: snapshot.options.network, batteryLimited: snapshot.options.batteryLimited !== false, packetLoss: snapshot.transport.packetLoss, delaySteps: snapshot.transport.delay }));
+    super(defaultOptions({ seed: snapshot.options.seed, rovers: snapshot.options.rovers, drones: snapshot.options.drones, maxSteps: snapshot.maxSteps, networkEnabled: snapshot.options.network, batteryLimited: snapshot.options.batteryLimited !== false, packetLoss: snapshot.transport.packetLoss, delaySteps: snapshot.transport.delay }));
     this.mission = snapshot.mission;
     this.provenance = snapshot.provenance;
     const grid = new GridMap(snapshot.width, snapshot.height, 0, Int8Array.from(snapshot.grid));

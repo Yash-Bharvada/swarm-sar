@@ -31,6 +31,7 @@ export interface Settings {
   sensorNoise: boolean;
   networkEnabled: boolean;
   batteryLimited: boolean;
+  timeLimit?: number | null;
   fog: number; // 0..1
   quality: Quality;
   speed: Speed;
@@ -153,6 +154,7 @@ function optionsFrom(s: Settings, demo: boolean, selected: string | null, custom
   return {
     ...base,
     batteryLimited: s.batteryLimited,
+    ...(s.timeLimit !== undefined ? { maxSteps: s.timeLimit === null ? Number.MAX_SAFE_INTEGER : s.timeLimit } : {}),
     ...(s.preset === 'maze' && !demo ? { mapSize: { width: s.mapWidth, height: s.mapHeight } } : {}),
     ...(s.terrain ? { customTerrain: s.terrain } : {}),
     ...(demo ? { sensorNoise: s.sensorNoise, mode: s.mode, manualRobot: selected } : {}),
@@ -323,6 +325,13 @@ export const useSim = create<Store>((set, get) => ({
 
   setSetting: (key, value) => {
     if (key === 'seed' && (typeof value !== 'number' || !isWorldSeed(value))) return;
+    if (key === 'timeLimit') {
+      const state = get();
+      if ((value !== undefined && value !== null && (typeof value !== 'number' || !Number.isInteger(value) || value < 1 || value > 86400)) || value === state.settings.timeLimit || (state.controllerMode === 'ppo' && state.ppoPhase === 'connecting')) return;
+      const timeLimit = value as number | null | undefined;
+      set({ settings: { ...state.settings, timeLimit }, ...(state.controllerMode === 'ppo' ? { ppoOptions: { ...state.ppoOptions, timeLimit } } : {}) });
+      get().reset(); return;
+    }
     if (key === 'batteryLimited') {
       const state = get();
       if (typeof value !== 'boolean' || state.settings.batteryLimited === value || (state.controllerMode === 'ppo' && state.ppoPhase === 'connecting')) return;
