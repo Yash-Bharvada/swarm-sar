@@ -81,7 +81,7 @@ learned collision avoidance. No communication benefit has been established.
 
 Next milestones:
 
-1. Preserve the selected handoff and reproduce one checkpoint-driven Python mission.
+1. Completed: preserve the selected handoff and reproduce one checkpoint-driven Python mission. [Demo instructions](ppo_demo.md), [CPU inference evidence](ppo_demo_validation.json) and a [recorded mission GIF](media/ppo_754k_seed10000.gif) are available. Seed 10000 matched its recorded review outcome: 4/4 survivors in 94 steps, 90.48% coverage and zero invalid actions/post-shield collisions. This is one development example, not additional benchmark or field validation.
 2. Implement and validate a PPO-to-browser or PPO-to-ROS adapter for a visible
    learned-policy demo; the browser still runs its separate heuristic.
 3. Run a versioned maze curriculum experiment only after keeping this candidate
