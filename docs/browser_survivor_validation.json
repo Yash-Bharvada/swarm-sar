@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-29T06:14:47.808994+00:00",
+  "generatedAt": "2026-10-29T06:35:53.405919+00:00",
   "browserVersion": "156.0.8078.48",
   "initialBeacons": {
     "count": 3,
@@ -11,13 +11,13 @@
     "step": 86,
     "zoom": 400,
     "target": [
-      18.990983157132955,
-      0,
-      -6.99667800525951
+      18.99800370241362,
+      0.6499317056088869,
+      -6.9992645219418606
     ],
     "expected": [
       19,
-      0,
+      0.65,
       -7
     ],
     "status": "paused"
@@ -50,17 +50,17 @@
     "frontend/src/components/RightPanel.tsx": "fb14a04d4f1d722591ea89675446d29ddadc3c333b05193aca6fc471ab22447e",
     "frontend/src/components/SceneHud.tsx": "69f23cdc24ea9b7dae55f49e39de196d665c35259a9d0adce0f5464e657fa06e",
     "frontend/src/components/SoundControls.tsx": "a2b81e9bfb30b3a0670d5b6e8a66e59ac9e0d8e7b21c43adb9d04efb8dd17249",
-    "frontend/src/components/SurvivorEncounter.tsx": "1e53549d3d88bb45878063e9ae3a8b95c12f4fbbc20babdbc4f61d13f46a971c",
+    "frontend/src/components/SurvivorEncounter.tsx": "5115a777f9997d2e3ec961b6396936c63b7f3b91a2cf7128075d14bf836d7481",
     "frontend/src/components/TopBar.tsx": "464d98e6c44263931fb5b5e40c0bc21d48a8fbe621d4bda57d2b45940c73de07",
     "frontend/src/main.tsx": "c5a9569586d74e003ba09a0d0fed2801b6637857fdbea99230b64cdd12a65021",
-    "frontend/src/presentation/survivorStories.ts": "b2bfd6093ea0b4a609a5af88eced2773c3f8d83efc31e6dbc192a5f7f7997eec",
+    "frontend/src/presentation/survivorStories.ts": "7a525c8802574d939c78d194c6a120a129e83e9689c4921bac9eec5b44d08947",
     "frontend/src/scene/Network.tsx": "2dc5ebf9978ccaccdc327662b78987b76b6af43c23f223c9b9814e7ba866225e",
     "frontend/src/scene/Overlays.tsx": "690ee4d1ab2738a0d4009696b94114a6d851e9242a41e405df1f1d89542544e7",
     "frontend/src/scene/Robots.tsx": "8aef7ac8883f06b240dfe136bfad4d6ba5f4999e86054900197f325ea0c02144",
-    "frontend/src/scene/SceneRoot.tsx": "6b9582b3b6961646bd1159b8b56c942d68251ff2078ca0eb4b1fb47dc1bbedf8",
-    "frontend/src/scene/SurvivorRescue.tsx": "5263d12e37f0a8b59784a6f86bba0c931d159d23b64dd34358fa6e7335d65b93",
+    "frontend/src/scene/SceneRoot.tsx": "8ac1db78c0e8fabe7f9d331ce50f04f1eae6ce8a706da5449d3404051aa9b670",
+    "frontend/src/scene/SurvivorRescue.tsx": "56870352c2f8fe1c503825c25baa0ba0c241375f9ec343db3c199e2668c59ed9",
     "frontend/src/scene/World.tsx": "c59a8bda3f0f39eb0b1ed3dc3a4dd14a971a3382c477d5ea673ba19f42b8be5a",
-    "frontend/src/scene/cameraMath.ts": "6b169b4ecad831bef33f3210eef46bedf48441a63e69ffff7592c556aa598729",
+    "frontend/src/scene/cameraMath.ts": "23cbf9322aff375de99f14683941eb224f98a2575b4bc23389b309526763ad49",
     "frontend/src/scene/common.ts": "6a924dcf1ec7fc9f6fdd92dbc86bbfb220a802ca9f79aae1f3a0787fb53b5da6",
     "frontend/src/scene/rescueCelebration.ts": "260d6c1d88d4b1a6c9cb56c5e6d14613e2d09db35b88a49c52216c8fd7727210",
     "frontend/src/simulation/controller/CollisionSafety.ts": "faf1c67cad99c6bc6da922d59447704faa87a353675be9612e5669695a338d92",
@@ -84,7 +84,7 @@
     "frontend/src/simulation/world/ScenarioGenerator.ts": "9fa0772d067172b45461606a0cd2add2cf4474a80653ddaf39fb84782a5588a2",
     "frontend/src/simulation/world/WorldState.ts": "d3241162136e0253e97fef331d84bd241e66d3713f1af5eff6b1a6830df63bf0",
     "frontend/src/store/simStore.ts": "0957b293f9f0c744d466c2f1e215cee21ea2cf0c7b0ed45305ff9a15201314d6",
-    "frontend/src/styles/app.css": "773636932b0e9bf2d965d42504d79c9d2821c078f1e4f62802c993419161954e",
+    "frontend/src/styles/app.css": "ae325f5800894502f1a8db0787dc05e19a62235189ca00eca76d2972998990f3",
     "frontend/src/tests/audio.test.ts": "13104a972d968822e89bede438531b7b3cfa3725c32386b89e84f31cbd68018d",
     "frontend/src/tests/autonomy.test.ts": "d11fa7217717ab70a079b9f515d861cfcac24ef91ac3c823df4ec51fb5ea3074",
     "frontend/src/tests/camera.test.ts": "74b22cc40f94fcba80ef8c05f0aa574614731d8b94502d777846142cc7c3c59e",

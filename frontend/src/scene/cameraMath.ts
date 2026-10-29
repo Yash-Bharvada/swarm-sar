@@ -48,3 +48,8 @@ export function smoothZoom(current: number, destination: number, dt: number): nu
   const factor = 1 - Math.exp(-Math.min(Math.max(dt, 0), 0.05) * 12);
   return Math.exp(THREE.MathUtils.lerp(Math.log(current), Math.log(destination), factor));
 }
+
+/** Front-facing inspection from +Z, where the human models face. */
+export function survivorCameraOffset(span: number): THREE.Vector3 {
+  return new THREE.Vector3(0, span * 1.6, span * 3.2);
+}

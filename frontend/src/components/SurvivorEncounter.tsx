@@ -20,7 +20,7 @@ export function SurvivorEncounter() {
       <div className="encounter-eyebrow" role="status">{encounter.automatic ? '✓ Survivor found' : 'A moment with a survivor'}<span>{engine.done ? 'Mission complete' : 'Exploration paused'}</span></div>
       <h2 id="encounter-heading">Meet {story.name} <small>Survivor {victim.id + 1}</small></h2>
       <p id="encounter-story">“{story.text}”</p>
-      <div className="encounter-footer"><span>Location confirmed · ({victim.x}, {victim.y})<small>Fictional story · Location confirmed</small></span>
+      <div className="encounter-footer"><span>Location confirmed · ({victim.x}, {victim.y})<small>A little fictional conversation</small></span>
         <button ref={button} className="btn primary" onClick={continueExploration}>{engine.done && !useSim.getState().encounterQueue.length ? 'View mission report' : 'Continue exploration'} <span aria-hidden>→</span></button>
       </div>
     </section>

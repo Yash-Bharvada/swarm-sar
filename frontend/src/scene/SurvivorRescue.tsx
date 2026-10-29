@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import type { SimulationEngine } from '../simulation/core/SimulationEngine';
 import type { QualityProfile } from './common';
 import { RESCUE_CELEBRATION_SECONDS, rescueCelebrationProgress, rescueCelebrationStart } from './rescueCelebration';
+import { survivorStory } from '../presentation/survivorStories';
 import { useSim } from '../store/simStore';
 
 function useReducedMotion() {
@@ -222,6 +223,8 @@ function RescueConfetti({ start, count, index }: { start: number; count: number;
 /** Found-only presentation; a saved flag denotes confirmation, not physical extraction. */
 export function SurvivorRescue({ engine, position, quality, index }: { engine: SimulationEngine; position: THREE.Vector3; quality: QualityProfile; index: number }) {
   const cleanView = useSim((s) => s.cleanView);
+  const inspecting = useSim((s) => s.encounter !== null);
+  const name = survivorStory(engine.scenario.seed, index).name;
   const reducedMotion = useReducedMotion();
   const [start] = useState(() => rescueCelebrationStart(engine, index, performance.now() / 1000));
   return <group position={position} name={'confirmed-survivor-' + index} onClick={(event) => {
@@ -235,8 +238,8 @@ export function SurvivorRescue({ engine, position, quality, index }: { engine: S
     <SurvivorPerson index={index} start={start} reducedMotion={reducedMotion} shadows={quality.shadows} />
     <RescueFlag reducedMotion={reducedMotion} shadows={quality.shadows} index={index} />
     {!reducedMotion && <RescueConfetti start={start} count={quality.shadows ? 36 : 20} index={index} />}
-    {!cleanView && <Html position={[0.25, 2.45, -0.08]} center zIndexRange={[15, 0]}>
-      <button type="button" className="survivor-saved-tag" aria-label={`Talk to survivor ${index + 1}`} onClick={(event) => { event.stopPropagation(); useSim.getState().inspectSurvivor(index); }}><span className="saved-check" aria-hidden>✓</span><span><strong>SURVIVOR SAVED</strong><small>Tap to hear their story</small></span></button>
+    {!cleanView && !inspecting && <Html position={[0, 1.85, 0]} center zIndexRange={[15, 0]}>
+      <button type="button" className="survivor-saved-tag" aria-label={`Talk to survivor ${index + 1}`} title={`Hear ${name}’s story`} onClick={(event) => { event.stopPropagation(); useSim.getState().inspectSurvivor(index); }}><span className="saved-check" aria-hidden>✓</span><span>{name}</span><span className="survivor-chat" aria-hidden>···</span></button>
     </Html>}
   </group>;
 }

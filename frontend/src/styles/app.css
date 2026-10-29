@@ -171,10 +171,9 @@ kbd { display: inline-flex; align-items: center; justify-content: center; min-wi
 .tag-battery { width: 15px; height: 5px; border: 1px solid #9eae80; margin-left: 3px; padding: 1px; border-radius: 1px; }
 .tag-battery > span { height: 100%; display: block; }
 .survivor-tag { background: #fafde9f0; color: #4d8051; padding: 4px 6px; border: 1px solid #b7d29c; border-radius: 4px; font-size: 7px; letter-spacing: .8px; }
-.survivor-saved-tag { display: flex; align-items: center; gap: 6px; white-space: nowrap; padding: 6px 8px; border: 1px solid #b7cf99; border-radius: 7px; background: #fffef1f5; color: #4a7042; box-shadow: 0 2px 8px #2e542619; font-family: var(--font); transform: translateY(-8px); }
-.survivor-saved-tag .saved-check { width: 19px; height: 19px; display: grid; place-items: center; border-radius: 50%; background: #e3eed3; color: #63874c; font-size: 11px; }
-.survivor-saved-tag strong { display: block; font-size: 8px; font-weight: 650; letter-spacing: .5px; }
-.survivor-saved-tag small { display: block; margin-top: 2px; color: #8b9c79; font-size: 7px; }
+.survivor-saved-tag { display: flex; align-items: center; gap: 5px; white-space: nowrap; padding: 4px 8px; border: 1px solid #c6d5b8; border-radius: 20px; background: #fffef1ee; color: #4a6745; box-shadow: 0 2px 6px #2e542612; font-family: var(--font); font-size: 10px; font-weight: 500; }
+.survivor-saved-tag .saved-check { color: #628451; font-size: 10px; }
+.survivor-chat { font-weight: 800; font-size: 12px; letter-spacing: 1px; color: #819373; }
 .debug-tag { background: #f5daed; color: #884177; padding: 3px 5px; border-radius: 3px; font-size: 8px; }
 .comm-toast { background: #fbfff0ed; border: 1px solid #c7dfb4; color: #527e49; font-size: 8px; padding: 4px 7px; border-radius: 5px; white-space: nowrap; }
 .comm-toast.drop { background: #fff0e3f0; color: #b36d54; border-color: #e9cbb7; }
@@ -367,7 +366,7 @@ input[type=range] { width: 100%; accent-color: #688953; height: 14px; }
 
 /* Discovery pauses keep the world visible while giving the story room to breathe. */
 .encounter-stage { position: absolute; inset: 0; z-index: 90; display: flex; align-items: flex-end; justify-content: center; padding: 28px 24px 110px; pointer-events: auto; }
-.encounter-card { width: min(580px, 100%); padding: 25px 28px; border-radius: 20px; border: 1px solid #b7cba6; background: #fffef1; color: #354b38; box-shadow: 0 14px 55px #28472c30; animation: encounter-arrive 240ms ease-out; }
+.encounter-card { width: min(510px, 100%); padding: 20px 24px; border-radius: 20px; border: 1px solid #b7cba6; background: #fffef1; color: #354b38; box-shadow: 0 14px 55px #28472c30; animation: encounter-arrive 240ms ease-out; }
 .encounter-eyebrow { display: flex; justify-content: space-between; gap: 10px; font-size: 12px; font-weight: 700; color: #47714d; }
 .encounter-eyebrow span { font-weight: 400; color: #73816a; }
 .encounter-card h2 { font-size: 28px; margin: 13px 0; letter-spacing: -1px; }

@@ -138,8 +138,9 @@ from the start, without exposing those positions to robot observations or planni
 Every real discovery pauses simulation time, frames that survivor and announces **Survivor
 found** with a seeded fictional story. **Continue exploration** restores the overview and
 resumes the team. Simultaneous discoveries are shown in sequence before exploration resumes;
-the final story leads to the mission report. Tap a confirmed human or their **Tap to hear their
-story** label to revisit the same dialogue. Previously paused/completed missions retain their
+the final story leads to the mission report. Tap a confirmed human or their compact **name / chat** pill to revisit the same dialogue.
+Discovery and revisit cameras show the person from the front; pills hide while the
+story is open. The dialogue pool contains 24 seeded humorous messages. Previously paused/completed missions retain their
 status after a revisit. Story cards also appear during Watch maze and are keyboard accessible.
 Stories are flavor text: they do not create extra people, supplies or rescue objectives.
 

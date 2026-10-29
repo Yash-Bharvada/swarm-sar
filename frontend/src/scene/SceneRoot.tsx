@@ -10,7 +10,7 @@ import { World } from './World';
 import { RobotPaths, Robots } from './Robots';
 import { CommEvents, CommRanges, MapMergeFlash, NetworkLinks, PacketPulses, PartitionAndReconnect } from './Network';
 import { CoverageFog, Dust, EvidenceMarkers, PlacementMarkers, SurvivorBeacons, Survivors, TruthDebug } from './Overlays';
-import { applyAnchoredZoom, captureGroundAnchor, overviewOffset, smoothZoom, wheelZoom, type GroundZoomAnchor } from './cameraMath';
+import { applyAnchoredZoom, captureGroundAnchor, overviewOffset, survivorCameraOffset, smoothZoom, wheelZoom, type GroundZoomAnchor } from './cameraMath';
 import { soundscape } from '../audio/Soundscape';
 
 /** Fixed ticks stay deterministic; pausing preserves the exact rendered pose. */
@@ -202,10 +202,11 @@ function CameraRig({ engine }: { engine: SimulationEngine }) {
     const victim = engine.discoveredSurvivors().find((v) => v.id === encounter.id);
     if (!victim) return;
     const target = cellToWorld(engine, victim.x, victim.y);
-    const offset = overviewOffset(span);
+    target.y = 0.65;
+    const offset = survivorCameraOffset(span);
     const zoom = Math.max(fitZoom.current * 4, Math.min(56, size.width / 8));
     // On phones, place the person above the story card rather than behind it.
-    if (size.width < 700) target.z += Math.min(5, size.height * 0.2 / zoom);
+    if (size.width < 700) target.y -= Math.min(5, size.height * 0.2 / zoom);
     controls.maxZoom = Math.max(controls.maxZoom, zoom);
     desired.current = { target, position: target.clone().add(offset), zoom };
   }, [encounter, engine, controls, size.width, size.height]);

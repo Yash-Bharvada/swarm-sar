@@ -29,9 +29,10 @@ async def main():
     await page.evaluate('''()=>{for(let i=0;i<500&&!qaSim.useSim.getState().encounter;i++)qaSim.useSim.getState().advance(8)}''')
     await page.get_by_role('dialog').wait_for()
     await page.wait_for_timeout(1400)
-    first = await page.evaluate('''()=>{const s=qaSim.useSim.getState(),v=s.engine.discoveredSurvivors().find(v=>v.id===s.encounter.id),r=qaRoot.getState();return {id:v.id,step:s.engine.step,zoom:s.cameraZoom,target:r.controls.target.toArray(),expected:[v.x-s.engine.scenario.width/2+.5,0,v.y-s.engine.scenario.height/2+.5],status:s.status}}''')
+    first = await page.evaluate('''()=>{const s=qaSim.useSim.getState(),v=s.engine.discoveredSurvivors().find(v=>v.id===s.encounter.id),r=qaRoot.getState();return {id:v.id,step:s.engine.step,zoom:s.cameraZoom,target:r.controls.target.toArray(),expected:[v.x-s.engine.scenario.width/2+.5,.65,v.y-s.engine.scenario.height/2+.5],status:s.status}}''')
     assert first['status']=='paused' and first['zoom'] >= 395,first
     assert max(abs(a-b) for a,b in zip(first['target'],first['expected']))<.1,first
+    assert await page.evaluate('Math.abs(qaRoot.getState().camera.position.y-qaRoot.getState().controls.target.y)/(qaRoot.getState().camera.position.z-qaRoot.getState().controls.target.z)') < .6
     story = await page.locator('#encounter-story').inner_text()
     await page.keyboard.press('Space')
     # Focus lands on Continue; Space intentionally activates the accessible button.
