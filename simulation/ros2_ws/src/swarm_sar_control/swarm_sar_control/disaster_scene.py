@@ -102,10 +102,11 @@ class DisasterScene(Node):
         self.vehicle_pub = self.create_publisher(MarkerArray, "/demo_vehicle_markers", 1)
         self.map_pub = self.create_publisher(MarkerArray, "/demo_map_tiles", qos)
         self.latest_map = None
-        self.map_subscription = self.create_subscription(OccupancyGrid, "/rover_0/private_map", self.receive_map, 1)
+        self.declare_parameter("map_topic", "/rover_0/private_map")
+        self.map_subscription = self.create_subscription(OccupancyGrid, self.get_parameter("map_topic").value, self.receive_map, 1)
         self.map_timer = self.create_timer(1.0, self.publish_map)
         self.poses = {}
-        self.colors = {name: (.55, .55, .55, 1.) for name in ("rover_0", "drone_0", "drone_1")}
+        self.colors = {name: (.55, .55, .55, 1.) for name in ("rover_0", "rover_1", "drone_0", "drone_1")}
         self.subscriptions_ = [self.create_subscription(
             Odometry, f"/{name}/odom", lambda msg, robot=name: self.poses.update({robot: (msg, time.monotonic())}),
             qos_profile_sensor_data) for name in self.colors]

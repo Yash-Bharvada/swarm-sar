@@ -1,0 +1,7 @@
+thermal_investigate_threshold: 0.32
+thermal_corroboration_threshold: 0.16
+acoustic_interest_threshold: 0.20
+peer_evidence_threshold: 0.35
+goal_separation_cells: 3
+topology_update_interval: 8
+max_steps: 400

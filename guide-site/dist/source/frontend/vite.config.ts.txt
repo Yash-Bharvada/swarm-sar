@@ -1,0 +1,24 @@
+/// <reference types="vitest" />
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+
+export default defineConfig({
+  plugins: [react()],
+  server: { proxy: { '/api/ppo': { target: 'http://127.0.0.1:8765', changeOrigin: true } } },
+  build: {
+    chunkSizeWarningLimit: 1500,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          three: ['three'],
+          r3f: ['@react-three/fiber', '@react-three/drei'],
+        },
+      },
+    },
+  },
+  test: {
+    environment: 'node',
+    include: ['src/tests/**/*.test.ts'],
+    globals: true,
+  },
+});

@@ -1,0 +1,412 @@
+{
+  "audit_date": "2026-10-30",
+  "checked_out_branch": "rashiyaom",
+  "source_commit": "83cd96ce7a5651ee77f5816a7ab47844bc0cbf7a",
+  "scope": "Live GitHub branch/PR listings for the main repository and two identified collaborator forks; fetched branch heads, PR heads and tags; reachable ROS history; original screenshot archive.",
+  "repositories": {
+    "rashiyaom/swarm-sar": {
+      "branches": [
+        {
+          "name": "frontend",
+          "sha": "c8b908ce85c0de351c8208f215d12b80329ac9ca"
+        },
+        {
+          "name": "gpu-754k-handoff",
+          "sha": "12f7dafef1bff398f99e87fe7da7f7c580dd46ec"
+        },
+        {
+          "name": "gpu-training",
+          "sha": "81b4d7c9145e2e44a34ce3ddfdb87ad5599bff81"
+        },
+        {
+          "name": "main",
+          "sha": "83cd96ce7a5651ee77f5816a7ab47844bc0cbf7a"
+        },
+        {
+          "name": "rashiyaom",
+          "sha": "83cd96ce7a5651ee77f5816a7ab47844bc0cbf7a"
+        },
+        {
+          "name": "simulator_web",
+          "sha": "83af119f89dc0ce8bf1cb488fd4cf70c8001e527"
+        }
+      ],
+      "pull_requests": [
+        {
+          "number": 3,
+          "title": "Add PPO 754k development checkpoint and evaluation evidence",
+          "state": "closed",
+          "merged_at": "2026-10-29T12:45:53Z",
+          "head": "rashiyaom:gpu-754k-handoff",
+          "head_sha": "54d87bda2b98166c15c2320f93f91575077a7c5b",
+          "url": "https://github.com/rashiyaom/swarm-sar/pull/3"
+        },
+        {
+          "number": 2,
+          "title": "Restore RViz axes and add rover/drone survivor encounters",
+          "state": "closed",
+          "merged_at": "2026-10-29T08:54:45Z",
+          "head": "Yash-Bharvada:ubuntu_simulations",
+          "head_sha": "b87c24632843f5278992d1c4dfe93ec59f4baec7",
+          "url": "https://github.com/rashiyaom/swarm-sar/pull/2"
+        },
+        {
+          "number": 1,
+          "title": "Add ROS 2 Gazebo physics demo and detection-only RViz map",
+          "state": "closed",
+          "merged_at": "2026-10-28T21:19:54Z",
+          "head": "Yash-Bharvada:ubuntu_simulations",
+          "head_sha": "f565468aaf78f063222d4b5394c8f4e638b6f3ac",
+          "url": "https://github.com/rashiyaom/swarm-sar/pull/1"
+        }
+      ]
+    },
+    "pankti0409/swarm-sar": {
+      "branches": [
+        {
+          "name": "main",
+          "sha": "e2db65c693e71649e8888095ecaa3bf94085e7a6"
+        },
+        {
+          "name": "simulator_web",
+          "sha": "b3f9a4019acb0e7c44fb10f5ee0bf25f9ee374c2"
+        }
+      ],
+      "pull_requests": []
+    },
+    "Yash-Bharvada/swarm-sar": {
+      "branches": [
+        {
+          "name": "main",
+          "sha": "e2db65c693e71649e8888095ecaa3bf94085e7a6"
+        },
+        {
+          "name": "ubuntu_simulations",
+          "sha": "b87c24632843f5278992d1c4dfe93ec59f4baec7"
+        }
+      ],
+      "pull_requests": []
+    }
+  },
+  "refs": [
+    {
+      "ref": "refs/heads/frontend",
+      "sha": "c8b908ce85c0de351c8208f215d12b80329ac9ca",
+      "ros_files": 0,
+      "policy_slam_hits": [],
+      "ppo_filenames": []
+    },
+    {
+      "ref": "refs/heads/gpu-754k-handoff",
+      "sha": "12f7dafef1bff398f99e87fe7da7f7c580dd46ec",
+      "ros_files": 0,
+      "policy_slam_hits": [],
+      "ppo_filenames": []
+    },
+    {
+      "ref": "refs/heads/gpu-training",
+      "sha": "81b4d7c9145e2e44a34ce3ddfdb87ad5599bff81",
+      "ros_files": 0,
+      "policy_slam_hits": [],
+      "ppo_filenames": []
+    },
+    {
+      "ref": "refs/heads/main",
+      "sha": "83cd96ce7a5651ee77f5816a7ab47844bc0cbf7a",
+      "ros_files": 36,
+      "policy_slam_hits": [],
+      "ppo_filenames": []
+    },
+    {
+      "ref": "refs/heads/pr3-handoff-review",
+      "sha": "54d87bda2b98166c15c2320f93f91575077a7c5b",
+      "ros_files": 36,
+      "policy_slam_hits": [],
+      "ppo_filenames": []
+    },
+    {
+      "ref": "refs/heads/rashiyaom",
+      "sha": "83cd96ce7a5651ee77f5816a7ab47844bc0cbf7a",
+      "ros_files": 36,
+      "policy_slam_hits": [],
+      "ppo_filenames": []
+    },
+    {
+      "ref": "refs/heads/simulator_web",
+      "sha": "83af119f89dc0ce8bf1cb488fd4cf70c8001e527",
+      "ros_files": 0,
+      "policy_slam_hits": [],
+      "ppo_filenames": []
+    },
+    {
+      "ref": "refs/remotes/audit-yash/main",
+      "sha": "e2db65c693e71649e8888095ecaa3bf94085e7a6",
+      "ros_files": 0,
+      "policy_slam_hits": [],
+      "ppo_filenames": []
+    },
+    {
+      "ref": "refs/remotes/audit-yash/ubuntu_simulations",
+      "sha": "b87c24632843f5278992d1c4dfe93ec59f4baec7",
+      "ros_files": 35,
+      "policy_slam_hits": [],
+      "ppo_filenames": []
+    },
+    {
+      "ref": "refs/remotes/origin/frontend",
+      "sha": "c8b908ce85c0de351c8208f215d12b80329ac9ca",
+      "ros_files": 0,
+      "policy_slam_hits": [],
+      "ppo_filenames": []
+    },
+    {
+      "ref": "refs/remotes/origin/gpu-754k-handoff",
+      "sha": "12f7dafef1bff398f99e87fe7da7f7c580dd46ec",
+      "ros_files": 0,
+      "policy_slam_hits": [],
+      "ppo_filenames": []
+    },
+    {
+      "ref": "refs/remotes/origin/gpu-training",
+      "sha": "81b4d7c9145e2e44a34ce3ddfdb87ad5599bff81",
+      "ros_files": 0,
+      "policy_slam_hits": [],
+      "ppo_filenames": []
+    },
+    {
+      "ref": "refs/remotes/origin/main",
+      "sha": "83cd96ce7a5651ee77f5816a7ab47844bc0cbf7a",
+      "ros_files": 36,
+      "policy_slam_hits": [],
+      "ppo_filenames": []
+    },
+    {
+      "ref": "refs/remotes/origin/rashiyaom",
+      "sha": "83cd96ce7a5651ee77f5816a7ab47844bc0cbf7a",
+      "ros_files": 36,
+      "policy_slam_hits": [],
+      "ppo_filenames": []
+    },
+    {
+      "ref": "refs/remotes/origin/simulator_web",
+      "sha": "83af119f89dc0ce8bf1cb488fd4cf70c8001e527",
+      "ros_files": 0,
+      "policy_slam_hits": [],
+      "ppo_filenames": []
+    },
+    {
+      "ref": "refs/remotes/pankti/main",
+      "sha": "e2db65c693e71649e8888095ecaa3bf94085e7a6",
+      "ros_files": 0,
+      "policy_slam_hits": [],
+      "ppo_filenames": []
+    },
+    {
+      "ref": "refs/remotes/pankti/simulator_web",
+      "sha": "b3f9a4019acb0e7c44fb10f5ee0bf25f9ee374c2",
+      "ros_files": 0,
+      "policy_slam_hits": [],
+      "ppo_filenames": []
+    },
+    {
+      "ref": "refs/remotes/pr-audit/1-head",
+      "sha": "f565468aaf78f063222d4b5394c8f4e638b6f3ac",
+      "ros_files": 31,
+      "policy_slam_hits": [],
+      "ppo_filenames": []
+    },
+    {
+      "ref": "refs/remotes/pr-audit/2-head",
+      "sha": "b87c24632843f5278992d1c4dfe93ec59f4baec7",
+      "ros_files": 35,
+      "policy_slam_hits": [],
+      "ppo_filenames": []
+    },
+    {
+      "ref": "refs/remotes/pr-audit/3-head",
+      "sha": "54d87bda2b98166c15c2320f93f91575077a7c5b",
+      "ros_files": 36,
+      "policy_slam_hits": [],
+      "ppo_filenames": []
+    },
+    {
+      "ref": "refs/tags/blueprint-step1-done",
+      "sha": "df8c322190fb033e7a14a174f7b251b30ec34b8e",
+      "ros_files": 0,
+      "policy_slam_hits": [],
+      "ppo_filenames": []
+    },
+    {
+      "ref": "refs/tags/blueprint-step2-done",
+      "sha": "1c989394ba0f31bb39ff8cd79453944bd026bb9f",
+      "ros_files": 0,
+      "policy_slam_hits": [],
+      "ppo_filenames": []
+    },
+    {
+      "ref": "refs/tags/blueprint-step2-frozen",
+      "sha": "f3440b7560d6525df97360b42c09f3d2c9dbe5c5",
+      "ros_files": 0,
+      "policy_slam_hits": [],
+      "ppo_filenames": []
+    },
+    {
+      "ref": "refs/tags/blueprint-step25-done",
+      "sha": "8548dcacd6d5e87fa0c4d3770b005f605d577f9d",
+      "ros_files": 0,
+      "policy_slam_hits": [],
+      "ppo_filenames": []
+    },
+    {
+      "ref": "refs/tags/blueprint-step3-done",
+      "sha": "40462a3f0650c55215724bd51918584071a4d708",
+      "ros_files": 0,
+      "policy_slam_hits": [],
+      "ppo_filenames": []
+    },
+    {
+      "ref": "refs/tags/blueprint-step4-done",
+      "sha": "53686247fe220eeebf37eb909e8bae5f9618691d",
+      "ros_files": 0,
+      "policy_slam_hits": [],
+      "ppo_filenames": []
+    },
+    {
+      "ref": "refs/tags/gpu-training-v1",
+      "sha": "e750bccaf72a74a94ddd9ff1143542e0e6c6aad1",
+      "ros_files": 0,
+      "policy_slam_hits": [],
+      "ppo_filenames": []
+    },
+    {
+      "ref": "refs/tags/gpu-v1-training-ready",
+      "sha": "696e287ee0e6d29faa81bcfe11e28d29e7618ad3",
+      "ros_files": 0,
+      "policy_slam_hits": [],
+      "ppo_filenames": []
+    },
+    {
+      "ref": "refs/tags/part1-done",
+      "sha": "cc216b5e841442ca4703d942d4dd153b7cbb9086",
+      "ros_files": 0,
+      "policy_slam_hits": [],
+      "ppo_filenames": []
+    },
+    {
+      "ref": "refs/tags/rashiyaom-gpu-browser-integrated",
+      "sha": "5f70b203e2c2e53b2acfb527c6f308c633eb0d8b",
+      "ros_files": 31,
+      "policy_slam_hits": [],
+      "ppo_filenames": []
+    },
+    {
+      "ref": "refs/tags/rashiyaom-gpu-dataset-included",
+      "sha": "635811589e6bd118ad548f7cbcc509c500006ecc",
+      "ros_files": 31,
+      "policy_slam_hits": [],
+      "ppo_filenames": []
+    },
+    {
+      "ref": "refs/tags/rashiyaom-gpu-v2-audited",
+      "sha": "43b4d0175a432735b2e8be70c4bfea01fdd5a8c8",
+      "ros_files": 0,
+      "policy_slam_hits": [],
+      "ppo_filenames": []
+    },
+    {
+      "ref": "refs/tags/rashiyaom-step5-integrated",
+      "sha": "94730bc7edd1191d8bcf114ab3e27be3f1afc08a",
+      "ros_files": 31,
+      "policy_slam_hits": [],
+      "ppo_filenames": []
+    }
+  ],
+  "findings": {
+    "ros_source_branch": "Yash-Bharvada/swarm-sar:ubuntu_simulations",
+    "ros_source_head": "b87c24632843f5278992d1c4dfe93ec59f4baec7",
+    "ros_prs": [
+      1,
+      2
+    ],
+    "ros_prs_merged": true,
+    "current_ros_root": "simulation/ros2_ws",
+    "source_branch_ros_files": 35,
+    "current_ros_files": 36,
+    "byte_identical_retained_files": 33,
+    "modified_retained_files": [
+      "swarm_sar_control/swarm_sar_control/wait_for_simulation.py",
+      "swarm_sar_gazebo/launch/swarm_sar_sim.launch.py"
+    ],
+    "missing_source_branch_ros_files": [],
+    "recorded_ppo_agent_logs": true,
+    "matching_ppo_agent_source_found_in_scanned_ros_refs_or_history": false,
+    "slam_implementation_found_in_scanned_ros_refs_or_history": false
+  },
+  "media": [
+    {
+      "path": "docs/media/simulation-screenshots/01-gazebo.png",
+      "size": 124583,
+      "sha256": "48166ec9a0365b630074c3ca39af734b519fd771f429f63492dd8765f895835a"
+    },
+    {
+      "path": "docs/media/simulation-screenshots/02-rviz.png",
+      "size": 100899,
+      "sha256": "a8e8fceba42ef702dc54102dadab18487d963d22dfa2045f57f5178515120575"
+    },
+    {
+      "path": "docs/media/simulation-screenshots/03-gazebo-overview.png",
+      "size": 114661,
+      "sha256": "527ad0b03e5e49c96bca8840e068f90f25b9d4b421185e2c8bfe39e1b36be8c7"
+    },
+    {
+      "path": "docs/media/simulation-screenshots/04-rviz-progress.png",
+      "size": 103661,
+      "sha256": "cd22ddc8a2e9cc003aa365abcfc69b316de89c09198e231ff508eeecb007af5a"
+    },
+    {
+      "path": "docs/media/simulation-screenshots/05-gazebo-west.png",
+      "size": 122048,
+      "sha256": "7901061e7304c301d598950c284e930d69c07b88f9e289444fa3cf14c691399f"
+    },
+    {
+      "path": "docs/media/simulation-screenshots/06-rviz-progress.png",
+      "size": 103508,
+      "sha256": "f4a6abf72d0f17a3fe0bbc8287dc7c709da2077873e665e9cef037239b9a5101"
+    },
+    {
+      "path": "docs/media/simulation-screenshots/07-gazebo-top.png",
+      "size": 109126,
+      "sha256": "a05c6ac1650758f722599af95e18e31bb303c7657e65f4422229d41b033db197"
+    },
+    {
+      "path": "docs/media/simulation-screenshots/08-rviz-progress.png",
+      "size": 103488,
+      "sha256": "d23514de4d31031d9b701f6fef09953e844340740cfe963b8bdaa84245ee0864"
+    },
+    {
+      "path": "docs/media/simulation-screenshots/09-gazebo-east.png",
+      "size": 129362,
+      "sha256": "7e4e52089a227269a12e2d5225abed2e4ac63a04dc54f01d436279c882c3e378"
+    },
+    {
+      "path": "docs/media/simulation-screenshots/10-rviz-progress.png",
+      "size": 103562,
+      "sha256": "7374d688d6668ffe9dc702f6f95001ca6c66fc1a86d71be4f3a2c0906ef70d55"
+    },
+    {
+      "path": "docs/media/simulation-screenshots/README.md",
+      "size": 497,
+      "sha256": "dd8ca6ba9fa80579ab80c7fe4598e4211df2d9c994fd34f5a7722da50a104abc"
+    },
+    {
+      "path": "docs/media/simulation-screenshots/capture-manifest.json",
+      "size": 1022,
+      "sha256": "3aa12d6c5611263d781e721b375403a64f0d93983a3599b4f45c10e893b6fc9d"
+    },
+    {
+      "path": "docs/media/simulation-screenshots/run.log",
+      "size": 38684,
+      "sha256": "0989e213259e87592830eb8d50ff805d7a2928c657dea5f23dfe120227450768"
+    }
+  ]
+}

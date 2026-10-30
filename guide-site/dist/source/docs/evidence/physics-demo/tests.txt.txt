@@ -1,0 +1,12 @@
+.......                                                                  [100%]
+7 passed in 1.69s
+test_angle_wrap_stays_in_principal_interval (test_control_helpers.ControlHelperTests.test_angle_wrap_stays_in_principal_interval) ... ok
+test_bresenham_includes_both_endpoints (test_control_helpers.ControlHelperTests.test_bresenham_includes_both_endpoints) ... ok
+test_wall_intersection_detects_crossing_only (test_control_helpers.ControlHelperTests.test_wall_intersection_detects_crossing_only) ... ok
+test_accelerates_and_brakes_without_overshoot (test_waypoint_demo.SlewTests.test_accelerates_and_brakes_without_overshoot) ... ok
+test_reversal_is_bounded (test_waypoint_demo.SlewTests.test_reversal_is_bounded) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.006s
+
+OK

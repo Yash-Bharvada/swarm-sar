@@ -1,0 +1,64 @@
+{
+  "wall_seconds": 25.024226251000073,
+  "nodes": [
+    [
+      "decentralized_agent",
+      "/drone_0"
+    ],
+    [
+      "decentralized_agent",
+      "/rover_0"
+    ],
+    [
+      "map_to_drone_0_odom",
+      "/"
+    ],
+    [
+      "map_to_rover_0_odom",
+      "/"
+    ],
+    [
+      "peer_network_bridge",
+      "/"
+    ],
+    [
+      "robot_state_publisher",
+      "/drone_0"
+    ],
+    [
+      "robot_state_publisher",
+      "/rover_0"
+    ],
+    [
+      "ros_gz_bridge",
+      "/"
+    ],
+    [
+      "survivor_oracle",
+      "/"
+    ],
+    [
+      "swarm_validation_probe",
+      "/"
+    ]
+  ],
+  "counts": {},
+  "samples": {},
+  "positions": {},
+  "dynamic_tf_parents": {},
+  "missing": [
+    "/clock",
+    "/tf",
+    "/rover_0/odom",
+    "/rover_0/scan",
+    "/rover_0/imu/data",
+    "/rover_0/status",
+    "/rover_0/peer_inbox",
+    "/drone_0/odom",
+    "/drone_0/scan",
+    "/drone_0/imu/data",
+    "/drone_0/status",
+    "/drone_0/peer_inbox",
+    "/drone_0/downward_camera/image_raw"
+  ]
+}

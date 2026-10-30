@@ -20,6 +20,7 @@ setup(
     license="Apache-2.0",
     entry_points={
         "console_scripts": [
+            "slam_agent = swarm_sar_control.slam_agent:main",
             "wait_for_simulation = swarm_sar_control.wait_for_simulation:main",
             "disaster_scene = swarm_sar_control.disaster_scene:main",
             "waypoint_demo = swarm_sar_control.waypoint_demo:main",

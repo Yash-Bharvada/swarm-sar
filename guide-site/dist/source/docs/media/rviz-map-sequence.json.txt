@@ -1,0 +1,19 @@
+{
+  "kind": "GIF sequence encoded from original RViz screenshots",
+  "source_directory": "simulation-screenshots",
+  "source_order": [
+    "02-rviz.png",
+    "04-rviz-progress.png",
+    "06-rviz-progress.png",
+    "08-rviz-progress.png",
+    "10-rviz-progress.png"
+  ],
+  "scope": "Same world and same one-rover/two-drone session; discrete recorded states, not continuous video. No generated or retouched scene content. GIF palette encoding only.",
+  "sources": {
+    "02-rviz.png": "a8e8fceba42ef702dc54102dadab18487d963d22dfa2045f57f5178515120575",
+    "04-rviz-progress.png": "cd22ddc8a2e9cc003aa365abcfc69b316de89c09198e231ff508eeecb007af5a",
+    "06-rviz-progress.png": "f4a6abf72d0f17a3fe0bbc8287dc7c709da2077873e665e9cef037239b9a5101",
+    "08-rviz-progress.png": "d23514de4d31031d9b701f6fef09953e844340740cfe963b8bdaa84245ee0864",
+    "10-rviz-progress.png": "7374d688d6668ffe9dc702f6f95001ca6c66fc1a86d71be4f3a2c0906ef70d55"
+  }
+}

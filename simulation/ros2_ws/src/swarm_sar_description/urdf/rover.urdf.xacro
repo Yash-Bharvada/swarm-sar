@@ -2,6 +2,8 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="$(arg robot_name)">
   <xacro:arg name="robot_name" default="rover_0"/>
   <xacro:arg name="low_resource" default="true"/>
+  <xacro:arg name="slam_mode" default="false"/>
+  <xacro:property name="slam_mode" value="$(arg slam_mode)"/>
   <xacro:property name="lite" value="$(arg low_resource)"/>
   <xacro:property name="robot_name" value="$(arg robot_name)"/>
   <xacro:property name="wheel_radius" value="0.14"/>
@@ -66,7 +68,7 @@
     <!-- World pose closes the simulation path loop without skid-steer odometry drift. -->
     <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
       <odom_topic>/${robot_name}/odom</odom_topic><tf_topic>/${robot_name}/tf</tf_topic>
-      <odom_frame>${robot_name}/odom</odom_frame><robot_base_frame>${robot_name}/base_footprint</robot_base_frame>
+      <odom_frame>${'map' if slam_mode else robot_name+'/odom'}</odom_frame><robot_base_frame>${robot_name+'/ground_truth_base' if slam_mode else robot_name+'/base_footprint'}</robot_base_frame>
       <dimensions>3</dimensions><odom_publish_frequency>30</odom_publish_frequency>
     </plugin>
     <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher"><topic>/${robot_name}/joint_states</topic><update_rate>20</update_rate></plugin>

@@ -1,0 +1,10 @@
+{
+  "archive": "artifacts/slam_linux_handoff.tar.gz",
+  "sha256": "b241d4e24f943ff447603f7096cc15b41dd489f41403180835f6eca1b0dc618c",
+  "bytes": 234380,
+  "baseline_patch_reconstruction": "passed",
+  "payload_checksums": "passed",
+  "new_files": 17,
+  "tracked_files": 12,
+  "base_commit": "83cd96ce7a5651ee77f5816a7ab47844bc0cbf7a"
+}

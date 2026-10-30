@@ -1,0 +1,145 @@
+Panels:
+  - Class: rviz_common/Displays
+    Name: Displays
+  - Class: rviz_common/Views
+    Name: Views
+Visualization Manager:
+  Class: ""
+  Global Options:
+    Background Color: 20; 20; 20
+    Fixed Frame: map
+    Frame Rate: 30
+  Displays:
+    - Class: rviz_default_plugins/MarkerArray
+      Name: Live Occupancy Map
+      Enabled: true
+      Topic:
+        Value: /demo_map_tiles
+        Reliability Policy: Reliable
+        Durability Policy: Transient Local
+        Depth: 1
+    - Class: rviz_default_plugins/MarkerArray
+      Name: Detected Survivors - green dots
+      Enabled: true
+      Topic:
+        Value: /detected_survivors
+        Reliability Policy: Reliable
+        Durability Policy: Transient Local
+        Depth: 1
+    - Class: rviz_default_plugins/MarkerArray
+      Name: Vehicle Labels
+      Enabled: true
+      Topic:
+        Value: /demo_vehicle_markers
+        Reliability Policy: Reliable
+        Durability Policy: Volatile
+        Depth: 1
+    - Class: rviz_default_plugins/Axes
+      Name: Rover 0 Axes
+      Enabled: true
+      Reference Frame: rover_0/base_footprint
+      Length: 0.9
+      Radius: 0.045
+    - Class: rviz_default_plugins/Axes
+      Name: Drone 0 Axes
+      Enabled: true
+      Reference Frame: drone_0/base_footprint
+      Length: 0.9
+      Radius: 0.045
+    - Class: rviz_default_plugins/Axes
+      Name: Drone 1 Axes
+      Enabled: true
+      Reference Frame: drone_1/base_footprint
+      Length: 0.9
+      Radius: 0.045
+    - Class: rviz_default_plugins/Grid
+      Name: Site Grid
+      Enabled: true
+      Cell Size: 1
+      Plane Cell Count: 40
+      Color: 80; 80; 80
+    - Class: rviz_default_plugins/Map
+      Name: Rover 0 Private Map
+      Enabled: false
+      Topic:
+        Value: /rover_0/private_map
+        Reliability Policy: Reliable
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Depth: 1
+      Alpha: 0.8
+    - Class: rviz_default_plugins/Map
+      Name: Rover 1 Private Map
+      Enabled: false
+      Topic:
+        Value: /rover_1/private_map
+      Alpha: 0.45
+    - Class: rviz_default_plugins/LaserScan
+      Name: Rover 0 Scan
+      Enabled: true
+      Topic:
+        Value: /rover_0/scan
+        Reliability Policy: Best Effort
+        Durability Policy: Volatile
+      Size (Pixels): 3
+      Color Transformer: FlatColor
+      Color: 160; 160; 160
+    - Class: rviz_default_plugins/LaserScan
+      Name: Rover 1 Scan
+      Enabled: false
+      Topic:
+        Value: /rover_1/scan
+      Size (Pixels): 3
+      Color Transformer: FlatColor
+      Color: 160; 160; 160
+    - Class: rviz_default_plugins/LaserScan
+      Name: Drone 0 Scan
+      Enabled: true
+      Topic:
+        Value: /drone_0/scan
+        Reliability Policy: Best Effort
+        Durability Policy: Volatile
+      Size (Pixels): 3
+      Color Transformer: FlatColor
+      Color: 190; 190; 190
+    - Class: rviz_default_plugins/LaserScan
+      Name: Drone 1 Scan
+      Enabled: true
+      Topic:
+        Value: /drone_1/scan
+        Reliability Policy: Best Effort
+        Durability Policy: Volatile
+      Size (Pixels): 3
+      Color Transformer: FlatColor
+      Color: 210; 210; 210
+    - Class: rviz_default_plugins/Marker
+      Name: Survivor Alerts
+      Enabled: false
+      Topic:
+        Value: /rover_0/survivor_alert
+    - Class: rviz_default_plugins/Marker
+      Name: Drone 0 Detection Alerts
+      Enabled: false
+      Topic:
+        Value: /drone_0/survivor_alert
+    - Class: rviz_default_plugins/Marker
+      Name: Drone 1 Detection Alerts
+      Enabled: false
+      Topic:
+        Value: /drone_1/survivor_alert
+    - Class: rviz_default_plugins/TF
+      Name: Robot Frames
+      Enabled: false
+  Tools:
+    - Class: rviz_default_plugins/Interact
+    - Class: rviz_default_plugins/MoveCamera
+    - Class: rviz_default_plugins/Select
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Distance: 62
+      Pitch: 1.25
+      Yaw: 0
+Window Geometry:
+  Width: 1400
+  Height: 900

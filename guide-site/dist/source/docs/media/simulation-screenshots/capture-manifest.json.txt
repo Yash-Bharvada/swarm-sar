@@ -1,0 +1,58 @@
+[
+  {
+    "file": "03-gazebo-overview.png",
+    "captured_utc": "2026-10-29T17:15:03Z",
+    "camera_xyz": [
+      32,
+      -32,
+      38
+    ]
+  },
+  {
+    "file": "04-rviz-progress.png",
+    "captured_utc": "2026-10-29T17:15:04Z",
+    "camera_xyz": null
+  },
+  {
+    "file": "05-gazebo-west.png",
+    "captured_utc": "2026-10-29T17:15:08Z",
+    "camera_xyz": [
+      -26,
+      -26,
+      25
+    ]
+  },
+  {
+    "file": "06-rviz-progress.png",
+    "captured_utc": "2026-10-29T17:15:08Z",
+    "camera_xyz": null
+  },
+  {
+    "file": "07-gazebo-top.png",
+    "captured_utc": "2026-10-29T17:15:12Z",
+    "camera_xyz": [
+      0,
+      0,
+      48
+    ]
+  },
+  {
+    "file": "08-rviz-progress.png",
+    "captured_utc": "2026-10-29T17:15:12Z",
+    "camera_xyz": null
+  },
+  {
+    "file": "09-gazebo-east.png",
+    "captured_utc": "2026-10-29T17:15:16Z",
+    "camera_xyz": [
+      24,
+      20,
+      22
+    ]
+  },
+  {
+    "file": "10-rviz-progress.png",
+    "captured_utc": "2026-10-29T17:15:17Z",
+    "camera_xyz": null
+  }
+]

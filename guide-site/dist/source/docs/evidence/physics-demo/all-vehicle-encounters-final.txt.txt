@@ -1,0 +1,53 @@
+Waiting: ['rover_0', 'drone_0', 'drone_1'] green dots: 0
+Waiting: ['rover_0', 'drone_0', 'drone_1'] green dots: 0
+Confirmed rover_0 {"simulation_seconds": 22.0, "position": [-1.103575793956745, -10.31503941695332], "thermal": 0.7601357698440552, "acoustic": 0.8304002285003662}
+Waiting: ['drone_0', 'drone_1'] green dots: 1
+Waiting: ['drone_0', 'drone_1'] green dots: 1
+Confirmed drone_0 {"simulation_seconds": 32.5, "position": [-2.018841600684843, 5.948070085313479], "thermal": 0.7825831174850464, "acoustic": 0.8056649565696716}
+Confirmed drone_1 {"simulation_seconds": 33.5, "position": [13.150787233399786, -14.22792907798471], "thermal": 0.7329486012458801, "acoustic": 0.8446406722068787}
+{
+  "confirmed_by_agent": {
+    "rover_0": {
+      "simulation_seconds": 22.0,
+      "position": [
+        -1.103575793956745,
+        -10.31503941695332
+      ],
+      "thermal": 0.7601357698440552,
+      "acoustic": 0.8304002285003662
+    },
+    "drone_0": {
+      "simulation_seconds": 32.5,
+      "position": [
+        -2.018841600684843,
+        5.948070085313479
+      ],
+      "thermal": 0.7825831174850464,
+      "acoustic": 0.8056649565696716
+    },
+    "drone_1": {
+      "simulation_seconds": 33.5,
+      "position": [
+        13.150787233399786,
+        -14.22792907798471
+      ],
+      "thermal": 0.7329486012458801,
+      "acoustic": 0.8446406722068787
+    }
+  },
+  "green_dots": [
+    [
+      -1.103575793956745,
+      -10.31503941695332
+    ],
+    [
+      -2.018841600684843,
+      5.948070085313479
+    ],
+    [
+      13.150787233399786,
+      -14.22792907798471
+    ]
+  ],
+  "passed": true
+}

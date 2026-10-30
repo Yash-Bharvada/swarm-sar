@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "kind": "synthetic_rosbridge_browser_contract",
+  "checks": [
+    "disconnected waiting state",
+    "real socket subscriptions",
+    "incoming map/pose/health handling",
+    "service request payload",
+    "service acknowledgement does not fabricate isolation status",
+    "service failure is visible and preserves observed state",
+    "status follows received telemetry",
+    "disconnect disables radio controls",
+    "no control publications",
+    "no browser errors"
+  ],
+  "limits": "Synthetic fixtures only: not live ROS/Gazebo/SLAM/PPO evidence."
+}

@@ -1,0 +1,7 @@
+std_msgs/Header header
+string source_id
+float32 thermal_confidence
+float32 acoustic_confidence
+geometry_msgs/PoseWithCovariance estimated_pose
+bool line_of_sight
+bool confirmed

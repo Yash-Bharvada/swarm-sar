@@ -1,0 +1,327 @@
+# Swarm Mission Control: browser 3D simulator
+
+A standalone browser simulation for the swarm-sar disaster-response project. Rovers and drones
+search a site, share maps over a lossy peer-to-peer radio, and locate survivors. The world is a
+bright isometric island with warm sandstone paths, terracotta ruins, blocky greenery, turquoise
+water, and daylight. The presentation update changes the interface, camera, art, and animation;
+the deterministic search, sensing, communication, and collision mechanics are unchanged.
+
+- **Two explicit controllers.** Browser heuristic mode runs locally without a backend. Optional **PPO · 754k** mode connects to the local Python service, which owns the complete mission. Both remain separate from the ROS/Gazebo waypoint demo.
+- **Heuristic versus learned.** The TypeScript frontier controller implements Step 4 principles. PPO mode executes the verified recurrent GPU-v1 rover/drone policies in Python and renders their authoritative state; it never substitutes heuristic actions. Neither mode implements a GNN.
+- **Robots use local knowledge.** Each robot decides from its private map, sensors, battery, pose, and messages that actually reached its inbox. There is no central planner, reservation table, or access to hidden survivor positions.
+
+See [CONTROLLER_COMPATIBILITY.md](CONTROLLER_COMPATIBILITY.md) for the mapping to the Python
+reference and the intentional differences.
+
+## Install and run
+
+Requires Node.js 18 or newer.
+
+```bash
+cd frontend
+npm install
+npm run dev          # http://localhost:5173
+```
+
+```bash
+npm test             # Headless simulation and presentation-state tests
+npm run build        # Type-check and build dist/
+npm run preview      # Serve the production bundle locally
+```
+
+Optional interaction verification, with Python Playwright and local Chrome already installed:
+start `npm run dev -- --host 127.0.0.1 --port 5174`, then run
+`python3 scripts/browser_controls_qa.py` from `frontend/`. It checks real placement clicks,
+moving-robot focus, focus transfer, scene-only viewing and mobile restoration. It writes
+`docs/validation/browser_controls_validation.json` at the repository root and temporary screenshots.
+
+## Using the simulator
+
+The world occupies the workspace. A command rail opens one panel at a time; select **World**
+or close the panel to return to the full scene.
+
+- **Mission:** choose the site, world seed, rover/drone team, and control mode. Radio, sensor, graphics, and mission tools are expandable sections.
+- **Fleet:** inspect each robot's objective, battery, and connection. Expand its local map, sensor readings, communication, or technical details when needed. Selecting a robot in the world opens its fleet details.
+- **Activity:** review recent mission events or open the **Radio log** for packet details and communication counters.
+- **Controls:** see camera shortcuts and manual-driving instructions.
+
+1. Open **Mission** and choose a site: Collapsed Office, Mine Tunnel, Earthquake Apartment, or Random Irregular Site.
+2. Keep the default two rovers and two drones, or choose any mix of 1–10 robots. World settings lock after launch; reset the mission to change them.
+3. Press **Launch mission** or Space. Playback controls offer pause, resume, reset, and 0.5×, 1×, 2×, or 4× speed.
+4. Watch the compact mission counters and the team explore. Open **Fleet** or select a robot to inspect a particular decision.
+5. Enable **Layers** when you want routes, radio activity, sensor evidence, or explored-map information.
+
+The mission reset control asks before clearing an active mission. Camera reset simply restores
+the world overview.
+
+### Custom survivors
+
+Before launch, use **Mission → Survivors** to apply an exact count, randomize positions, or
+choose **Place on map**. The placement view shows amber markers: click a reachable tile to add
+a survivor, or click a marker to remove it. **Done placing** replaces editor markers with amber viewer beacons;
+robots still learn survivor locations only through their sensors. Editing preserves your camera.
+
+There is no fixed small survivor cap. Capacity is the number of reachable walkable cells outside
+the robot staging square, with one survivor per tile. Walls, staging and duplicate placements
+are rejected. Clear the layout to start from zero, then place at least one survivor before launch.
+Changes lock during a mission. Reset preserves the authored layout; changing the site or seed
+restores automatic placement. Automatic uses the standard seeded 2–4 survivors (the validation
+scenario uses its own fixed count). Large counts increase computation and do not increase mission
+time or battery budgets, so placing many survivors does not guarantee finding all of them.
+
+### Camera and keyboard controls
+
+The orthographic camera starts in a level, north-up angled view, so the map edges stay
+horizontal. On-screen controls provide smooth zoom with a visible **60–400%** readout, angled and top-down views, **Fit world
+to view**, and **Follow** for the selected robot. **Focus camera** in robot details frames and
+continuously follows that robot. Selecting another robot transfers the lock. Deselecting,
+dragging/zooming the camera, changing its view, or stopping Follow releases it. Scrolling zooms
+around the ground under your cursor; the +/− buttons and keyboard zoom around the last point
+you indicated in the world, falling back to the view centre before the first pointer interaction.
+
+| Input | Action |
+|---|---|
+| Left-drag | Orbit |
+| Right-drag | Pan |
+| Wheel or + / − | Zoom at the cursor / last indicated world point |
+| R | Fit the world to the isometric overview |
+| Select a robot, then F | Focus the camera on that robot |
+| Click a robot | Select it; click again to deselect |
+| Space | Launch, pause, or resume |
+| Esc | Close the panel and deselect |
+| Manual or Mixed mode, robot selected | Click a walkable tile to set a waypoint |
+| Arrow keys or WASD | Step the selected manual robot |
+| E / X | Scan for a survivor / stop |
+| H | Hide / restore the interface and diagnostic overlays |
+
+**Watch maze** fills the workspace with the scene, hiding panels, labels, selection rings and
+diagnostic layers while retaining their settings. It keeps the mission and camera follow running.
+Use H, Esc or **Show interface** to return. It is unavailable during survivor placement so the
+authoring status cannot disappear accidentally.
+
+Camera and driving shortcuts do not fire while typing in a field or using Ctrl/Command/Alt.
+Space on a focused button retains its native button action; driving keys still work after selecting a robot.
+
+Control modes:
+
+- **Auto:** every robot runs Decentralized Autonomous Mode.
+- **Manual:** the operator drives the selected robot while the others hold.
+- **Mixed:** the operator drives the selected robot while the others stay autonomous.
+
+Manual commands pass through the same collision-safety layer and physics as autonomous moves.
+
+### Layers and maps
+
+Only compact robot badges, such as R1 and D1, are enabled initially; the selected robot shows its full label.
+The terrain starts clear, with optional information
+available through **Layers** or **Mission → Graphics & overlays**:
+
+- planned routes, shown for the selected robot;
+- radio links, message activity, ranges, and a network graph;
+- thermal and acoustic evidence;
+- explored map;
+- robot labels;
+- hidden-survivor debug view.
+
+The explored-map layer gives sensed ground a strong mint tint and unsensed ground a warm sand tint, with crisp tile boundaries. With a robot selected it
+shows that robot's private belief; without a selection it combines the team's explored maps.
+It does not place a dark mask over the world. The local mini-map inside robot details also
+uses pale unknown terrain, sand paths, green walls, and contrasting rover/drone markers.
+Teammates appear at their last delivered reported position.
+
+The hidden-survivor debug view displays a banner. Its information is never supplied to robots.
+Confirmed survivors appear as seated human figures, with a small one-time confetti burst and
+a persistent **SURVIVOR SAVED** flag. This celebrates locating a survivor; treatment and
+physical evacuation are not modeled. Amber beacons show unconfirmed positions to the viewer
+from the start, without exposing those positions to robot observations or planning.
+
+Every real discovery pauses simulation time, frames that survivor and announces **Survivor
+found** with a seeded fictional story. **Continue exploration** restores the overview and
+resumes the team. Simultaneous discoveries are shown in sequence before exploration resumes;
+the final story leads to the mission report. Tap a confirmed human or their compact **name / chat** pill to revisit the same dialogue.
+Discovery and revisit cameras show the person from the front; pills hide while the
+story is open. The dialogue pool contains 24 seeded humorous messages. Previously paused/completed missions retain their
+status after a revisit. Story cards also appear during Watch maze and are keyboard accessible.
+Stories are flavor text: they do not create extra people, supplies or rescue objectives.
+
+Run `python3 frontend/scripts/survivor_qa.py` from the repository root with Vite on port 5173
+to reproduce the Chrome discovery-loop checks in `docs/validation/browser_survivor_validation.json`.
+Reduced-motion preferences suppress confetti, waving, and flag animation.
+The **Activity → Radio log** lists sender, recipient, sequence, message type, delivery state,
+delay, expiry, drop reason, and map-delta size. Aggregate counters are expandable.
+
+### Music and sound
+
+Use the speaker button near **Watch maze**, or press **M**, to enable sound. A fresh page waits
+for that explicit interaction. The adjacent settings button opens independent **Master volume**,
+**Ambient music**, **Fleet sounds** and **Event sounds** sliders. Levels are remembered locally;
+playback permission is not assumed on the next visit. M also mutes/unmutes during clean viewing.
+
+The original synthesized soundtrack combines slow, overlapping chords with gentle bell-like
+melodies. It continues through mission pauses and resets. Rovers have low motor/wheel sounds;
+drones have airy rotor sounds. Their stereo position and volume follow the camera view, and
+focusing a robot brings that unit forward with a distinct rover/drone focus cue.
+
+Short effects mark launch, pause/resume, reset, survivor confirmations, completion, investigation,
+manual waypoints, placement/removal, radio loss/recovery, low batteries and common UI actions.
+Frequent map-sharing/replanning cues are rate-limited and coalesced. Important discoveries soften
+the music briefly. Vehicle sounds fade when paused or depleted. Switching away from the tab
+suspends audio, and returning does not replay an event backlog. Survivor sounds do not replay
+when changing graphics quality or selecting robots.
+
+All audio is generated locally with Web Audio: no external soundtrack requests, downloaded
+samples or new runtime packages. Audio observes presentation state and actual events; it never
+changes the simulation, consumes its random generator, or reveals hidden survivor positions.
+
+With the dev server running, optional browser audio checks run with
+`python3 frontend/scripts/audio_qa.py --full-cycle` from the repository root (requires Python
+Playwright and Chrome). Results are written to `docs/validation/browser_audio_validation.json`; this
+checks actual audio output and interactions, rather than subjective listening quality.
+
+### Validation scenario
+
+Before launch, open **Mission → Mission tools → Load validation scenario**. Rover 1 is
+partitioned from step 20 to step 60, with 15% packet loss and a 1–3-tick message delay, on a
+map containing a long one-cell-wide corridor. Launch, then enable radio and sensor layers
+when you want to inspect them. The scenario demonstrates packet loss, temporary isolation,
+reconnection, map sharing, survivor confirmation, and safe single-file movement.
+
+`src/tests/demo.test.ts` verifies those behaviors headlessly.
+
+## Rendering and performance
+
+Graphics quality is under **Mission → Graphics & overlays**. The default is **Balanced**
+(the `medium` setting in code).
+
+| Quality | Pixel ratio | Sun shadows |
+|---|---|---|
+| Low | 1 | Off |
+| Balanced | 1–1.5 | 1024 × 1024 |
+| High | 1–2 | 2048 × 2048 |
+
+Canvas antialiasing stays enabled across quality changes so the current camera and
+interpolated motion are preserved without recreating the WebGL context.
+
+All profiles use direct daylight rendering without a postprocessing chain. There is no
+vignette, cloud cover, light-shaft effect, or robot spotlight pass. Terrain, rubble, vegetation,
+and other repeated objects use instanced geometry. Textures are generated locally rather
+than downloaded. The atmosphere setting controls light distance haze and restrained particles.
+
+The engine advances at **4 ticks per real second at 1×**, up to **16 ticks per second at 4×**;
+each tick represents one second of mission time. Robot rendering interpolates positions
+linearly between ticks, with smooth turning, rover-wheel animation, and drone-rotor animation.
+Pausing preserves the current interpolated pose. These visual motions do not alter physics.
+
+Frame rate depends on the browser, GPU, viewport size, robot count, and enabled layers. For
+slower hardware, choose Low, reduce playback speed, and disable radio message effects.
+No particular frame rate is guaranteed.
+
+## Architecture
+
+```text
+React UI (src/app, src/components)
+  command rail → Mission / Fleet / Activity / Controls
+  compact mission HUD, playback, camera tools, optional layers
+                        │
+Zustand store (src/store)
+  settings, overlays, selection, camera requests, status, engine
+                        │
+React Three Fiber scene (src/scene)
+  orthographic camera, daylight, instanced island world
+  interpolated robots, optional network/docs/evidence/map layers
+                        │
+Deterministic simulation core (src/simulation)
+  commands → local controller → collision safety → movement
+  → sensing → survivor investigation/confirmation
+  → peer broadcasts and actual deliveries → private-map merge
+```
+
+The simulation core has no React or Three.js imports and runs unchanged in Vitest. With the
+same options and command log, `SimulationEngine.stateHash()` produces the same result.
+Rendering reads the engine and interpolation clock; camera changes do not change mission state.
+
+## Tests
+
+`npm test` runs these suites:
+
+| Suite | Covers |
+|---|---|
+| `scenario.test.ts` | Seeded reproducibility, portrait/landscape maps, reachable survivors, clear spawn |
+| `determinism.test.ts` | Matching state hashes, network metrics, feed, and command-log replay |
+| `network.test.ts` | Loss, delay, expiry, range/wall attenuation, partitions, recovery, deduplication |
+| `autonomy.test.ts` | Private observations, hidden-survivor isolation, network-off autonomy, delivered map sharing |
+| `collision.test.ts` | No overlaps or swaps, narrow-corridor convoys, yielding, wall constraints, manual safety |
+| `controller.test.ts` | Frontier ownership, corroboration, claim release, action masking, no truth access |
+| `demo.test.ts` | Validation scenario loss, partition, recovery, sharing, survivor detection, safe convoy traffic |
+| `missions.test.ts` | Complete missions on every preset with recall, coverage, and collision guards |
+| `presentation.test.ts` | Clean defaults, repeated camera requests, view/follow/focus behavior, camera-target cleanup, simulation isolation |
+| `survivorEncounter.test.ts` | Discovery pause/continue queues, stable dialogue, revisit status and identical final simulation state |
+| `audio.test.ts` | Explicit startup, volume boundaries, event priorities, rate limiting, history suppression and simulation isolation |
+
+## Browser requirements
+
+Use a browser with WebGL 2 and hardware acceleration. A desktop viewport provides the most
+space for the world and controls; the interface also adapts to narrower viewports with a
+compact rail and panels. A keyboard and mouse offer the complete driving and camera controls.
+
+## Known limitations
+
+- Movement remains grid-based. Smooth animation is a visual interpolation, not a continuous physics model.
+- Drones remain 2D proxies with visual altitude. They obey the same wall constraints as Python Step 4 and do not perform full flight dynamics.
+- The island art is a presentation of the generated search grid; decorative terrain does not add new navigable areas or change controller mechanics.
+- Radio, thermal, and acoustic models are seeded abstractions, not calibrated physical sensors or RF propagation models.
+- Browser and NumPy random streams differ, so runs are not bit-identical to Python for the same seed. See [CONTROLLER_COMPATIBILITY.md](CONTROLLER_COMPATIBILITY.md).
+- Robots can be added or removed only before launch.
+- PPO requires the Python service and included checkpoint. There is no ONNX/browser-only inference or automatic ROS policy integration; the default local controller remains the heuristic.
+- Maps stay browser-friendly, around 28–56 cells per side. Browser recall is a regression guard, not a reproduction of the much larger Python Step 4 audit.
+
+### Fleet previews and menus
+
+Fleet cards show rotating miniature versions of the world's rover/drone models. Select a
+teammate for a larger turntable, current objective, battery/radio/map status and Focus camera.
+Cream/sage panels and subtle hover/entrance animations match the simulation. Reduced-motion
+preferences keep previews still. All thumbnails share one extra WebGL renderer, removed when
+the Fleet panel closes. Run `python3 frontend/scripts/fleet_qa.py` with Vite on port 5173 for
+browser animation, selection, ten-unit fleet, mobile and cleanup checks.
+
+### Trained PPO missions
+
+Start `.venv/bin/python backend/ppo_service.py` from the repository root, then Vite
+on port 5173. Open **Mission → Exploration controller → PPO**, configure the mission,
+then select **Create mission → Launch mission**. Python
+owns map generation, sensors, decisions and physics; the browser only presents
+snapshots. Development seed 10000 reproduces 4/4 survivors in 94 steps. Connection
+loss pauses the mission; reset explicitly recovers. Discovery conversations,
+camera/follow and sound remain available. Custom survivor editing/manual driving
+stay in heuristic mode. See [complete setup, scope and tests](../docs/guides/ppo_frontend_integration.md).
+
+PPO map seeds accept **10000–10099**, with an inline error for invalid values and
+a Shuffle button. The terrain guide distinguishes low traversable debris from
+blocking walls: rover rubble entry costs twice ordinary ground. The rubble art
+uses low chips; wheel climbing and flight over walls are not modeled by the grid.
+
+Battery mode is available in **Mission settings → Battery mode** for both
+controllers. Choose **Limited** (default) or **Unlimited**. Changing mode resets
+the current mission; launch again. Unlimited keeps energy full, shows ∞ in the
+fleet, and retains the mission time limit. The PPO settings in the Mission side panel provide
+this choice; apply it with Create mission. Restart the Python service after updating.
+
+Both controller setups now live in the **Mission** side panel. Choose Heuristic
+or PPO to show its own controls; the map's controller button opens this panel.
+Switching restores the last applied setup for that controller and starts a fresh
+mission. Heuristic seeds use **Enter / Apply seed** and accept whole numbers
+0–4294967295. Typing does not regenerate the map; invalid entries leave it intact.
+
+For a custom map choose **Mission → Heuristic → Search site → Custom Maze**.
+Set width and height, then **Generate map**. Use **Edit layout** to draw paths,
+walls and debris on any heuristic map. The editor includes undo/redo, zoom,
+Clear walls, Save and Cancel. The team start and survivor markers are protected;
+all walkable paths must connect before saving. Saved terrain is retained on reset.
+
+Map controls now use Generate/Shuffle and friendly names. Raw seed fields and
+technical model details are kept out of the main interface. PPO maps remain
+Python-controlled; custom terrain editing is available in heuristic mode.
+
+Mission time can be **Automatic**, **Custom** (minutes), or **Unlimited** in
+settings for either controller. Apply time restarts a heuristic mission; Create
+mission applies PPO changes. Unlimited battery is a separate setting.

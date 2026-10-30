@@ -1,0 +1,379 @@
+{
+  "voice": "Samantha",
+  "language": "en-US",
+  "method": "macOS system text-to-speech",
+  "rate": 165,
+  "tracks": [
+    {
+      "id": 0,
+      "duration": 43.494286,
+      "file": "page-001.m4a"
+    },
+    {
+      "id": 1,
+      "duration": 74.225714,
+      "file": "page-002.m4a"
+    },
+    {
+      "id": 2,
+      "duration": 76.98449,
+      "file": "page-003.m4a"
+    },
+    {
+      "id": 3,
+      "duration": 62.917143,
+      "file": "page-004.m4a"
+    },
+    {
+      "id": 4,
+      "duration": 69.980499,
+      "file": "page-005.m4a"
+    },
+    {
+      "id": 5,
+      "duration": 79.027302,
+      "file": "page-006.m4a"
+    },
+    {
+      "id": 6,
+      "duration": 65.294966,
+      "file": "page-007.m4a"
+    },
+    {
+      "id": 7,
+      "duration": 68.235147,
+      "file": "page-008.m4a"
+    },
+    {
+      "id": 8,
+      "duration": 69.467166,
+      "file": "page-009.m4a"
+    },
+    {
+      "id": 9,
+      "duration": 77.582313,
+      "file": "page-010.m4a"
+    },
+    {
+      "id": 10,
+      "duration": 79.071383,
+      "file": "page-011.m4a"
+    },
+    {
+      "id": 11,
+      "duration": 80.105261,
+      "file": "page-012.m4a"
+    },
+    {
+      "id": 12,
+      "duration": 90.964943,
+      "file": "page-013.m4a"
+    },
+    {
+      "id": 13,
+      "duration": 72.820317,
+      "file": "page-014.m4a"
+    },
+    {
+      "id": 14,
+      "duration": 79.474014,
+      "file": "page-015.m4a"
+    },
+    {
+      "id": 15,
+      "duration": 60.843265,
+      "file": "page-016.m4a"
+    },
+    {
+      "id": 16,
+      "duration": 78.662041,
+      "file": "page-017.m4a"
+    },
+    {
+      "id": 17,
+      "duration": 77.282948,
+      "file": "page-018.m4a"
+    },
+    {
+      "id": 18,
+      "duration": 72.17619,
+      "file": "page-019.m4a"
+    },
+    {
+      "id": 19,
+      "duration": 74.642086,
+      "file": "page-020.m4a"
+    },
+    {
+      "id": 20,
+      "duration": 78.131519,
+      "file": "page-021.m4a"
+    },
+    {
+      "id": 21,
+      "duration": 71.227347,
+      "file": "page-022.m4a"
+    },
+    {
+      "id": 22,
+      "duration": 71.853061,
+      "file": "page-023.m4a"
+    },
+    {
+      "id": 23,
+      "duration": 80.071474,
+      "file": "page-024.m4a"
+    },
+    {
+      "id": 24,
+      "duration": 80.695011,
+      "file": "page-025.m4a"
+    },
+    {
+      "id": 25,
+      "duration": 73.426485,
+      "file": "page-026.m4a"
+    },
+    {
+      "id": 26,
+      "duration": 74.847075,
+      "file": "page-027.m4a"
+    },
+    {
+      "id": 27,
+      "duration": 71.196508,
+      "file": "page-028.m4a"
+    },
+    {
+      "id": 28,
+      "duration": 76.380726,
+      "file": "page-029.m4a"
+    },
+    {
+      "id": 29,
+      "duration": 74.106485,
+      "file": "page-030.m4a"
+    },
+    {
+      "id": 30,
+      "duration": 59.414875,
+      "file": "page-031.m4a"
+    },
+    {
+      "id": 31,
+      "duration": 72.181769,
+      "file": "page-032.m4a"
+    },
+    {
+      "id": 32,
+      "duration": 82.271565,
+      "file": "page-033.m4a"
+    },
+    {
+      "id": 33,
+      "duration": 72.567438,
+      "file": "page-034.m4a"
+    },
+    {
+      "id": 34,
+      "duration": 68.93932,
+      "file": "page-035.m4a"
+    },
+    {
+      "id": 35,
+      "duration": 66.992517,
+      "file": "page-036.m4a"
+    },
+    {
+      "id": 36,
+      "duration": 71.507664,
+      "file": "page-037.m4a"
+    },
+    {
+      "id": 37,
+      "duration": 72.040499,
+      "file": "page-038.m4a"
+    },
+    {
+      "id": 38,
+      "duration": 93.989796,
+      "file": "page-039.m4a"
+    },
+    {
+      "id": 39,
+      "duration": 81.385442,
+      "file": "page-040.m4a"
+    },
+    {
+      "id": 40,
+      "duration": 75.387302,
+      "file": "page-041.m4a"
+    },
+    {
+      "id": 41,
+      "duration": 87.854331,
+      "file": "page-042.m4a"
+    },
+    {
+      "id": 42,
+      "duration": 81.793605,
+      "file": "page-043.m4a"
+    },
+    {
+      "id": 43,
+      "duration": 74.317234,
+      "file": "page-044.m4a"
+    },
+    {
+      "id": 44,
+      "duration": 74.023129,
+      "file": "page-045.m4a"
+    },
+    {
+      "id": 45,
+      "duration": 70.054921,
+      "file": "page-046.m4a"
+    },
+    {
+      "id": 46,
+      "duration": 91.099274,
+      "file": "page-047.m4a"
+    },
+    {
+      "id": 47,
+      "duration": 80.260454,
+      "file": "page-048.m4a"
+    },
+    {
+      "id": 48,
+      "duration": 82.069887,
+      "file": "page-049.m4a"
+    },
+    {
+      "id": 49,
+      "duration": 75.837098,
+      "file": "page-050.m4a"
+    },
+    {
+      "id": 50,
+      "duration": 75.103673,
+      "file": "page-051.m4a"
+    },
+    {
+      "id": 51,
+      "duration": 77.238957,
+      "file": "page-052.m4a"
+    },
+    {
+      "id": 52,
+      "duration": 67.724263,
+      "file": "page-053.m4a"
+    },
+    {
+      "id": 53,
+      "duration": 72.187664,
+      "file": "page-054.m4a"
+    },
+    {
+      "id": 54,
+      "duration": 78.757959,
+      "file": "page-055.m4a"
+    },
+    {
+      "id": 55,
+      "duration": 75.191565,
+      "file": "page-056.m4a"
+    },
+    {
+      "id": 56,
+      "duration": 83.198685,
+      "file": "page-057.m4a"
+    },
+    {
+      "id": 57,
+      "duration": 81.101542,
+      "file": "page-058.m4a"
+    },
+    {
+      "id": 58,
+      "duration": 55.188481,
+      "file": "page-059.m4a"
+    },
+    {
+      "id": 59,
+      "duration": 77.01102,
+      "file": "page-060.m4a"
+    },
+    {
+      "id": 60,
+      "duration": 86.517959,
+      "file": "page-061.m4a"
+    },
+    {
+      "id": 61,
+      "duration": 82.57619,
+      "file": "page-062.m4a"
+    },
+    {
+      "id": 62,
+      "duration": 90.526259,
+      "file": "page-063.m4a"
+    },
+    {
+      "id": 63,
+      "duration": 85.212517,
+      "file": "page-064.m4a"
+    },
+    {
+      "id": 64,
+      "duration": 75.062313,
+      "file": "page-065.m4a"
+    },
+    {
+      "id": 65,
+      "duration": 68.481497,
+      "file": "page-066.m4a"
+    },
+    {
+      "id": 66,
+      "duration": 75.622857,
+      "file": "page-067.m4a"
+    },
+    {
+      "id": 67,
+      "duration": 63.30644,
+      "file": "page-068.m4a"
+    },
+    {
+      "id": 68,
+      "duration": 67.279093,
+      "file": "page-069.m4a"
+    },
+    {
+      "id": 69,
+      "duration": 84.39932,
+      "file": "page-070.m4a"
+    },
+    {
+      "id": 70,
+      "duration": 75.26585,
+      "file": "page-071.m4a"
+    },
+    {
+      "id": 71,
+      "duration": 78.765488,
+      "file": "page-072.m4a"
+    },
+    {
+      "id": 72,
+      "duration": 66.637868,
+      "file": "page-073.m4a"
+    },
+    {
+      "id": 73,
+      "duration": 80.95034,
+      "file": "page-074.m4a"
+    }
+  ],
+  "totalDuration": 5562.483085
+}

@@ -1,0 +1,24 @@
+{
+  "scope": "One deterministic CPU inference mission, not new benchmark validation or browser/ROS integration.",
+  "seed": 10000,
+  "seed_split": "development",
+  "controller": "recurrent GPU-v1 PPO (229 observations)",
+  "checkpoint_tree_sha256": "23696e6cf3b0821b6c01235a3911cb5cb87d0707589efce6ec43cb58b5340040",
+  "policy_parameter_sha256": {
+    "rover_policy": "3edcfc12c5c2d9cd33288c76b5ee30a979886c14c6ac1f6fa75633a75db59945",
+    "drone_policy": "8e1c10a6448be21b84a3b40e7683021808b279fe49b7f33ca8a2595ef7916b50"
+  },
+  "viewer_sha256": "a7317be4c0ede130fede19698c0097ed5e8317074d84301cbe5af679d711cef8",
+  "source_commit": "cc107820d21ff633b7206378d55dd40cd6d870f9",
+  "matches_recorded_review_episode": true,
+  "restored_parameter_hashes_match_checkpoint": true,
+  "gif_frames": 48,
+  "metrics": {
+    "step": 94,
+    "victims_found": 4,
+    "survivors_total": 4,
+    "coverage": 0.9047619047619048,
+    "collisions": 0,
+    "invalid_actions": 0
+  }
+}

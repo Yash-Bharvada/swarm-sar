@@ -1,0 +1,903 @@
+{
+  "checks": [
+    {
+      "name": "Every chapter has pages",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Every cited repository path exists",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Every audio track exists",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "All tracks have measured nonzero duration",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "All readable atlas files exist",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Complete audiobook has page chapter markers",
+      "passed": true,
+      "detail": 74
+    },
+    {
+      "name": "Cover renders actual screenshot",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop has no horizontal overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Page-turn button changes page",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Keyboard page turning works",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Bookmark is listed",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Full book search finds technical discussion",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Search empty state is clear",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Atlas finds exact backend file",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Actual source opens with line numbers",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Reward illustration updates its calculation",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "PPO clipping example updates",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Radio illustration updates",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Real recorded audio plays",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pause stops playback",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Speed setting applies",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Audio completion turns page and continues",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Actual image modal expands",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Image modal is visible",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Reading place survives reload",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 1 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 2 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 3 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 4 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 5 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 6 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 7 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 8 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 9 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 10 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 11 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 12 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 13 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 14 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 15 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 16 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 17 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 18 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 19 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 20 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 21 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 22 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 23 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 24 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 25 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 26 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 27 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 28 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 29 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 30 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 31 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 32 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 33 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 34 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 35 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 36 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 37 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 38 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 39 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 40 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 41 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 42 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 43 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 44 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 45 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 46 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 47 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 48 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 49 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 50 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 51 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 52 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 53 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 54 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 55 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 56 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 57 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 58 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 59 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 60 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 61 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 62 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 63 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 64 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 65 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 66 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 67 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 68 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 69 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 70 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 71 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 72 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 73 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 74 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile has no horizontal overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile contents opens",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile chapter navigation closes contents",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 1 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 2 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 3 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 4 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 5 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 6 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 7 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 8 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 9 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 10 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 11 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 12 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 13 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 14 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 15 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 16 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 17 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 18 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 19 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 20 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 21 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 22 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 23 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 24 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 25 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 26 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 27 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 28 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 29 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 30 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 31 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 32 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 33 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 34 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 35 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 36 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 37 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 38 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 39 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 40 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 41 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 42 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 43 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 44 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 45 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 46 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 47 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 48 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 49 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 50 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 51 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 52 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 53 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 54 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 55 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 56 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 57 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 58 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 59 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 60 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 61 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 62 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 63 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 64 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 65 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 66 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 67 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 68 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 69 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 70 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 71 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 72 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 73 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 74 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Full illustrated PDF generated",
+      "passed": true,
+      "detail": 3210135
+    },
+    {
+      "name": "Browser reported no script errors",
+      "passed": true,
+      "detail": []
+    }
+  ],
+  "passed": 178,
+  "readerPages": 74,
+  "chapters": 16,
+  "words": 12174,
+  "audioMinutes": 92.7,
+  "files": 421,
+  "browserErrors": [],
+  "pdfPageCount": 74,
+  "sourceRevision": "83cd96ce7a5651ee77f5816a7ab47844bc0cbf7a"
+}

@@ -1,0 +1,33 @@
+{
+  "review_date": "2026-10-29",
+  "target_branch": "rashiyaom",
+  "pull_request": 1,
+  "pull_request_url": "https://github.com/rashiyaom/swarm-sar/pull/1",
+  "source_branch": "Yash-Bharvada:ubuntu_simulations",
+  "source_commit": "f565468aaf78f063222d4b5394c8f4e638b6f3ac",
+  "base_commit": "c29c2f08c41b14c7093497a4ce35be2904d24ae4",
+  "main_unchanged_commit": "e2db65c693e71649e8888095ecaa3bf94085e7a6",
+  "python_tests_passed": 152,
+  "python_tests_skipped": 2,
+  "skip_reason": "xacro/ROS unavailable on Mac",
+  "ros_static_tests_passed": 6,
+  "ros_runtime_rerun_on_integration_host": false,
+  "ros_node_helper_tests_rerun": false,
+  "python_compilation": "passed",
+  "shell_syntax": "passed",
+  "historical_baseline_hashes_verified": 30,
+  "policy_contract_verified": true,
+  "gpu_source_manifest_file_count": 94,
+  "gpu_source_manifest_sha256": "554f1bc621d0b2144113e75a94fa6668ef73e02f1ce7ee2d308637b14ab920ef",
+  "release_tag": "rashiyaom-step5-integrated",
+  "preserved": [
+    "upstream runtime evidence",
+    "prior GPU release tag",
+    "uncommitted frontend changes",
+    "unrelated local documents"
+  ],
+  "limits": [
+    "Default ROS demo uses waypoints and simulator pose feedback, not the PPO checkpoint.",
+    "Actual ROS/Gazebo execution was not performed on the Mac."
+  ]
+}

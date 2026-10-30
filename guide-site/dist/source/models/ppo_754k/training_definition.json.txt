@@ -1,0 +1,146 @@
+{
+  "seed": 42,
+  "iterations": 10000,
+  "target_env_steps": 1000000,
+  "checkpoint_interval_steps": 250000,
+  "evaluation_interval_steps": 250000,
+  "evaluation_interval_seconds": 3600,
+  "development_eval_count": 20,
+  "seed_splits_path": "configs/seed_splits.yaml",
+  "evaluation_cohorts_path": "configs/evaluation_cohorts.yaml",
+  "training_gates_path": "configs/training_gates.yaml",
+  "num_cpus": 28,
+  "num_env_runners": 16,
+  "num_cpus_per_env_runner": 1,
+  "num_gpus_per_learner": 1,
+  "train_batch_size_per_learner": 16384,
+  "minibatch_size": 1024,
+  "num_epochs": 5,
+  "rollout_fragment_length": 256,
+  "learning_rate": 0.0001,
+  "gamma": 0.995,
+  "gae_lambda": 0.95,
+  "clip_param": 0.2,
+  "entropy_coeff": 0.01,
+  "survivor_reward": 50.0,
+  "new_cell_reward": 0.02,
+  "investigate_evidence_reward": 0.0,
+  "hidden_layers": [
+    256,
+    256
+  ],
+  "use_lstm": true,
+  "lstm_cell_size": 256,
+  "max_seq_len": 32,
+  "max_steps": 400,
+  "world_sizes": [
+    24,
+    28,
+    32,
+    40
+  ],
+  "curriculum": false,
+  "curriculum_phase_episodes": [
+    0,
+    0
+  ],
+  "domain_randomization": true,
+  "final_team_profiles": [
+    {
+      "rover": 1,
+      "drone": 1
+    },
+    {
+      "rover": 2,
+      "drone": 2
+    },
+    {
+      "rover": 3,
+      "drone": 2
+    },
+    {
+      "rover": 3,
+      "drone": 3
+    },
+    {
+      "rover": 4,
+      "drone": 4
+    }
+  ],
+  "network_enabled": true,
+  "evaluation_seeds": [
+    10000,
+    10079
+  ],
+  "generalization_seeds": [
+    10080,
+    10099
+  ],
+  "held_out_team_profiles": [
+    {
+      "rover": 2,
+      "drone": 3
+    },
+    {
+      "rover": 1,
+      "drone": 4
+    }
+  ],
+  "max_seconds": 7200.0,
+  "resume": "/root/swarm-training/swarm-sar/results/gpu_pilot_16r/checkpoints/step_000000262144",
+  "reference_evaluation": "/root/swarm-training/swarm-sar/results/gpu_first_run/bc_evaluation.json",
+  "policy_contract": {
+    "observation_version": "gpu-v1",
+    "encoded_observation_size": 229,
+    "actions": [
+      "frontier_0",
+      "frontier_1",
+      "frontier_2",
+      "frontier_3",
+      "frontier_4",
+      "investigate",
+      "hold"
+    ],
+    "new_fields": {
+      "previous_action": [
+        7
+      ],
+      "active_goal": [
+        4
+      ],
+      "mission_progress": [
+        1
+      ],
+      "peer_features": [
+        8,
+        11
+      ]
+    },
+    "peer_feature_names": [
+      "valid",
+      "is_rover",
+      "is_drone",
+      "relative_pose_x",
+      "relative_pose_y",
+      "pose_uncertainty",
+      "goal_valid",
+      "relative_goal_x",
+      "relative_goal_y",
+      "thermal_evidence",
+      "acoustic_evidence"
+    ],
+    "active_goal_feature_names": [
+      "relative_x",
+      "relative_y",
+      "distance",
+      "valid"
+    ],
+    "semantics": {
+      "previous_action": "one-hot previous high-level policy action; all zero at reset",
+      "active_goal": "goal relative to drifting odometry, normalized to map dimensions",
+      "mission_progress": "elapsed environment steps divided by configured step limit",
+      "peer_features": "latest delivered, TTL-valid peer advertisements sorted by sender ID"
+    },
+    "sha256": "c5dff01368e1bb3a77112884c5d545457830097b11aefe54e0d412fc874c57c5"
+  }
+}

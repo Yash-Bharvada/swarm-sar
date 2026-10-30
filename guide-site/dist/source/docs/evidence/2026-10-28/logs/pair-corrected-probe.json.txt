@@ -1,0 +1,123 @@
+{
+  "wall_seconds": 35.09790643800011,
+  "nodes": [
+    [
+      "decentralized_agent",
+      "/drone_0"
+    ],
+    [
+      "decentralized_agent",
+      "/rover_0"
+    ],
+    [
+      "map_to_drone_0_odom",
+      "/"
+    ],
+    [
+      "map_to_rover_0_odom",
+      "/"
+    ],
+    [
+      "peer_network_bridge",
+      "/"
+    ],
+    [
+      "robot_state_publisher",
+      "/drone_0"
+    ],
+    [
+      "robot_state_publisher",
+      "/rover_0"
+    ],
+    [
+      "ros_gz_bridge",
+      "/"
+    ],
+    [
+      "survivor_oracle",
+      "/"
+    ],
+    [
+      "swarm_validation_probe",
+      "/"
+    ]
+  ],
+  "counts": {
+    "/clock": 4024,
+    "/rover_0/imu/data": 810,
+    "/drone_0/imu/data": 1614,
+    "/tf": 899,
+    "/rover_0/odom": 450,
+    "/drone_0/odom": 450,
+    "/drone_0/downward_camera/image_raw": 49,
+    "/rover_0/scan": 81,
+    "/drone_0/scan": 82,
+    "/drone_0/status": 16,
+    "/rover_0/status": 16,
+    "/rover_0/peer_inbox": 14,
+    "/drone_0/peer_inbox": 13
+  },
+  "samples": {
+    "/clock": 16.228,
+    "/rover_0/odom": {
+      "frame": "rover_0/odom",
+      "child": "rover_0/base_footprint"
+    },
+    "/drone_0/odom": {
+      "frame": "drone_0/odom",
+      "child": "drone_0/base_footprint"
+    },
+    "/drone_0/downward_camera/image_raw": {
+      "width": 320,
+      "height": 240,
+      "encoding": "rgb8"
+    },
+    "/rover_0/scan": {
+      "samples": 180,
+      "finite": 125,
+      "minimum": 0.3900028467178345,
+      "frame": "rover_0/lidar_link"
+    },
+    "/drone_0/scan": {
+      "samples": 180,
+      "finite": 123,
+      "minimum": 3.1512844562530518,
+      "frame": "drone_0/sensor_link"
+    }
+  },
+  "positions": {
+    "/rover_0/odom": {
+      "first": [
+        -2.2660016231191124e-20,
+        -4.616323069828315e-40,
+        0.0
+      ],
+      "last": [
+        2.810425710680165,
+        -3.531969360143615,
+        0.0
+      ]
+    },
+    "/drone_0/odom": {
+      "first": [
+        -16.0,
+        -14.0,
+        2.4995296
+      ],
+      "last": [
+        -16.675850288338307,
+        -15.29951876949603,
+        2.4510000480769296
+      ]
+    }
+  },
+  "dynamic_tf_parents": {
+    "rover_0/base_footprint": [
+      "rover_0/odom"
+    ],
+    "drone_0/base_footprint": [
+      "drone_0/odom"
+    ]
+  },
+  "missing": []
+}

@@ -68,6 +68,8 @@ class DecentralizedAgent(Node):
         self.declare_parameter("initial_x", 0.0)
         self.declare_parameter("initial_y", 0.0)
         self.declare_parameter("initial_z", 0.0)
+        self.declare_parameter("external_belief_map", False)
+        self.declare_parameter("accept_peer_map", True)
         self.agent_id = str(self.get_parameter("agent_id").value)
         self.robot_type = str(self.get_parameter("robot_type").value)
         self.resolution = float(self.get_parameter("map_resolution").value)
@@ -78,6 +80,8 @@ class DecentralizedAgent(Node):
         self.pose: tuple[float, float, float] | None = None
         self.altitude = 0.0
         self.scan: LaserScan | None = None
+        self.pose_received_ns = None
+        self.scan_received_ns = None
         self.goal: tuple[float, float] | None = None
         self.peer_claims: dict[str, tuple[float, float]] = {}
         self.peer_seen_ns: dict[str, int] = {}
@@ -95,6 +99,8 @@ class DecentralizedAgent(Node):
         self.create_subscription(Odometry, "odom", self._odom_callback, qos_profile_sensor_data)
         self.create_subscription(SurvivorEvidence, "survivor_evidence", self._evidence_callback, 10)
         self.create_subscription(PeerMessageEnvelope, "peer_inbox", self._peer_callback, 50)
+        if self.get_parameter("external_belief_map").value:
+            self.create_subscription(OccupancyGrid, "belief_map", self._belief_callback, 1)
         rate = float(self.get_parameter("control_rate").value)
         self.create_timer(1.0 / rate, self._control)
         self.create_timer(float(self.get_parameter("radio_broadcast_seconds").value), self._broadcast)
@@ -115,6 +121,7 @@ class DecentralizedAgent(Node):
             self.dirty_cells.add((x, y))
 
     def _odom_callback(self, msg: Odometry) -> None:
+        self.pose_received_ns = self.get_clock().now().nanoseconds
         p = msg.pose.pose.position
         self.pose = (
             p.x + float(self.get_parameter("initial_x").value),
@@ -125,6 +132,9 @@ class DecentralizedAgent(Node):
 
     def _scan_callback(self, msg: LaserScan) -> None:
         self.scan = msg
+        self.scan_received_ns = self.get_clock().now().nanoseconds
+        if self.get_parameter("external_belief_map").value:
+            return
         if self.pose is None:
             return
         px, py, heading = self.pose
@@ -141,6 +151,16 @@ class DecentralizedAgent(Node):
                 self._set_cell(cx, cy, FREE)
             if hit and ray:
                 self._set_cell(*ray[-1], OCCUPIED)
+
+    def _belief_callback(self, msg):
+        if (msg.header.frame_id != "map" or msg.info.width != self.size or msg.info.height != self.size
+                or abs(msg.info.resolution-self.resolution)>1e-6
+                or abs(msg.info.origin.position.x-self.origin)>1e-6
+                or abs(msg.info.origin.position.y-self.origin)>1e-6
+                or len(msg.data)!=self.size*self.size):
+            self.get_logger().error("Rejected incompatible SLAM belief grid")
+            return
+        self.grid = np.asarray(msg.data,dtype=np.int8).reshape(self.size,self.size).copy()
 
     def _frontier_clusters(self) -> list[list[tuple[int, int]]]:
         free = self.grid == FREE
@@ -177,6 +197,7 @@ class DecentralizedAgent(Node):
             return
         now = self.get_clock().now().nanoseconds
         active_peers = sorted(name for name, stamp in self.peer_seen_ns.items() if now - stamp < 8_000_000_000)
+        self.peer_claims = {name:claim for name,claim in self.peer_claims.items() if name in active_peers}
         participants = tuple(sorted(active_peers + [self.agent_id]))
         choices = []
         for cluster in self._frontier_clusters():
@@ -194,6 +215,12 @@ class DecentralizedAgent(Node):
 
     def _control(self) -> None:
         command = Twist()
+        now = self.get_clock().now().nanoseconds
+        if (self.pose_received_ns is None or self.scan_received_ns is None
+                or not 0 <= now-self.pose_received_ns <= 1_000_000_000
+                or not 0 <= now-self.scan_received_ns <= 2_000_000_000):
+            self.cmd_pub.publish(command)
+            return
         if self.robot_type == "drone" and self.pose is not None:
             command.linear.z = max(-0.5, min(0.5, 0.8 * (2.5 - self.altitude)))
         if self.pose is None or self.scan is None:
@@ -247,15 +274,21 @@ class DecentralizedAgent(Node):
     def _peer_callback(self, msg: PeerMessageEnvelope) -> None:
         if msg.sender_id == self.agent_id:
             return
+        now = self.get_clock().now().nanoseconds
+        expires = msg.expires_at.sec*1_000_000_000+msg.expires_at.nanosec
+        if msg.header.frame_id != "map" or expires <= now:
+            return
         self.peer_seen_ns[msg.sender_id] = self.get_clock().now().nanoseconds
         try:
             payload = json.loads(msg.payload_json)
         except (TypeError, ValueError):
             return
+        if not isinstance(payload,dict): return
         claim = payload.get("claim")
-        if isinstance(claim, list) and len(claim) == 2:
+        if isinstance(claim, list) and len(claim) == 2 and all(isinstance(v,(int,float)) and math.isfinite(v) for v in claim):
             self.peer_claims[msg.sender_id] = (float(claim[0]), float(claim[1]))
-        for cell in payload.get("map_delta", []):
+        cells=payload.get("map_delta", []) if self.get_parameter("accept_peer_map").value else []
+        for cell in cells if isinstance(cells,list) else []:
             if isinstance(cell, list) and len(cell) == 3:
                 x, y, value = map(int, cell)
                 if self._inside(x, y) and value in (FREE, OCCUPIED) and self.grid[y, x] == UNKNOWN:
