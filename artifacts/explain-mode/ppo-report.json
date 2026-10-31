@@ -1,0 +1,13 @@
+{
+  "passed": 2,
+  "checks": [
+    "Auto advances after the 45-second scene timer (accelerated for this check)",
+    "In-flight PPO response is retained during the independent story and applied once on return without deleting/recreating the Python mission"
+  ],
+  "requests": {
+    "created": 1,
+    "stepped": 1,
+    "deleted": 0
+  },
+  "pageErrors": []
+}
