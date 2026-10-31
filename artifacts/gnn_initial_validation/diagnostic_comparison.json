@@ -1,0 +1,145 @@
+{
+  "architecture": "gnn-residual-v1",
+  "candidate_manifest_sha256": "e5b81b463f3ff141ddc3f71f80b430c793215097ed73bad268d3fe594d22ca98",
+  "base_checkpoint_sha256": "23696e6cf3b0821b6c01235a3911cb5cb87d0707589efce6ec43cb58b5340040",
+  "diagnostic_only": true,
+  "final_seeds_used": false,
+  "automatically_promoted": false,
+  "original": {
+    "minimum_cohort_recall": 0.0,
+    "mean_cohort_recall": 0.33240740740740743,
+    "fixed_mean_recall": 0.4444444444444444,
+    "fixed_mean_cohort_recall": 0.4444444444444444,
+    "shadow_mean_recall": 0.19444444444444445,
+    "shadow_mean_cohort_recall": 0.19444444444444445,
+    "fixed_shadow_gap": 0.24999999999999997,
+    "minimum_cohort_coverage": 0.06381101134025208,
+    "invalid_actions": 0,
+    "collisions": 0,
+    "maximum_dominant_action_ratio": 0.734375,
+    "diagnostic_only": true
+  },
+  "candidate": {
+    "minimum_cohort_recall": 0.0,
+    "mean_cohort_recall": 0.23148148148148145,
+    "fixed_mean_recall": 0.31481481481481477,
+    "fixed_mean_cohort_recall": 0.31481481481481477,
+    "shadow_mean_recall": 0.16666666666666666,
+    "shadow_mean_cohort_recall": 0.16666666666666666,
+    "fixed_shadow_gap": 0.1481481481481481,
+    "minimum_cohort_coverage": 0.0481800707414715,
+    "invalid_actions": 0,
+    "collisions": 0,
+    "maximum_dominant_action_ratio": 0.7552083333333334,
+    "diagnostic_only": true,
+    "baseline_mean_recalls": {
+      "expert": 0.28148148148148144,
+      "random_masked": 0.041666666666666664,
+      "frontier0": 0.06944444444444445
+    },
+    "baseline_fixed_mean_recalls": {
+      "expert": 0.4259259259259259,
+      "random_masked": 0.027777777777777776,
+      "frontier0": 0.12037037037037036
+    },
+    "baseline_mean_recall": 0.28148148148148144
+  },
+  "paired_by_cohort": {
+    "nominal_2r2d": {
+      "learned_minus_reference_recall": 0.0,
+      "episode_bootstrap_ci95": [
+        0.0,
+        0.0
+      ],
+      "paired_episode_count": 2
+    },
+    "mixed_team_2r3d": {
+      "learned_minus_reference_recall": -0.25,
+      "episode_bootstrap_ci95": [
+        -0.3333333333333333,
+        0.0
+      ],
+      "paired_episode_count": 2
+    },
+    "scale_4r4d": {
+      "learned_minus_reference_recall": 0.0,
+      "episode_bootstrap_ci95": [
+        0.0,
+        0.0
+      ],
+      "paired_episode_count": 2
+    },
+    "network_off": {
+      "learned_minus_reference_recall": 0.125,
+      "episode_bootstrap_ci95": [
+        0.0,
+        0.25
+      ],
+      "paired_episode_count": 2
+    },
+    "loss_30_partition": {
+      "learned_minus_reference_recall": -0.25,
+      "episode_bootstrap_ci95": [
+        -0.3333333333333333,
+        0.0
+      ],
+      "paired_episode_count": 2
+    },
+    "sensor_pose_stress": {
+      "learned_minus_reference_recall": 0.0,
+      "episode_bootstrap_ci95": [
+        0.0,
+        0.0
+      ],
+      "paired_episode_count": 2
+    },
+    "ppo_unseen_team_1r4d": {
+      "learned_minus_reference_recall": -0.3333333333333333,
+      "episode_bootstrap_ci95": [
+        -0.5,
+        0.0
+      ],
+      "paired_episode_count": 2
+    },
+    "ood_maze_56": {
+      "learned_minus_reference_recall": -0.2,
+      "episode_bootstrap_ci95": [
+        -0.5,
+        0.0
+      ],
+      "paired_episode_count": 2
+    },
+    "ood_tunnel_48": {
+      "learned_minus_reference_recall": 0.0,
+      "episode_bootstrap_ci95": [
+        0.0,
+        0.0
+      ],
+      "paired_episode_count": 2
+    }
+  },
+  "quality_gate": {
+    "status": "pause",
+    "stage": "warmup",
+    "abort_reasons": [],
+    "pause_reasons": [
+      "regression_from_behavior_cloning"
+    ],
+    "warning_reasons": []
+  },
+  "trained_trunk_without_graph": {
+    "minimum_cohort_recall": 0.0,
+    "mean_cohort_recall": 0.25925925925925924,
+    "fixed_mean_recall": 0.35185185185185186,
+    "fixed_mean_cohort_recall": 0.35185185185185186,
+    "shadow_mean_recall": 0.16666666666666666,
+    "shadow_mean_cohort_recall": 0.16666666666666666,
+    "fixed_shadow_gap": 0.1851851851851852,
+    "minimum_cohort_coverage": 0.05110785213379421,
+    "invalid_actions": 0,
+    "collisions": 0,
+    "maximum_dominant_action_ratio": 0.7604166666666666,
+    "diagnostic_only": true
+  },
+  "interpretation": "Development comparison only; inspect all cohorts and gates before promotion."
+}

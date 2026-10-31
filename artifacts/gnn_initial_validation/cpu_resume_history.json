@@ -1,0 +1,44 @@
+[
+  {
+    "iteration": 1,
+    "env_steps": 512,
+    "elapsed_seconds": 4.374559832998784,
+    "episode_return_mean": 287.25333333333333,
+    "episode_length_mean": 35.333333333333336,
+    "iteration_seconds": 0.9631215420013177,
+    "training_env_steps_per_second": 132.90119098989572,
+    "cuda_peak_allocated_bytes": null,
+    "cuda_peak_reserved_bytes": null,
+    "rover_policy_loss": 0.5119649171829224,
+    "drone_policy_loss": 0.4653688669204712,
+    "failures": []
+  },
+  {
+    "iteration": 2,
+    "env_steps": 640,
+    "elapsed_seconds": 5.186897166000563,
+    "episode_return_mean": 82.26666666666667,
+    "episode_length_mean": 40.0,
+    "iteration_seconds": 0.8056637080007931,
+    "training_env_steps_per_second": 158.87522142163314,
+    "cuda_peak_allocated_bytes": null,
+    "cuda_peak_reserved_bytes": null,
+    "rover_policy_loss": 0.02630765549838543,
+    "drone_policy_loss": 0.06435088068246841,
+    "failures": []
+  },
+  {
+    "iteration": 3,
+    "env_steps": 768,
+    "elapsed_seconds": 6.04625379099889,
+    "episode_return_mean": 171.22000000000003,
+    "episode_length_mean": 34.0,
+    "iteration_seconds": 0.8529920830042101,
+    "training_env_steps_per_second": 150.06000940734197,
+    "cuda_peak_allocated_bytes": null,
+    "cuda_peak_reserved_bytes": null,
+    "rover_policy_loss": -0.5431914329528809,
+    "drone_policy_loss": -0.5407201051712036,
+    "failures": []
+  }
+]

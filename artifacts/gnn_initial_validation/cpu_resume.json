@@ -1,0 +1,21 @@
+{
+  "architecture": "gnn-residual-v1",
+  "env_steps": 768,
+  "iterations": 3,
+  "elapsed_seconds": 6.137705583001662,
+  "status": "target_reached",
+  "graph_updates": {
+    "rover_policy": {
+      "encoder": true,
+      "residual": true
+    },
+    "drone_policy": {
+      "encoder": true,
+      "residual": true
+    }
+  },
+  "weights_updated": true,
+  "cuda": false,
+  "promoted": false,
+  "interpretation": "Optimizer/checkpoint evidence; run paired evaluation before claiming improvement."
+}

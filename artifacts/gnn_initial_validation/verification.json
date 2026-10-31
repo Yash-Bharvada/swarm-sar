@@ -1,0 +1,84 @@
+{
+  "date_ist": "2026-10-31",
+  "architecture": "gnn-residual-v1",
+  "gpu_used": false,
+  "promoted": false,
+  "python_suite": {
+    "passed": 211,
+    "skipped": 0,
+    "seconds": 15.94,
+    "warnings": 2,
+    "command": "PATH=\"$PWD/.venv/bin:$PATH\" .venv/bin/python -m pytest -q"
+  },
+  "frontend_suite": {
+    "passed": 148,
+    "files": 18,
+    "command": "npm --prefix frontend test"
+  },
+  "gpu_v1_contract": "passed",
+  "frozen_baseline_30_files": "passed",
+  "old_gpu_release_manifest": {
+    "status": "preexisting_mismatch",
+    "reason": "Nine scripts already present at HEAD are absent from historical manifest; verified unchanged from HEAD."
+  },
+  "evidence": {
+    "warm_start.json": {
+      "source": "training/runs/gnn_warm_start_400_v2/verification.json",
+      "sha256": "d5bf85b3b4caefb6b35bc08613993fcc8dc2ef8e8b196ca7501c9a890c3ac278"
+    },
+    "cpu_training.json": {
+      "source": "training/runs/gnn_validated_cpu_v3/run/summary.json",
+      "sha256": "c577f178774eef409e40304d82f62292ef4bc060e45d9736cdc16e5389a46254"
+    },
+    "cpu_training_history.json": {
+      "source": "training/runs/gnn_validated_cpu_v3/run/history.json",
+      "sha256": "0f795635b5b6b00678c8d39496ef957362a805d6c7e12546059531eba404e4ec"
+    },
+    "cpu_resume.json": {
+      "source": "training/runs/gnn_resume_cpu_v3/run/summary.json",
+      "sha256": "6d6f887b9e6abd5358d46c9a7132bacd406bbfd216377894217390892b7816eb"
+    },
+    "cpu_resume_history.json": {
+      "source": "training/runs/gnn_resume_cpu_v3/run/history.json",
+      "sha256": "5ea889dd5fc3b875a5f81e70677b0a29d62f837735d17eeec47ac57431e106a2"
+    },
+    "cpu_distributed.json": {
+      "source": "training/runs/gnn_distributed_cpu_v3/run/summary.json",
+      "sha256": "6ff35a98ae4cc2f010d497f9380c81577f89c4f373b777467cdc625748f764c8"
+    },
+    "diagnostic_comparison.json": {
+      "source": "training/runs/gnn_evaluation_cpu_v3/comparison.json",
+      "sha256": "c63127f11c34f50eefc5e0cf550c090429bebe94a3f4483a903e788a0e0bcd05"
+    },
+    "diagnostic_original.json": {
+      "source": "training/runs/gnn_evaluation_cpu_v3/original_ppo.json",
+      "sha256": "1c302f55a6b7b6c17f620427e6c33a6e3801042c210dff42bdda4e450bb92aa9"
+    },
+    "diagnostic_gnn.json": {
+      "source": "training/runs/gnn_evaluation_cpu_v3/gnn_ppo.json",
+      "sha256": "ea8709d91084c9c0a2be194e131ca6d2f039493b1ba99ef659ff31aec45c2ef8"
+    },
+    "diagnostic_disabled_graph.json": {
+      "source": "training/runs/gnn_evaluation_cpu_v3/disabled_graph.json",
+      "sha256": "acfa4da09aecc6b2618d04002b9a5e202cc9bba39a6f76736067497f025f1a92"
+    },
+    "experiment_definition.json": {
+      "source": "training/runs/gnn_validated_cpu_v3/run/experiment.json",
+      "sha256": "94f23bf11d30e8a4d0418410316702b611f50721ff666c3f0e7382dbb7c5b8cf"
+    },
+    "cpu_preflight.json": {
+      "source": "training/runs/gnn_preflight_cpu_final.json",
+      "sha256": "936b0f5665bcfb2532647020e089eb8d0b9cc2caf2497a952d0224864e95e8b8"
+    }
+  },
+  "limitations": [
+    "No CUDA validation",
+    "No full-budget GNN evaluation",
+    "Diagnostic GNN regressed and quality gate paused",
+    "No new GNN browser serving or ROS integration"
+  ],
+  "notes": [
+    "Warm-start report predates pilot path fix; graph/module implementation unchanged. Final training/resume reports use matching recorded sources.",
+    "Interrupted prior output directories are preserved and excluded from claimed successful evidence."
+  ]
+}

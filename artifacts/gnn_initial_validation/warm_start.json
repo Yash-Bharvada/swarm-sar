@@ -1,0 +1,41 @@
+{
+  "architecture": "gnn-residual-v1",
+  "stage": "untrained_zero_residual_warm_start",
+  "gpu_used": false,
+  "training_started": false,
+  "seed": 10000,
+  "final_seeds_used": false,
+  "original_tree_sha256": "23696e6cf3b0821b6c01235a3911cb5cb87d0707589efce6ec43cb58b5340040",
+  "baseline": {
+    "steps": 94,
+    "survivors_found": 4,
+    "survivors_total": 4,
+    "coverage": 0.9047619047619048,
+    "invalid_actions": 0,
+    "attention_checks": 0,
+    "trace_sha256": "ea192ca2e0e2496dd095e66b767ae66607d9cbb8b104b41017294cb28418aa16"
+  },
+  "candidate": {
+    "steps": 94,
+    "survivors_found": 4,
+    "survivors_total": 4,
+    "coverage": 0.9047619047619048,
+    "invalid_actions": 0,
+    "attention_checks": 376,
+    "trace_sha256": "ea192ca2e0e2496dd095e66b767ae66607d9cbb8b104b41017294cb28418aa16"
+  },
+  "identical_initial_behavior": true,
+  "restore_replay_identical": true,
+  "source_hashes": {
+    "experiments/gnn/__init__.py": "8bf6e92c6315cb307b66a9bce82297c84a1a0d523c4dbdc01c919436f2aabf23",
+    "experiments/gnn/artifacts.py": "4291366656359d79d077bc93214f10fbd2e33342cf8f6412dad2ec225e941054",
+    "experiments/gnn/attention.py": "9ef0f8bdd943241c0ad688a6dc37d8c5f13099b27e91e0a1d0ff6ca59e3ee6b8",
+    "experiments/gnn/config.py": "dd5c155fafc1ea9dd998b3ef51949ced030639588537678e130159697d24051a",
+    "experiments/gnn/evaluate.py": "bd8482854eef207ae22e277622d070fa966b2086471aa33bb480b912e3b87165",
+    "experiments/gnn/module.py": "3ff42c3f04a964b0e41b84a2bd93af296149800e555ee5768516097e9c27e76f",
+    "experiments/gnn/pilot.py": "4fbc1e2ae8e0d399227abca22411cfd3454a059c29cbf1429f76f30348ac4058",
+    "experiments/gnn/preflight.py": "0bcadd2957a83a602eca62dde34ddd189a6f1009e4b03c7c7cac63d5a37a2eb2",
+    "experiments/gnn/smoke.py": "41906353106158e0ff7171179bb4dab140b7435f87244d6bb34ea7af893f645a"
+  },
+  "interpretation": "Implementation/compatibility evidence only; no GNN performance gain measured."
+}
