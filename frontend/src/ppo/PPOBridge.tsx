@@ -19,7 +19,7 @@ export async function ppoRequest(path: string, method = 'GET', data?: unknown, s
 /** Publish one authoritative Python tick and retain the discovery-pause flow. */
 export function applyPythonTick(engine: RemoteEngine, snapshot: PPOSnapshot) {
   const before = useSim.getState();
-  if (before.engine !== engine || before.controllerMode !== 'ppo') return;
+  if (before.engine !== engine || before.controllerMode !== 'ppo' || before.ppoPhase !== 'ready') return;
   engine.applySnapshot(snapshot);
   simClock.lastTickAt = performance.now(); simClock.alpha = 0;
   const fresh = engine.discoveredSurvivors().filter((v) => !before.announcedSurvivors.includes(v.id)).map((v) => v.id);
@@ -33,11 +33,39 @@ export function applyPythonTick(engine: RemoteEngine, snapshot: PPOSnapshot) {
   }
 }
 
+/** Install exact Python-generated geometry without locally generating a PPO map. */
+export function applyPythonInitial(payload: PPOSnapshot, phase: 'ready' | 'preview') {
+  const engine = new RemoteEngine(payload);
+  const state = useSim.getState();
+  simClock.alpha = 1;
+  useSim.setState({ engine, status: 'ready', ppoPhase: phase, ppoError: null, version: state.version + 1,
+    settings: { ...state.settings, seed: payload.options.seed, rovers: payload.options.rovers, drones: payload.options.drones, mode: 'autonomous', survivorCount: null, packetLoss: payload.transport.packetLoss, delayMax: payload.transport.delay[1], networkEnabled: payload.options.network, batteryLimited: payload.options.batteryLimited !== false, timeLimit: payload.options.timeLimit, sensorNoise: true },
+    selected: null, following: false, focus: null, cameraRequest: null, encounter: null, encounterQueue: [], announcedSurvivors: [], editingSurvivors: false, survivorMessage: null,
+  });
+}
+
 export function PPOBridge() {
   const mode = useSim((s) => s.controllerMode);
   const revision = useSim((s) => s.ppoRevision);
+  const preview = useSim((s) => s.ppoPhase === 'preview');
+  const options = useSim((s) => s.ppoOptions);
   useEffect(() => {
-    if (mode !== 'ppo') return;
+    if (mode !== 'ppo' || !preview) return;
+    const abort = new AbortController();
+    let disposed = false;
+    const timer = window.setTimeout(async () => {
+      try {
+        const payload = await ppoRequest('/preview', 'POST', options, abort.signal);
+        validateSnapshot(payload);
+        if (!disposed) applyPythonInitial(payload, 'preview');
+      } catch (error) {
+        if (!disposed) useSim.setState({ ppoError: error instanceof Error ? `Preview unavailable: ${error.message}` : 'Preview unavailable. Check the Python service.' });
+      }
+    }, 180);
+    return () => { disposed = true; abort.abort(); window.clearTimeout(timer); };
+  }, [mode, preview, options, revision]);
+  useEffect(() => {
+    if (mode !== 'ppo' || preview) return;
     const abort = new AbortController();
     let disposed = false, mission: string | null = null, engine: RemoteEngine | null = null, busy = false;
     let previousFrame = performance.now(), elapsed = 0, previousInterval = 0;
@@ -55,13 +83,8 @@ export function PPOBridge() {
         const payload = await ppoRequest('/missions', 'POST', { ...useSim.getState().ppoOptions, clientKey }, abort.signal);
         validateSnapshot(payload); mission = payload.mission;
         if (disposed) { void ppoRequest(`/missions/${mission}`, 'DELETE').catch(() => {}); return; }
-        engine = new RemoteEngine(payload);
-        const state = useSim.getState();
-        simClock.alpha = 1;
-        useSim.setState({ engine, status: 'ready', ppoPhase: 'ready', ppoError: null, version: state.version + 1,
-          settings: { ...state.settings, seed: payload.options.seed, rovers: payload.options.rovers, drones: payload.options.drones, mode: 'autonomous', survivorCount: null, packetLoss: payload.transport.packetLoss, delayMax: payload.transport.delay[1], networkEnabled: payload.options.network, batteryLimited: payload.options.batteryLimited !== false, timeLimit: payload.options.timeLimit, sensorNoise: true },
-          selected: null, following: false, focus: null, cameraRequest: null, encounter: null, encounterQueue: [], announcedSurvivors: [], editingSurvivors: false, survivorMessage: null,
-        });
+        applyPythonInitial(payload, 'ready');
+        engine = useSim.getState().engine as RemoteEngine;
         previousFrame = performance.now();
       } catch (error) { fail(error); }
     })();
@@ -96,6 +119,6 @@ export function PPOBridge() {
       disposed = true; abort.abort(); clearInterval(timer);
       if (mission) void ppoRequest(`/missions/${mission}`, 'DELETE').catch(() => {});
     };
-  }, [mode, revision]);
+  }, [mode, revision, preview]);
   return null;
 }

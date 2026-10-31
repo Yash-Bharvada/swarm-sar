@@ -1,0 +1,1308 @@
+{
+  "stage": "discovery",
+  "protocol_sha256": "3a31d9992f495c065616dda679b38f68d718aea1181f80869e631da7d10c0c84",
+  "rows": [
+    {
+      "size": 32,
+      "layout": "maze",
+      "seed": 10020,
+      "mode": "ppo",
+      "found": 0,
+      "total": 3,
+      "coverage": 0.07983193277310924,
+      "steps": 400,
+      "initial_signature": "631e3fae1b79ca3c962976e45970ee749e6c43f7d2681dbdcd26f1713f3d27dd",
+      "termination": "deadline",
+      "remaining_energy": {
+        "rover_0": 227.5999999999967,
+        "rover_1": 245.59999999999425,
+        "drone_2": 185.60000000000218,
+        "drone_3": 155.900000000002
+      }
+    },
+    {
+      "size": 32,
+      "layout": "maze",
+      "seed": 10020,
+      "mode": "expert",
+      "found": 2,
+      "total": 3,
+      "coverage": 0.6680672268907563,
+      "steps": 294,
+      "initial_signature": "631e3fae1b79ca3c962976e45970ee749e6c43f7d2681dbdcd26f1713f3d27dd",
+      "termination": "all_batteries_depleted",
+      "remaining_energy": {
+        "rover_0": 0.0,
+        "rover_1": 0.0,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 32,
+      "layout": "maze",
+      "seed": 10021,
+      "mode": "ppo",
+      "found": 2,
+      "total": 4,
+      "coverage": 0.8263598326359832,
+      "steps": 342,
+      "initial_signature": "06517172f3c933dd58f6d6b3688e8117d2e8bb7b65ae07f13d31df8df97d68b6",
+      "termination": "all_batteries_depleted",
+      "remaining_energy": {
+        "rover_0": 0.0,
+        "rover_1": 0.0,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 32,
+      "layout": "maze",
+      "seed": 10021,
+      "mode": "expert",
+      "found": 3,
+      "total": 4,
+      "coverage": 0.9790794979079498,
+      "steps": 297,
+      "initial_signature": "06517172f3c933dd58f6d6b3688e8117d2e8bb7b65ae07f13d31df8df97d68b6",
+      "termination": "all_batteries_depleted",
+      "remaining_energy": {
+        "rover_0": 0.0,
+        "rover_1": 0.0,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 32,
+      "layout": "maze",
+      "seed": 10022,
+      "mode": "ppo",
+      "found": 1,
+      "total": 2,
+      "coverage": 0.8121085594989561,
+      "steps": 304,
+      "initial_signature": "1a99a9764c4c0c1daf81166b8480ca33490d4f43c03e99893d83fb008af276e6",
+      "termination": "all_batteries_depleted",
+      "remaining_energy": {
+        "rover_0": 0.0,
+        "rover_1": 0.0,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 32,
+      "layout": "maze",
+      "seed": 10022,
+      "mode": "expert",
+      "found": 1,
+      "total": 2,
+      "coverage": 0.918580375782881,
+      "steps": 293,
+      "initial_signature": "1a99a9764c4c0c1daf81166b8480ca33490d4f43c03e99893d83fb008af276e6",
+      "termination": "all_batteries_depleted",
+      "remaining_energy": {
+        "rover_0": 0.0,
+        "rover_1": 0.0,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 32,
+      "layout": "maze",
+      "seed": 10023,
+      "mode": "ppo",
+      "found": 3,
+      "total": 4,
+      "coverage": 0.8768267223382046,
+      "steps": 400,
+      "initial_signature": "b8d25bc113b5f1ba615268e3e876336aaee868c8acf2bf9d59b6f7f245ba48ff",
+      "termination": "deadline",
+      "remaining_energy": {
+        "rover_0": 48.400000000000944,
+        "rover_1": 0.0,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 32,
+      "layout": "maze",
+      "seed": 10023,
+      "mode": "expert",
+      "found": 2,
+      "total": 4,
+      "coverage": 0.7578288100208769,
+      "steps": 297,
+      "initial_signature": "b8d25bc113b5f1ba615268e3e876336aaee868c8acf2bf9d59b6f7f245ba48ff",
+      "termination": "all_batteries_depleted",
+      "remaining_energy": {
+        "rover_0": 0.0,
+        "rover_1": 0.0,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 32,
+      "layout": "rooms",
+      "seed": 10020,
+      "mode": "ppo",
+      "found": 2,
+      "total": 2,
+      "coverage": 0.7766666666666666,
+      "steps": 98,
+      "initial_signature": "ba3e25b8ffd306d230daaa2f43cdad5bb4660e044904b01048e972e2adbef8f7",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 188.6,
+        "rover_1": 181.69999999999996,
+        "drone_2": 147.40000000000003,
+        "drone_3": 145.60000000000002
+      }
+    },
+    {
+      "size": 32,
+      "layout": "rooms",
+      "seed": 10020,
+      "mode": "expert",
+      "found": 2,
+      "total": 2,
+      "coverage": 0.5766666666666667,
+      "steps": 48,
+      "initial_signature": "ba3e25b8ffd306d230daaa2f43cdad5bb4660e044904b01048e972e2adbef8f7",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 256.39999999999986,
+        "rover_1": 253.79999999999995,
+        "drone_2": 193.8,
+        "drone_3": 193.8
+      }
+    },
+    {
+      "size": 32,
+      "layout": "rooms",
+      "seed": 10021,
+      "mode": "ppo",
+      "found": 2,
+      "total": 2,
+      "coverage": 0.9362745098039216,
+      "steps": 84,
+      "initial_signature": "0bfae52d26655b6c634ec9a56702f5f628b97a53427e9977fb8ccdac5ac1a600",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 210.0,
+        "rover_1": 213.89999999999998,
+        "drone_2": 156.0,
+        "drone_3": 156.9
+      }
+    },
+    {
+      "size": 32,
+      "layout": "rooms",
+      "seed": 10021,
+      "mode": "expert",
+      "found": 2,
+      "total": 2,
+      "coverage": 0.9068627450980392,
+      "steps": 133,
+      "initial_signature": "0bfae52d26655b6c634ec9a56702f5f628b97a53427e9977fb8ccdac5ac1a600",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 257.8999999999977,
+        "rover_1": 150.0,
+        "drone_2": 129.50000000000014,
+        "drone_3": 194.30000000000055
+      }
+    },
+    {
+      "size": 32,
+      "layout": "rooms",
+      "seed": 10022,
+      "mode": "ppo",
+      "found": 2,
+      "total": 2,
+      "coverage": 0.9494505494505494,
+      "steps": 125,
+      "initial_signature": "b317e554cb841df68ef09ece16b173e9d8f7d1aadd69b8d732f2f8557f8299c3",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 179.79999999999973,
+        "rover_1": 178.29999999999993,
+        "drone_2": 117.70000000000002,
+        "drone_3": 116.80000000000001
+      }
+    },
+    {
+      "size": 32,
+      "layout": "rooms",
+      "seed": 10022,
+      "mode": "expert",
+      "found": 2,
+      "total": 2,
+      "coverage": 0.8637362637362638,
+      "steps": 80,
+      "initial_signature": "b317e554cb841df68ef09ece16b173e9d8f7d1aadd69b8d732f2f8557f8299c3",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 222.39999999999986,
+        "rover_1": 220.0,
+        "drone_2": 166.30000000000004,
+        "drone_3": 163.60000000000002
+      }
+    },
+    {
+      "size": 32,
+      "layout": "rooms",
+      "seed": 10023,
+      "mode": "ppo",
+      "found": 1,
+      "total": 1,
+      "coverage": 0.7048192771084337,
+      "steps": 50,
+      "initial_signature": "daf5374ba5dc4ed2d0f2b4429dd615dfe2251df968960db3c645e4198e13f5d3",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 245.9,
+        "rover_1": 242.89999999999998,
+        "drone_2": 190.0,
+        "drone_3": 191.8
+      }
+    },
+    {
+      "size": 32,
+      "layout": "rooms",
+      "seed": 10023,
+      "mode": "expert",
+      "found": 1,
+      "total": 1,
+      "coverage": 0.32228915662650603,
+      "steps": 12,
+      "initial_signature": "daf5374ba5dc4ed2d0f2b4429dd615dfe2251df968960db3c645e4198e13f5d3",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 288.0,
+        "rover_1": 288.9,
+        "drone_2": 228.0,
+        "drone_3": 228.0
+      }
+    },
+    {
+      "size": 32,
+      "layout": "cave",
+      "seed": 10020,
+      "mode": "ppo",
+      "found": 2,
+      "total": 2,
+      "coverage": 0.6190476190476191,
+      "steps": 58,
+      "initial_signature": "239871b8816f0219f6f9162c6f71f6073a0cc8ed5c9063776759b121da42a432",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 235.0,
+        "rover_1": 240.0,
+        "drone_2": 182.9,
+        "drone_3": 182.0
+      }
+    },
+    {
+      "size": 32,
+      "layout": "cave",
+      "seed": 10020,
+      "mode": "expert",
+      "found": 2,
+      "total": 2,
+      "coverage": 0.8257839721254355,
+      "steps": 42,
+      "initial_signature": "239871b8816f0219f6f9162c6f71f6073a0cc8ed5c9063776759b121da42a432",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 252.0,
+        "rover_1": 249.0,
+        "drone_2": 198.0,
+        "drone_3": 198.9
+      }
+    },
+    {
+      "size": 32,
+      "layout": "cave",
+      "seed": 10021,
+      "mode": "ppo",
+      "found": 2,
+      "total": 2,
+      "coverage": 0.7414806110458284,
+      "steps": 47,
+      "initial_signature": "c09648648e5cf7d2d922eaa9adf6a844734ca3c481f6ab006342ac1ce65a80e0",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 243.0,
+        "rover_1": 248.0,
+        "drone_2": 193.0,
+        "drone_3": 193.0
+      }
+    },
+    {
+      "size": 32,
+      "layout": "cave",
+      "seed": 10021,
+      "mode": "expert",
+      "found": 2,
+      "total": 2,
+      "coverage": 0.5687426556991775,
+      "steps": 35,
+      "initial_signature": "c09648648e5cf7d2d922eaa9adf6a844734ca3c481f6ab006342ac1ce65a80e0",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 264.0,
+        "rover_1": 260.0,
+        "drone_2": 205.0,
+        "drone_3": 205.9
+      }
+    },
+    {
+      "size": 32,
+      "layout": "cave",
+      "seed": 10022,
+      "mode": "ppo",
+      "found": 2,
+      "total": 2,
+      "coverage": 0.6289592760180995,
+      "steps": 45,
+      "initial_signature": "2b67228d300718665b6cc7e7397010860b18d5a05dcc398fcbfc0af463f43de7",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 255.89999999999998,
+        "rover_1": 255.89999999999998,
+        "drone_2": 196.8,
+        "drone_3": 195.9
+      }
+    },
+    {
+      "size": 32,
+      "layout": "cave",
+      "seed": 10022,
+      "mode": "expert",
+      "found": 2,
+      "total": 2,
+      "coverage": 0.5316742081447964,
+      "steps": 31,
+      "initial_signature": "2b67228d300718665b6cc7e7397010860b18d5a05dcc398fcbfc0af463f43de7",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 270.79999999999995,
+        "rover_1": 269.0,
+        "drone_2": 209.0,
+        "drone_3": 209.0
+      }
+    },
+    {
+      "size": 32,
+      "layout": "cave",
+      "seed": 10023,
+      "mode": "ppo",
+      "found": 4,
+      "total": 4,
+      "coverage": 0.95096921322691,
+      "steps": 68,
+      "initial_signature": "e88707cba7c80f119b70713299cbe5dfe522ed2e9d994b82c33d6c6ab9a33ad2",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 229.0,
+        "rover_1": 230.89999999999998,
+        "drone_2": 172.0,
+        "drone_3": 172.0
+      }
+    },
+    {
+      "size": 32,
+      "layout": "cave",
+      "seed": 10023,
+      "mode": "expert",
+      "found": 4,
+      "total": 4,
+      "coverage": 0.8586088939566705,
+      "steps": 64,
+      "initial_signature": "e88707cba7c80f119b70713299cbe5dfe522ed2e9d994b82c33d6c6ab9a33ad2",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 240.4999999999999,
+        "rover_1": 236.0,
+        "drone_2": 176.0,
+        "drone_3": 176.0
+      }
+    },
+    {
+      "size": 56,
+      "layout": "maze",
+      "seed": 10020,
+      "mode": "ppo",
+      "found": 0,
+      "total": 1,
+      "coverage": 0.037760416666666664,
+      "steps": 400,
+      "initial_signature": "9252106d914c9d31ec7bca12ebf2977b2866515084451a7dc69905d1ff993e26",
+      "termination": "deadline",
+      "remaining_energy": {
+        "rover_0": 227.59999999999812,
+        "rover_1": 231.1999999999973,
+        "drone_2": 162.20000000000203,
+        "drone_3": 163.10000000000204
+      }
+    },
+    {
+      "size": 56,
+      "layout": "maze",
+      "seed": 10020,
+      "mode": "expert",
+      "found": 0,
+      "total": 1,
+      "coverage": 0.3365885416666667,
+      "steps": 313,
+      "initial_signature": "9252106d914c9d31ec7bca12ebf2977b2866515084451a7dc69905d1ff993e26",
+      "termination": "all_batteries_depleted",
+      "remaining_energy": {
+        "rover_0": 0.0,
+        "rover_1": 0.0,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 56,
+      "layout": "maze",
+      "seed": 10021,
+      "mode": "ppo",
+      "found": 0,
+      "total": 3,
+      "coverage": 0.3198697068403909,
+      "steps": 299,
+      "initial_signature": "e5675194dc4e24b4cd6ef0069d76512ad45c82b71b883f9583a306c2794af832",
+      "termination": "all_batteries_depleted",
+      "remaining_energy": {
+        "rover_0": 0.0,
+        "rover_1": 0.0,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 56,
+      "layout": "maze",
+      "seed": 10021,
+      "mode": "expert",
+      "found": 1,
+      "total": 3,
+      "coverage": 0.5120521172638437,
+      "steps": 295,
+      "initial_signature": "e5675194dc4e24b4cd6ef0069d76512ad45c82b71b883f9583a306c2794af832",
+      "termination": "all_batteries_depleted",
+      "remaining_energy": {
+        "rover_0": 0.0,
+        "rover_1": 0.0,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 56,
+      "layout": "maze",
+      "seed": 10022,
+      "mode": "ppo",
+      "found": 0,
+      "total": 2,
+      "coverage": 0.22591145833333334,
+      "steps": 400,
+      "initial_signature": "aedcd1b285622d0753331ff652522335f1e49743205bba12a88d734fd60e0f61",
+      "termination": "deadline",
+      "remaining_energy": {
+        "rover_0": 114.20000000000132,
+        "rover_1": 0.0,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 56,
+      "layout": "maze",
+      "seed": 10022,
+      "mode": "expert",
+      "found": 1,
+      "total": 2,
+      "coverage": 0.3619791666666667,
+      "steps": 300,
+      "initial_signature": "aedcd1b285622d0753331ff652522335f1e49743205bba12a88d734fd60e0f61",
+      "termination": "all_batteries_depleted",
+      "remaining_energy": {
+        "rover_0": 0.0,
+        "rover_1": 0.0,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 56,
+      "layout": "maze",
+      "seed": 10023,
+      "mode": "ppo",
+      "found": 0,
+      "total": 1,
+      "coverage": 0.16558018252933507,
+      "steps": 400,
+      "initial_signature": "1ba7a25d8729ada23c61a21d1f2f09581cd46bc2d71ca1ad62bc75a93e9060aa",
+      "termination": "deadline",
+      "remaining_energy": {
+        "rover_0": 0.0,
+        "rover_1": 20.60000000000001,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 56,
+      "layout": "maze",
+      "seed": 10023,
+      "mode": "expert",
+      "found": 1,
+      "total": 1,
+      "coverage": 0.3305084745762712,
+      "steps": 176,
+      "initial_signature": "1ba7a25d8729ada23c61a21d1f2f09581cd46bc2d71ca1ad62bc75a93e9060aa",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 121.0,
+        "rover_1": 124.89999999999998,
+        "drone_2": 64.9,
+        "drone_3": 64.9
+      }
+    },
+    {
+      "size": 56,
+      "layout": "rooms",
+      "seed": 10020,
+      "mode": "ppo",
+      "found": 2,
+      "total": 4,
+      "coverage": 0.5879828326180258,
+      "steps": 294,
+      "initial_signature": "d2f83082468e09f21be7d70dc1ac06065f1b752ca4cbf83e3396c677df359db1",
+      "termination": "all_batteries_depleted",
+      "remaining_energy": {
+        "rover_0": 0.0,
+        "rover_1": 0.0,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 56,
+      "layout": "rooms",
+      "seed": 10020,
+      "mode": "expert",
+      "found": 1,
+      "total": 4,
+      "coverage": 0.5879828326180258,
+      "steps": 299,
+      "initial_signature": "d2f83082468e09f21be7d70dc1ac06065f1b752ca4cbf83e3396c677df359db1",
+      "termination": "all_batteries_depleted",
+      "remaining_energy": {
+        "rover_0": 0.0,
+        "rover_1": 0.0,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 56,
+      "layout": "rooms",
+      "seed": 10021,
+      "mode": "ppo",
+      "found": 1,
+      "total": 4,
+      "coverage": 0.8245299910474485,
+      "steps": 400,
+      "initial_signature": "b1889010fd48437599b8a9eca34fd490f4b70b8b167febe75e2cc5b411b5598b",
+      "termination": "deadline",
+      "remaining_energy": {
+        "rover_0": 0.0,
+        "rover_1": 2.499999999999929,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 56,
+      "layout": "rooms",
+      "seed": 10021,
+      "mode": "expert",
+      "found": 4,
+      "total": 4,
+      "coverage": 0.7618621307072516,
+      "steps": 213,
+      "initial_signature": "b1889010fd48437599b8a9eca34fd490f4b70b8b167febe75e2cc5b411b5598b",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 82.0,
+        "rover_1": 76.49999999999991,
+        "drone_2": 40.500000000000085,
+        "drone_3": 56.70000000000019
+      }
+    },
+    {
+      "size": 56,
+      "layout": "rooms",
+      "seed": 10022,
+      "mode": "ppo",
+      "found": 1,
+      "total": 2,
+      "coverage": 0.8469860896445132,
+      "steps": 316,
+      "initial_signature": "fb3ad6c59d3788798be227149dc1ef848f89d95a231041773c3410a4aa6e8550",
+      "termination": "all_batteries_depleted",
+      "remaining_energy": {
+        "rover_0": 0.0,
+        "rover_1": 0.0,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 56,
+      "layout": "rooms",
+      "seed": 10022,
+      "mode": "expert",
+      "found": 0,
+      "total": 2,
+      "coverage": 0.5942812982998454,
+      "steps": 304,
+      "initial_signature": "fb3ad6c59d3788798be227149dc1ef848f89d95a231041773c3410a4aa6e8550",
+      "termination": "all_batteries_depleted",
+      "remaining_energy": {
+        "rover_0": 0.0,
+        "rover_1": 0.0,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 56,
+      "layout": "rooms",
+      "seed": 10023,
+      "mode": "ppo",
+      "found": 1,
+      "total": 2,
+      "coverage": 0.6264020707506471,
+      "steps": 303,
+      "initial_signature": "c56c90b426896962b98f0fff296cd1c26fe699b2003c34759ab301e8cab893c0",
+      "termination": "all_batteries_depleted",
+      "remaining_energy": {
+        "rover_0": 0.0,
+        "rover_1": 0.0,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 56,
+      "layout": "rooms",
+      "seed": 10023,
+      "mode": "expert",
+      "found": 2,
+      "total": 2,
+      "coverage": 0.9240724762726489,
+      "steps": 318,
+      "initial_signature": "c56c90b426896962b98f0fff296cd1c26fe699b2003c34759ab301e8cab893c0",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 3.09999999999995,
+        "rover_1": 0.0,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 56,
+      "layout": "cave",
+      "seed": 10020,
+      "mode": "ppo",
+      "found": 3,
+      "total": 3,
+      "coverage": 0.8857841425078589,
+      "steps": 270,
+      "initial_signature": "8a041fd3cfa26ed4373774e838d594fb852a4c54e0c2c0cdf2a373bf2371a7b6",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 28.0,
+        "rover_1": 28.899999999999977,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 56,
+      "layout": "cave",
+      "seed": 10020,
+      "mode": "expert",
+      "found": 3,
+      "total": 3,
+      "coverage": 0.6063569682151589,
+      "steps": 119,
+      "initial_signature": "8a041fd3cfa26ed4373774e838d594fb852a4c54e0c2c0cdf2a373bf2371a7b6",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 174.0,
+        "rover_1": 178.0,
+        "drone_2": 121.0,
+        "drone_3": 121.0
+      }
+    },
+    {
+      "size": 56,
+      "layout": "cave",
+      "seed": 10021,
+      "mode": "ppo",
+      "found": 3,
+      "total": 3,
+      "coverage": 0.776045357902197,
+      "steps": 276,
+      "initial_signature": "c7c1ebb8d48a4b5ad74b158e35534644d3b0f9d7a7b457d667734ed02c368c0f",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 12.900000000000006,
+        "rover_1": 18.899999999999977,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 56,
+      "layout": "cave",
+      "seed": 10021,
+      "mode": "expert",
+      "found": 3,
+      "total": 3,
+      "coverage": 0.7048192771084337,
+      "steps": 140,
+      "initial_signature": "c7c1ebb8d48a4b5ad74b158e35534644d3b0f9d7a7b457d667734ed02c368c0f",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 159.0,
+        "rover_1": 160.89999999999998,
+        "drone_2": 100.0,
+        "drone_3": 100.9
+      }
+    },
+    {
+      "size": 56,
+      "layout": "cave",
+      "seed": 10022,
+      "mode": "ppo",
+      "found": 2,
+      "total": 2,
+      "coverage": 0.6006300315015751,
+      "steps": 228,
+      "initial_signature": "312a03c33f2a9e742000f21ef8e66646c5a02060a0db681b4bd670cc2cf24b48",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 68.89999999999998,
+        "rover_1": 65.0,
+        "drone_2": 12.0,
+        "drone_3": 12.0
+      }
+    },
+    {
+      "size": 56,
+      "layout": "cave",
+      "seed": 10022,
+      "mode": "expert",
+      "found": 2,
+      "total": 2,
+      "coverage": 0.6779838991949597,
+      "steps": 129,
+      "initial_signature": "312a03c33f2a9e742000f21ef8e66646c5a02060a0db681b4bd670cc2cf24b48",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 171.0,
+        "rover_1": 164.0,
+        "drone_2": 111.0,
+        "drone_3": 111.0
+      }
+    },
+    {
+      "size": 56,
+      "layout": "cave",
+      "seed": 10023,
+      "mode": "ppo",
+      "found": 2,
+      "total": 3,
+      "coverage": 0.7529575504523313,
+      "steps": 307,
+      "initial_signature": "02e9b2ea434b97170438c5a16b7d5324ba513f437280cdfe4bf262f8f6dbc8e6",
+      "termination": "all_batteries_depleted",
+      "remaining_energy": {
+        "rover_0": 0.0,
+        "rover_1": 0.0,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 56,
+      "layout": "cave",
+      "seed": 10023,
+      "mode": "expert",
+      "found": 2,
+      "total": 3,
+      "coverage": 0.9457202505219207,
+      "steps": 300,
+      "initial_signature": "02e9b2ea434b97170438c5a16b7d5324ba513f437280cdfe4bf262f8f6dbc8e6",
+      "termination": "all_batteries_depleted",
+      "remaining_energy": {
+        "rover_0": 0.0,
+        "rover_1": 0.0,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 64,
+      "layout": "maze",
+      "seed": 10020,
+      "mode": "ppo",
+      "found": 0,
+      "total": 3,
+      "coverage": 0.1007905138339921,
+      "steps": 400,
+      "initial_signature": "251c9338a2d61167bdb44e386afd3001589924ec86b3a2d68f53c556c781cdef",
+      "termination": "deadline",
+      "remaining_energy": {
+        "rover_0": 241.09999999999508,
+        "rover_1": 245.59999999999388,
+        "drone_2": 111.80000000000172,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 64,
+      "layout": "maze",
+      "seed": 10020,
+      "mode": "expert",
+      "found": 1,
+      "total": 3,
+      "coverage": 0.2885375494071146,
+      "steps": 345,
+      "initial_signature": "251c9338a2d61167bdb44e386afd3001589924ec86b3a2d68f53c556c781cdef",
+      "termination": "all_batteries_depleted",
+      "remaining_energy": {
+        "rover_0": 0.0,
+        "rover_1": 0.0,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 64,
+      "layout": "maze",
+      "seed": 10021,
+      "mode": "ppo",
+      "found": 0,
+      "total": 4,
+      "coverage": 0.032640949554896145,
+      "steps": 400,
+      "initial_signature": "c5b116bef3ae8a18abf37b2144bf25fbe1984eb4ed1f1bf50ea72d0029729d78",
+      "termination": "deadline",
+      "remaining_energy": {
+        "rover_0": 43.0999999999995,
+        "rover_1": 0.0,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 64,
+      "layout": "maze",
+      "seed": 10021,
+      "mode": "expert",
+      "found": 0,
+      "total": 4,
+      "coverage": 0.205242334322453,
+      "steps": 303,
+      "initial_signature": "c5b116bef3ae8a18abf37b2144bf25fbe1984eb4ed1f1bf50ea72d0029729d78",
+      "termination": "all_batteries_depleted",
+      "remaining_energy": {
+        "rover_0": 0.0,
+        "rover_1": 0.0,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 64,
+      "layout": "maze",
+      "seed": 10022,
+      "mode": "ppo",
+      "found": 0,
+      "total": 3,
+      "coverage": 0.13409203364670955,
+      "steps": 400,
+      "initial_signature": "a46d6bbf5ca55bada33113463d8d5f54e7f7dd6f13cdcecdcbfff38296c9a9c3",
+      "termination": "deadline",
+      "remaining_energy": {
+        "rover_0": 0.0,
+        "rover_1": 30.50000000000039,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 64,
+      "layout": "maze",
+      "seed": 10022,
+      "mode": "expert",
+      "found": 0,
+      "total": 3,
+      "coverage": 0.318159327065809,
+      "steps": 309,
+      "initial_signature": "a46d6bbf5ca55bada33113463d8d5f54e7f7dd6f13cdcecdcbfff38296c9a9c3",
+      "termination": "all_batteries_depleted",
+      "remaining_energy": {
+        "rover_0": 0.0,
+        "rover_1": 0.0,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 64,
+      "layout": "maze",
+      "seed": 10023,
+      "mode": "ppo",
+      "found": 0,
+      "total": 3,
+      "coverage": 0.22924901185770752,
+      "steps": 311,
+      "initial_signature": "7a658798de0f6a1ae6d640d56ff7dc5e4a8ef14e19fa798d825a65e7091446c2",
+      "termination": "all_batteries_depleted",
+      "remaining_energy": {
+        "rover_0": 0.0,
+        "rover_1": 0.0,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 64,
+      "layout": "maze",
+      "seed": 10023,
+      "mode": "expert",
+      "found": 0,
+      "total": 3,
+      "coverage": 0.4599802371541502,
+      "steps": 300,
+      "initial_signature": "7a658798de0f6a1ae6d640d56ff7dc5e4a8ef14e19fa798d825a65e7091446c2",
+      "termination": "all_batteries_depleted",
+      "remaining_energy": {
+        "rover_0": 0.0,
+        "rover_1": 0.0,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 64,
+      "layout": "rooms",
+      "seed": 10020,
+      "mode": "ppo",
+      "found": 1,
+      "total": 2,
+      "coverage": 0.5993630573248407,
+      "steps": 298,
+      "initial_signature": "4e97f886528a819c8b70248f1646761b7bfa897cc17176498fddb06db9d1d9db",
+      "termination": "all_batteries_depleted",
+      "remaining_energy": {
+        "rover_0": 0.0,
+        "rover_1": 0.0,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 64,
+      "layout": "rooms",
+      "seed": 10020,
+      "mode": "expert",
+      "found": 2,
+      "total": 2,
+      "coverage": 0.721656050955414,
+      "steps": 210,
+      "initial_signature": "4e97f886528a819c8b70248f1646761b7bfa897cc17176498fddb06db9d1d9db",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 81.0,
+        "rover_1": 75.69999999999993,
+        "drone_2": 31.800000000000004,
+        "drone_3": 30.0
+      }
+    },
+    {
+      "size": 64,
+      "layout": "rooms",
+      "seed": 10021,
+      "mode": "ppo",
+      "found": 1,
+      "total": 1,
+      "coverage": 0.1818830242510699,
+      "steps": 77,
+      "initial_signature": "d0c0eebc225f03934ede1db30d89480fdee19afd5508f4310baf6cbebea5b943",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 227.49999999999991,
+        "rover_1": 230.19999999999982,
+        "drone_2": 168.40000000000003,
+        "drone_3": 164.8
+      }
+    },
+    {
+      "size": 64,
+      "layout": "rooms",
+      "seed": 10021,
+      "mode": "expert",
+      "found": 1,
+      "total": 1,
+      "coverage": 0.8680456490727532,
+      "steps": 255,
+      "initial_signature": "d0c0eebc225f03934ede1db30d89480fdee19afd5508f4310baf6cbebea5b943",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 44.69999999999996,
+        "rover_1": 52.19999999999985,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 64,
+      "layout": "rooms",
+      "seed": 10022,
+      "mode": "ppo",
+      "found": 0,
+      "total": 2,
+      "coverage": 0.358974358974359,
+      "steps": 298,
+      "initial_signature": "cc52b60710ec7e5807af70f3c28227a92fa784d95179c7935f16aea9627d1de4",
+      "termination": "all_batteries_depleted",
+      "remaining_energy": {
+        "rover_0": 0.0,
+        "rover_1": 0.0,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 64,
+      "layout": "rooms",
+      "seed": 10022,
+      "mode": "expert",
+      "found": 2,
+      "total": 2,
+      "coverage": 0.5425407925407926,
+      "steps": 169,
+      "initial_signature": "cc52b60710ec7e5807af70f3c28227a92fa784d95179c7935f16aea9627d1de4",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 130.69999999999993,
+        "rover_1": 122.69999999999999,
+        "drone_2": 77.30000000000004,
+        "drone_3": 79.10000000000005
+      }
+    },
+    {
+      "size": 64,
+      "layout": "rooms",
+      "seed": 10023,
+      "mode": "ppo",
+      "found": 1,
+      "total": 3,
+      "coverage": 0.43905635648754915,
+      "steps": 296,
+      "initial_signature": "94e4e911e90dddb735e5618ab827182a12e79c4228781942debb8f2e35fda0fa",
+      "termination": "all_batteries_depleted",
+      "remaining_energy": {
+        "rover_0": 0.0,
+        "rover_1": 0.0,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 64,
+      "layout": "rooms",
+      "seed": 10023,
+      "mode": "expert",
+      "found": 3,
+      "total": 3,
+      "coverage": 0.7155963302752294,
+      "steps": 263,
+      "initial_signature": "94e4e911e90dddb735e5618ab827182a12e79c4228781942debb8f2e35fda0fa",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 23.699999999999932,
+        "rover_1": 68.50000000000014,
+        "drone_2": 129.10000000000096,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 64,
+      "layout": "cave",
+      "seed": 10020,
+      "mode": "ppo",
+      "found": 2,
+      "total": 3,
+      "coverage": 0.6430825881115203,
+      "steps": 301,
+      "initial_signature": "37eaaa05410d8a2a8da3f9789345e8567f7c4fd046ca25e556b89d06b9a16ae4",
+      "termination": "all_batteries_depleted",
+      "remaining_energy": {
+        "rover_0": 0.0,
+        "rover_1": 0.0,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 64,
+      "layout": "cave",
+      "seed": 10020,
+      "mode": "expert",
+      "found": 3,
+      "total": 3,
+      "coverage": 0.6599158337716992,
+      "steps": 111,
+      "initial_signature": "37eaaa05410d8a2a8da3f9789345e8567f7c4fd046ca25e556b89d06b9a16ae4",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 189.0,
+        "rover_1": 188.0,
+        "drone_2": 129.9,
+        "drone_3": 130.8
+      }
+    },
+    {
+      "size": 64,
+      "layout": "cave",
+      "seed": 10021,
+      "mode": "ppo",
+      "found": 1,
+      "total": 2,
+      "coverage": 0.7854437229437229,
+      "steps": 301,
+      "initial_signature": "c490f2180c655207050475bad488f7bd6df71bf96d25fd49a8b7b418c7d9366c",
+      "termination": "all_batteries_depleted",
+      "remaining_energy": {
+        "rover_0": 0.0,
+        "rover_1": 0.0,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 64,
+      "layout": "cave",
+      "seed": 10021,
+      "mode": "expert",
+      "found": 2,
+      "total": 2,
+      "coverage": 0.8547077922077922,
+      "steps": 205,
+      "initial_signature": "c490f2180c655207050475bad488f7bd6df71bf96d25fd49a8b7b418c7d9366c",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 95.0,
+        "rover_1": 94.9,
+        "drone_2": 35.0,
+        "drone_3": 35.0
+      }
+    },
+    {
+      "size": 64,
+      "layout": "cave",
+      "seed": 10022,
+      "mode": "ppo",
+      "found": 1,
+      "total": 2,
+      "coverage": 0.6276117429251521,
+      "steps": 300,
+      "initial_signature": "d9d8a1b825dc52c54e4e2e5750e97025e2e516b7b338f477baf20028e0f1640d",
+      "termination": "all_batteries_depleted",
+      "remaining_energy": {
+        "rover_0": 0.0,
+        "rover_1": 0.0,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 64,
+      "layout": "cave",
+      "seed": 10022,
+      "mode": "expert",
+      "found": 2,
+      "total": 2,
+      "coverage": 0.7439830732610421,
+      "steps": 187,
+      "initial_signature": "d9d8a1b825dc52c54e4e2e5750e97025e2e516b7b338f477baf20028e0f1640d",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 110.0,
+        "rover_1": 113.0,
+        "drone_2": 53.0,
+        "drone_3": 53.0
+      }
+    },
+    {
+      "size": 64,
+      "layout": "cave",
+      "seed": 10023,
+      "mode": "ppo",
+      "found": 2,
+      "total": 3,
+      "coverage": 0.7372360331462176,
+      "steps": 301,
+      "initial_signature": "d9bee355d8517969b9bc1f5d5eb8026737e8dcbe49ff126b61e4874d03b5c5de",
+      "termination": "all_batteries_depleted",
+      "remaining_energy": {
+        "rover_0": 0.0,
+        "rover_1": 0.0,
+        "drone_2": 0.0,
+        "drone_3": 0.0
+      }
+    },
+    {
+      "size": 64,
+      "layout": "cave",
+      "seed": 10023,
+      "mode": "expert",
+      "found": 3,
+      "total": 3,
+      "coverage": 0.6420743116813686,
+      "steps": 182,
+      "initial_signature": "d9bee355d8517969b9bc1f5d5eb8026737e8dcbe49ff126b61e4874d03b5c5de",
+      "termination": "all_found",
+      "remaining_energy": {
+        "rover_0": 117.89999999999998,
+        "rover_1": 117.0,
+        "drone_2": 58.900000000000006,
+        "drone_3": 58.900000000000006
+      }
+    }
+  ],
+  "actor_hashes": {
+    "rover_policy": "3edcfc12c5c2d9cd33288c76b5ee30a979886c14c6ac1f6fa75633a75db59945",
+    "drone_policy": "8e1c10a6448be21b84a3b40e7683021808b279fe49b7f33ca8a2595ef7916b50"
+  },
+  "complete": true,
+  "elapsed_seconds": 172.68864066700007
+}

@@ -1,0 +1,48 @@
+{
+  "baseline_reproduction": [
+    "32_10000_ppo_h400_e1",
+    "32_10001_ppo_h400_e1",
+    "56_10000_ppo_h400_e1",
+    "56_10001_ppo_h400_e1"
+  ],
+  "trace_admission_checks": "passed",
+  "actor_hashes_match_between_runs": true,
+  "aggregates": {
+    "32_baseline": {
+      "episodes": 2,
+      "found": 5,
+      "total": 5,
+      "mean_coverage": 0.6632825534368149
+    },
+    "32_hold_release": {
+      "episodes": 2,
+      "found": 5,
+      "total": 5,
+      "mean_coverage": 0.6632825534368149
+    },
+    "32_utility": {
+      "episodes": 2,
+      "found": 5,
+      "total": 5,
+      "mean_coverage": 0.7343751364855303
+    },
+    "56_baseline": {
+      "episodes": 4,
+      "found": 2,
+      "total": 7,
+      "mean_coverage": 0.1966911390472313
+    },
+    "56_hold_release": {
+      "episodes": 4,
+      "found": 1,
+      "total": 7,
+      "mean_coverage": 0.23396083570846904
+    },
+    "56_utility": {
+      "episodes": 4,
+      "found": 4,
+      "total": 7,
+      "mean_coverage": 0.3637134398751357
+    }
+  }
+}

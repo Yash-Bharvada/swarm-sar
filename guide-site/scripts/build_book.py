@@ -26,7 +26,11 @@ def plain(s):
     return re.sub(r'\n{3,}','\n\n',''.join(parser.out)).strip()
 
 special = {
- 'backend/ppo_service.py':'Loads verified actor modules and owns HTTP mission sessions, recurrent state, snapshots and idempotent steps.',
+ 'backend/ppo_service.py':'Loads verified actor modules; supplies session-free setup previews and owns missions, recurrent state and idempotent steps.',
+ 'scripts/swarm.mjs':'Checks prerequisites, reuses healthy services and starts the local frontend, PPO backend and audiobook.',
+ 'simulation/ros2_ws/src/swarm_sar_control/swarm_sar_control/slam_agent.py':'Connects per-rover SLAM maps and estimated TF poses to mission-frame belief, peer snapshots and health telemetry.',
+ 'simulation/ros2_ws/src/swarm_sar_control/swarm_sar_control/slam_support.py':'ROS-independent map projection, snapshot recovery, admission, byte budgeting and leased frontier intent.',
+ 'frontend/src/observatory/ObservatoryScene.tsx':'Renders measured occupancy, robots, paths and actual packet arcs with Three.js.',
  'simulation/src/swarm_sar/sim/env.py':'PettingZoo ParallelEnv: seven-action interface, private observations, local routes, safety and peer exchange.',
  'simulation/src/swarm_sar/sim/engine.py':'Deterministic truth-world stepping, simultaneous movement, battery, sensors and metrics.',
  'simulation/src/swarm_sar/learning/training.py':'Constructs RLlib PPO and maps rover/drone agents to two shared policies.',
@@ -83,7 +87,11 @@ def purpose(path, text, doc):
 files=[]
 tracked=subprocess.check_output(['git','ls-files','-z'],cwd=ROOT).decode().split('\0')
 extensions={'.py','.ts','.tsx','.css','.html','.json','.md','.yaml','.yml','.toml','.txt','.xml','.msg','.xacro','.world','.sdf','.config','.rviz','.sh','.cfg','.sha256','.mjs'}
+# Never copy generated reader source back into its own atlas.
+shutil.rmtree(DIST/'source', ignore_errors=True)
 for path in filter(None,tracked):
+    if path.startswith('guide-site/'):
+        continue
     full=ROOT/path
     if not full.is_file(): continue
     raw=full.read_bytes(); text=''; declarations=[]; doc=''
@@ -111,6 +119,9 @@ for f in ['03-gazebo-overview.png','07-gazebo-top.png','10-rviz-progress.png']:
 for f in ['ppo_754k_seed10000.gif','rviz-map-sequence.gif']:
     shutil.copy2(ROOT/'docs/media'/f,ASSETS/f)
 
+for source in (ROOT/'docs/media/updates').glob('*.png'):
+    shutil.copy2(source, ASSETS/source.name)
+
 for i,page in enumerate(pages):
     page['id']=i
     page['text']=plain(page['body']+'\n'+page['notes'])
@@ -119,9 +130,9 @@ for i,page in enumerate(pages):
     page['audio']='audio/page-'+str(i+1).zfill(3)+'.m4a'
 
 revision=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT).decode().strip()
-data=dict(title='SWARM SAR — The Fieldbook',edition='30 October 2026',revision=revision,chapters=[dict(id=i,title=c[0],subtitle=c[1],start=next(j for j,p in enumerate(pages) if p['chapter']==i)) for i,c in enumerate(chapters)],pages=pages,questions=questions,files=files,wordCount=sum(p['words'] for p in pages))
+data=dict(title='SWARM SAR — The Fieldbook',edition='31 October 2026',revision=revision,chapters=[dict(id=i,title=c[0],subtitle=c[1],start=next(j for j,p in enumerate(pages) if p['chapter']==i)) for i,c in enumerate(chapters)],pages=pages,questions=questions,files=files,wordCount=sum(p['words'] for p in pages))
 (DIST/'book.json').write_text(json.dumps(data,ensure_ascii=False))
-transcript='SWARM SAR — THE FIELDBOOK\nOm Rashiya · Yash Bharvada · Purva Shah · Pankti Akbari\nEdition: 30 October 2026\nSource revision: '+revision+'\n\n'
+transcript='SWARM SAR — THE FIELDBOOK\nOm Rashiya · Yash Bharvada · Purva Shah · Pankti Akbari\nEdition: 31 October 2026\nSource revision: '+revision+'\n\n'
 for page in pages:
     transcript+='\n'+'='*70+'\nPAGE '+str(page['id']+1)+' · '+chapters[page['chapter']][0].upper()+'\n'+page['title']+'\n'+page['deck']+'\n\n'+page['text']+'\n\nCode examples / written reference:\n'+plain(re.sub(r'<pre>.*?</pre>','',page['body']+page['notes'],flags=re.S))[:0]
     examples=re.findall(r'<pre><code>(.*?)</code></pre>',page['body']+page['notes'],re.S)

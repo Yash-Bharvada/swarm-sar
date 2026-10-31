@@ -12,6 +12,7 @@ import { PPOBridge } from '../ppo/PPOBridge';
 import { MazeEditor } from '../components/MazeEditor';
 import { AudioBridge } from '../audio/AudioBridge';
 import { soundscape } from '../audio/Soundscape';
+import { BrowserObservatory } from '../observatory/BrowserObservatory';
 
 export type Panel = 'setup' | 'fleet' | 'activity' | 'help' | null;
 
@@ -79,6 +80,19 @@ function useKeyboard() {
 
 export function App() {
   useKeyboard();
+  const [observatory, setObservatory] = useState(() => new URLSearchParams(location.search).get('mode') === 'observatory');
+  const navigateObservatory = (open: boolean) => {
+    const url = new URL(window.location.href);
+    if (open) url.searchParams.set('mode', 'observatory');
+    else url.searchParams.delete('mode');
+    window.history.pushState({}, '', url);
+    setObservatory(open);
+  };
+  useEffect(() => {
+    const onPopState = () => setObservatory(new URLSearchParams(location.search).get('mode') === 'observatory');
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, []);
   const [panel, setPanel] = useState<Panel>(null);
   const selected = useSim((s) => s.selected);
   const cleanView = useSim((s) => s.cleanView);
@@ -101,11 +115,12 @@ export function App() {
     { panel: 'activity', label: 'Activity', icon: 'activity' },
   ];
   return (
-    <div className={`app ${cleanView ? 'clean-view' : ''}`}>
+    <>
       <AudioBridge />
       <PPOBridge />
+      {observatory ? <BrowserObservatory onBack={() => navigateObservatory(false)} /> : <div className={`app ${cleanView ? 'clean-view' : ''}`}>
       {editingTerrain && <MazeEditor />}
-      {!cleanView && <TopBar />}
+      {!cleanView && <TopBar onOpenObservatory={() => navigateObservatory(true)} />}
       {!cleanView && <nav className="command-rail" aria-label="Workspace">
         <div className="rail-navigation">
           {items.map((item) => <button key={item.label} className={`rail-button ${panel === item.panel ? 'active' : ''}`} onClick={() => setPanel(panel === item.panel ? null : item.panel)} aria-label={item.label === 'World' ? 'World overview' : `Open ${item.label.toLowerCase()} panel`} aria-pressed={panel === item.panel} title={item.label}><Icon name={item.icon} /><span>{item.label}</span></button>)}
@@ -128,7 +143,8 @@ export function App() {
           {panel === 'help' && <ControlsGuide />}
         </aside>}
       </main>
-    </div>
+    </div>}
+    </>
   );
 }
 

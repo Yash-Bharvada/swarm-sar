@@ -1,6 +1,6 @@
 import type { CSSProperties, ReactNode } from 'react';
 
-export type IconName = 'swarm' | 'overview' | 'settings' | 'fleet' | 'activity' | 'help' | 'layers' | 'plus' | 'minus' | 'home' | 'top' | 'orbit' | 'focus' | 'play' | 'pause' | 'reset' | 'close' | 'chevron' | 'signal' | 'person' | 'map' | 'clock' | 'rover' | 'drone' | 'check' | 'mouse' | 'volume' | 'muted' | 'music';
+export type IconName = 'swarm' | 'overview' | 'settings' | 'fleet' | 'activity' | 'help' | 'layers' | 'plus' | 'minus' | 'home' | 'top' | 'orbit' | 'focus' | 'play' | 'pause' | 'reset' | 'close' | 'chevron' | 'signal' | 'person' | 'map' | 'clock' | 'rover' | 'drone' | 'check' | 'mouse' | 'volume' | 'muted' | 'music' | 'book';
 
 const paths: Record<IconName, ReactNode> = {
   swarm: <><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z" /><path d="m4 7.5 8 4.5 8-4.5M12 12v9M8 5.3l8 4.5" /></>,
@@ -31,6 +31,7 @@ const paths: Record<IconName, ReactNode> = {
   mouse: <><rect x="6" y="2" width="12" height="20" rx="6" /><path d="M12 2v7M6 9h12" /></>,
   volume: <><path d="m11 4-6 5H2v6h3l6 5V4ZM15 8a6 6 0 0 1 0 8M18 4a11 11 0 0 1 0 16" /></>,
   muted: <><path d="m11 4-6 5H2v6h3l6 5V4ZM16 9l6 6M22 9l-6 6" /></>,
+  book: <><path d="M12 5c-3-2-6-2-10-1v15c4-1 7-1 10 1 3-2 6-2 10-1V4c-4-1-7-1-10 1ZM12 5v15" /></>,
   music: <><path d="M9 18V5l12-2v13M9 8l12-2" /><ellipse cx="6" cy="18" rx="3" ry="2.5" /><ellipse cx="18" cy="16" rx="3" ry="2.5" /></>,
 };
 

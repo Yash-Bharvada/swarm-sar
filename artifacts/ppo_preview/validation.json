@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "checks": [
+    "PPO opens a Python-generated preview without creating a session",
+    "Map seed, size, layout and fleet update before Create mission",
+    "Radio, battery and duration preview without a session",
+    "Rapid edits and Refresh preview never create a mission",
+    "Create mission matches preview geometry and enables Launch",
+    "Created mission runs actual PPO inference"
+  ],
+  "browser_errors": [],
+  "limits": "Actual local Python PPO service and development maps; no policy retraining."
+}

@@ -1,0 +1,50 @@
+{
+  "cases": [
+    [
+      32,
+      10008
+    ],
+    [
+      32,
+      10009
+    ],
+    [
+      56,
+      10008
+    ],
+    [
+      56,
+      10009
+    ],
+    [
+      56,
+      10010
+    ],
+    [
+      56,
+      10011
+    ]
+  ],
+  "modes": [
+    "ppo",
+    "square5",
+    "visible5",
+    "visible24"
+  ],
+  "max_steps": 400,
+  "battery_multiplier": 1,
+  "team": {
+    "rover": 2,
+    "drone": 2
+  },
+  "gain_radius_cap": 4,
+  "min_gain": 4,
+  "battery_fraction": 0.8,
+  "investigate_thresholds": {
+    "thermal": 0.35,
+    "acoustic": 0.08
+  },
+  "settings_frozen_before_run": true,
+  "selection_rule": "No mode promoted from these cases; no within-run retuning. Final seeds remain sealed.",
+  "limits": "Additional development seeds, not guaranteed historically unseen in every experiment. Square known-wall ray estimate remains optimistic through unknown cells. Heuristic arms never invoke PPO."
+}

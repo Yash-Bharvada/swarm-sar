@@ -32,13 +32,16 @@ npm run dev -- --host 127.0.0.1 --port 5173 --strictPort
 
 Open http://127.0.0.1:5173. Open **Mission → Exploration controller → PPO**. Configure the seed,
 map size, site, fleet, radio and battery mode in that same side panel, then
-click **Create mission** to apply your choices.
+the 3D map and fleet preview update automatically after a brief debounce.
+The preview uses the same Python generator and seed as mission creation; it does
+not register a mission or perform policy steps. Launch remains disabled during
+preview. Click **Create mission** when the displayed configuration is ready.
 Wait for **PPO · 754k** and the ready mission, then click **Launch mission**.
 Defaults are seed 10000, 32×32 rooms and two rovers/two drones, matching the
 recorded nominal development example. Camera, follow, audio, clean viewing,
 private maps and discovery stories remain presentation features. Every discovery
 pauses further requests until Continue exploration; final confirmation leads to
-the mission report. Reset creates a new Python mission and fresh recurrent state.
+the mission report. Reset creates a new Python mission and fresh recurrent state; in preview mode, **Refresh preview** only refreshes the preview.
 
 The controller menu also supports development seeds 10000–10099, 24–56-cell maps,
 rooms/maze/cave layouts, one to ten robots, and radio on/off for labelled demo
@@ -51,7 +54,7 @@ remain available in PPO mode.
 ## Request and failure behavior
 
 Vite proxies `/api/ppo` to the loopback service. The Python service offers health,
-create, read, single-step and close operations; it does not accept browser robot
+preview, create, read, single-step and close operations; it does not accept browser robot
 actions or truth as policy inputs. Each mission has an opaque ID and independent
 recurrent state. Steps carry the expected step counter. Retrying a lost response
 returns the already committed snapshot rather than advancing twice.
@@ -200,3 +203,18 @@ service step counter now follows each mission horizon rather than a fixed 400.
 A changed PPO deadline also changes mission-progress normalization; the trained
 229-value interface and weights stay intact, and benchmark results remain tied
 to their original configurations. No tests or evaluation missions were run.
+
+
+## Automatic setup preview validation
+
+Run the actual Python backend and frontend at port 5173, then run:
+
+```bash
+.venv/bin/python frontend/tools/validate_ppo_preview.py
+```
+
+The check exercises seed/size/layout/fleet/radio/battery/time controls before
+creation, verifies that rapid edits do not register sessions, compares the
+created map and robot spawns to the preview and advances actual PPO inference.
+Evidence is saved under `artifacts/ppo_preview/`. Backend tests also compare
+preview and creation snapshots and prohibit policy steps during preview.

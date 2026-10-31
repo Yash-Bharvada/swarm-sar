@@ -16,6 +16,10 @@ ROOT=Path(__file__).resolve().parents[2]
 DEFAULT_BASE='83cd96ce7a5651ee77f5816a7ab47844bc0cbf7a'
 TRACKED=[
     'frontend/src/components/TopBar.tsx','frontend/src/main.tsx',
+    'frontend/src/app/App.tsx','frontend/src/components/ControllerControls.tsx',
+    'frontend/src/components/Icon.tsx','frontend/src/components/LeftPanel.tsx',
+    'frontend/src/components/SceneHud.tsx','frontend/src/ppo/PPOBridge.tsx',
+    'frontend/src/store/simStore.ts','frontend/src/tests/ppo.test.ts','backend/ppo_service.py',
     'simulation/ros2_ws/src/swarm_sar_control/package.xml','simulation/ros2_ws/src/swarm_sar_control/setup.py',
     *['simulation/ros2_ws/src/swarm_sar_control/swarm_sar_control/'+name+'.py' for name in
       ('decentralized_agent','disaster_scene','peer_network_bridge','survivor_oracle','waypoint_demo')],
@@ -25,8 +29,10 @@ TRACKED=[
 NEW=[
     'docs/guides/slam_integration.md','docs/guides/LINUX_SLAM_VALIDATION_PROMPT.md',
     'docs/audits/slam_local_validation.md','docs/audits/ros_branch_pr_audit.md',
-    'frontend/src/tests/rosTransport.test.ts','frontend/tools/validate_ros_ui.py',
-    *['frontend/src/ros/'+name for name in ('transport.ts','RosMissionControl.tsx','ros.css')],
+    'frontend/src/tests/rosTransport.test.ts','frontend/tools/validate_observatory_ui.py',
+    'frontend/src/ros/transport.ts',
+    *[str(path.relative_to(ROOT)) for path in sorted((ROOT/'frontend/src/observatory').glob('*')) if path.is_file()],
+    'frontend/src/styles/world-polish.css','frontend/src/tests/observatoryTelemetry.test.ts',
     *['simulation/ros2_ws/src/swarm_sar_control/swarm_sar_control/'+name+'.py' for name in ('slam_agent','slam_support')],
     'simulation/ros2_ws/src/swarm_sar_gazebo/launch/slam_demo.launch.py',
     *['simulation/ros2_ws/src/swarm_sar_gazebo/config/'+name for name in ('slam_demo.rviz','slam_rover.yaml')],
@@ -45,8 +51,8 @@ def main():
     patch=git('diff','--binary',baseline,'--',*TRACKED)
     files={'tracked.patch':patch,**{'new/'+name:(ROOT/name).read_bytes() for name in NEW}}
     for source,target in [('artifacts/slam_local_python_tests.txt','evidence/python_tests.txt'),
-                          ('artifacts/slam_local_ui/report.json','evidence/synthetic_rosbridge_ui_contract.json'),
-                          ('artifacts/slam_local_ui/disconnected_real_ui.png','evidence/disconnected_real_ui.png')]:
+                          ('artifacts/observatory_redesign/validation.json','evidence/synthetic_rosbridge_ui_contract.json'),
+                          ('artifacts/observatory_redesign/ros-disconnected.png','evidence/disconnected_real_ui.png')]:
         files[target]=(ROOT/source).read_bytes()
     manifest=dict(base_commit=baseline,
         instruction='Stage and review; preserve Linux PPO source/entry points. Never blindly overwrite a different or dirty checkout.',

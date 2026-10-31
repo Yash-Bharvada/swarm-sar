@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "checks": [
+    "World layers open and dismiss",
+    "Fleet inspection opens and dismisses",
+    "Controls guide opens",
+    "Clean view restores interface",
+    "Main world mission controls work",
+    "World desktop/mobile layouts fit"
+  ],
+  "browser_errors": []
+}

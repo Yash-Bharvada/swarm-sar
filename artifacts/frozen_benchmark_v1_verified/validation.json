@@ -1,0 +1,12 @@
+{
+  "protocol": "large_map_development_v1",
+  "protocol_sha256": "3a31d9992f495c065616dda679b38f68d718aea1181f80869e631da7d10c0c84",
+  "locked_files": 61,
+  "source_integrity": "passed",
+  "stages_disjoint": true,
+  "world_generation_smoke": "9 passed, 0 failed",
+  "controller_episodes_executed": 0,
+  "confirmation_accessed": false,
+  "final_seeds_accessed": false,
+  "full_python_tests": "199 passed; 2 pre-existing warnings"
+}

@@ -10,9 +10,9 @@ A heterogeneous search-and-rescue research prototype with a 3D mission-control w
 [![React](https://img.shields.io/badge/React-18-149ECA?style=flat-square&logo=react&logoColor=white)](frontend/package.json)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.6-3178C6?style=flat-square&logo=typescript&logoColor=white)](frontend/package.json)
 [![ROS 2](https://img.shields.io/badge/ROS_2-physics_demo-22314E?style=flat-square&logo=ros&logoColor=white)](simulation/ros2_ws)
-[![Checks](https://img.shields.io/badge/Local_checks-160_Python_%2B_140_frontend-426B45?style=flat-square)](docs/validation/repository_checks.md)
+[![Fieldbook](https://img.shields.io/badge/English_audio_fieldbook-Read_%26_listen-426B45?style=flat-square)](https://swarmsar.vercel.app)
 
-[Watch the demos](#see-it-run) · [Run locally](#run-locally) · [Explore the architecture](#how-the-parts-connect) · [Read the evidence](#results-with-context) · [Choose a branch](#choose-a-branch)
+[English audiobook](https://swarmsar.vercel.app) · [Watch the demos](#see-it-run) · [Run locally](#run-locally) · [Explore the architecture](#how-the-parts-connect) · [Read the evidence](#results-with-context) · [Choose a branch](#choose-a-branch)
 
 </div>
 
@@ -28,6 +28,24 @@ A heterogeneous search-and-rescue research prototype with a 3D mission-control w
 | Edit custom maze geometry and place survivors | Delayed, lossy peer-to-peer communication | Python environment with fixed observation/action contracts |
 | Inspect fleet telemetry, radio links and discoveries | Frontier baseline and two shared recurrent PPO policies | Behavior cloning, PPO quality gates and development cohorts |
 | Switch between heuristic and Python-backed PPO missions | Rover/drone terrain, sensing and battery differences | ROS 2 interfaces, physical robot models, Gazebo and RViz |
+
+## Latest integration · 31 October 2026
+
+- **Rover SLAM source integration:** separate `slam_toolbox` instances, estimated rover feedback, private occupancy maps, known-start alignment and radio-delivered map snapshots/frontier intent. Local source/protocol checks pass; live Linux SLAM, demonstrated loop closure and the missing host PPO controller remain explicit validation work. [Integration guide](docs/guides/slam_integration.md) · [Linux validation prompt](docs/guides/LINUX_SLAM_VALIDATION_PROMPT.md).
+- **3D swarm observatory:** measured occupancy, rover/drone models, trajectories, actual message arcs, selected-agent knowledge, packet filters/export, top-down camera and graphics recovery. Browser and ROS sources are labelled separately. [Open locally](http://127.0.0.1:5173/?mode=observatory) · [Guide](docs/guides/swarm_observatory.md).
+- **Automatic PPO setup preview:** seed, size, layout, fleet, radio, battery and duration update the Python-generated preview before **Create mission**. Creation matches that preview; **Launch** starts saved-policy inference. [Implementation and checks](docs/guides/ppo_frontend_integration.md).
+- **Large-map investigation:** frozen-checkpoint diagnostics, persistence/loop experiments, information-gain and frontier-diversity ablations, and a locked 32/56/64-cell development benchmark. These experiments are retained as evidence, not promoted as a proven large-map upgrade. [Baseline results](docs/audits/frozen_discovery_baselines.md) · [Protocol](docs/benchmarks/README.md).
+- **One command and a narrated guide:** `npm run swarm` starts the frontend, PPO service and local audiobook. [Read/listen online](https://swarmsar.vercel.app), including the new integration chapters and source atlas.
+
+| Current mission-control workspace | Actual Python-generated PPO preview |
+| :---: | :---: |
+| ![Current 3D mission workspace](docs/media/updates/mission-control.png) | ![PPO setup preview before mission creation](docs/media/updates/ppo-preview.png) |
+
+| Private-map observatory | Peer transport topology |
+| :---: | :---: |
+| ![Actual browser private-map visualization](docs/media/updates/observatory-map.png) | ![Actual browser peer-message visualization](docs/media/updates/observatory-network.png) |
+
+These are captures of the running browser application. The observatory examples use **browser simulator telemetry**, not a live SLAM session or GNN activations. The original physical Gazebo/RViz host captures appear below with their provenance. [New capture manifest](docs/media/updates/capture-manifest.json).
 
 ## See it run
 
@@ -77,18 +95,50 @@ The supplied log reports loaded PPO actors. Its actor hashes differ from the sel
 
 ## Run locally
 
-### Browser sandbox
+### Start the complete local workspace
 
-Node.js with npm is needed for the frontend. Python is only needed when selecting PPO mode.
+After the one-time dependency setup:
+
+```bash
+npm run swarm
+```
+
+| Service | Address |
+| :--- | :--- |
+| 3D mission control | http://127.0.0.1:5173/ |
+| Swarm observatory | http://127.0.0.1:5173/?mode=observatory |
+| ROS telemetry view | http://127.0.0.1:5173/?mode=ros |
+| Local English audiobook | http://127.0.0.1:8088/ |
+| PPO health | http://127.0.0.1:8765/api/ppo/health |
+
+The launcher checks dependencies, reuses healthy servers, waits for the verified
+checkpoint and reports startup failures. Ctrl+C stops the processes it started.
+It does not replace unrelated processes on occupied ports. Use
+`npm run swarm -- --check` for a read-only readiness check.
+
+<details>
+<summary><strong>First-time setup</strong></summary>
+
+Install Node.js 18+ and Python 3.12+, then:
 
 ```bash
 git clone https://github.com/rashiyaom/swarm-sar.git
 cd swarm-sar
 npm --prefix frontend ci
-npm --prefix frontend run dev
+python3 -m venv .venv
+.venv/bin/python -m pip install -e .
+npm run swarm
 ```
 
-Open the address Vite prints, usually **http://localhost:5173**. Select a site, configure the fleet, and press **Launch mission**.
+On Windows use `.venv\Scripts\python.exe` for the install command. Generating
+new narration requires macOS TTS/FFmpeg; playing the included narration does not.
+
+</details>
+
+The ROS page opens locally, but ROS/Gazebo, `slam_toolbox` and rosbridge must run
+on the sourced Linux ROS host. `npm run swarm` does not emulate those services.
+See [SLAM launch and validation](docs/guides/slam_integration.md). To run only
+the browser heuristic sandbox, use `npm --prefix frontend run dev`.
 
 | Control | Action |
 | :--- | :--- |

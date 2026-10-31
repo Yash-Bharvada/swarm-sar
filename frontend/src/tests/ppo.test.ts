@@ -1,6 +1,6 @@
 import initialPayload from './fixtures/pythonInitial.json';
 import { RemoteEngine, validateSnapshot, type PPOSnapshot } from '../ppo/RemoteEngine';
-import { applyPythonTick } from '../ppo/PPOBridge';
+import { applyPythonInitial, applyPythonTick } from '../ppo/PPOBridge';
 import { useSim } from '../store/simStore';
 
 const initialStore = useSim.getState();
@@ -8,6 +8,31 @@ const snapshot = () => structuredClone(initialPayload) as unknown as PPOSnapshot
 afterEach(() => useSim.setState(initialStore, true));
 
 describe('Python PPO presentation boundary', () => {
+  it('shows exact Python preview geometry while blocking launch and local advancement', () => {
+    useSim.setState({ controllerMode: 'ppo', ppoPhase: 'preview' });
+    const data = snapshot();
+    applyPythonInitial(data, 'preview');
+    const state = useSim.getState();
+    expect([...state.engine.scenario.grid.cells]).toEqual(data.grid);
+    expect(state.settings.rovers).toBe(data.options.rovers);
+    expect(state.settings.networkEnabled).toBe(data.options.network);
+    state.launch(); state.advance(10);
+    expect(useSim.getState().status).toBe('ready');
+    expect(state.engine.step).toBe(0);
+    expect(useSim.getState().ppoPhase).toBe('preview');
+  });
+
+  it('ignores a late active-session tick after replacing it with a preview', () => {
+    const previous = new RemoteEngine(snapshot());
+    useSim.setState({ controllerMode: 'ppo', ppoPhase: 'ready', engine: previous });
+    applyPythonInitial(snapshot(), 'preview');
+    const preview = useSim.getState().engine;
+    const next = snapshot(); next.step = 1;
+    applyPythonTick(previous, next);
+    expect(useSim.getState().engine).toBe(preview);
+    expect(preview.step).toBe(0);
+  });
+
   it('uses the exact Python geometry and initial private observations', () => {
     const data = snapshot(), engine = new RemoteEngine(data);
     expect([...engine.scenario.grid.cells]).toEqual(data.grid);

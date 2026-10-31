@@ -1,0 +1,8 @@
+{
+  "name": "swarm-sar-workspace",
+  "private": true,
+  "scripts": {
+    "swarm": "node scripts/swarm.mjs"
+  },
+  "engines": { "node": ">=18" }
+}

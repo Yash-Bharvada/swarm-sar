@@ -1,7 +1,7 @@
 import { StrictMode, Suspense, lazy } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles/app.css';
-import { RosMissionControl } from './ros/RosMissionControl';
+import { RosObservatory } from './observatory/RosObservatory';
 
 const liveRos = new URLSearchParams(window.location.search).get('mode') === 'ros';
 const BrowserApp = lazy(() => import('./app/App').then(module => ({ default: module.App })));
@@ -9,7 +9,7 @@ const BrowserApp = lazy(() => import('./app/App').then(module => ({ default: mod
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Suspense fallback={<p>Loading mission control…</p>}>
-      {liveRos ? <RosMissionControl /> : <BrowserApp />}
+      {liveRos ? <RosObservatory /> : <BrowserApp />}
     </Suspense>
   </StrictMode>,
 );

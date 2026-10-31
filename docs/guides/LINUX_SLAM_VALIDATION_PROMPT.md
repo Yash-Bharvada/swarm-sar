@@ -82,7 +82,7 @@ SWARM_RUN_ID="$(date -u +%Y%m%dT%H%M%SZ)"
 git switch -c "linux/slam-validation-$SWARM_RUN_ID"
 ```
 
-The new Linux branch is a safe working branch based on the fetched **`rashiyaom`** branch. Do not accidentally base it on `main`. If GitHub authentication is needed, use the machine's existing Git/SSH/gh credential configuration; never write access tokens into this repository or logs. If the remote already exists with a different URL, correct the command to use another remote name rather than silently fetching the wrong repository.
+The new Linux branch is a safe working branch based on the fetched **`rashiyaom`** branch. The updated `main` mirrors this integration; use the explicitly fetched `rashiyaom` ref above for a reproducible handoff. If GitHub authentication is needed, use the machine's existing Git/SSH/gh credential configuration; never write access tokens into this repository or logs. If the remote already exists with a different URL, correct the command to use another remote name rather than silently fetching the wrong repository.
 
 Check that all these files exist in the fetched revision before building:
 
@@ -96,8 +96,8 @@ simulation/ros2_ws/src/swarm_sar_gazebo/config/slam_demo.rviz
 simulation/ros2_ws/src/swarm_sar_control/swarm_sar_control/slam_agent.py
 simulation/ros2_ws/src/swarm_sar_control/swarm_sar_control/slam_support.py
 simulation/ros2_ws/tools/slam_runtime_probe.py
-frontend/src/ros/RosMissionControl.tsx
-frontend/tools/validate_ros_ui.py
+frontend/src/observatory/RosObservatory.tsx
+frontend/tools/validate_observatory_ui.py
 guide-site/dist/index.html
 ```
 
@@ -157,7 +157,7 @@ python3 -m pytest tests/ros2 -q 2>&1 | tee "$SWARM_EVIDENCE/ros_python_tests.txt
 
 Check every command's exit status. `tee` succeeding does not mean the test succeeded; retain `pipefail` or record the pipeline status. Resolve rosdep errors rather than continuing with an incomplete build. Verify new package prefixes resolve to this test worktree's install directory. Record versions of ROS, Gazebo, slam_toolbox, ros_gz, rosbridge, Python, NumPy, Node, npm and the actor runtime. Inspect installed slam_toolbox launch/parameter APIs when adapting lifecycle behavior; do not mix source examples from incompatible releases.
 
-Run the full repository Python suite in a suitable project environment, keeping ROS-compatible tests in the ROS environment if necessary. Use an existing compatible environment or create an isolated one; do not replace the system ROS Python packages or change the original GPU training environment just to make tests pass. Missing dependencies, skipped tests and environmental failures must be reported explicitly. The Mac record was 184 Python tests and 142 frontend tests at handoff; verify actual collected tests on Linux rather than copying those numbers.
+Run the full repository Python suite in a suitable project environment, keeping ROS-compatible tests in the ROS environment if necessary. Use an existing compatible environment or create an isolated one; do not replace the system ROS Python packages or change the original GPU training environment just to make tests pass. Missing dependencies, skipped tests and environmental failures must be reported explicitly. The original handoff recorded 184 Python tests and 142 frontend tests. The 31 October extension records 200 Python tests and 148 frontend tests; verify actual collected tests on Linux rather than copying those numbers.
 
 ```bash
 python3 -m pytest -q 2>&1 | tee "$SWARM_EVIDENCE/python_full_tests.txt"
@@ -310,7 +310,7 @@ Use actual incoming ROS messages to verify selected-agent local maps, peer-only 
 
 Test browser disconnect, stalled simulation clock, stale pose/map data, refused/unavailable service, bridge restart and reconnect. Positions must stop advancing/fade when data are stale. Service failure must be visible and cannot cosmetically change the robot's radio state. Test reset and sender session changes so old mission data does not appear as a new live map. Preserve the existing browser simulator at `/` and verify it still loads separately.
 
-The script `frontend/tools/validate_ros_ui.py` is an additional synthetic WebSocket contract test. Start Vite on 5178 or supply its `--url`, and use a compatible installed Playwright/Chromium environment. Save that test's result separately. It does not replace the real ROS browser session or count as live SLAM evidence. If the host has no browser automation, use an actual browser and record the manual checks; mark automation unavailable rather than inventing a pass.
+The script `frontend/tools/validate_observatory_ui.py` is an additional synthetic WebSocket contract test. Start Vite on 5178 or supply its `--url`, and use a compatible installed Playwright/Chromium environment. Save that test's result separately. It does not replace the real ROS browser session or count as live SLAM evidence. If the host has no browser automation, use an actual browser and record the manual checks; mark automation unavailable rather than inventing a pass.
 
 The `guide-site` fieldbook is also included on the `rashiyaom` branch as ordinary files. Its prebuilt pages/audio can be served with `python3 guide-site/scripts/serve.py` from the repository root. Verify the script's actual port and open it if checking the educational deliverable. It is a historical project edition, not a live SLAM dashboard. Do not rebuild macOS TTS audio on Linux or treat historical screenshots/source copies as new validation evidence.
 

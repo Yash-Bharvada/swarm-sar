@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "checks": [
+    "Actual browser mission advances in dedicated page",
+    "Actual packet records populate stream",
+    "Dropped-message filter respects actual state",
+    "Export contains real source and mission agents",
+    "Returning to world retains exact engine and paused step",
+    "Navigation retains mission status",
+    "PPO bridge remains mounted across view navigation",
+    "Mobile has no horizontal overflow",
+    "ROS subscriptions render incoming packet telemetry",
+    "Disconnected ROS shows stale state",
+    "ROS observatory publishes no robot commands",
+    "No browser runtime errors",
+    "Final mobile layout after renderer polish",
+    "Mobile simulator navigation button remains visible without overflow"
+  ],
+  "browser_errors": [],
+  "limits": "Browser mission evidence is real simulator telemetry. ROS/PPO fixtures test UI contracts only, not live SLAM or policy inference."
+}

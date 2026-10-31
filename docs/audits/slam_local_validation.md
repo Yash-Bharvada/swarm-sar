@@ -22,10 +22,10 @@ The local geometry/protocol tests cover rotated/translated maps, coarse-cell occ
 
 The browser test runs Chromium with Playwright and verifies disconnected waiting state, native socket subscriptions, incoming topic handling, the isolation service payload, acknowledgement versus observed network state, visible service failures, disconnect disabling controls, absence of control/map publications, and no page errors. The generated screenshot is a **disconnected real UI preview**, not a fabricated mapped mission. Synthetic input tests are deliberately not saved as operational SLAM screenshots.
 
-Reproduce the UI contract test after starting Vite on port 5178:
+Historical results above describe the original diagnostic UI. The unified observatory now replaces it; see `docs/audits/observatory_redesign.md` for current browser evidence. Reproduce the current UI contract after starting Vite on port 5178:
 
 ```bash
-.venv/bin/python frontend/tools/validate_ros_ui.py
+.venv/bin/python frontend/tools/validate_observatory_ui.py --url http://127.0.0.1:5178
 # If using a separately installed Chromium, add --browser-executable /absolute/path/to/browser
 ```
 

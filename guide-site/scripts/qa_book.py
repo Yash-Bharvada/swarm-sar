@@ -1,9 +1,9 @@
 """Actual Chrome QA for the reader and generated PDF; no simulated test results."""
-import asyncio,json,re,subprocess
+import asyncio,json,re,subprocess,os
 from pathlib import Path
 from playwright.async_api import async_playwright
 SITE=Path(__file__).resolve().parents[1]; DIST=SITE/'dist'; QA=SITE/'qa'; QA.mkdir(exist_ok=True)
-BASE='http://127.0.0.1:8089'
+BASE=os.environ.get('SWARM_BOOK_URL','http://127.0.0.1:8088')
 async def main():
     book=json.loads((DIST/'book.json').read_text()); checks=[]; errors=[]
     def check(name,ok,detail=None):

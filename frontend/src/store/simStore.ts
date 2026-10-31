@@ -63,7 +63,7 @@ export const simClock = { alpha: 1, lastTickAt: 0 };
 
 interface Store {
   controllerMode: 'heuristic' | 'ppo';
-  ppoPhase: 'off' | 'connecting' | 'ready' | 'error';
+  ppoPhase: 'off' | 'preview' | 'connecting' | 'ready' | 'error';
   ppoError: string | null;
   ppoOptions: PPOOptions;
   ppoRevision: number;
@@ -398,7 +398,7 @@ export const useSim = create<Store>((set, get) => ({
   reset: () => {
     set({ editingTerrain: false, mapMessage: null });
     if (get().controllerMode === 'ppo') {
-      set({ ...clearEncounters, ...clearCameraTarget, status: 'ready', ppoPhase: 'connecting', ppoError: null, ppoRevision: get().ppoRevision + 1 });
+      set({ ...clearEncounters, ...clearCameraTarget, status: 'ready', ppoPhase: get().ppoPhase === 'preview' ? 'preview' : 'connecting', ppoError: null, ppoRevision: get().ppoRevision + 1 });
       return;
     }
     const { settings, demo, customSurvivors } = get();

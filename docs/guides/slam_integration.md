@@ -2,7 +2,7 @@
 
 Status: implemented in this checkout and checked locally. **Live ROS/Gazebo validation is pending on Linux.** A Python unit test or frontend build is not evidence that a robot has mapped a scene. Use [the Linux agent prompt](LINUX_SLAM_VALIDATION_PROMPT.md) for the runtime checks.
 
-GitHub source: [rashiyaom/swarm-sar, branch `rashiyaom`](https://github.com/rashiyaom/swarm-sar/tree/rashiyaom). Fetch that branch explicitly; the Linux prompt gives fresh-clone and isolated-worktree instructions, PPO recovery steps, exact launch commands and the full validation gates. The older `main` branch is not the delivery branch for this integration.
+GitHub source: [rashiyaom/swarm-sar, branch `rashiyaom`](https://github.com/rashiyaom/swarm-sar/tree/rashiyaom). Fetch that branch explicitly; the Linux prompt gives fresh-clone and isolated-worktree instructions, PPO recovery steps, exact launch commands and the full validation gates. The reviewed integration is published on both `main` and `rashiyaom`; preserve local Linux changes before updating either checkout.
 
 ## What this adds
 
@@ -64,7 +64,7 @@ Local observations take precedence over peer cells. Between conflicting peer lay
 
 Frontier topology contains bounded frontier component representatives and IDs. It does not infer traversability edges, replace a navigation planner or add a learned GNN. Existing controller claim messages remain in use; the new mapping intent/graph also supports inspection and a clear PPO integration surface.
 
-The browser's ROS mode connects to actual ROS topics. It never invokes the browser simulator or publishes velocity/goal/map commands. White/slate show local occupied/free cells, cyan shows peer-only knowledge, coloured points and trails show ROS poses, and green squares show locally estimated frontiers. Map origin, cell resolution, orientation and mission coordinates are respected. Disconnected/stale poses fade and the live indicator becomes stale. It does not keep moving robots cosmetically. This is a live 2D knowledge view alongside Gazebo's actual physical 3D scene and RViz's robot/map overlays.
+The browser's ROS mode connects to actual ROS topics. It never invokes the browser simulator or publishes velocity/goal/map commands. Sage cells show local knowledge, teal cells show received peer knowledge, robot models and trails show reported poses, and the frontier layer marks reported exploration boundaries. Map origin, cell resolution, orientation and mission coordinates are respected. Disconnected/stale poses fade and the live indicator becomes stale. It does not keep moving robots cosmetically. The unified Three.js observatory renders that knowledge as an interactive 3D occupancy view alongside Gazebo's actual physical 3D scene and RViz's robot/map overlays.
 
 ## Linux build and launch
 
@@ -103,7 +103,7 @@ The new launch passes the checked-in controller parameters (`external_belief_map
 
 ## Browser and RViz
 
-From `frontend`: `npm ci`, then `npm run dev -- --host 127.0.0.1`. Open `http://localhost:5173/?mode=ros`. The existing simulator has a **Live ROS / SLAM** link. Enter the rosbridge WebSocket address and press Connect. The default bridge binds to loopback. To view Linux ROS on the Mac, prefer a tunnel:
+From `frontend`: `npm ci`, then `npm run dev -- --host 127.0.0.1`. Open `http://localhost:5173/?mode=ros`. The existing simulator has a **Swarm intelligence** button; its ROS source opens the unified 3D observatory. The former duplicate diagnostic dashboard has been removed. Enter the rosbridge WebSocket address and press Connect. The default bridge binds to loopback. To view Linux ROS on the Mac, prefer a tunnel:
 
 ```bash
 ssh -L 9090:127.0.0.1:9090 <linux-user>@<linux-host>

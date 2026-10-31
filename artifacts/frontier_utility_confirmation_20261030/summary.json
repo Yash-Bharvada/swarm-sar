@@ -1,0 +1,981 @@
+{
+  "source_commit": "8465db82c649c63b44910cf406d219f4b7089af7",
+  "policy_hashes": {
+    "rover_policy": "3edcfc12c5c2d9cd33288c76b5ee30a979886c14c6ac1f6fa75633a75db59945",
+    "drone_policy": "8e1c10a6448be21b84a3b40e7683021808b279fe49b7f33ca8a2595ef7916b50"
+  },
+  "actor_unchanged": true,
+  "elapsed_seconds": 14.529435124999509,
+  "results": [
+    {
+      "intervention": null,
+      "governor_counts": {},
+      "case": "56_10002_ppo_h400_e1",
+      "size": 56,
+      "seed": 10002,
+      "controller": "ppo",
+      "max_steps": 400,
+      "energy_multiplier": 1,
+      "initial_map_and_victims_sha256": "d5316c58e4652365e5d8c2ad724736889895dc5f6b8a8f716ca77f0ba438f853",
+      "steps": 400,
+      "found": 0,
+      "total": 2,
+      "coverage": 0.126953125,
+      "termination": "deadline",
+      "steps_since_last_discovery": 400,
+      "network": {
+        "enabled": true,
+        "messages_created": 1449,
+        "transmission_attempts": 3882,
+        "messages_delivered": 2348,
+        "dropped_loss": 0,
+        "dropped_range": 1046,
+        "dropped_wall": 479,
+        "dropped_partition": 0,
+        "dropped_bandwidth": 0,
+        "dropped_stale": 0,
+        "duplicates_suppressed": 0,
+        "bytes_created": 787301,
+        "bytes_delivered": 1232135,
+        "reconnections": 18,
+        "scheduled": 9,
+        "delivery_rate": 0.6048428645028336,
+        "map_cells_merged": 345,
+        "map_merges_refused": 0,
+        "messages_processed": 2348
+      },
+      "merge_reasons": {
+        "accepted": 576
+      },
+      "agents": {
+        "rover_0": {
+          "decisions": 400,
+          "candidate_slots": 673,
+          "all_five_slots_used": 1,
+          "distance_features_saturated": 0,
+          "moves": 45,
+          "goal_switch_before_arrival": 11,
+          "no_legal_frontier": 268,
+          "hold_without_legal_frontier": 265,
+          "stationary": 355,
+          "investigate": 3,
+          "moves_to_previously_visited_cell": 6,
+          "hold_with_legal_frontier": 92,
+          "shield_changed_move": 2,
+          "unique_positions": 40,
+          "longest_stationary_run": 181,
+          "final_battery": 217.49999999999835,
+          "alive": true,
+          "final_uncertainty": 0.45000000000000023
+        },
+        "rover_1": {
+          "decisions": 400,
+          "candidate_slots": 430,
+          "distance_features_saturated": 0,
+          "moves": 39,
+          "no_legal_frontier": 2,
+          "hold_without_legal_frontier": 2,
+          "stationary": 361,
+          "goal_switch_before_arrival": 19,
+          "hold_with_legal_frontier": 357,
+          "investigate": 4,
+          "moves_to_previously_visited_cell": 2,
+          "unique_positions": 38,
+          "longest_stationary_run": 181,
+          "final_battery": 222.89999999999782,
+          "alive": true,
+          "final_uncertainty": 0.3900000000000002
+        },
+        "drone_2": {
+          "decisions": 400,
+          "candidate_slots": 440,
+          "distance_features_saturated": 0,
+          "moves": 63,
+          "no_legal_frontier": 304,
+          "hold_without_legal_frontier": 261,
+          "stationary": 337,
+          "goal_switch_before_arrival": 8,
+          "shield_changed_move": 13,
+          "shield_stopped_move": 11,
+          "hold_with_legal_frontier": 41,
+          "investigate": 54,
+          "moves_to_previously_visited_cell": 27,
+          "unique_positions": 37,
+          "longest_stationary_run": 113,
+          "final_battery": 143.30000000000192,
+          "alive": true,
+          "final_uncertainty": 0.9450000000000007
+        },
+        "drone_3": {
+          "decisions": 246,
+          "candidate_slots": 1058,
+          "distance_features_saturated": 0,
+          "moves": 240,
+          "goal_switch_before_arrival": 43,
+          "investigate": 14,
+          "moves_to_previously_visited_cell": 130,
+          "all_five_slots_used": 182,
+          "stationary": 6,
+          "unique_positions": 111,
+          "longest_stationary_run": 2,
+          "final_battery": 0.0,
+          "alive": false,
+          "final_uncertainty": 3.6000000000000076
+        }
+      },
+      "battery_depletion_events": [
+        {
+          "step": 246,
+          "event": "battery_depleted",
+          "agent": "drone_3"
+        }
+      ]
+    },
+    {
+      "intervention": "hold_release",
+      "governor_counts": {
+        "rover_0": {
+          "decisions": 296,
+          "proposed_holds": 5,
+          "hold_without_affordable_opportunity": 5
+        },
+        "rover_1": {
+          "decisions": 308,
+          "proposed_holds": 7,
+          "hold_without_affordable_opportunity": 2,
+          "hold_with_affordable_opportunity": 5,
+          "overrides": 1,
+          "release_prolonged_hold": 1
+        },
+        "drone_2": {
+          "decisions": 273,
+          "proposed_holds": 19,
+          "hold_without_affordable_opportunity": 16,
+          "hold_with_affordable_opportunity": 3
+        },
+        "drone_3": {
+          "decisions": 255,
+          "proposed_holds": 9,
+          "hold_without_affordable_opportunity": 1,
+          "hold_with_affordable_opportunity": 8,
+          "overrides": 1,
+          "release_prolonged_hold": 1
+        }
+      },
+      "case": "56_10002_ppo_h400_e1_hold_release",
+      "size": 56,
+      "seed": 10002,
+      "controller": "ppo",
+      "max_steps": 400,
+      "energy_multiplier": 1,
+      "initial_map_and_victims_sha256": "d5316c58e4652365e5d8c2ad724736889895dc5f6b8a8f716ca77f0ba438f853",
+      "steps": 308,
+      "found": 0,
+      "total": 2,
+      "coverage": 0.306640625,
+      "termination": "all_batteries_depleted",
+      "steps_since_last_discovery": 308,
+      "network": {
+        "enabled": true,
+        "messages_created": 1132,
+        "transmission_attempts": 3214,
+        "messages_delivered": 1421,
+        "dropped_loss": 0,
+        "dropped_range": 1342,
+        "dropped_wall": 451,
+        "dropped_partition": 0,
+        "dropped_bandwidth": 0,
+        "dropped_stale": 0,
+        "duplicates_suppressed": 0,
+        "bytes_created": 718524,
+        "bytes_delivered": 870794,
+        "reconnections": 64,
+        "scheduled": 0,
+        "delivery_rate": 0.4421281891723709,
+        "map_cells_merged": 1106,
+        "map_merges_refused": 0,
+        "messages_processed": 1421
+      },
+      "merge_reasons": {
+        "accepted": 818
+      },
+      "agents": {
+        "rover_0": {
+          "decisions": 296,
+          "candidate_slots": 1332,
+          "all_five_slots_used": 244,
+          "distance_features_saturated": 347,
+          "moves": 286,
+          "goal_switch_before_arrival": 78,
+          "no_legal_frontier": 5,
+          "hold_without_legal_frontier": 5,
+          "stationary": 10,
+          "investigate": 5,
+          "moves_to_previously_visited_cell": 73,
+          "shield_changed_move": 3,
+          "shield_stopped_move": 3,
+          "unique_positions": 214,
+          "longest_stationary_run": 3,
+          "final_battery": 0.0,
+          "alive": false,
+          "final_uncertainty": 2.859999999999983
+        },
+        "rover_1": {
+          "decisions": 308,
+          "candidate_slots": 1386,
+          "distance_features_saturated": 42,
+          "moves": 296,
+          "no_legal_frontier": 4,
+          "hold_without_legal_frontier": 2,
+          "stationary": 12,
+          "goal_switch_before_arrival": 112,
+          "hold_with_legal_frontier": 4,
+          "moves_to_previously_visited_cell": 138,
+          "shield_changed_move": 2,
+          "shield_stopped_move": 2,
+          "all_five_slots_used": 254,
+          "investigate": 14,
+          "unique_positions": 159,
+          "longest_stationary_run": 3,
+          "final_battery": 0.0,
+          "alive": false,
+          "final_uncertainty": 2.959999999999981
+        },
+        "drone_2": {
+          "decisions": 273,
+          "candidate_slots": 1204,
+          "distance_features_saturated": 0,
+          "moves": 237,
+          "no_legal_frontier": 16,
+          "hold_without_legal_frontier": 16,
+          "stationary": 36,
+          "goal_switch_before_arrival": 55,
+          "shield_changed_move": 13,
+          "shield_stopped_move": 13,
+          "hold_with_legal_frontier": 3,
+          "all_five_slots_used": 218,
+          "moves_to_previously_visited_cell": 98,
+          "investigate": 11,
+          "unique_positions": 140,
+          "longest_stationary_run": 10,
+          "final_battery": 0.0,
+          "alive": false,
+          "final_uncertainty": 3.5550000000000073
+        },
+        "drone_3": {
+          "decisions": 255,
+          "candidate_slots": 1110,
+          "distance_features_saturated": 0,
+          "moves": 239,
+          "goal_switch_before_arrival": 119,
+          "investigate": 7,
+          "moves_to_previously_visited_cell": 129,
+          "stationary": 16,
+          "shield_changed_move": 6,
+          "shield_stopped_move": 5,
+          "all_five_slots_used": 198,
+          "no_legal_frontier": 1,
+          "hold_without_legal_frontier": 1,
+          "hold_with_legal_frontier": 7,
+          "unique_positions": 111,
+          "longest_stationary_run": 4,
+          "final_battery": 0.0,
+          "alive": false,
+          "final_uncertainty": 3.5850000000000075
+        }
+      },
+      "battery_depletion_events": [
+        {
+          "step": 255,
+          "event": "battery_depleted",
+          "agent": "drone_3"
+        },
+        {
+          "step": 273,
+          "event": "battery_depleted",
+          "agent": "drone_2"
+        },
+        {
+          "step": 296,
+          "event": "battery_depleted",
+          "agent": "rover_0"
+        },
+        {
+          "step": 308,
+          "event": "battery_depleted",
+          "agent": "rover_1"
+        }
+      ]
+    },
+    {
+      "intervention": "utility",
+      "governor_counts": {
+        "rover_0": {
+          "decisions": 324,
+          "overrides": 141,
+          "utility_frontier_choice": 136,
+          "proposed_holds": 25,
+          "hold_with_affordable_opportunity": 17,
+          "hold_without_affordable_opportunity": 8,
+          "release_prolonged_hold": 5
+        },
+        "rover_1": {
+          "decisions": 305,
+          "proposed_holds": 7,
+          "hold_without_affordable_opportunity": 2,
+          "overrides": 83,
+          "utility_frontier_choice": 82,
+          "hold_with_affordable_opportunity": 5,
+          "release_prolonged_hold": 1
+        },
+        "drone_2": {
+          "decisions": 259,
+          "proposed_holds": 11,
+          "hold_without_affordable_opportunity": 8,
+          "hold_with_affordable_opportunity": 3,
+          "overrides": 72,
+          "utility_frontier_choice": 72
+        },
+        "drone_3": {
+          "decisions": 254,
+          "overrides": 61,
+          "utility_frontier_choice": 61,
+          "proposed_holds": 7,
+          "hold_with_affordable_opportunity": 1,
+          "hold_without_affordable_opportunity": 6
+        }
+      },
+      "case": "56_10002_ppo_h400_e1_utility",
+      "size": 56,
+      "seed": 10002,
+      "controller": "ppo",
+      "max_steps": 400,
+      "energy_multiplier": 1,
+      "initial_map_and_victims_sha256": "d5316c58e4652365e5d8c2ad724736889895dc5f6b8a8f716ca77f0ba438f853",
+      "steps": 324,
+      "found": 1,
+      "total": 2,
+      "coverage": 0.3997395833333333,
+      "termination": "all_batteries_depleted",
+      "steps_since_last_discovery": 91,
+      "network": {
+        "enabled": true,
+        "messages_created": 1142,
+        "transmission_attempts": 3170,
+        "messages_delivered": 1092,
+        "dropped_loss": 0,
+        "dropped_range": 1644,
+        "dropped_wall": 434,
+        "dropped_partition": 0,
+        "dropped_bandwidth": 0,
+        "dropped_stale": 0,
+        "duplicates_suppressed": 0,
+        "bytes_created": 728485,
+        "bytes_delivered": 681974,
+        "reconnections": 45,
+        "scheduled": 0,
+        "delivery_rate": 0.3444794952681388,
+        "map_cells_merged": 1368,
+        "map_merges_refused": 0,
+        "messages_processed": 1092
+      },
+      "merge_reasons": {
+        "accepted": 551
+      },
+      "agents": {
+        "rover_0": {
+          "decisions": 324,
+          "candidate_slots": 1462,
+          "all_five_slots_used": 272,
+          "distance_features_saturated": 145,
+          "moves": 295,
+          "hold_with_legal_frontier": 12,
+          "stationary": 29,
+          "goal_switch_before_arrival": 73,
+          "no_legal_frontier": 9,
+          "hold_without_legal_frontier": 8,
+          "investigate": 17,
+          "moves_to_previously_visited_cell": 77,
+          "shield_changed_move": 1,
+          "shield_stopped_move": 1,
+          "unique_positions": 219,
+          "longest_stationary_run": 4,
+          "final_battery": 0.0,
+          "alive": false,
+          "final_uncertainty": 2.949999999999981
+        },
+        "rover_1": {
+          "decisions": 305,
+          "candidate_slots": 1377,
+          "distance_features_saturated": 325,
+          "moves": 297,
+          "no_legal_frontier": 2,
+          "hold_without_legal_frontier": 2,
+          "stationary": 8,
+          "goal_switch_before_arrival": 11,
+          "hold_with_legal_frontier": 4,
+          "all_five_slots_used": 254,
+          "moves_to_previously_visited_cell": 23,
+          "investigate": 12,
+          "unique_positions": 275,
+          "longest_stationary_run": 3,
+          "final_battery": 0.0,
+          "alive": false,
+          "final_uncertainty": 2.9699999999999807
+        },
+        "drone_2": {
+          "decisions": 259,
+          "candidate_slots": 1118,
+          "distance_features_saturated": 91,
+          "moves": 239,
+          "no_legal_frontier": 8,
+          "hold_without_legal_frontier": 8,
+          "stationary": 20,
+          "goal_switch_before_arrival": 88,
+          "shield_changed_move": 7,
+          "shield_stopped_move": 7,
+          "hold_with_legal_frontier": 3,
+          "all_five_slots_used": 203,
+          "moves_to_previously_visited_cell": 108,
+          "investigate": 7,
+          "unique_positions": 132,
+          "longest_stationary_run": 3,
+          "final_battery": 0.0,
+          "alive": false,
+          "final_uncertainty": 3.5850000000000075
+        },
+        "drone_3": {
+          "decisions": 254,
+          "candidate_slots": 1125,
+          "distance_features_saturated": 159,
+          "moves": 239,
+          "goal_switch_before_arrival": 69,
+          "hold_with_legal_frontier": 1,
+          "stationary": 15,
+          "all_five_slots_used": 209,
+          "investigate": 12,
+          "moves_to_previously_visited_cell": 64,
+          "shield_changed_move": 3,
+          "shield_stopped_move": 3,
+          "no_legal_frontier": 7,
+          "hold_without_legal_frontier": 6,
+          "unique_positions": 176,
+          "longest_stationary_run": 2,
+          "final_battery": 0.0,
+          "alive": false,
+          "final_uncertainty": 3.5850000000000075
+        }
+      },
+      "battery_depletion_events": [
+        {
+          "step": 254,
+          "event": "battery_depleted",
+          "agent": "drone_3"
+        },
+        {
+          "step": 259,
+          "event": "battery_depleted",
+          "agent": "drone_2"
+        },
+        {
+          "step": 305,
+          "event": "battery_depleted",
+          "agent": "rover_1"
+        },
+        {
+          "step": 324,
+          "event": "battery_depleted",
+          "agent": "rover_0"
+        }
+      ]
+    },
+    {
+      "intervention": null,
+      "governor_counts": {},
+      "case": "56_10003_ppo_h400_e1",
+      "size": 56,
+      "seed": 10003,
+      "controller": "ppo",
+      "max_steps": 400,
+      "energy_multiplier": 1,
+      "initial_map_and_victims_sha256": "94b725c1d5edc03f798dbdfce612f94c8f90b375780ff42e82229ee6a6cf4ba8",
+      "steps": 400,
+      "found": 1,
+      "total": 2,
+      "coverage": 0.189453125,
+      "termination": "deadline",
+      "steps_since_last_discovery": 202,
+      "network": {
+        "enabled": true,
+        "messages_created": 1216,
+        "transmission_attempts": 3150,
+        "messages_delivered": 614,
+        "dropped_loss": 0,
+        "dropped_range": 2206,
+        "dropped_wall": 330,
+        "dropped_partition": 0,
+        "dropped_bandwidth": 0,
+        "dropped_stale": 0,
+        "duplicates_suppressed": 0,
+        "bytes_created": 759377,
+        "bytes_delivered": 367905,
+        "reconnections": 21,
+        "scheduled": 0,
+        "delivery_rate": 0.1949206349206349,
+        "map_cells_merged": 449,
+        "map_merges_refused": 0,
+        "messages_processed": 614
+      },
+      "merge_reasons": {
+        "accepted": 272
+      },
+      "agents": {
+        "rover_0": {
+          "decisions": 301,
+          "candidate_slots": 1468,
+          "distance_features_saturated": 243,
+          "moves": 300,
+          "goal_switch_before_arrival": 133,
+          "moves_to_previously_visited_cell": 188,
+          "shield_changed_move": 1,
+          "shield_stopped_move": 1,
+          "stationary": 1,
+          "all_five_slots_used": 284,
+          "investigate": 7,
+          "unique_positions": 113,
+          "longest_stationary_run": 1,
+          "final_battery": 0.0,
+          "alive": false,
+          "final_uncertainty": 2.99999999999998
+        },
+        "rover_1": {
+          "decisions": 400,
+          "candidate_slots": 1235,
+          "all_five_slots_used": 17,
+          "distance_features_saturated": 0,
+          "moves": 125,
+          "goal_switch_before_arrival": 114,
+          "moves_to_previously_visited_cell": 107,
+          "shield_changed_move": 4,
+          "shield_stopped_move": 4,
+          "stationary": 275,
+          "hold_with_legal_frontier": 270,
+          "investigate": 3,
+          "unique_positions": 19,
+          "longest_stationary_run": 264,
+          "final_battery": 147.50000000000153,
+          "alive": true,
+          "final_uncertainty": 1.2500000000000009
+        },
+        "drone_2": {
+          "decisions": 268,
+          "candidate_slots": 1141,
+          "distance_features_saturated": 0,
+          "moves": 237,
+          "goal_switch_before_arrival": 106,
+          "shield_changed_move": 10,
+          "shield_stopped_move": 10,
+          "stationary": 31,
+          "moves_to_previously_visited_cell": 132,
+          "all_five_slots_used": 159,
+          "investigate": 11,
+          "hold_with_legal_frontier": 15,
+          "unique_positions": 106,
+          "longest_stationary_run": 7,
+          "final_battery": 0.0,
+          "alive": false,
+          "final_uncertainty": 3.5550000000000073
+        },
+        "drone_3": {
+          "decisions": 246,
+          "candidate_slots": 1074,
+          "distance_features_saturated": 115,
+          "moves": 240,
+          "no_legal_frontier": 1,
+          "hold_without_legal_frontier": 1,
+          "stationary": 6,
+          "goal_switch_before_arrival": 79,
+          "moves_to_previously_visited_cell": 121,
+          "all_five_slots_used": 158,
+          "investigate": 13,
+          "unique_positions": 120,
+          "longest_stationary_run": 1,
+          "final_battery": 0.0,
+          "alive": false,
+          "final_uncertainty": 3.6000000000000076
+        }
+      },
+      "battery_depletion_events": [
+        {
+          "step": 246,
+          "event": "battery_depleted",
+          "agent": "drone_3"
+        },
+        {
+          "step": 268,
+          "event": "battery_depleted",
+          "agent": "drone_2"
+        },
+        {
+          "step": 301,
+          "event": "battery_depleted",
+          "agent": "rover_0"
+        }
+      ]
+    },
+    {
+      "intervention": "hold_release",
+      "governor_counts": {
+        "rover_0": {
+          "decisions": 333,
+          "proposed_holds": 18,
+          "hold_with_affordable_opportunity": 18,
+          "overrides": 6,
+          "release_prolonged_hold": 6
+        },
+        "rover_1": {
+          "decisions": 302,
+          "proposed_holds": 14,
+          "hold_with_affordable_opportunity": 14,
+          "overrides": 4,
+          "release_prolonged_hold": 4
+        },
+        "drone_2": {
+          "decisions": 267,
+          "proposed_holds": 12,
+          "hold_with_affordable_opportunity": 12
+        },
+        "drone_3": {
+          "decisions": 248,
+          "proposed_holds": 1,
+          "hold_without_affordable_opportunity": 1
+        }
+      },
+      "case": "56_10003_ppo_h400_e1_hold_release",
+      "size": 56,
+      "seed": 10003,
+      "controller": "ppo",
+      "max_steps": 400,
+      "energy_multiplier": 1,
+      "initial_map_and_victims_sha256": "94b725c1d5edc03f798dbdfce612f94c8f90b375780ff42e82229ee6a6cf4ba8",
+      "steps": 333,
+      "found": 0,
+      "total": 2,
+      "coverage": 0.173828125,
+      "termination": "all_batteries_depleted",
+      "steps_since_last_discovery": 333,
+      "network": {
+        "enabled": true,
+        "messages_created": 1150,
+        "transmission_attempts": 3160,
+        "messages_delivered": 961,
+        "dropped_loss": 0,
+        "dropped_range": 1664,
+        "dropped_wall": 535,
+        "dropped_partition": 0,
+        "dropped_bandwidth": 0,
+        "dropped_stale": 0,
+        "duplicates_suppressed": 0,
+        "bytes_created": 725099,
+        "bytes_delivered": 591556,
+        "reconnections": 40,
+        "scheduled": 0,
+        "delivery_rate": 0.3041139240506329,
+        "map_cells_merged": 503,
+        "map_merges_refused": 0,
+        "messages_processed": 961
+      },
+      "merge_reasons": {
+        "accepted": 364
+      },
+      "agents": {
+        "rover_0": {
+          "decisions": 333,
+          "candidate_slots": 1578,
+          "distance_features_saturated": 0,
+          "moves": 297,
+          "goal_switch_before_arrival": 122,
+          "moves_to_previously_visited_cell": 199,
+          "shield_changed_move": 4,
+          "shield_stopped_move": 4,
+          "stationary": 36,
+          "all_five_slots_used": 266,
+          "investigate": 44,
+          "hold_with_legal_frontier": 12,
+          "unique_positions": 99,
+          "longest_stationary_run": 4,
+          "final_battery": 0.0,
+          "alive": false,
+          "final_uncertainty": 2.9699999999999807
+        },
+        "rover_1": {
+          "decisions": 302,
+          "candidate_slots": 1237,
+          "all_five_slots_used": 142,
+          "distance_features_saturated": 184,
+          "moves": 285,
+          "goal_switch_before_arrival": 145,
+          "moves_to_previously_visited_cell": 190,
+          "shield_changed_move": 5,
+          "shield_stopped_move": 5,
+          "stationary": 17,
+          "hold_with_legal_frontier": 10,
+          "investigate": 7,
+          "unique_positions": 96,
+          "longest_stationary_run": 3,
+          "final_battery": 0.0,
+          "alive": false,
+          "final_uncertainty": 2.849999999999983
+        },
+        "drone_2": {
+          "decisions": 267,
+          "candidate_slots": 1076,
+          "distance_features_saturated": 82,
+          "moves": 238,
+          "goal_switch_before_arrival": 72,
+          "shield_changed_move": 11,
+          "shield_stopped_move": 11,
+          "stationary": 29,
+          "moves_to_previously_visited_cell": 151,
+          "all_five_slots_used": 80,
+          "investigate": 18,
+          "hold_with_legal_frontier": 12,
+          "unique_positions": 88,
+          "longest_stationary_run": 6,
+          "final_battery": 0.0,
+          "alive": false,
+          "final_uncertainty": 3.5700000000000074
+        },
+        "drone_3": {
+          "decisions": 248,
+          "candidate_slots": 1002,
+          "distance_features_saturated": 0,
+          "moves": 240,
+          "no_legal_frontier": 1,
+          "hold_without_legal_frontier": 1,
+          "stationary": 8,
+          "goal_switch_before_arrival": 141,
+          "moves_to_previously_visited_cell": 174,
+          "all_five_slots_used": 81,
+          "investigate": 10,
+          "shield_changed_move": 2,
+          "shield_stopped_move": 2,
+          "unique_positions": 67,
+          "longest_stationary_run": 2,
+          "final_battery": 0.0,
+          "alive": false,
+          "final_uncertainty": 3.6000000000000076
+        }
+      },
+      "battery_depletion_events": [
+        {
+          "step": 248,
+          "event": "battery_depleted",
+          "agent": "drone_3"
+        },
+        {
+          "step": 267,
+          "event": "battery_depleted",
+          "agent": "drone_2"
+        },
+        {
+          "step": 302,
+          "event": "battery_depleted",
+          "agent": "rover_1"
+        },
+        {
+          "step": 333,
+          "event": "battery_depleted",
+          "agent": "rover_0"
+        }
+      ]
+    },
+    {
+      "intervention": "utility",
+      "governor_counts": {
+        "rover_0": {
+          "decisions": 297,
+          "overrides": 83,
+          "utility_frontier_choice": 83,
+          "proposed_holds": 1,
+          "hold_without_affordable_opportunity": 1
+        },
+        "rover_1": {
+          "decisions": 304,
+          "overrides": 72,
+          "utility_frontier_choice": 72
+        },
+        "drone_2": {
+          "decisions": 251,
+          "overrides": 135,
+          "utility_frontier_choice": 135,
+          "proposed_holds": 3,
+          "hold_with_affordable_opportunity": 3
+        },
+        "drone_3": {
+          "decisions": 289,
+          "overrides": 105,
+          "utility_frontier_choice": 104,
+          "proposed_holds": 31,
+          "hold_without_affordable_opportunity": 1,
+          "hold_with_affordable_opportunity": 30,
+          "release_prolonged_hold": 1
+        }
+      },
+      "case": "56_10003_ppo_h400_e1_utility",
+      "size": 56,
+      "seed": 10003,
+      "controller": "ppo",
+      "max_steps": 400,
+      "energy_multiplier": 1,
+      "initial_map_and_victims_sha256": "94b725c1d5edc03f798dbdfce612f94c8f90b375780ff42e82229ee6a6cf4ba8",
+      "steps": 304,
+      "found": 0,
+      "total": 2,
+      "coverage": 0.3997395833333333,
+      "termination": "all_batteries_depleted",
+      "steps_since_last_discovery": 304,
+      "network": {
+        "enabled": true,
+        "messages_created": 1141,
+        "transmission_attempts": 3256,
+        "messages_delivered": 603,
+        "dropped_loss": 0,
+        "dropped_range": 2320,
+        "dropped_wall": 333,
+        "dropped_partition": 0,
+        "dropped_bandwidth": 0,
+        "dropped_stale": 0,
+        "duplicates_suppressed": 0,
+        "bytes_created": 723589,
+        "bytes_delivered": 371821,
+        "reconnections": 19,
+        "scheduled": 0,
+        "delivery_rate": 0.1851965601965602,
+        "map_cells_merged": 810,
+        "map_merges_refused": 0,
+        "messages_processed": 603
+      },
+      "merge_reasons": {
+        "accepted": 394
+      },
+      "agents": {
+        "rover_0": {
+          "decisions": 297,
+          "candidate_slots": 1324,
+          "distance_features_saturated": 122,
+          "moves": 293,
+          "goal_switch_before_arrival": 10,
+          "moves_to_previously_visited_cell": 54,
+          "all_five_slots_used": 204,
+          "no_legal_frontier": 1,
+          "hold_without_legal_frontier": 1,
+          "stationary": 4,
+          "investigate": 10,
+          "unique_positions": 240,
+          "longest_stationary_run": 1,
+          "final_battery": 0.0,
+          "alive": false,
+          "final_uncertainty": 2.9299999999999815
+        },
+        "rover_1": {
+          "decisions": 304,
+          "candidate_slots": 1461,
+          "all_five_slots_used": 270,
+          "distance_features_saturated": 591,
+          "moves": 294,
+          "moves_to_previously_visited_cell": 61,
+          "goal_switch_before_arrival": 17,
+          "investigate": 32,
+          "stationary": 10,
+          "unique_positions": 234,
+          "longest_stationary_run": 2,
+          "final_battery": 0.0,
+          "alive": false,
+          "final_uncertainty": 2.9399999999999813
+        },
+        "drone_2": {
+          "decisions": 251,
+          "candidate_slots": 1156,
+          "distance_features_saturated": 33,
+          "moves": 239,
+          "goal_switch_before_arrival": 65,
+          "all_five_slots_used": 167,
+          "investigate": 8,
+          "stationary": 12,
+          "moves_to_previously_visited_cell": 78,
+          "shield_changed_move": 5,
+          "shield_stopped_move": 5,
+          "hold_with_legal_frontier": 3,
+          "unique_positions": 162,
+          "longest_stationary_run": 1,
+          "final_battery": 0.0,
+          "alive": false,
+          "final_uncertainty": 3.5850000000000075
+        },
+        "drone_3": {
+          "decisions": 289,
+          "candidate_slots": 1325,
+          "distance_features_saturated": 179,
+          "moves": 235,
+          "goal_switch_before_arrival": 31,
+          "all_five_slots_used": 192,
+          "moves_to_previously_visited_cell": 81,
+          "no_legal_frontier": 1,
+          "hold_without_legal_frontier": 1,
+          "stationary": 54,
+          "investigate": 29,
+          "shield_changed_move": 8,
+          "hold_with_legal_frontier": 29,
+          "shield_stopped_move": 7,
+          "unique_positions": 155,
+          "longest_stationary_run": 10,
+          "final_battery": 0.0,
+          "alive": false,
+          "final_uncertainty": 3.525000000000007
+        }
+      },
+      "battery_depletion_events": [
+        {
+          "step": 251,
+          "event": "battery_depleted",
+          "agent": "drone_2"
+        },
+        {
+          "step": 289,
+          "event": "battery_depleted",
+          "agent": "drone_3"
+        },
+        {
+          "step": 297,
+          "event": "battery_depleted",
+          "agent": "rover_0"
+        },
+        {
+          "step": 304,
+          "event": "battery_depleted",
+          "agent": "rover_1"
+        }
+      ]
+    }
+  ],
+  "config": {
+    "commitment_steps": 12,
+    "stall_release_steps": 4,
+    "loop_window_steps": 16,
+    "repeated_directed_edge_threshold": 2,
+    "deadline": 400,
+    "battery_multiplier": 1,
+    "utility_gain_radius_cap": 4,
+    "utility_min_unknown": 4,
+    "utility_battery_fraction": 0.8,
+    "hold_release_after": 4
+  },
+  "source_sha256": {
+    "/Users/omvipulbhairashiya/Desktop/swarm/simulation/scripts/ablate_goal_governor.py": "352d2f0069e37e0cdc19ce3fcf4c7438b6c7fa4b733b3c116b6d47cf7b430f34",
+    "/Users/omvipulbhairashiya/Desktop/swarm/simulation/scripts/goal_governor.py": "dcfac82db55eb7d37c1683dd51927a740483b031b5c4e6c57b23754170f79cab",
+    "/Users/omvipulbhairashiya/Desktop/swarm/simulation/scripts/diagnose_large_maps.py": "44ffc8ceac25c26d3a63aebbfa21d5cdd273bbad8f5f1022ce507f6558bad3b1",
+    "/Users/omvipulbhairashiya/Desktop/swarm/simulation/scripts/frontier_utility.py": "4f60a4915c53a1c708f6e8e75c9f513d211e7da5f75cf249572f007bf7e17a6e"
+  },
+  "limits": "Development-only small paired ablation. Overrides are heuristic decisions, not new learned behavior. Existing simulator-informed action masks/shield retained. No retraining or ROS integration."
+}

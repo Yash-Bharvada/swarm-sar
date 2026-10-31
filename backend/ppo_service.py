@@ -225,6 +225,14 @@ class Service:
                     del self.sessions[key]
             if method == 'GET' and path == '/api/ppo/health':
                 return {'ready': True, 'controller': 'ppo', 'provenance': self.provenance}
+            if method == 'POST' and path == '/api/ppo/preview':
+                # Same seeded generator and initial sensing as Create mission,
+                # without registering a session or running a policy step.
+                preview = Mission(options(data), self.modules, self.provenance)
+                try:
+                    return {**preview.last, 'preview': True}
+                finally:
+                    preview.env.close()
             if method == 'POST' and path == '/api/ppo/missions':
                 if not isinstance(data, dict):
                     raise ValueError('JSON object required')

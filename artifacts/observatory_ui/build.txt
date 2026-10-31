@@ -1,0 +1,16 @@
+
+> swarm-mission-control@0.1.0 build
+> tsc -b && vite build
+
+vite v5.4.10 building for production...
+transforming...
+✓ 694 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   1.02 kB │ gzip:   0.56 kB
+dist/assets/index-DBR9pFRI.css   66.91 kB │ gzip:  15.90 kB
+dist/assets/index-BPcz4B-A.js   141.23 kB │ gzip:  48.04 kB
+dist/assets/App-CwFnpOzF.js     148.10 kB │ gzip:  47.67 kB
+dist/assets/r3f-C4FQcjKs.js     329.58 kB │ gzip: 105.36 kB
+dist/assets/three-BitbqpuU.js   683.50 kB │ gzip: 175.35 kB
+✓ built in 3.31s

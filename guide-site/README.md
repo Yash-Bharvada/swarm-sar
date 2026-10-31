@@ -3,10 +3,9 @@
 A separate static learning website for the existing Swarm SAR project. It does
 not change the simulator, training configuration, checkpoint or application.
 
-The edition has 74 reader pages across 16 chapters, 12,174 words, original
-project captures, interactive teaching diagrams, twelve hackathon question
-cards and a searchable inventory of all 421 tracked files in the reviewed
-project snapshot. It includes 74 English audio tracks, a complete chaptered
+The edition has 91 reader pages across 20 chapters, original
+project captures, interactive teaching diagrams, fifteen hackathon question
+cards and a searchable inventory of reviewed project files in the source snapshot (generated fieldbook outputs excluded). It includes 91 English audio tracks, a complete chaptered
 M4B, an illustrated PDF, transcript and downloadable file atlas.
 
 Narration is synthetic English speech (Samantha, macOS system TTS). The static
@@ -14,6 +13,23 @@ audio files play without relying on browser speech synthesis. Audio playback
 supports speed, seeking, 15-second jumps, page completion/automatic turns and
 media session controls. Reading position, bookmarks and preferences remain in
 browser local storage. No server or account is required by the reader itself.
+
+## Published audiobook
+
+Public reader: https://swarmsar.vercel.app
+
+Vercel project: `swarmsar`, scope: `rashiyaom-gmailcoms-projects`.
+Deploy the existing static edition from the parent repository with:
+
+```sh
+vercel deploy guide-site/dist --project swarmsar --prod --yes
+```
+
+Deploy only `dist/`. There is no framework build or server dependency. The
+production reader, recorded narration, audio byte-range seeking, search,
+mobile layout and PDF/M4B downloads were checked on the public URL.
+Deployment evidence: `artifacts/audiobook_vercel/validation.json` in the parent
+repository. The manuscript records its reviewed source revision below.
 
 ## Run locally
 
@@ -48,11 +64,10 @@ creates the complete PDF, and records browser/integrity verification.
 
 ## Editorial scope
 
-Reviewed project source: `83cd96ce7a5651ee77f5816a7ab47844bc0cbf7a`.
-Edition: 30 October 2026. Team: Om Rashiya, Yash Bharvada, Purva Shah, Pankti Akbari.
+Reviewed project source: see `dist/book.json` → `revision`; atlas entries include content hashes.
+Edition: 31 October 2026. Team: Om Rashiya, Yash Bharvada, Purva Shah, Pankti Akbari.
 
-The manuscript distinguishes browser heuristics, Python PPO execution and the
-separate ROS physics demo. It describes the checked-in learner as cooperative
+The manuscript distinguishes browser heuristics, Python PPO execution, the original ROS physics demo, and the new rover SLAM source integration. Extended chapters explain map/intent sharing, the 3D observatory, frozen large-map experiments and one-command startup. Live Linux SLAM is still explicitly unverified. It describes the checked-in learner as cooperative
 type-shared PPO, not standard centralized-critic MAPPO. All benchmark numbers
 retain development/historical scope. Supplied ROS captures retain their
 host-policy provenance limitation. No individual team roles are invented.

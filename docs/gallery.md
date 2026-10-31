@@ -6,6 +6,20 @@ This gallery distinguishes the browser heuristic, Python learned-policy runtime,
 and physical simulation. Images show the application state that was captured.
 There is no AI-generated concept art in this gallery.
 
+## Current integration captures · 31 October 2026
+
+| Capture | Evidence boundary |
+| :--- | :--- |
+| [Current mission control](media/updates/mission-control.png) | Running browser application, heuristic ready state |
+| [3D private map](media/updates/observatory-map.png) | Actual browser beliefs and simulated poses; not live ROS SLAM |
+| [Peer network](media/updates/observatory-network.png) | Actual browser transport topology and packet events; not GNN activations |
+| [PPO setup preview](media/updates/ppo-preview.png) | Actual Python-generated 40-cell maze and six-robot preview before creation |
+| [ROS connection](media/updates/ros-connection.png) | Current disconnected interface; no operational mapping claim |
+
+[Capture origins and SHA-256](media/updates/capture-manifest.json). The original
+Gazebo/RViz captures below retain their original host-session scope; the new
+SLAM integration still needs the documented Linux runtime validation.
+
 ## Browser mission control
 
 ![Live browser simulation](media/frontend/mission-live.gif)

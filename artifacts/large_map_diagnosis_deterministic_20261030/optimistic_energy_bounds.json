@@ -1,0 +1,84 @@
+[
+  {
+    "seed": 10000,
+    "bounds": [
+      {
+        "agent": "rover_0",
+        "victim": 0,
+        "minimum_travel_energy_ignoring_los_and_exploration": 74.0,
+        "battery": 300
+      },
+      {
+        "agent": "rover_0",
+        "victim": 1,
+        "minimum_travel_energy_ignoring_los_and_exploration": 15.0,
+        "battery": 300
+      },
+      {
+        "agent": "rover_1",
+        "victim": 0,
+        "minimum_travel_energy_ignoring_los_and_exploration": 72.0,
+        "battery": 300
+      },
+      {
+        "agent": "rover_1",
+        "victim": 1,
+        "minimum_travel_energy_ignoring_los_and_exploration": 13.0,
+        "battery": 300
+      },
+      {
+        "agent": "drone_2",
+        "victim": 0,
+        "minimum_travel_energy_ignoring_los_and_exploration": 72.0,
+        "battery": 240
+      },
+      {
+        "agent": "drone_2",
+        "victim": 1,
+        "minimum_travel_energy_ignoring_los_and_exploration": 13.0,
+        "battery": 240
+      },
+      {
+        "agent": "drone_3",
+        "victim": 0,
+        "minimum_travel_energy_ignoring_los_and_exploration": 76.0,
+        "battery": 240
+      },
+      {
+        "agent": "drone_3",
+        "victim": 1,
+        "minimum_travel_energy_ignoring_los_and_exploration": 17.0,
+        "battery": 240
+      }
+    ]
+  },
+  {
+    "seed": 10001,
+    "bounds": [
+      {
+        "agent": "rover_0",
+        "victim": 0,
+        "minimum_travel_energy_ignoring_los_and_exploration": 108.0,
+        "battery": 300
+      },
+      {
+        "agent": "rover_1",
+        "victim": 0,
+        "minimum_travel_energy_ignoring_los_and_exploration": 105.0,
+        "battery": 300
+      },
+      {
+        "agent": "drone_2",
+        "victim": 0,
+        "minimum_travel_energy_ignoring_los_and_exploration": 104.0,
+        "battery": 240
+      },
+      {
+        "agent": "drone_3",
+        "victim": 0,
+        "minimum_travel_energy_ignoring_los_and_exploration": 101.0,
+        "battery": 240
+      }
+    ]
+  }
+]
