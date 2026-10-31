@@ -16,6 +16,7 @@ export interface ObservatorySnapshot {
 }
 export interface ObservatoryCanvasProps {
   snapshot: ObservatorySnapshot; selected: string | null; onSelect: (id: string) => void;
-  view: 'spatial' | 'neural'; showPaths: boolean; showPackets: boolean; showFrontiers: boolean;
+  view: 'spatial' | 'neural' | 'concept'; showPaths: boolean; showPackets: boolean; showFrontiers: boolean;
   frozen: boolean; zoom: number; cameraAngle?: 'isometric' | 'top';
+  conceptStep?: number; conceptScore?: number; conceptPlaying?: boolean;
 }

@@ -25,6 +25,14 @@ export function cellWorld(g: RosGrid, x: number, y: number): [number, number] {
 }
 
 type Subscriber = { topic: string; type: string; callback: (msg: unknown) => void; throttle: number };
+export function rosBridgeUrlError(url: string, pageProtocol = location.protocol): string | null {
+  let parsed: URL;
+  try { parsed = new URL(url); } catch { return 'Enter a complete address such as ws://localhost:9090'; }
+  if (!['ws:', 'wss:'].includes(parsed.protocol)) return 'Use a ws:// or wss:// rosbridge address';
+  if (pageProtocol === 'https:' && parsed.protocol !== 'wss:') return 'This page uses HTTPS, so the browser requires wss://. Run the frontend locally over HTTP or put rosbridge behind TLS.';
+  if (!parsed.port && parsed.protocol === 'ws:') return 'Include the rosbridge port, normally :9090';
+  return null;
+}
 export class RosConnection {
   private socket: WebSocket | null = null;
   private subscriptions: Subscriber[] = [];
@@ -36,12 +44,21 @@ export class RosConnection {
   }
   connect(url: string) {
     this.close();
+    const problem = rosBridgeUrlError(url);
+    if (problem) throw new Error(problem);
     const parsed = new URL(url);
-    if (!['ws:', 'wss:'].includes(parsed.protocol)) throw new Error('Use a ws:// or wss:// rosbridge address');
     this.onState('connecting');
     const socket = new WebSocket(parsed.toString()); this.socket = socket;
+    let opened = false, failed = false;
+    const timer = setTimeout(() => {
+      if (this.socket !== socket || socket.readyState === WebSocket.OPEN) return;
+      failed = true;
+      this.onState('connection timed out — check rosbridge, port 9090, and your SSH tunnel');
+      socket.close();
+    }, 8000);
     socket.onopen = () => {
       if (this.socket !== socket) return;
+      opened = true; clearTimeout(timer);
       this.onState('connected');
       for (const s of this.subscriptions) socket.send(JSON.stringify({ op: 'subscribe', topic: s.topic, type: s.type, throttle_rate: s.throttle, queue_length: 1 }));
     };
@@ -57,10 +74,18 @@ export class RosConnection {
         }
       } catch { /* Ignore malformed telemetry; never convert it into simulated state. */ }
     };
-    socket.onerror = () => { if (this.socket === socket) this.onState('connection error'); };
-    socket.onclose = () => {
+    socket.onerror = () => {
       if (this.socket !== socket) return;
-      this.onState('disconnected'); this.rejectPending();
+      failed = true;
+      this.onState('connection failed — nothing answered at this WebSocket address');
+    };
+    socket.onclose = event => {
+      clearTimeout(timer);
+      if (this.socket !== socket) return;
+      const reason = event.reason?.trim();
+      if (opened) this.onState(reason ? `connection closed: ${reason}` : 'connection closed');
+      else if (!failed) this.onState(reason ? `connection refused: ${reason}` : 'connection refused — verify rosbridge is listening on port 9090');
+      this.rejectPending();
     };
   }
   isolate(agent: string, isolated: boolean) {

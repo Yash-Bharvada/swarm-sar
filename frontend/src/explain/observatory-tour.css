@@ -1,0 +1,51 @@
+.observatory .ob-explain-launch{display:inline-flex;gap:7px;align-items:center;flex-shrink:0;border:1px solid #bbcdb0;border-radius:8px;background:#eaf1df;color:#42633e;padding:9px 12px;font-size:11px;white-space:nowrap}
+.ob-tour-running .ob-breadcrumb{display:none}
+.ob-tour-running .ob-stage{width:calc(100% - 350px)}
+.ob-tour-panel{position:fixed;right:0;top:76px;bottom:0;width:350px;background:#fafcf4;border-left:1px solid #d6e3ce;z-index:8;display:flex;flex-direction:column;color:#38533e}
+.ob-tour-panel>header{display:flex;align-items:center;justify-content:space-between;padding:20px 23px 13px;gap:10px}
+.ob-tour-panel>header>span{font-size:8px;font-weight:650;letter-spacing:1.4px;color:#899a7d}
+.ob-tour-panel>header>button{border:0;background:transparent;color:#829775;padding:5px}
+.ob-tour-content{overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;padding:3px 24px 24px;flex:1;min-height:0}
+.ob-tour-scene-picker{display:flex;flex-direction:column;gap:7px;color:#85977a;font-size:9px;margin-bottom:24px}
+.ob-tour-scene-picker select{padding:9px 8px;border:1px solid #d8e2ce;border-radius:8px;background:#f1f6e8;color:#617b54;width:100%;font-size:10px}
+.ob-tour-panel article{animation:ob-tour-enter .25s ease both}
+.ob-tour-panel h2{font-size:29px;font-weight:550;letter-spacing:-1px;line-height:1.13;margin:0 0 19px;outline:none}
+.ob-tour-story{font-size:12px;line-height:1.9;color:#6e8063;margin:0 0 22px}
+.ob-tour-built{padding-top:17px;border-top:1px solid #e0e8d8}
+.ob-tour-built>span{display:flex;align-items:center;gap:7px;font-size:8px;letter-spacing:1.4px;color:#7b976a;font-weight:650}
+.ob-tour-built p{font-size:11px;color:#6e8363;line-height:1.8;margin:9px 0 20px}
+.ob-tour-try{display:flex;align-items:flex-start;gap:9px;border:1px solid #dae5cf;border-radius:11px;background:#eff5e6;padding:12px;font-size:11px;color:#59764c;line-height:1.7}
+.ob-tour-try svg{margin-top:3px;flex-shrink:0}
+.ob-tour-offline{display:flex;align-items:flex-start;gap:8px;font-size:10px;color:#8e825b;line-height:1.7;padding:11px 0;margin-bottom:10px}
+.ob-tour-offline svg{margin-top:3px;flex-shrink:0}
+.ob-tour-connect{margin:0 0 14px;width:100%}
+.ob-tour-panel .ex-proof{width:100%}
+.ob-tour-panel .ex-proof-shot{display:block}
+.ob-tour-running .ob-gnn-panel{max-height:44%;width:260px}
+.ob-tour-running .ob-gnn-panel .ob-gnn-steps,.ob-tour-running .ob-gnn-panel .ob-gnn-receiver,.ob-tour-running .ob-gnn-panel .ob-gnn-explanation,.ob-tour-running .ob-gnn-panel>p{display:none}
+.ob-tour-running .ob-gnn-panel h2{font-size:16px;margin:10px 0}
+.ob-tour-panel .ob-tour-other-source{display:flex;justify-content:space-between;align-items:center;border:1px solid #ceddc2;background:#f0f6e5;border-radius:9px;padding:12px;margin-top:15px;font-size:11px;color:#56754a}
+.ob-tour-panel>footer{padding:15px 23px 21px;border-top:1px solid #dae4d2;background:#f8fbf1}
+.ob-tour-status{display:flex;justify-content:space-between;align-items:center;color:#8c9e80;font-size:9px;margin-bottom:12px}
+.ob-tour-status>button{display:flex;align-items:center;gap:6px;border:0;background:transparent;color:#6e885f;font-size:9px;padding:3px 0}
+.ob-tour-nav{display:flex;justify-content:space-between;gap:12px}
+.ob-tour-nav .ob-primary{flex:1;justify-content:space-between}
+.ob-tour-nav .ob-outline{padding:10px 13px}
+.ob-tour-running[data-tour-focus=sources] .ob-source-picker,
+.ob-tour-running[data-tour-focus=connection] .ob-connect-button,
+.ob-tour-running[data-tour-focus=map] .ob-view-switch button:first-child,
+.ob-tour-running[data-tour-focus=agent] .ob-inspector,
+.ob-tour-running[data-tour-focus=layers] .ob-layer-popover,
+.ob-tour-running[data-tour-focus=network] .ob-view-switch button:nth-child(2),
+.ob-tour-running[data-tour-focus=messages] .ob-stream,
+.ob-tour-running[data-tour-focus=gnn] .ob-gnn-panel,
+.ob-tour-running[data-tour-focus=playback] .ob-playback{outline:2px solid #b89451;outline-offset:4px;box-shadow:0 0 0 7px #eddcb840}
+.ex-workspace-tours{display:flex;flex-direction:column;gap:8px;margin:17px 0}
+.ex-workspace-tours>button,.ex-workspace-tours>a{display:flex;align-items:center;justify-content:space-between;gap:9px;background:#eaf2df;border:1px solid #cbdcbe;border-radius:9px;padding:11px 12px;color:#507144;font-size:11px;text-decoration:none;text-align:left}
+.ex-mission-modes dl{font-size:11px;line-height:1.7;color:#738469;margin:15px 0 0}
+.ex-mission-modes dt{font-weight:600;color:#537049;margin-top:10px}
+.ex-mission-modes dd{margin:2px 0 0}
+@keyframes ob-tour-enter{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+@media(max-width:1100px){.observatory .ob-breadcrumb{display:none}.ob-tour-running .ob-stage{width:calc(100% - 320px)}.ob-tour-panel{width:320px}.ob-tour-content{padding-inline:20px}.ob-tour-panel>header,.ob-tour-panel>footer{padding-inline:20px}}
+@media(max-width:760px){.observatory .ob-header{gap:8px;padding-inline:12px}.observatory .ob-brand small{display:none}.observatory .ob-brand b{font-size:21px}.observatory .ob-brand-icon{display:none}.observatory .ob-source-picker a{font-size:8px;padding:7px}.observatory .ob-explain-launch{font-size:10px;padding:7px 8px;gap:5px}.ob-tour-running .ob-stage{width:100%;height:calc((100dvh - 68px)*.47);min-height:280px}.ob-tour-panel{position:relative;top:auto;bottom:auto;width:100%;height:calc((100dvh - 68px)*.53);min-height:300px;border-left:0;border-top:1px solid #d6e3ce}.ob-tour-panel>header{padding:13px 20px 7px}.ob-tour-content{padding:0 20px 15px}.ob-tour-scene-picker{margin-bottom:15px}.ob-tour-panel h2{font-size:25px;margin-bottom:13px}.ob-tour-panel>footer{padding:10px 20px 13px}.ob-tour-status{margin-bottom:8px}.ob-tour-running .ob-stage-top{top:15px}.ob-tour-running .ob-stage-title h1{font-size:20px;margin-bottom:8px}.ob-tour-running .ob-view-switch{top:102px}.ob-tour-running .ob-agent-rail{top:153px;max-height:calc(100% - 225px)}.ob-tour-running .ob-inspector{top:150px;max-height:calc(100% - 235px);overflow:auto}.ob-tour-running .ob-gnn-panel{top:150px;max-height:calc(100% - 235px)}.ob-tour-running .ob-map-tools{display:none}.ob-tour-running .ob-source-note{display:none}.ob-tour-running .ob-stage-bottom{bottom:14px}.ob-tour-running .ob-stream{bottom:72px;max-height:calc(100% - 140px);overflow:auto}.ob-tour-running .ob-welcome{top:28px;left:23px;max-width:calc(100% - 46px);transform:none}.ob-tour-running .ob-welcome h2{font-size:26px}.ob-tour-running .ob-welcome-symbol{display:none}.ob-tour-running .ob-welcome p{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.ob-tour-panel *{animation:none!important;transition:none!important}}

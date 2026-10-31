@@ -12,6 +12,7 @@ import { CommEvents, CommRanges, MapMergeFlash, NetworkLinks, PacketPulses, Part
 import { CoverageFog, Dust, EvidenceMarkers, PlacementMarkers, SurvivorBeacons, Survivors, TruthDebug } from './Overlays';
 import { applyAnchoredZoom, captureGroundAnchor, overviewOffset, survivorCameraOffset, smoothZoom, wheelZoom, type GroundZoomAnchor } from './cameraMath';
 import { soundscape } from '../audio/Soundscape';
+import { ExplainScene } from '../explain/ExplainScene';
 
 /** Fixed ticks stay deterministic; pausing preserves the exact rendered pose. */
 function SimDriver({ engine }: { engine: SimulationEngine }) {
@@ -19,7 +20,7 @@ function SimDriver({ engine }: { engine: SimulationEngine }) {
   useLayoutEffect(() => { acc.current = 0; simClock.alpha = 1; }, [engine]);
   useFrame((_, dt) => {
     const { status, settings, advance, controllerMode } = useSim.getState();
-    if (controllerMode === 'ppo') return;
+    if (controllerMode === 'ppo' && !useSim.getState().explainActive) return;
     if (status === 'paused' || status === 'ready') return;
     if (status === 'complete') {
       simClock.alpha = Math.min(1, simClock.alpha + dt * TICKS_PER_SECOND * settings.speed);
@@ -53,6 +54,8 @@ function CameraRig({ engine }: { engine: SimulationEngine }) {
   const cameraOffset = useRef(new THREE.Vector3());
   const previousSize = useRef({ width: 0, height: 0 });
   const initialized = useRef<SimulationEngine | null>(null);
+  const storyCamera = useRef<{ engine: SimulationEngine; position: THREE.Vector3; target: THREE.Vector3; zoom: number } | null>(null);
+  const reducedMotion = useRef(window.matchMedia('(prefers-reduced-motion: reduce)'));
   const telemetryAt = useRef(0);
   const span = Math.max(engine.scenario.width, engine.scenario.height);
 
@@ -97,6 +100,23 @@ function CameraRig({ engine }: { engine: SimulationEngine }) {
   useLayoutEffect(() => {
     if (!controls || !size.width || !size.height) return;
     const previous = initialized.current;
+    const explaining = useSim.getState().explainActive;
+    if (explaining && previous && !storyCamera.current) storyCamera.current = { engine: previous, position: camera.position.clone(), target: controls.target.clone(), zoom: camera.zoom };
+    if (!explaining && storyCamera.current) {
+      const saved = storyCamera.current;
+      storyCamera.current = null;
+      if (saved.engine === engine) {
+        initialized.current = engine; desired.current = null;
+        controls.target.copy(saved.target); camera.position.copy(saved.position); camera.zoom = saved.zoom;
+        fitZoom.current = measureFit();
+        camera.updateProjectionMatrix(); controls.update();
+        controls.minZoom = Math.min(fitZoom.current * 0.6, camera.zoom);
+        controls.maxZoom = Math.max(fitZoom.current * 4, camera.zoom);
+        previousSize.current = { width: size.width, height: size.height };
+        useSim.setState({ cameraZoom: Math.round(camera.zoom / fitZoom.current * 100) });
+        return;
+      }
+    }
     const preserveEditorView = previous && useSim.getState().editingSurvivors && previous.scenario.seed === engine.scenario.seed && previous.scenario.preset === engine.scenario.preset;
     if (initialized.current !== engine && !preserveEditorView) {
       initialized.current = engine;
@@ -218,7 +238,8 @@ function CameraRig({ engine }: { engine: SimulationEngine }) {
     if (!follow.encounter && camera.zoom <= fitZoom.current * 4) controls.maxZoom = fitZoom.current * 4;
     if (desired.current?.following && !follow.following) desired.current = null;
     const glide = desired.current;
-    const factor = 1 - Math.exp(-Math.min(dt, 0.05) * 7);
+    const reducedStoryMotion = follow.explainActive && reducedMotion.current.matches;
+    const factor = reducedStoryMotion ? 1 : 1 - Math.exp(-Math.min(dt, 0.05) * 7);
     if (follow.following && follow.selected) {
       const robot = engine.robots.find((r) => r.name === follow.selected);
       if (robot) {
@@ -232,7 +253,7 @@ function CameraRig({ engine }: { engine: SimulationEngine }) {
       }
     }
     if (glide) {
-      const zoom = smoothZoom(camera.zoom, glide.zoom, dt);
+      const zoom = reducedStoryMotion ? glide.zoom : smoothZoom(camera.zoom, glide.zoom, dt);
       if (glide.zoomOnly) applyAnchoredZoom(camera, controls.target, zoom, glide.anchor ?? null);
       else {
         controls.target.lerp(glide.target, factor);
@@ -318,6 +339,7 @@ function Scene() {
     <group key={generation.current.revision}>
       <World engine={engine} quality={quality} onFloorClick={onFloorClick} />
       <Robots engine={engine} quality={quality} />
+      <ExplainScene engine={engine} />
       {!cleanView && <>
       {overlays.paths && <RobotPaths engine={engine} />}
       {overlays.links && <NetworkLinks engine={engine} />}

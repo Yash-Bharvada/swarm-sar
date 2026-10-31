@@ -37,6 +37,12 @@ moving-robot focus, focus transfer, scene-only viewing and mobile restoration. I
 
 ## Using the simulator
 
+Choose **ⓘ Explain** for a ten-chapter interactive rescue story using this same animated
+3D world. Meet the robots, try simple mapping/learning/teamwork games, and inspect original
+Gazebo/RViz captures and training evidence. The guided sandbox preserves your mission.
+Optional browser narration, chapter navigation, and mobile layouts are included.
+[Explain Mode guide](../docs/guides/explain_mode.md).
+
 The world occupies the workspace. A command rail opens one panel at a time; select **World**
 or close the panel to return to the full scene.
 

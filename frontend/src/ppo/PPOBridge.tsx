@@ -49,8 +49,9 @@ export function PPOBridge() {
   const revision = useSim((s) => s.ppoRevision);
   const preview = useSim((s) => s.ppoPhase === 'preview');
   const options = useSim((s) => s.ppoOptions);
+  const explaining = useSim((s) => s.explainActive);
   useEffect(() => {
-    if (mode !== 'ppo' || !preview) return;
+    if (mode !== 'ppo' || !preview || explaining) return;
     const abort = new AbortController();
     let disposed = false;
     const timer = window.setTimeout(async () => {
@@ -63,14 +64,16 @@ export function PPOBridge() {
       }
     }, 180);
     return () => { disposed = true; abort.abort(); window.clearTimeout(timer); };
-  }, [mode, preview, options, revision]);
+  }, [mode, preview, options, revision, explaining]);
   useEffect(() => {
     if (mode !== 'ppo' || preview) return;
     const abort = new AbortController();
     let disposed = false, mission: string | null = null, engine: RemoteEngine | null = null, busy = false;
+    let pendingTick: PPOSnapshot | null = null, pendingError: unknown = null;
     let previousFrame = performance.now(), elapsed = 0, previousInterval = 0;
     const fail = (error: unknown) => {
       if (disposed) return;
+      if (useSim.getState().explainActive) { pendingError = error; return; }
       useSim.setState({ ppoPhase: 'error', ppoError: error instanceof TypeError || (error instanceof DOMException && error.name === 'AbortError') ? 'Connection to Python was lost. Start the PPO service, then reset this mission.' : error instanceof Error ? error.message : 'PPO connection failed', status: 'paused' });
     };
     (async () => {
@@ -92,7 +95,11 @@ export function PPOBridge() {
       const now = performance.now(), dt = Math.min(100, now - previousFrame);
       previousFrame = now;
       const state = useSim.getState();
-      if (!engine || disposed || state.engine !== engine || state.ppoPhase !== 'ready') return;
+      if (!engine || disposed || state.explainActive || state.engine !== engine || state.ppoPhase !== 'ready') return;
+      // Keep a committed Python response while the independent story sandbox is visible.
+      // Apply it once the original mission returns, before requesting the next step.
+      if (pendingError) { const error = pendingError; pendingError = null; fail(error); return; }
+      if (pendingTick) { const tick = pendingTick; pendingTick = null; applyPythonTick(engine, tick); return; }
       const interval = 1000 / (TICKS_PER_SECOND * state.settings.speed);
       if (interval !== previousInterval) { elapsed = simClock.alpha * interval; previousInterval = interval; }
       elapsed = Math.max(elapsed, simClock.alpha * interval);
@@ -109,9 +116,10 @@ export function PPOBridge() {
           value = await ppoRequest(`/missions/${mission}/step`, 'POST', { expectedStep: expected }, abort.signal);
         }
         validateSnapshot(value);
-        if (disposed || useSim.getState().engine !== engine) return;
+        if (disposed) return;
         elapsed = 0;
-        applyPythonTick(engine, value);
+        if (useSim.getState().explainActive) pendingTick = value;
+        else if (useSim.getState().engine === engine) applyPythonTick(engine, value);
       } catch (error) { fail(error); }
       finally { busy = false; }
     }, 16);

@@ -62,6 +62,7 @@ export const TICKS_PER_SECOND = 4;
 export const simClock = { alpha: 1, lastTickAt: 0 };
 
 interface Store {
+  explainActive: boolean;
   controllerMode: 'heuristic' | 'ppo';
   ppoPhase: 'off' | 'preview' | 'connecting' | 'ready' | 'error';
   ppoError: string | null;
@@ -171,6 +172,7 @@ const clearEncounters = { encounter: null, encounterQueue: [], announcedSurvivor
 const clearCameraTarget = { ...clearEncounters, selected: null, focus: null, cameraRequest: null, following: false };
 
 export const useSim = create<Store>((set, get) => ({
+  explainActive: false,
   controllerMode: 'heuristic', ppoPhase: 'off', ppoError: null, ppoOptions: DEFAULT_PPO_OPTIONS, ppoRevision: 0,
   ...clearEncounters,
   editingTerrain: false, mapMessage: null,
@@ -471,12 +473,12 @@ export const useSim = create<Store>((set, get) => ({
   },
   advance: (ticks) => {
     const { engine, status } = get();
-    if (get().controllerMode === 'ppo' || status !== 'running' || ticks <= 0) return;
+    if ((get().controllerMode === 'ppo' && !get().explainActive) || status !== 'running' || ticks <= 0) return;
     const announced = new Set(get().announcedSurvivors);
     for (let i = 0; i < ticks && !engine.done; i++) {
       engine.tick();
       const fresh = engine.discoveredSurvivors().filter((victim) => !announced.has(victim.id)).map((v) => v.id);
-      if (fresh.length) {
+      if (fresh.length && !get().explainActive) {
         set({ encounter: { id: fresh[0], automatic: true }, encounterQueue: fresh.slice(1),
           announcedSurvivors: [...get().announcedSurvivors, ...fresh], encounterReturnStatus: 'running',
           focus: null, following: false, cameraRequest: null, status: 'paused', version: get().version + 1 });

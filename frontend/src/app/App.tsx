@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { TopBar } from '../components/TopBar';
 import { LeftPanel } from '../components/LeftPanel';
 import { RightPanel } from '../components/RightPanel';
@@ -13,6 +13,9 @@ import { MazeEditor } from '../components/MazeEditor';
 import { AudioBridge } from '../audio/AudioBridge';
 import { soundscape } from '../audio/Soundscape';
 import { BrowserObservatory } from '../observatory/BrowserObservatory';
+import { ExplainMode } from '../explain/ExplainMode';
+import { beginExplainSession } from '../explain/session';
+import '../explain/explain.css';
 
 export type Panel = 'setup' | 'fleet' | 'activity' | 'help' | null;
 
@@ -30,6 +33,7 @@ const KEY_DIRECTIONS: Record<string, number> = {
 function useKeyboard() {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      if (useSim.getState().explainActive || document.querySelector('.ob-tour-panel')) return;
       if (useSim.getState().encounter && e.code !== 'KeyM') {
         if (e.code === 'Space' && !(e.target as HTMLElement)?.closest('button')) e.preventDefault();
         return;
@@ -81,10 +85,11 @@ function useKeyboard() {
 export function App() {
   useKeyboard();
   const [observatory, setObservatory] = useState(() => new URLSearchParams(location.search).get('mode') === 'observatory');
-  const navigateObservatory = (open: boolean) => {
+  const navigateObservatory = (open: boolean, tour = false) => {
     const url = new URL(window.location.href);
     if (open) url.searchParams.set('mode', 'observatory');
     else url.searchParams.delete('mode');
+    if (open && tour) url.searchParams.set('explain', '1'); else url.searchParams.delete('explain');
     window.history.pushState({}, '', url);
     setObservatory(open);
   };
@@ -94,6 +99,17 @@ export function App() {
     return () => window.removeEventListener('popstate', onPopState);
   }, []);
   const [panel, setPanel] = useState<Panel>(null);
+  const explaining = useSim((s) => s.explainActive);
+  const restoreMission = useRef<(() => void) | null>(null);
+  const openExplain = () => { restoreMission.current ??= beginExplainSession(); };
+  const closeExplain = () => {
+    restoreMission.current?.(); restoreMission.current = null;
+    requestAnimationFrame(() => document.querySelector<HTMLButtonElement>('.explain-launch')?.focus());
+  };
+  useEffect(() => () => { restoreMission.current?.(); restoreMission.current = null; }, []);
+  useEffect(() => {
+    if (observatory) { restoreMission.current?.(); restoreMission.current = null; }
+  }, [observatory]);
   const selected = useSim((s) => s.selected);
   const cleanView = useSim((s) => s.cleanView);
   const editingTerrain = useSim((s) => s.editingTerrain);
@@ -101,10 +117,10 @@ export function App() {
   const editingSurvivors = useSim((s) => s.editingSurvivors);
   const toggleCleanView = useSim((s) => s.toggleCleanView);
   useEffect(() => { if (encounter) setPanel(null); }, [encounter]);
-  useEffect(() => { if (selected) setPanel('fleet'); }, [selected]);
+  useEffect(() => { if (selected && !explaining) setPanel('fleet'); }, [selected, explaining]);
   useEffect(() => { if (editingSurvivors || cleanView) setPanel(null); }, [editingSurvivors, cleanView]);
   useEffect(() => {
-    const close = (event: KeyboardEvent) => { if (event.code === 'Escape') setPanel(null); };
+    const close = (event: KeyboardEvent) => { if (event.code === 'Escape' && !useSim.getState().explainActive) setPanel(null); };
     window.addEventListener('keydown', close);
     return () => window.removeEventListener('keydown', close);
   }, []);
@@ -118,24 +134,25 @@ export function App() {
     <>
       <AudioBridge />
       <PPOBridge />
-      {observatory ? <BrowserObservatory onBack={() => navigateObservatory(false)} /> : <div className={`app ${cleanView ? 'clean-view' : ''}`}>
+      {observatory ? <BrowserObservatory onBack={() => navigateObservatory(false)} /> : <div className={`app ${cleanView ? 'clean-view' : ''} ${explaining ? 'explaining' : ''}`}>
       {editingTerrain && <MazeEditor />}
-      {!cleanView && <TopBar onOpenObservatory={() => navigateObservatory(true)} />}
-      {!cleanView && <nav className="command-rail" aria-label="Workspace">
+      {!cleanView && !explaining && <TopBar onOpenObservatory={() => navigateObservatory(true)} onExplain={openExplain} />}
+      {!cleanView && !explaining && <nav className="command-rail" aria-label="Workspace">
         <div className="rail-navigation">
           {items.map((item) => <button key={item.label} className={`rail-button ${panel === item.panel ? 'active' : ''}`} onClick={() => setPanel(panel === item.panel ? null : item.panel)} aria-label={item.label === 'World' ? 'World overview' : `Open ${item.label.toLowerCase()} panel`} aria-pressed={panel === item.panel} title={item.label}><Icon name={item.icon} /><span>{item.label}</span></button>)}
         </div>
         <button className={`rail-button ${panel === 'help' ? 'active' : ''}`} onClick={() => setPanel(panel === 'help' ? null : 'help')} aria-label="Open controls guide" aria-pressed={panel === 'help'}><Icon name="help" /><span>Controls</span></button>
         <div className="rail-version">LOCAL</div>
       </nav>}
-      <main className={`workspace ${panel && !cleanView ? 'has-panel' : ''}`}>
+      <main className={`workspace ${panel && !cleanView && !explaining ? 'has-panel' : ''}`}>
         <section className="stage" aria-label="Interactive simulation world">
           <SceneRoot />
-          <SurvivorEncounter />
-          {!cleanView && !encounter && <SceneHud onOpenPanel={setPanel} />}
+          {!explaining && <SurvivorEncounter />}
+          {explaining && <ExplainMode onExit={closeExplain} onOpenObservatory={() => { closeExplain(); navigateObservatory(true, true); }} />}
+          {!cleanView && !encounter && !explaining && <SceneHud onOpenPanel={setPanel} />}
           {cleanView && <button className="restore-interface" onClick={toggleCleanView} aria-label="Show interface" title="Show interface (H or Esc)"><Icon name="overview" size={17} /><span>Show interface <kbd>H</kbd></span></button>}
         </section>
-        {panel && !cleanView && <aside className="workspace-drawer" aria-label={`${panel} panel`}>
+        {panel && !cleanView && !explaining && <aside className="workspace-drawer" aria-label={`${panel} panel`}>
           <button className="drawer-close icon-button" aria-label="Close panel" title="Close panel (Esc)" onClick={() => setPanel(null)}><Icon name="close" size={18} /></button>
           {panel === 'setup' && <LeftPanel />}
           {panel === 'fleet' && <RightPanel />}

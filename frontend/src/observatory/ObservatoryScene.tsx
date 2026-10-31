@@ -4,6 +4,7 @@ import { Html, Line, OrbitControls, RoundedBox } from '@react-three/drei';
 import * as THREE from 'three';
 import { GraphicsUnavailable } from './SceneBoundary';
 import type { ObservatoryAgent, ObservatoryCanvasProps, ObservatoryGrid, ObservatoryPacket, ObservatoryPoint } from './types';
+import { conceptGraph, type ConceptEdge } from './gnnConcept';
 
 type V3 = [number, number, number];
 type Layout = { scale: number; centerX: number; centerY: number; width: number; depth: number };
@@ -162,6 +163,38 @@ function Communication({ snapshot, positions, neural, showPackets, animate }: { 
   return <>{paths.map(path => <Line key={`${path.source}-${path.target}`} points={path.curve.getPoints(36)} color={path.state === 'down' ? '#bca594' : '#83b6a5'} lineWidth={path.state === 'healthy' ? 1.2 : .8} transparent opacity={!snapshot.fresh ? .15 : path.state === 'down' ? .22 : .55} dashed={path.state !== 'healthy'} dashSize={.18} gapSize={.2} />)}{showPackets && pulses.map(({ packet, curve }) => <PacketPulse key={`${snapshot.epoch}-${packet.id}-${packet.state}`} packet={packet} curve={curve} animate={animate} />)}</>;
 }
 
+function ConceptMessage({ edge, curve, step, animate }: { edge: ConceptEdge; curve: THREE.QuadraticBezierCurve3; step: number; animate: boolean }) {
+  const marker = useRef<THREE.Mesh>(null), progress = useRef(.25);
+  useEffect(() => { progress.current = .25; }, [step, edge.target]);
+  useFrame((_, delta) => {
+    if (!marker.current) return;
+    if (animate) progress.current = (progress.current + Math.min(delta, .06) * .55) % 1;
+    marker.current.position.copy(curve.getPoint(step >= 2 && !animate ? .85 : progress.current));
+  });
+  return <>
+    <Line points={curve.getPoints(36)} color={step >= 2 ? '#af894c' : '#739e9c'} lineWidth={step >= 2 ? 1 + edge.weight * 6 : 1.3} transparent opacity={.7} />
+    <mesh ref={marker} position={curve.getPoint(.25)}><sphereGeometry args={[step >= 2 ? .07 + edge.weight * .13 : .1, 12, 8]} /><meshBasicMaterial color="#d3a45e" toneMapped={false} /></mesh>
+    {step >= 2 && <Html position={curve.getPoint(.36)} center style={{ pointerEvents: 'none' }}><span className="ob-concept-edge-label">Example {(edge.weight * 100).toFixed(1)}%</span></Html>}
+  </>;
+}
+
+function ConceptNetwork({ ids, selected, positions, step, score, animate }: { ids: string[]; selected: string | null; positions: Map<string, V3>; step: number; score: number; animate: boolean }) {
+  const graph = conceptGraph(ids, selected, score);
+  const paths = graph.edges.flatMap(edge => {
+    const from = positions.get(edge.source), to = positions.get(edge.target);
+    return from && to ? [{ edge, curve: makeCurve([from[0], .85, from[2]], [to[0], .85, to[2]], true) }] : [];
+  });
+  const receiver = graph.receiver ? positions.get(graph.receiver) : null;
+  return <>
+    {step >= 1 && paths.map(({ edge, curve }) => <ConceptMessage key={`${edge.source}-${edge.target}`} edge={edge} curve={curve} step={step} animate={animate} />)}
+    {receiver && <group position={receiver}>
+      <mesh rotation-x={-Math.PI / 2} position={[0, .06, 0]}><ringGeometry args={[1.68, step >= 2 ? 1.81 : 1.73, 56]} /><meshBasicMaterial color="#b78b44" transparent opacity={.75} side={THREE.DoubleSide} /></mesh>
+      {step >= 2 && <Html position={[0, 3.15, 0]} center style={{ pointerEvents: 'none' }}><span className="ob-concept-edge-label">Example receiver · weighted sum</span></Html>}
+    </group>}
+    {step === 3 && <group position={[0, .5, 0]}><RoundedBox args={[3.3, .22, 1.8]} radius={.1} smoothness={2}><meshStandardMaterial color="#d6c6a2" roughness={.7} /></RoundedBox><Html position={[0, .45, 0]} center style={{ pointerEvents: 'none' }}><div className="ob-concept-output">AGGREGATE → LSTM → PPO<small>Concept only · no robot commands</small></div></Html></group>}
+  </>;
+}
+
 function CameraRig({ zoom, view, angle }: { zoom: number; view: string; angle: 'isometric' | 'top' }) {
   const { camera, size, invalidate } = useThree();
   useEffect(() => {
@@ -188,10 +221,10 @@ function BoardGrid({ width, depth }: { width: number; depth: number }) {
   return <lineSegments geometry={geometry}><lineBasicMaterial color="#a8bc9c" transparent opacity={.28} /></lineSegments>;
 }
 
-function World({ snapshot, selected, onSelect, view, showPaths, showPackets, showFrontiers, frozen, zoom, cameraAngle = 'isometric', reduced }: ObservatoryCanvasProps & { reduced: boolean }) {
+function World({ snapshot, selected, onSelect, view, showPaths, showPackets, showFrontiers, frozen, zoom, cameraAngle = 'isometric', reduced, conceptStep = 0, conceptScore = 2, conceptPlaying = false }: ObservatoryCanvasProps & { reduced: boolean }) {
   const agents = snapshot.agents.filter(a => a.position !== null);
   const chosen = snapshot.agents.find(a => a.id === selected) || agents.find(a => a.grid !== null) || agents[0];
-  const neural = view === 'neural', animate = snapshot.running && snapshot.fresh && !frozen && !reduced;
+  const neural = view !== 'spatial', animate = view !== 'concept' && snapshot.running && snapshot.fresh && !frozen && !reduced;
   const layout = useMemo(() => getLayout(agents, chosen), [agents.map(a => a.id).join(','), chosen?.grid?.width, chosen?.grid?.height, chosen?.grid?.resolution, chosen?.grid?.originX, chosen?.grid?.originY, chosen?.grid?.yaw, chosen?.id, chosen?.grid ? '' : agents.map(a => `${a.position!.x},${a.position!.y}`).join(';')]);
   const positions = useMemo(() => new Map(agents.map((agent, index) => {
     const angle = index / Math.max(1, agents.length) * Math.PI * 2 - Math.PI / 4;
@@ -211,7 +244,7 @@ function World({ snapshot, selected, onSelect, view, showPaths, showPackets, sho
     {!neural && showPaths && agents.map(agent => agent.path.length > 1 && <Line key={agent.id} points={agent.path.slice(-320).map(p => point(p, layout, .08))} color={agent.color} lineWidth={selected === agent.id ? 2.5 : 1.4} transparent opacity={agent.fresh ? .72 : .26} />)}
     {!neural && chosen && showFrontiers && chosen.frontiers.slice(0, 64).map((p, index) => <mesh key={index} position={point(p, layout, .09)} rotation-x={-Math.PI / 2}><ringGeometry args={[.12, .16, 16]} /><meshBasicMaterial color="#cc9b59" transparent opacity={.75} side={THREE.DoubleSide} /></mesh>)}
     {!neural && chosen?.goal && <group position={point(chosen.goal, layout, .1)}><mesh rotation-x={-Math.PI / 2}><ringGeometry args={[.3, .35, 40]} /><meshBasicMaterial color="#cf9652" side={THREE.DoubleSide} /></mesh><mesh position={[0, .3, 0]}><cylinderGeometry args={[.018, .018, .6, 6]} /><meshStandardMaterial color="#b99562" /></mesh><mesh position={[.13, .56, 0]}><boxGeometry args={[.26, .17, .025]} /><meshStandardMaterial color="#dbad6c" /></mesh></group>}
-    <Communication snapshot={snapshot} positions={positions} neural={neural} showPackets={showPackets} animate={animate} />
+    {view === 'concept' ? <ConceptNetwork ids={agents.map(a => a.id)} selected={selected} positions={positions} step={conceptStep} score={conceptScore} animate={conceptPlaying && !frozen && !reduced} /> : <Communication snapshot={snapshot} positions={positions} neural={neural} showPackets={showPackets} animate={animate} />}
     {agents.map(agent => <AgentModel key={agent.id} agent={agent} position={positions.get(agent.id)!} selected={selected === agent.id} onSelect={onSelect} animate={animate} neural={neural} />)}
     <CameraRig zoom={zoom} view={view} angle={cameraAngle} />
   </>;
@@ -232,8 +265,8 @@ export function ObservatoryScene(props: ObservatoryCanvasProps) {
   const [lost, setLost] = useState(false);
   const onLost = useCallback(() => setLost(true), []);
   if (lost) return <GraphicsUnavailable onRetry={() => setLost(false)} />;
-  return <div className="observatory-canvas" role="img" aria-label={props.view === 'spatial' ? 'Interactive 3D map of observed cells, robots and actual peer messages' : 'Interactive 3D communication topology of the active swarm'} style={{ position: 'absolute', inset: 0 }}>
-    <Canvas fallback={<GraphicsUnavailable />} shadows orthographic frameloop={props.snapshot.running && props.snapshot.fresh && !props.frozen && !reduced ? 'always' : 'demand'} camera={{ position: [22, 27, 25], zoom: 24, near: .1, far: 200 }} dpr={[1, 1.7]} gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }} onCreated={({ gl }) => { gl.setClearColor(PAPER); gl.toneMapping = THREE.ACESFilmicToneMapping; gl.toneMappingExposure = 1.05; }}>
+  return <div className="observatory-canvas" role="img" aria-label={props.view === 'spatial' ? 'Interactive 3D map of observed cells, robots and actual peer messages' : props.view === 'concept' ? 'Illustrative GNN graph with example messages and attention, not live inference' : 'Interactive 3D communication topology of the active swarm'} style={{ position: 'absolute', inset: 0 }}>
+    <Canvas fallback={<GraphicsUnavailable />} shadows orthographic frameloop={(props.view === 'concept' ? props.conceptPlaying : props.snapshot.running && props.snapshot.fresh) && !props.frozen && !reduced ? 'always' : 'demand'} camera={{ position: [22, 27, 25], zoom: 24, near: .1, far: 200 }} dpr={[1, 1.7]} gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }} onCreated={({ gl }) => { gl.setClearColor(PAPER); gl.toneMapping = THREE.ACESFilmicToneMapping; gl.toneMappingExposure = 1.05; }}>
       <RendererHealth onLost={onLost} />
       <World {...props} reduced={reduced} />
     </Canvas>
