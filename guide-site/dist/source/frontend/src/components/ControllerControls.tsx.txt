@@ -15,10 +15,10 @@ export function ControllerControls() {
   const [options, setOptions] = useState<PPOOptions>(() => ({ ...savedOptions }));
   const [duration, setDuration] = useState(() => timeDraft(savedOptions.timeLimit));
   useEffect(() => { setOptions({ ...savedOptions }); setDuration(timeDraft(savedOptions.timeLimit)); }, [savedOptions]);
-  const choosePPO = (next: PPOOptions) => {
+  const choosePPO = (next: PPOOptions, preview = false) => {
     const state = useSim.getState();
     if (state.controllerMode === 'heuristic') heuristicDraft = { settings: state.settings, demo: state.demo, customSurvivors: state.customSurvivors };
-    useSim.setState({ controllerMode: 'ppo', ppoPhase: 'connecting', ppoError: null, ppoOptions: { ...next }, ppoRevision: state.ppoRevision + 1, status: 'ready', selected: null, following: false, focus: null, encounter: null, encounterQueue: [], announcedSurvivors: [], editingSurvivors: false, editingTerrain: false, cleanView: false });
+    useSim.setState({ controllerMode: 'ppo', ppoPhase: preview ? 'preview' : 'connecting', ppoError: null, ppoOptions: { ...next }, ppoRevision: state.ppoRevision + 1, status: 'ready', selected: null, following: false, focus: null, encounter: null, encounterQueue: [], announcedSurvivors: [], editingSurvivors: false, editingTerrain: false, cleanView: false });
   };
   const chooseHeuristic = () => {
     if (mode === 'heuristic') return;
@@ -27,12 +27,20 @@ export function ControllerControls() {
   };
   const validSeed = Number.isInteger(options.seed) && options.seed >= 10000 && options.seed <= 10099;
   const validTeam = Number.isInteger(options.rovers) && Number.isInteger(options.drones) && options.rovers >= 0 && options.drones >= 0 && options.rovers + options.drones >= 1 && options.rovers + options.drones <= 10;
-  const change = <K extends keyof PPOOptions>(key: K, value: PPOOptions[K]) => setOptions({ ...options, [key]: value });
+  const previewOptions = (next: PPOOptions) => {
+    setOptions(next);
+    if (Number.isInteger(next.seed) && next.seed >= 10000 && next.seed <= 10099 &&
+      Number.isInteger(next.rovers) && Number.isInteger(next.drones) && next.rovers >= 0 && next.drones >= 0 &&
+      next.rovers + next.drones >= 1 && next.rovers + next.drones <= 10 && !Number.isNaN(timeSeconds(duration))) {
+      choosePPO({ ...next, timeLimit: timeSeconds(duration) }, true);
+    }
+  };
+  const change = <K extends keyof PPOOptions>(key: K, value: PPOOptions[K]) => previewOptions({ ...options, [key]: value });
   return <section className="controller-settings section" aria-label="Controller settings">
     <label className="field-label">Exploration controller</label>
     <div className="segmented" role="radiogroup" aria-label="Exploration controller">
       <button role="radio" aria-checked={mode === 'heuristic'} className={mode === 'heuristic' ? 'on' : ''} onClick={chooseHeuristic}>Heuristic</button>
-      <button role="radio" aria-checked={mode === 'ppo'} className={mode === 'ppo' ? 'on' : ''} onClick={() => { if (mode !== 'ppo') choosePPO(savedOptions); }}>PPO</button>
+      <button role="radio" aria-checked={mode === 'ppo'} className={mode === 'ppo' ? 'on' : ''} onClick={() => { if (mode !== 'ppo') choosePPO(savedOptions, true); }}>PPO</button>
     </div>
     <p className="explain">{mode === 'ppo' ? 'Learned swarm coordination.' : 'Rule-based exploration with custom maps.'} Switching starts a fresh mission.</p>
     {mode === 'ppo' && <div className="controller-choice ppo-choice chosen">
@@ -43,8 +51,8 @@ export function ControllerControls() {
       {!validTeam && <p className="controller-seed-help invalid" role="status">Choose whole robot counts, with 1–10 robots in total.</p>}
       <label className="controller-radio"><input aria-label="PPO radio" type="checkbox" checked={options.network} onChange={(e) => change('network', e.target.checked)} />Peer-to-peer radio</label>
       <label>Battery mode<select aria-label="PPO battery mode" value={options.batteryLimited === false ? 'unlimited' : 'limited'} onChange={(e) => change('batteryLimited', e.target.value === 'limited')}><option value="limited">Limited</option><option value="unlimited">Unlimited</option></select></label>
-      <TimeLimitFields draft={duration} onChange={setDuration} />
-      <p className="controller-note">Create the mission, then press Launch to explore.</p>
+      <TimeLimitFields draft={duration} onChange={next => { setDuration(next); const seconds = timeSeconds(next); if (validSeed && validTeam && !Number.isNaN(seconds)) choosePPO({ ...options, timeLimit: seconds }, true); }} />
+      <p className="controller-note">The map previews your settings automatically. Create the mission, then press Launch to explore.</p>
       <button className="btn primary" disabled={!validSeed || !validTeam || Number.isNaN(timeSeconds(duration)) || phase === 'connecting'} onClick={() => choosePPO({ ...options, timeLimit: timeSeconds(duration) })}>{phase === 'connecting' ? 'Connecting…' : 'Create mission'}</button>
       {error && <p className="sound-error" role="status">{error}</p>}
     </div>}

@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "checks": [
+    "Cold start starts frontend, PPO backend and audiobook",
+    "All three HTTP health checks pass",
+    "Ctrl+C shuts down all owned service processes"
+  ],
+  "exit_code": 0
+}

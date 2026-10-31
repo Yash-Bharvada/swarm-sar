@@ -1,5 +1,16 @@
 [
   {
+    "path": ".gitattributes",
+    "size": 169,
+    "readable": true,
+    "url": "source/.gitattributes.txt",
+    "purpose": ".gitattributes — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "e58a8bc341f91a6de8cebeb7e55282824e8839c67c13429983768185df9b56d4",
+    "category": "root",
+    "lines": 4
+  },
+  {
     "path": ".gitignore",
     "size": 470,
     "readable": true,
@@ -12,14 +23,2324 @@
   },
   {
     "path": "README.md",
-    "size": 13901,
+    "size": 17612,
     "readable": true,
     "url": "source/README.md.txt",
     "purpose": "Documentation: SWARM SAR. Read dates and limits alongside current executable code.",
     "declarations": [],
-    "sha256": "879aa4f797453db24e292457a1292b859618e06e8b2afa05d27fee8bf3c662a3",
+    "sha256": "76ef90b8f96d7cedfbbb7b32f9a9da580b489b6a2b68158c33d6f3b5667f2152",
     "category": "root",
-    "lines": 236
+    "lines": 286
+  },
+  {
+    "path": "artifacts/audiobook_vercel/deployed-cover.png",
+    "size": 282667,
+    "readable": false,
+    "url": null,
+    "purpose": "Original project visual artifact. See the containing capture manifest or gallery for its runtime and provenance.",
+    "declarations": [],
+    "sha256": "a4ce7f2ab65db8df0995fa575e50d419554db36d6b87e429085bdfa358f8970a",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/audiobook_vercel/deployed-mobile.png",
+    "size": 147408,
+    "readable": false,
+    "url": null,
+    "purpose": "Original project visual artifact. See the containing capture manifest or gallery for its runtime and provenance.",
+    "declarations": [],
+    "sha256": "0151deec8e2dc0467779f9568da7b3748fd2cecbedf4c3de87b376a2cd7cebc1",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/audiobook_vercel/validation.json",
+    "size": 480,
+    "readable": true,
+    "url": "source/artifacts/audiobook_vercel/validation.json.txt",
+    "purpose": "Structured validation metadata, configuration or recorded evidence.",
+    "declarations": [],
+    "sha256": "e4cf0a787aef9ea422388bea315ec75729dba21f2c9c5dd485068570f19afe53",
+    "category": "artifacts",
+    "lines": 17
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/32_cave_10020_expert.jsonl.gz",
+    "size": 299,
+    "readable": false,
+    "url": null,
+    "purpose": "32 cave 10020 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "262b7b2607e32c89bd72ff38b339aae2e9809f9c8f334ad98a8336664716ef14",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/32_cave_10020_ppo.jsonl.gz",
+    "size": 351,
+    "readable": false,
+    "url": null,
+    "purpose": "32 cave 10020 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "b7edb55e9e3a4b26e8ed60c842809b01a6c6006a3d096e1b6cf189528ebc21e5",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/32_cave_10021_expert.jsonl.gz",
+    "size": 266,
+    "readable": false,
+    "url": null,
+    "purpose": "32 cave 10021 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "c2dba6f43aeead5f5e892cd02cc0b3ea43a694e3a6512f73782fbd0126962697",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/32_cave_10021_ppo.jsonl.gz",
+    "size": 311,
+    "readable": false,
+    "url": null,
+    "purpose": "32 cave 10021 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "4270ffad2d5313c764e434526a8ba8e1f14ffc32735ea5ef88cd7e79cec54ef9",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/32_cave_10022_expert.jsonl.gz",
+    "size": 270,
+    "readable": false,
+    "url": null,
+    "purpose": "32 cave 10022 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "dd89f224a7c59e63fcbcc5eeec777dabb85936f874b54e8ba0883c036bc0d889",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/32_cave_10022_ppo.jsonl.gz",
+    "size": 329,
+    "readable": false,
+    "url": null,
+    "purpose": "32 cave 10022 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "9f49ce40d4682d9401965516a6220e20692bb44660196bccad568e2682a2dc05",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/32_cave_10023_expert.jsonl.gz",
+    "size": 395,
+    "readable": false,
+    "url": null,
+    "purpose": "32 cave 10023 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "fc3651cdab65635987878b7b3f2ead66e2e16d78b74ffe533e4531eb25c6e0ac",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/32_cave_10023_ppo.jsonl.gz",
+    "size": 395,
+    "readable": false,
+    "url": null,
+    "purpose": "32 cave 10023 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "6b827e0f10d6c58acfa1da986fa62e28f1876fd8018ec6e40332fbbcf08ad54e",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/32_maze_10020_expert.jsonl.gz",
+    "size": 1199,
+    "readable": false,
+    "url": null,
+    "purpose": "32 maze 10020 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "653044792bf63dc9f16e40d394d614a368eb497a4fa0e428175a2cfb7c30a14e",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/32_maze_10020_ppo.jsonl.gz",
+    "size": 1436,
+    "readable": false,
+    "url": null,
+    "purpose": "32 maze 10020 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "f1c20367a66b426cdb6d37757904d1780030e84cf54efe7d968ccabc70526aa3",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/32_maze_10021_expert.jsonl.gz",
+    "size": 1185,
+    "readable": false,
+    "url": null,
+    "purpose": "32 maze 10021 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "4cc02fb3889ef935fad0aed27aa03412195dd72343769cdb4d4f5b9b68cdf1f1",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/32_maze_10021_ppo.jsonl.gz",
+    "size": 1554,
+    "readable": false,
+    "url": null,
+    "purpose": "32 maze 10021 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "12dec6c3d480a290ff56e1597617424de0650b760e0d8ffce54a7d289f5f2a83",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/32_maze_10022_expert.jsonl.gz",
+    "size": 1220,
+    "readable": false,
+    "url": null,
+    "purpose": "32 maze 10022 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "cf97bd03b01b1a09ed3421d7fa0f38228cc587e330b01278ad2767dceea5eff3",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/32_maze_10022_ppo.jsonl.gz",
+    "size": 1482,
+    "readable": false,
+    "url": null,
+    "purpose": "32 maze 10022 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "ba8089d1a28c6c4fb3bb99612495e60f0a6fe864a87867657c76e906709fa958",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/32_maze_10023_expert.jsonl.gz",
+    "size": 1217,
+    "readable": false,
+    "url": null,
+    "purpose": "32 maze 10023 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "a2c8e8b67e5d46f068640dc93163dfb3ac514bedf90802d532d8cc78b02b524f",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/32_maze_10023_ppo.jsonl.gz",
+    "size": 1604,
+    "readable": false,
+    "url": null,
+    "purpose": "32 maze 10023 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "d1e31eed7a91521fb95666adcee64e740465b2a9a8ce01cada4252fe1e49226c",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/32_rooms_10020_expert.jsonl.gz",
+    "size": 366,
+    "readable": false,
+    "url": null,
+    "purpose": "32 rooms 10020 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "104f7452d10e11e35fac0176ed2f1b0ac9c59f0bf551fccbb363f3790397e8d0",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/32_rooms_10020_ppo.jsonl.gz",
+    "size": 544,
+    "readable": false,
+    "url": null,
+    "purpose": "32 rooms 10020 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "036689f7f52cecb4be009000850489cb4d693fcb43f0d258ffdabfb02dee0565",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/32_rooms_10021_expert.jsonl.gz",
+    "size": 579,
+    "readable": false,
+    "url": null,
+    "purpose": "32 rooms 10021 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "aa5bad3b51c99558f322b0b65ca32229c00eec23f002dc514277598bf5bb7516",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/32_rooms_10021_ppo.jsonl.gz",
+    "size": 456,
+    "readable": false,
+    "url": null,
+    "purpose": "32 rooms 10021 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "9fce635e612b8b5d3b4c18051893a90d1546de8473862a2332cba92052242fe5",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/32_rooms_10022_expert.jsonl.gz",
+    "size": 458,
+    "readable": false,
+    "url": null,
+    "purpose": "32 rooms 10022 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "63047429c443a302c0cdd942d0c0f45975311891276cb379c5babf3eac70866e",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/32_rooms_10022_ppo.jsonl.gz",
+    "size": 652,
+    "readable": false,
+    "url": null,
+    "purpose": "32 rooms 10022 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "2323d5a4f4e7f5bb6d93d4be3b45b51839cf292eb0909428aa2d7bba2f17a99d",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/32_rooms_10023_expert.jsonl.gz",
+    "size": 195,
+    "readable": false,
+    "url": null,
+    "purpose": "32 rooms 10023 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "41f7f232414660281335654fe1b3a3e5cd01179e852513364e66ad4fa7c9030c",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/32_rooms_10023_ppo.jsonl.gz",
+    "size": 361,
+    "readable": false,
+    "url": null,
+    "purpose": "32 rooms 10023 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "5a0f65cd943a360a4d1b9cd2b72d130cd9b6d24577feb628f3f8e160bbfee257",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/56_cave_10020_expert.jsonl.gz",
+    "size": 587,
+    "readable": false,
+    "url": null,
+    "purpose": "56 cave 10020 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "944148bd399d46687fad28a309839a4289ec2680a6082a1940d8758c932f396f",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/56_cave_10020_ppo.jsonl.gz",
+    "size": 1142,
+    "readable": false,
+    "url": null,
+    "purpose": "56 cave 10020 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "a28c9f44149813aba9b682d8c5c407f835531843a4bea357c052711f17037040",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/56_cave_10021_expert.jsonl.gz",
+    "size": 612,
+    "readable": false,
+    "url": null,
+    "purpose": "56 cave 10021 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "0084b275ed02ed68773ab37bbebb2ce0a39ab214a80049178cee403234541380",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/56_cave_10021_ppo.jsonl.gz",
+    "size": 1144,
+    "readable": false,
+    "url": null,
+    "purpose": "56 cave 10021 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "3f863c7191133513111fdc2b18b00f359fc2dfc1feaed6070d38419868790a88",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/56_cave_10022_expert.jsonl.gz",
+    "size": 581,
+    "readable": false,
+    "url": null,
+    "purpose": "56 cave 10022 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "9acfd4b2943d31464eae6d0f30edcb0d291791ea40ff43c8563d0592a077737d",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/56_cave_10022_ppo.jsonl.gz",
+    "size": 960,
+    "readable": false,
+    "url": null,
+    "purpose": "56 cave 10022 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "aed71cbfb84b1e7d0c4b1aecb37d12dc50bd2ca7ae363160789a1cfedcbe359e",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/56_cave_10023_expert.jsonl.gz",
+    "size": 1216,
+    "readable": false,
+    "url": null,
+    "purpose": "56 cave 10023 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "f792fb1e471aa47ed79a711fb3366fe08ee6f13f164d327e7c131c8212f8b4a0",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/56_cave_10023_ppo.jsonl.gz",
+    "size": 1250,
+    "readable": false,
+    "url": null,
+    "purpose": "56 cave 10023 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "113ee7d5e85d02464cd07565e89d6f56ee3dd438472aabee89fd997268239fd1",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/56_maze_10020_expert.jsonl.gz",
+    "size": 1285,
+    "readable": false,
+    "url": null,
+    "purpose": "56 maze 10020 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "02f5d0b799254a3b5d03e9398a84ae5bc85baa44d5fb27976a76282be412be5d",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/56_maze_10020_ppo.jsonl.gz",
+    "size": 1432,
+    "readable": false,
+    "url": null,
+    "purpose": "56 maze 10020 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "d50bef21c6fa79d9009256049d11f7fd004dca670a4ef493a985dd67350ccb82",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/56_maze_10021_expert.jsonl.gz",
+    "size": 1260,
+    "readable": false,
+    "url": null,
+    "purpose": "56 maze 10021 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "0d6995f98b765f93ce2e818acc4116ac14b6d6ff3133ba0ea8990a6e952e249c",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/56_maze_10021_ppo.jsonl.gz",
+    "size": 1404,
+    "readable": false,
+    "url": null,
+    "purpose": "56 maze 10021 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "c7e1a53830b86ceb3f972b9958d31724b0bd2a75429405b608b86f7a3526a9dc",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/56_maze_10022_expert.jsonl.gz",
+    "size": 1269,
+    "readable": false,
+    "url": null,
+    "purpose": "56 maze 10022 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "a7f758cc4e1306e8a3d1b04774d4b782df6a0bc96af97bcdef345544eb6ae432",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/56_maze_10022_ppo.jsonl.gz",
+    "size": 1672,
+    "readable": false,
+    "url": null,
+    "purpose": "56 maze 10022 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "30becf7bb8b65a8bc9790e4ad815acec0e31783bbbea6dda67dca427428b2fbb",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/56_maze_10023_expert.jsonl.gz",
+    "size": 771,
+    "readable": false,
+    "url": null,
+    "purpose": "56 maze 10023 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "c6902b2bc8fc71e4d462af8522acaf2a0ef35b1e43209b62d1e9b906000d049d",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/56_maze_10023_ppo.jsonl.gz",
+    "size": 1491,
+    "readable": false,
+    "url": null,
+    "purpose": "56 maze 10023 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "319653c3781e29f0aceb41682040345ff080eac48ae8e304a458be33c43bf02b",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/56_rooms_10020_expert.jsonl.gz",
+    "size": 1194,
+    "readable": false,
+    "url": null,
+    "purpose": "56 rooms 10020 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "496e22a882b93dd0c6064cf5346a1449ad1cb4670333c1a59a58e2b5db6ffe22",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/56_rooms_10020_ppo.jsonl.gz",
+    "size": 1280,
+    "readable": false,
+    "url": null,
+    "purpose": "56 rooms 10020 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "d3440336b712ed95cdb4b877421ab5b79e5c6acad86c85eff138fb30b0e7abb4",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/56_rooms_10021_expert.jsonl.gz",
+    "size": 945,
+    "readable": false,
+    "url": null,
+    "purpose": "56 rooms 10021 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "a3f3390c17d29d49d42396aa5e53d1cca94b89b65cafc0b24e349b9af8f979ed",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/56_rooms_10021_ppo.jsonl.gz",
+    "size": 1621,
+    "readable": false,
+    "url": null,
+    "purpose": "56 rooms 10021 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "e94f86c825e53edc564fe9827143add4caf326cf65470070c4cdbc02639fff4e",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/56_rooms_10022_expert.jsonl.gz",
+    "size": 1216,
+    "readable": false,
+    "url": null,
+    "purpose": "56 rooms 10022 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "2813b444c2bdca58e9da37931a4b9ed8265a9609354aaedc2e73f431ffc8914b",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/56_rooms_10022_ppo.jsonl.gz",
+    "size": 1336,
+    "readable": false,
+    "url": null,
+    "purpose": "56 rooms 10022 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "4a5222f9e69e1e3253923f36253c65a6c8bf73530b833a5b6c9812ad218aac1f",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/56_rooms_10023_expert.jsonl.gz",
+    "size": 1338,
+    "readable": false,
+    "url": null,
+    "purpose": "56 rooms 10023 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "efba1935701be059e8c108536a1bdbf56c790a7f8a6d451f3c25a5c034261e72",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/56_rooms_10023_ppo.jsonl.gz",
+    "size": 1341,
+    "readable": false,
+    "url": null,
+    "purpose": "56 rooms 10023 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "4475f3a1d64fe0bd8234388e80cbeb29818fdc04eb1ab1951c4f70a91b6e9bdb",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/64_cave_10020_expert.jsonl.gz",
+    "size": 502,
+    "readable": false,
+    "url": null,
+    "purpose": "64 cave 10020 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "e27d3d1693ea0c70061b04d4a397cb66cefa6cb6a4655d0472c6e074deae0541",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/64_cave_10020_ppo.jsonl.gz",
+    "size": 1216,
+    "readable": false,
+    "url": null,
+    "purpose": "64 cave 10020 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "bd59703f87bfbc68acd2f0bd7fca69c7deaae51019c8116cea225d47d49c3b13",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/64_cave_10021_expert.jsonl.gz",
+    "size": 836,
+    "readable": false,
+    "url": null,
+    "purpose": "64 cave 10021 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "1cdea77bed520fee141572cc10f8714a787f720d029d43243df130cb9db06e2a",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/64_cave_10021_ppo.jsonl.gz",
+    "size": 1222,
+    "readable": false,
+    "url": null,
+    "purpose": "64 cave 10021 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "3314c2018f79f79e87ae85046a5ee5b8d02ba26676fc351d06a009efdf665a14",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/64_cave_10022_expert.jsonl.gz",
+    "size": 775,
+    "readable": false,
+    "url": null,
+    "purpose": "64 cave 10022 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "9362fa89a4406606690bad7ef64474f255565d5e9f0613dad66985a671b179c0",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/64_cave_10022_ppo.jsonl.gz",
+    "size": 1203,
+    "readable": false,
+    "url": null,
+    "purpose": "64 cave 10022 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "292e1e6769097f3a1f2dd15f67d2ba9c3c43741c27fd22895676b6e97d445186",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/64_cave_10023_expert.jsonl.gz",
+    "size": 789,
+    "readable": false,
+    "url": null,
+    "purpose": "64 cave 10023 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "4d5a407fda8feffeefcf9992fe81e5ebb4c954c2285b46ef7b9824807294cdff",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/64_cave_10023_ppo.jsonl.gz",
+    "size": 1184,
+    "readable": false,
+    "url": null,
+    "purpose": "64 cave 10023 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "4fda583f6f77638f4d990af7b3a3bb2fb0727739b3c99a20297589b059b647cd",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/64_maze_10020_expert.jsonl.gz",
+    "size": 1414,
+    "readable": false,
+    "url": null,
+    "purpose": "64 maze 10020 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "566f67bd51e1a65eb3551145fed953ddd6832075f4af83d811f567bce0c766bc",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/64_maze_10020_ppo.jsonl.gz",
+    "size": 1457,
+    "readable": false,
+    "url": null,
+    "purpose": "64 maze 10020 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "d832988e23d9c83b85799dd5f1b95fea89249f26c7e0ff906ef06c62dc68de92",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/64_maze_10021_expert.jsonl.gz",
+    "size": 1224,
+    "readable": false,
+    "url": null,
+    "purpose": "64 maze 10021 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "e4a633d5a1eda603fd33dd412fd49caef1ece9424e652e02990a7b5c803d4bf8",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/64_maze_10021_ppo.jsonl.gz",
+    "size": 1429,
+    "readable": false,
+    "url": null,
+    "purpose": "64 maze 10021 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "cb049790ecb0c969119f4c090d7867c8370ae9748444c418b61c53d8a4783a28",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/64_maze_10022_expert.jsonl.gz",
+    "size": 1254,
+    "readable": false,
+    "url": null,
+    "purpose": "64 maze 10022 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "ed2e29b17ea348bc8527de76b16ac72b3c12333e4464600ecf99cb09dda1714f",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/64_maze_10022_ppo.jsonl.gz",
+    "size": 1643,
+    "readable": false,
+    "url": null,
+    "purpose": "64 maze 10022 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "a40b4a7b9772ceccd63b8a6ea47e022521ca6897fac9f1380643c014605ca1bb",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/64_maze_10023_expert.jsonl.gz",
+    "size": 1223,
+    "readable": false,
+    "url": null,
+    "purpose": "64 maze 10023 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "0eea7ee388140828aafc3ba23dc5d8b683f3abf498c601897e6e9103da734669",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/64_maze_10023_ppo.jsonl.gz",
+    "size": 1519,
+    "readable": false,
+    "url": null,
+    "purpose": "64 maze 10023 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "fef3a71b3c08f9ba5de15e270777faa4592cb1e99188d4602830d0fd5d650daa",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/64_rooms_10020_expert.jsonl.gz",
+    "size": 964,
+    "readable": false,
+    "url": null,
+    "purpose": "64 rooms 10020 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "fecd1b8f9ebbcdcb61a8661150562f25e358f33fbad04d7e5fbb47dae1114249",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/64_rooms_10020_ppo.jsonl.gz",
+    "size": 1357,
+    "readable": false,
+    "url": null,
+    "purpose": "64 rooms 10020 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "7a5cb3e4c6f06cb65dd9bf7dbcbcaa2a5f565b979fd91383cce9550945261765",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/64_rooms_10021_expert.jsonl.gz",
+    "size": 1069,
+    "readable": false,
+    "url": null,
+    "purpose": "64 rooms 10021 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "eee9be2a26a85b664f4d4e420cda3131328fc0f990fa94341723ba64c0b55a9f",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/64_rooms_10021_ppo.jsonl.gz",
+    "size": 476,
+    "readable": false,
+    "url": null,
+    "purpose": "64 rooms 10021 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "e99ee0951845b09f4cfc22f4aa3ab433c61f93cab09e13c0f31f9ec24b4c6e41",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/64_rooms_10022_expert.jsonl.gz",
+    "size": 780,
+    "readable": false,
+    "url": null,
+    "purpose": "64 rooms 10022 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "9137ad7e801f5495b745268abd5054646952a880717efeb273b57d782cd94db6",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/64_rooms_10022_ppo.jsonl.gz",
+    "size": 1315,
+    "readable": false,
+    "url": null,
+    "purpose": "64 rooms 10022 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "7cf3a21f83fb570d9582f0ce9f7b88241003525197285c6cb208723b8ec0b9af",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/64_rooms_10023_expert.jsonl.gz",
+    "size": 1085,
+    "readable": false,
+    "url": null,
+    "purpose": "64 rooms 10023 expert.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "92d52b5a52fd0edb4d8ce1067a2166a369b3ef7dc863f254040d82cc4c161d01",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/64_rooms_10023_ppo.jsonl.gz",
+    "size": 1287,
+    "readable": false,
+    "url": null,
+    "purpose": "64 rooms 10023 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "1ca0da8b0a2f98a69f2ecebbdf2de63d0137ac6bffa756e9ca251d9f7c95f689",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/protocol.json",
+    "size": 1904,
+    "readable": true,
+    "url": "source/artifacts/benchmark_discovery_baselines/protocol.json.txt",
+    "purpose": "Structured protocol metadata, configuration or recorded evidence.",
+    "declarations": [],
+    "sha256": "3a31d9992f495c065616dda679b38f68d718aea1181f80869e631da7d10c0c84",
+    "category": "artifacts",
+    "lines": 78
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/results.json",
+    "size": 34460,
+    "readable": true,
+    "url": "source/artifacts/benchmark_discovery_baselines/results.json.txt",
+    "purpose": "Structured results metadata, configuration or recorded evidence.",
+    "declarations": [],
+    "sha256": "db18e39d9874fd5bbb15e8f0ff72b0728b8abe18af29e2d85b57b9324705b214",
+    "category": "artifacts",
+    "lines": 1309
+  },
+  {
+    "path": "artifacts/benchmark_discovery_baselines/verified_summary.json",
+    "size": 4891,
+    "readable": true,
+    "url": "source/artifacts/benchmark_discovery_baselines/verified_summary.json.txt",
+    "purpose": "Structured verified summary metadata, configuration or recorded evidence.",
+    "declarations": [],
+    "sha256": "b3ec4339313c9e82cd925d44f9a9af03e44510bd62b70e4d1a5cef287293654b",
+    "category": "artifacts",
+    "lines": 234
+  },
+  {
+    "path": "artifacts/current_frontend_checks.txt",
+    "size": 1922,
+    "readable": true,
+    "url": "source/artifacts/current_frontend_checks.txt.txt",
+    "purpose": "Current frontend checks — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "95029c109eb6dcc3a754c6ad492693b757e7dd44ba14b7125e6ac57dfe120217",
+    "category": "artifacts",
+    "lines": 40
+  },
+  {
+    "path": "artifacts/current_python_checks.txt",
+    "size": 961,
+    "readable": true,
+    "url": "source/artifacts/current_python_checks.txt.txt",
+    "purpose": "Current python checks — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "045fa82dba0d5e85d5fd77ab63d0fefcf4df0dcf95fa2c5424e35c0cb722aff8",
+    "category": "artifacts",
+    "lines": 13
+  },
+  {
+    "path": "artifacts/frontier_utility_ablation_20261030/32_10000_ppo_h400_e1.jsonl.gz",
+    "size": 13748,
+    "readable": false,
+    "url": null,
+    "purpose": "32 10000 ppo h400 e1.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "95bc3392c81f204ba8207fabf97c080e2bb74eb105be268a61ea623221663f05",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/frontier_utility_ablation_20261030/32_10000_ppo_h400_e1_hold_release.jsonl.gz",
+    "size": 40564,
+    "readable": false,
+    "url": null,
+    "purpose": "32 10000 ppo h400 e1 hold release.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "edc9c45a44a220111eb4f7db661688ef216306e1b9075a501fd036fbacb0e569",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/frontier_utility_ablation_20261030/32_10000_ppo_h400_e1_utility.jsonl.gz",
+    "size": 41746,
+    "readable": false,
+    "url": null,
+    "purpose": "32 10000 ppo h400 e1 utility.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "2cb624a43e10e9cd14deae258d6e14550a03b95f6fa3a407878385382762b684",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/frontier_utility_ablation_20261030/32_10001_ppo_h400_e1.jsonl.gz",
+    "size": 13407,
+    "readable": false,
+    "url": null,
+    "purpose": "32 10001 ppo h400 e1.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "5e1395e19f73e149197d52691f02088c5c9858edcc3e43e438746f18ce2c9f94",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/frontier_utility_ablation_20261030/32_10001_ppo_h400_e1_hold_release.jsonl.gz",
+    "size": 35133,
+    "readable": false,
+    "url": null,
+    "purpose": "32 10001 ppo h400 e1 hold release.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "1694c7333ab54b785853ad88558f50f4a9f90ae3c3d56ce4c1b990c6a77463d0",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/frontier_utility_ablation_20261030/32_10001_ppo_h400_e1_utility.jsonl.gz",
+    "size": 16209,
+    "readable": false,
+    "url": null,
+    "purpose": "32 10001 ppo h400 e1 utility.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "3c54fbc22675fd1b00d2dca83c41ce1b1879d81cdcfca205bd453d443b5c1c56",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/frontier_utility_ablation_20261030/56_10000_ppo_h400_e1.jsonl.gz",
+    "size": 20598,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10000 ppo h400 e1.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "1b2a556683a0fd530ffd45a5f14e2618bcd68b9f61359f188a3104167c96a722",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/frontier_utility_ablation_20261030/56_10000_ppo_h400_e1_hold_release.jsonl.gz",
+    "size": 55289,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10000 ppo h400 e1 hold release.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "37367d02f273475cfb26ecf8739c734b5398b3e06fbc9cf54368784ee326d3fa",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/frontier_utility_ablation_20261030/56_10000_ppo_h400_e1_utility.jsonl.gz",
+    "size": 47148,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10000 ppo h400 e1 utility.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "34738b0e8a18db5ff4e48de5292faa73c7b1dc4f9d892a89e207972af9f32a25",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/frontier_utility_ablation_20261030/56_10001_ppo_h400_e1.jsonl.gz",
+    "size": 17963,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10001 ppo h400 e1.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "d0a019205c707c18647c5beaf1544a4704f1c236ba9a75540658e005d2d6a4a1",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/frontier_utility_ablation_20261030/56_10001_ppo_h400_e1_hold_release.jsonl.gz",
+    "size": 45456,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10001 ppo h400 e1 hold release.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "22b96c72826045806cc060869ccb336bd59e9a6bdca2ab8394242575e9241aa7",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/frontier_utility_ablation_20261030/56_10001_ppo_h400_e1_utility.jsonl.gz",
+    "size": 31879,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10001 ppo h400 e1 utility.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "3e06fbf2dcdaef9803643a83a0cfe8aeaeab6c0a64e5b1b4a5ea2a06cc57611f",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/frontier_utility_ablation_20261030/summary.json",
+    "size": 52192,
+    "readable": true,
+    "url": "source/artifacts/frontier_utility_ablation_20261030/summary.json.txt",
+    "purpose": "Structured summary metadata, configuration or recorded evidence.",
+    "declarations": [],
+    "sha256": "4c5aa44478dfdeaf1484972a45d65064b2677cf14ddca148ec6fb32fcfde1f3b",
+    "category": "artifacts",
+    "lines": 1660
+  },
+  {
+    "path": "artifacts/frontier_utility_comparison.json",
+    "size": 1020,
+    "readable": true,
+    "url": "source/artifacts/frontier_utility_comparison.json.txt",
+    "purpose": "Structured frontier utility comparison metadata, configuration or recorded evidence.",
+    "declarations": [],
+    "sha256": "47523defc59f894c224ae4eef09b1743be403fa86322915ec00b5a031884a03c",
+    "category": "artifacts",
+    "lines": 49
+  },
+  {
+    "path": "artifacts/frontier_utility_confirmation_20261030/56_10002_ppo_h400_e1.jsonl.gz",
+    "size": 15091,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10002 ppo h400 e1.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "68a88933aa2922766c92c16c5d5f2485ef729a3f01de377a209cf3db2a10d5ba",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/frontier_utility_confirmation_20261030/56_10002_ppo_h400_e1_hold_release.jsonl.gz",
+    "size": 51644,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10002 ppo h400 e1 hold release.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "8f8af1bf941c21abe02060521e4ab88647b06ef2704e1299d4903755d92fd996",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/frontier_utility_confirmation_20261030/56_10002_ppo_h400_e1_utility.jsonl.gz",
+    "size": 54039,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10002 ppo h400 e1 utility.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "a2f617ddb4eac2b3fa522ace5034283e3e26f70764618a3be171009e7447a8e0",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/frontier_utility_confirmation_20261030/56_10003_ppo_h400_e1.jsonl.gz",
+    "size": 17776,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10003 ppo h400 e1.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "0f6a8f3857519defca246fb5abf5e77b20e508594061d968c84b7759d9864646",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/frontier_utility_confirmation_20261030/56_10003_ppo_h400_e1_hold_release.jsonl.gz",
+    "size": 46635,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10003 ppo h400 e1 hold release.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "b9fca2ee96c37abe8a7abb376e70c475eaaa1b78d9e3d8cfc815c4060c3bbcdc",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/frontier_utility_confirmation_20261030/56_10003_ppo_h400_e1_utility.jsonl.gz",
+    "size": 58280,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10003 ppo h400 e1 utility.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "8cc815df522e22020bafc7d7274683a9e27272bcb4cc38a7c366aaa5ca97c199",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/frontier_utility_confirmation_20261030/summary.json",
+    "size": 31022,
+    "readable": true,
+    "url": "source/artifacts/frontier_utility_confirmation_20261030/summary.json.txt",
+    "purpose": "Structured summary metadata, configuration or recorded evidence.",
+    "declarations": [],
+    "sha256": "fab347b7e72afd3481966a25226a861a4f822d8ba97b08e7994e7ddf26136886",
+    "category": "artifacts",
+    "lines": 982
+  },
+  {
+    "path": "artifacts/frozen_benchmark_v1_generation_audit/protocol.json",
+    "size": 1651,
+    "readable": true,
+    "url": "source/artifacts/frozen_benchmark_v1_generation_audit/protocol.json.txt",
+    "purpose": "Structured protocol metadata, configuration or recorded evidence.",
+    "declarations": [],
+    "sha256": "c3fbfcfeea587b06c4d55f5947707956f5ab65472e713dea805dbee4c7067396",
+    "category": "artifacts",
+    "lines": 63
+  },
+  {
+    "path": "artifacts/frozen_benchmark_v1_generation_audit/world_smoke.json",
+    "size": 2253,
+    "readable": true,
+    "url": "source/artifacts/frozen_benchmark_v1_generation_audit/world_smoke.json.txt",
+    "purpose": "Structured world smoke metadata, configuration or recorded evidence.",
+    "declarations": [],
+    "sha256": "7cdd06d1a6f904b72b2494207d89a290d8ad594a55083da70d88d9b54cad4aab",
+    "category": "artifacts",
+    "lines": 104
+  },
+  {
+    "path": "artifacts/frozen_benchmark_v1_smoke/protocol.json",
+    "size": 1651,
+    "readable": true,
+    "url": "source/artifacts/frozen_benchmark_v1_smoke/protocol.json.txt",
+    "purpose": "Structured protocol metadata, configuration or recorded evidence.",
+    "declarations": [],
+    "sha256": "c3fbfcfeea587b06c4d55f5947707956f5ab65472e713dea805dbee4c7067396",
+    "category": "artifacts",
+    "lines": 63
+  },
+  {
+    "path": "artifacts/frozen_benchmark_v1_verified/protocol.json",
+    "size": 1904,
+    "readable": true,
+    "url": "source/artifacts/frozen_benchmark_v1_verified/protocol.json.txt",
+    "purpose": "Structured protocol metadata, configuration or recorded evidence.",
+    "declarations": [],
+    "sha256": "3a31d9992f495c065616dda679b38f68d718aea1181f80869e631da7d10c0c84",
+    "category": "artifacts",
+    "lines": 78
+  },
+  {
+    "path": "artifacts/frozen_benchmark_v1_verified/python_tests.txt",
+    "size": 961,
+    "readable": true,
+    "url": "source/artifacts/frozen_benchmark_v1_verified/python_tests.txt.txt",
+    "purpose": "Python tests — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "b20cbbb163aff506ec67391d7135f2213b2fbfc363aba23a93b318c139d63cc1",
+    "category": "artifacts",
+    "lines": 13
+  },
+  {
+    "path": "artifacts/frozen_benchmark_v1_verified/validation.json",
+    "size": 431,
+    "readable": true,
+    "url": "source/artifacts/frozen_benchmark_v1_verified/validation.json.txt",
+    "purpose": "Structured validation metadata, configuration or recorded evidence.",
+    "declarations": [],
+    "sha256": "a539e74c23a20157ed5a198ac911f06dbb8dbe731517a14d21338eb93d6ec4f5",
+    "category": "artifacts",
+    "lines": 13
+  },
+  {
+    "path": "artifacts/frozen_benchmark_v1_verified/world_smoke.json",
+    "size": 2397,
+    "readable": true,
+    "url": "source/artifacts/frozen_benchmark_v1_verified/world_smoke.json.txt",
+    "purpose": "Structured world smoke metadata, configuration or recorded evidence.",
+    "declarations": [],
+    "sha256": "ec1edb209cbadfbad0a55a222e3cb7de3af12e3cdb4baa366b13c2f767615404",
+    "category": "artifacts",
+    "lines": 114
+  },
+  {
+    "path": "artifacts/goal_governor_ablation_20261030/32_10000_ppo_h400_e1.jsonl.gz",
+    "size": 13619,
+    "readable": false,
+    "url": null,
+    "purpose": "32 10000 ppo h400 e1.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "33d8af77b747cee5c82e389da7c2c545b15bbf8904f5d931a5acf6481707da50",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/goal_governor_ablation_20261030/32_10000_ppo_h400_e1_combined.jsonl.gz",
+    "size": 18538,
+    "readable": false,
+    "url": null,
+    "purpose": "32 10000 ppo h400 e1 combined.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "4d5813c7f1385d6cf158107a18c3e517c761d7b5ece0faec3b0bf66b14848942",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/goal_governor_ablation_20261030/32_10000_ppo_h400_e1_loop.jsonl.gz",
+    "size": 14063,
+    "readable": false,
+    "url": null,
+    "purpose": "32 10000 ppo h400 e1 loop.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "aa4e50ca318984541965466981c51fbf49e95fa1db35237ade8eaf3b16cd35c9",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/goal_governor_ablation_20261030/32_10000_ppo_h400_e1_persistence.jsonl.gz",
+    "size": 18521,
+    "readable": false,
+    "url": null,
+    "purpose": "32 10000 ppo h400 e1 persistence.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "cb6891e78c82635a37043921a020a8ebb8f0add63acc9002b1fced7545a72447",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/goal_governor_ablation_20261030/32_10001_ppo_h400_e1.jsonl.gz",
+    "size": 13218,
+    "readable": false,
+    "url": null,
+    "purpose": "32 10001 ppo h400 e1.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "c22d6f58c3df8fb24175512519de0953ba0ba21ac172ba6df0b74d19285afaca",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/goal_governor_ablation_20261030/32_10001_ppo_h400_e1_combined.jsonl.gz",
+    "size": 13661,
+    "readable": false,
+    "url": null,
+    "purpose": "32 10001 ppo h400 e1 combined.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "205d4b7c1be8dde264c3994f21392e65778f5b062b11673ffa6ffb6781a2ca5a",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/goal_governor_ablation_20261030/32_10001_ppo_h400_e1_loop.jsonl.gz",
+    "size": 17731,
+    "readable": false,
+    "url": null,
+    "purpose": "32 10001 ppo h400 e1 loop.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "e272b0323e8fb1492495634edf67438d170774826d9feb627365bb84b497070a",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/goal_governor_ablation_20261030/32_10001_ppo_h400_e1_persistence.jsonl.gz",
+    "size": 18519,
+    "readable": false,
+    "url": null,
+    "purpose": "32 10001 ppo h400 e1 persistence.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "eefdc0e942dea66c10669af0b6660f211af105af4d9ba8eedd302b4f541a554d",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/goal_governor_ablation_20261030/56_10000_ppo_h400_e1.jsonl.gz",
+    "size": 20362,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10000 ppo h400 e1.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "628a159d438ea976b4e551ec4e9578b1124001b5289bd862572e79922c971fb4",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/goal_governor_ablation_20261030/56_10000_ppo_h400_e1_combined.jsonl.gz",
+    "size": 18069,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10000 ppo h400 e1 combined.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "0450b810c63cc624c85b52ff28b5bb2cc66a8f015c9b04764a0eb72ee8e5544a",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/goal_governor_ablation_20261030/56_10000_ppo_h400_e1_loop.jsonl.gz",
+    "size": 21434,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10000 ppo h400 e1 loop.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "7d2e8c591f8a5138c5cfcbab96e0736bb5d7d90809290da3f8571333abbaae86",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/goal_governor_ablation_20261030/56_10000_ppo_h400_e1_persistence.jsonl.gz",
+    "size": 18072,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10000 ppo h400 e1 persistence.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "ea504771adb18e80fce8029cb17266eddeacceb7c2aee00d6487a7b4427c43aa",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/goal_governor_ablation_20261030/56_10001_ppo_h400_e1.jsonl.gz",
+    "size": 17762,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10001 ppo h400 e1.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "d6c1c26f28f2e477cdd7656eb1a7455202c1b76cc4b900a09c60fa02b5e7999b",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/goal_governor_ablation_20261030/56_10001_ppo_h400_e1_combined.jsonl.gz",
+    "size": 17293,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10001 ppo h400 e1 combined.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "48616b8c314791d7c50c1c495582547f0efb24cd6bd49d675199a46d55df1d4c",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/goal_governor_ablation_20261030/56_10001_ppo_h400_e1_loop.jsonl.gz",
+    "size": 19470,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10001 ppo h400 e1 loop.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "51dfccd6cc4d5128f4577e323db95e0be3c451cd37c9c3c6a4677e1ed7588061",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/goal_governor_ablation_20261030/56_10001_ppo_h400_e1_persistence.jsonl.gz",
+    "size": 17034,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10001 ppo h400 e1 persistence.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "4574e160116e9ecb385f33aa50df5b820dc71b1cc330db4466205ebfeeb869dc",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/goal_governor_ablation_20261030/summary.json",
+    "size": 76726,
+    "readable": true,
+    "url": "source/artifacts/goal_governor_ablation_20261030/summary.json.txt",
+    "purpose": "Structured summary metadata, configuration or recorded evidence.",
+    "declarations": [],
+    "sha256": "e32b8d0b8229590ebe538ccac1e9f7048f7ee511b80a8cb34ad5bbd6919c26e3",
+    "category": "artifacts",
+    "lines": 2489
+  },
+  {
+    "path": "artifacts/large_map_diagnosis_20261030/32_10000_expert_h400_e1.jsonl.gz",
+    "size": 13379,
+    "readable": false,
+    "url": null,
+    "purpose": "32 10000 expert h400 e1.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "6dd83f6c05fd254cf4fbf255b7aca4ff3f67213d375047547102fdc5243a0617",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/large_map_diagnosis_20261030/32_10000_ppo_h400_e1.jsonl.gz",
+    "size": 19728,
+    "readable": false,
+    "url": null,
+    "purpose": "32 10000 ppo h400 e1.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "2a64b13b896ef786762d4c04b63f0c0ea80c2823e7a0b41489df7b75d194d38e",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/large_map_diagnosis_20261030/32_10001_expert_h400_e1.jsonl.gz",
+    "size": 4341,
+    "readable": false,
+    "url": null,
+    "purpose": "32 10001 expert h400 e1.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "0163175c87a4a2105dedf7e73b6ae490d86458e5b5d4ec8bff025f30ec690743",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/large_map_diagnosis_20261030/32_10001_ppo_h400_e1.jsonl.gz",
+    "size": 10217,
+    "readable": false,
+    "url": null,
+    "purpose": "32 10001 ppo h400 e1.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "9e3b71697322f9ababdc028f7208dd63d67092039cf397d5007409964e19adb3",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/large_map_diagnosis_20261030/56_10000_expert_h400_e1.jsonl.gz",
+    "size": 11677,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10000 expert h400 e1.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "d0fdb896130ec85e0b5f1817cb1722b279eb3f334b972a68b81b45408a5df2e0",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/large_map_diagnosis_20261030/56_10000_ppo_h400_e1.jsonl.gz",
+    "size": 20762,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10000 ppo h400 e1.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "6b555dc5e6b4146b2591d5c2d7895c90f0acb7d9d97f0c416c24690cda3808c0",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/large_map_diagnosis_20261030/56_10001_expert_h400_e1.jsonl.gz",
+    "size": 18210,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10001 expert h400 e1.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "da7041c995510e2ce9e7c82494924ece8ce5a1cfedfd548f1ea6d6b5c390be35",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/large_map_diagnosis_20261030/56_10001_expert_h400_e2.jsonl.gz",
+    "size": 27545,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10001 expert h400 e2.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "e013b182e4c8ea949d8f50630779f0c1b93f149603a7d08e91f5e538077d06a6",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/large_map_diagnosis_20261030/56_10001_expert_h800_e1.jsonl.gz",
+    "size": 18210,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10001 expert h800 e1.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "ba815609a3ec907cd6e59770690f453e06e0fc8a58bcd3645f56acb5c5471937",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/large_map_diagnosis_20261030/56_10001_expert_h800_e2.jsonl.gz",
+    "size": 35797,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10001 expert h800 e2.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "fefa1121299ac3eeb72daad901045dd6aa4d5c01f8574fe8f238da0333d43a4a",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/large_map_diagnosis_20261030/56_10001_ppo_h400_e1.jsonl.gz",
+    "size": 18791,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10001 ppo h400 e1.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "12803d97765d1589c11cf5fd5fe670eb7c6f792187cbf66e5a8bbba37b0c39fd",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/large_map_diagnosis_20261030/56_10001_ppo_h400_e2.jsonl.gz",
+    "size": 22409,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10001 ppo h400 e2.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "39d37090aa4a1bf014b4a2055d513a3439c0f6a0fb06e9e07cf4e95fa469bf87",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/large_map_diagnosis_20261030/56_10001_ppo_h800_e1.jsonl.gz",
+    "size": 18497,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10001 ppo h800 e1.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "519e36c2cb4d87b5c8b093217c8e2dd5d2c447348db183f73378fd7d5a0377b0",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/large_map_diagnosis_20261030/56_10001_ppo_h800_e2.jsonl.gz",
+    "size": 37456,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10001 ppo h800 e2.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "c4561c6e8afd297d816abfed6e3d76fd47af193234500ef3755ecd9676be2949",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/large_map_diagnosis_20261030/summary.json",
+    "size": 57109,
+    "readable": true,
+    "url": "source/artifacts/large_map_diagnosis_20261030/summary.json.txt",
+    "purpose": "Structured summary metadata, configuration or recorded evidence.",
+    "declarations": [],
+    "sha256": "0fce95dd9ff7a707fb9851c316097bba43c90c746bb65ec9411c85ccd49272d4",
+    "category": "artifacts",
+    "lines": 1813
+  },
+  {
+    "path": "artifacts/large_map_diagnosis_deterministic_20261030/32_10000_expert_h400_e1.jsonl.gz",
+    "size": 13379,
+    "readable": false,
+    "url": null,
+    "purpose": "32 10000 expert h400 e1.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "70d758a5840ee6174602136ca114865d367deff1e4d4dd9c300c1600f734a2c7",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/large_map_diagnosis_deterministic_20261030/32_10000_ppo_h400_e1.jsonl.gz",
+    "size": 13134,
+    "readable": false,
+    "url": null,
+    "purpose": "32 10000 ppo h400 e1.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "99983e8ff090801263ad8b33a2129966c5cfec85539de8a2c916924547c82ece",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/large_map_diagnosis_deterministic_20261030/32_10001_expert_h400_e1.jsonl.gz",
+    "size": 4341,
+    "readable": false,
+    "url": null,
+    "purpose": "32 10001 expert h400 e1.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "039bdf6bef3fae312120ceb6440edf7a3150a7876d592414be805c013aefeead",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/large_map_diagnosis_deterministic_20261030/32_10001_ppo_h400_e1.jsonl.gz",
+    "size": 12753,
+    "readable": false,
+    "url": null,
+    "purpose": "32 10001 ppo h400 e1.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "84d471044f9746c873500268d069b6e0ad7bd9ea251e8574d605a9702bde3e51",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/large_map_diagnosis_deterministic_20261030/56_10000_expert_h400_e1.jsonl.gz",
+    "size": 11677,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10000 expert h400 e1.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "0d5ce58fb4c9aa522333248b0fc53699580eb0730b76862d750c8a0569bd91fc",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/large_map_diagnosis_deterministic_20261030/56_10000_ppo_h400_e1.jsonl.gz",
+    "size": 19803,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10000 ppo h400 e1.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "7ce54a7bef70592fd2585364b974dda999312ca152626363091aa984d6fa6d30",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/large_map_diagnosis_deterministic_20261030/56_10001_expert_h400_e1.jsonl.gz",
+    "size": 18210,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10001 expert h400 e1.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "b0e396b937704b014b1e0423a5d9e4bbfa6112eed5bc6e2beca3e84dd7075460",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/large_map_diagnosis_deterministic_20261030/56_10001_expert_h400_e2.jsonl.gz",
+    "size": 27545,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10001 expert h400 e2.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "9e595d634b9abefda5a4119e59b0c83cf257a50a476d88a00d1ad2cb7f41ab03",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/large_map_diagnosis_deterministic_20261030/56_10001_expert_h800_e1.jsonl.gz",
+    "size": 18210,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10001 expert h800 e1.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "a6ed9935b84b82d79043a995a6f2d467f1adb81b741074af153e9c25c82b1240",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/large_map_diagnosis_deterministic_20261030/56_10001_expert_h800_e2.jsonl.gz",
+    "size": 35797,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10001 expert h800 e2.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "5c48b0ec522c04976abd5875b0532ed0b7778cf30ea1c1e032ad36914c37ae1b",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/large_map_diagnosis_deterministic_20261030/56_10001_ppo_h400_e1.jsonl.gz",
+    "size": 17331,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10001 ppo h400 e1.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "907fb6b4884a17055e715faea3908883f06f77fe4b49859c7e34fded097f2a56",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/large_map_diagnosis_deterministic_20261030/56_10001_ppo_h400_e2.jsonl.gz",
+    "size": 19448,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10001 ppo h400 e2.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "15b82a3b705c036665ed15bdb2a7e21b81fa7b270081f268f84b3ab8ec265814",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/large_map_diagnosis_deterministic_20261030/56_10001_ppo_h800_e1.jsonl.gz",
+    "size": 19932,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10001 ppo h800 e1.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "b3059de2f02412a696188e08828b58e6e7d6a9e4e812a4a799dcd8e8fa07ac07",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/large_map_diagnosis_deterministic_20261030/56_10001_ppo_h800_e2.jsonl.gz",
+    "size": 26552,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10001 ppo h800 e2.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "2ec6ccd3ff00542e6816a95b08caa1e0728366e9f99c5db4e9c8e9f071f6b789",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/large_map_diagnosis_deterministic_20261030/optimistic_energy_bounds.json",
+    "size": 1989,
+    "readable": true,
+    "url": "source/artifacts/large_map_diagnosis_deterministic_20261030/optimistic_energy_bounds.json.txt",
+    "purpose": "Structured optimistic energy bounds metadata, configuration or recorded evidence.",
+    "declarations": [],
+    "sha256": "9c409a2959459e80c2723f8033af485972d52a373d087dd349d08419ba4e0561",
+    "category": "artifacts",
+    "lines": 85
+  },
+  {
+    "path": "artifacts/large_map_diagnosis_deterministic_20261030/summary.json",
+    "size": 63499,
+    "readable": true,
+    "url": "source/artifacts/large_map_diagnosis_deterministic_20261030/summary.json.txt",
+    "purpose": "Structured summary metadata, configuration or recorded evidence.",
+    "declarations": [],
+    "sha256": "963e6daf8d59f491a818184fa1ffbdd7ce3fc1a2105bb5e411e3d47d185f1781",
+    "category": "artifacts",
+    "lines": 2020
+  },
+  {
+    "path": "artifacts/observatory_redesign/desktop-neural.png",
+    "size": 159303,
+    "readable": false,
+    "url": null,
+    "purpose": "Original project visual artifact. See the containing capture manifest or gallery for its runtime and provenance.",
+    "declarations": [],
+    "sha256": "bf7ba2359aa1124e23555dabf2a220fd4684af78e149d8ea67bb66eb56f3fa6a",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/observatory_redesign/desktop-spatial.png",
+    "size": 137407,
+    "readable": false,
+    "url": null,
+    "purpose": "Original project visual artifact. See the containing capture manifest or gallery for its runtime and provenance.",
+    "declarations": [],
+    "sha256": "1e96f68accd14d295cdc7c41aabc5fbb1197f5cfd741daa8552f0523f717724f",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/observatory_redesign/frontend_tests.txt",
+    "size": 1926,
+    "readable": true,
+    "url": "source/artifacts/observatory_redesign/frontend_tests.txt.txt",
+    "purpose": "Frontend tests — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "2d317c5774b6514936e27f23bd3cee99c05a5a6d539c58b51db330bc151decff",
+    "category": "artifacts",
+    "lines": 40
+  },
+  {
+    "path": "artifacts/observatory_redesign/mobile-neural.png",
+    "size": 49406,
+    "readable": false,
+    "url": null,
+    "purpose": "Original project visual artifact. See the containing capture manifest or gallery for its runtime and provenance.",
+    "declarations": [],
+    "sha256": "16103bd5df572a2101705007914c1ed14510e02de003e8ffb72a2c842f1899c7",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/observatory_redesign/ros-disconnected.png",
+    "size": 492368,
+    "readable": false,
+    "url": null,
+    "purpose": "Original project visual artifact. See the containing capture manifest or gallery for its runtime and provenance.",
+    "declarations": [],
+    "sha256": "65f6e4dac7e5d7fb85b8981f2f65cedf4407cb67439aa30aea63cc9881c6f402",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/observatory_redesign/ros-waiting.png",
+    "size": 511845,
+    "readable": false,
+    "url": null,
+    "purpose": "Original project visual artifact. See the containing capture manifest or gallery for its runtime and provenance.",
+    "declarations": [],
+    "sha256": "04674e042f01d49e918daec24b4b4709faea426ed09b5baeb4bbed66d2abdbd7",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/observatory_redesign/spatial-ready.png",
+    "size": 146840,
+    "readable": false,
+    "url": null,
+    "purpose": "Original project visual artifact. See the containing capture manifest or gallery for its runtime and provenance.",
+    "declarations": [],
+    "sha256": "2f1a77a19aab9edf69305eecf4f094c7013a78aac4451dc8447ce4f9683cde5b",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/observatory_redesign/validation.json",
+    "size": 1273,
+    "readable": true,
+    "url": "source/artifacts/observatory_redesign/validation.json.txt",
+    "purpose": "Structured validation metadata, configuration or recorded evidence.",
+    "declarations": [],
+    "sha256": "9f47a47717f76761bdf4473751d59f2e7d6687e9bb7e2de21bc966e6b6e3451e",
+    "category": "artifacts",
+    "lines": 28
+  },
+  {
+    "path": "artifacts/observatory_redesign/world-desktop.png",
+    "size": 498606,
+    "readable": false,
+    "url": null,
+    "purpose": "Original project visual artifact. See the containing capture manifest or gallery for its runtime and provenance.",
+    "declarations": [],
+    "sha256": "316ca7a8cb00388d0a90677e3b8ae3bbb973972d50b196e7ed56b470cc30c2a3",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/observatory_redesign/world-mobile.png",
+    "size": 199500,
+    "readable": false,
+    "url": null,
+    "purpose": "Original project visual artifact. See the containing capture manifest or gallery for its runtime and provenance.",
+    "declarations": [],
+    "sha256": "eeef914cf4b753083df448fca620a6276c295a86a9f7fd636eaafd958bc08baa",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/observatory_redesign/world_validation.json",
+    "size": 289,
+    "readable": true,
+    "url": "source/artifacts/observatory_redesign/world_validation.json.txt",
+    "purpose": "Structured world validation metadata, configuration or recorded evidence.",
+    "declarations": [],
+    "sha256": "f525e9a4e329a6a28f8665c4d9d8f028b8a3975f4223dbb4a9892d4e9c50d55c",
+    "category": "artifacts",
+    "lines": 13
+  },
+  {
+    "path": "artifacts/observatory_ui/build.txt",
+    "size": 580,
+    "readable": true,
+    "url": "source/artifacts/observatory_ui/build.txt.txt",
+    "purpose": "Build — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "18f5917fcc0b6ae6246e4cc49d000fa9e46d73c19b5fdef92715669e89fe5d9c",
+    "category": "artifacts",
+    "lines": 17
+  },
+  {
+    "path": "artifacts/observatory_ui/desktop-neural.png",
+    "size": 495994,
+    "readable": false,
+    "url": null,
+    "purpose": "Original project visual artifact. See the containing capture manifest or gallery for its runtime and provenance.",
+    "declarations": [],
+    "sha256": "ea36a6b2762c86af411b70e36b9b1b41aedab2c72c84a2e978eb16c050016ac6",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/observatory_ui/desktop-spatial.png",
+    "size": 474956,
+    "readable": false,
+    "url": null,
+    "purpose": "Original project visual artifact. See the containing capture manifest or gallery for its runtime and provenance.",
+    "declarations": [],
+    "sha256": "c3d78ccbb528461b24fcf43caeb40d88bca9ff4c688110211524326e9b58b84d",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/observatory_ui/frontend_tests.txt",
+    "size": 2115,
+    "readable": true,
+    "url": "source/artifacts/observatory_ui/frontend_tests.txt.txt",
+    "purpose": "Frontend tests — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "33027d53c48c91756f5a1b5fcae4ceae95c8bd92c6d6ad649f48d689b2d7b4b5",
+    "category": "artifacts",
+    "lines": 42
+  },
+  {
+    "path": "artifacts/observatory_ui/mobile-neural.png",
+    "size": 244664,
+    "readable": false,
+    "url": null,
+    "purpose": "Original project visual artifact. See the containing capture manifest or gallery for its runtime and provenance.",
+    "declarations": [],
+    "sha256": "e61798243ad476c76dcb1768dba28d4b5ce69018b09ca91b5d791f6f868a8501",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/observatory_ui/ros-disconnected.png",
+    "size": 406191,
+    "readable": false,
+    "url": null,
+    "purpose": "Original project visual artifact. See the containing capture manifest or gallery for its runtime and provenance.",
+    "declarations": [],
+    "sha256": "a543363187ad25865f782993953ade47fb96d3c9601261687ce134a6d0201ec9",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/observatory_ui/validation.json",
+    "size": 926,
+    "readable": true,
+    "url": "source/artifacts/observatory_ui/validation.json.txt",
+    "purpose": "Structured validation metadata, configuration or recorded evidence.",
+    "declarations": [],
+    "sha256": "bbed9a7cc86367f9b1735397d6c506555ff0e8b0e03981d5f7015698f16e0f3d",
+    "category": "artifacts",
+    "lines": 22
+  },
+  {
+    "path": "artifacts/ppo_preview/frontend_tests.txt",
+    "size": 2023,
+    "readable": true,
+    "url": "source/artifacts/ppo_preview/frontend_tests.txt.txt",
+    "purpose": "Frontend tests — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "d5777ea015461e4fc5e9f8c835b333e5cd55924a28460d883027f21053555092",
+    "category": "artifacts",
+    "lines": 41
+  },
+  {
+    "path": "artifacts/ppo_preview/live-preview.png",
+    "size": 571249,
+    "readable": false,
+    "url": null,
+    "purpose": "Original project visual artifact. See the containing capture manifest or gallery for its runtime and provenance.",
+    "declarations": [],
+    "sha256": "f60e6b6f600971d22060522af6aed5cd8143497fa82059a1be3131a74f968d83",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/ppo_preview/validation.json",
+    "size": 532,
+    "readable": true,
+    "url": "source/artifacts/ppo_preview/validation.json.txt",
+    "purpose": "Structured validation metadata, configuration or recorded evidence.",
+    "declarations": [],
+    "sha256": "269b5044d9596b9953a232af8b83ca3641c6a40af2ae3fcb86a671b85532fdad",
+    "category": "artifacts",
+    "lines": 14
+  },
+  {
+    "path": "artifacts/slam_handoff_manifest.json",
+    "size": 335,
+    "readable": true,
+    "url": "source/artifacts/slam_handoff_manifest.json.txt",
+    "purpose": "Structured slam handoff manifest metadata, configuration or recorded evidence.",
+    "declarations": [],
+    "sha256": "a59adaf1d894bb2ccc09faf0f166d618ec105c0fa30308a9dfd274e40bed8baf",
+    "category": "artifacts",
+    "lines": 11
+  },
+  {
+    "path": "artifacts/slam_linux_handoff.tar.gz",
+    "size": 587315,
+    "readable": false,
+    "url": null,
+    "purpose": "Archived model or evidence package. Consult its checksum, manifest and README before use.",
+    "declarations": [],
+    "sha256": "0593248f79b56ffce5fe77dacb84d612d9c31589b2679abf19ed2ea2593b5d24",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/slam_local_python_tests.txt",
+    "size": 961,
+    "readable": true,
+    "url": "source/artifacts/slam_local_python_tests.txt.txt",
+    "purpose": "Slam local python tests — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "1040d2d08c9be07a98f4885beab868513fdb19070cdcf89dd0d6e3eae013079e",
+    "category": "artifacts",
+    "lines": 13
+  },
+  {
+    "path": "artifacts/slam_local_ui/disconnected_real_ui.png",
+    "size": 185041,
+    "readable": false,
+    "url": null,
+    "purpose": "Original project visual artifact. See the containing capture manifest or gallery for its runtime and provenance.",
+    "declarations": [],
+    "sha256": "1e025fef596b084df2cbc9f2bc6b5edbb1a97d6b985ae5f4b1d865c351cda19b",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/slam_local_ui/report.json",
+    "size": 576,
+    "readable": true,
+    "url": "source/artifacts/slam_local_ui/report.json.txt",
+    "purpose": "Structured report metadata, configuration or recorded evidence.",
+    "declarations": [],
+    "sha256": "206ae315bd4dd2ad1a8f772efe3e85abf50ce0c579e35081d83359d173b176d3",
+    "category": "artifacts",
+    "lines": 18
+  },
+  {
+    "path": "artifacts/visibility_diversity_20261030/32_10008_ppo.jsonl.gz",
+    "size": 1662,
+    "readable": false,
+    "url": null,
+    "purpose": "32 10008 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "a31b8fabc08ff68cc8f1a28d102c3af28e63ba6c9ebf6be0cf5570c3059fe153",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/visibility_diversity_20261030/32_10008_square5.jsonl.gz",
+    "size": 7287,
+    "readable": false,
+    "url": null,
+    "purpose": "32 10008 square5.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "01a5885f656cdf1c0b04a7154eee101138445568c9dff17f27486fda307d1abd",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/visibility_diversity_20261030/32_10008_visible24.jsonl.gz",
+    "size": 6581,
+    "readable": false,
+    "url": null,
+    "purpose": "32 10008 visible24.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "d63447063111f77fb2e18ce0100a656c74030650dc776892604ae8dfe4995d60",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/visibility_diversity_20261030/32_10008_visible5.jsonl.gz",
+    "size": 7108,
+    "readable": false,
+    "url": null,
+    "purpose": "32 10008 visible5.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "c3e1d05b0b08b41e051d22003d686f581f35c293d229c6491a90f0099cfa882c",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/visibility_diversity_20261030/32_10009_ppo.jsonl.gz",
+    "size": 1578,
+    "readable": false,
+    "url": null,
+    "purpose": "32 10009 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "502dd23070117f28562214f9e36b80a29a849e205c9fc5349ffa27db6a8698fa",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/visibility_diversity_20261030/32_10009_square5.jsonl.gz",
+    "size": 8419,
+    "readable": false,
+    "url": null,
+    "purpose": "32 10009 square5.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "77e8c57d793ad19260f074ea2b9537784b91f49d9112595abc0b6183d6d20a36",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/visibility_diversity_20261030/32_10009_visible24.jsonl.gz",
+    "size": 10383,
+    "readable": false,
+    "url": null,
+    "purpose": "32 10009 visible24.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "f1005335b39d45d69a54f338fb5d83d5a83447fe273c9c4c13d322f7faf77329",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/visibility_diversity_20261030/32_10009_visible5.jsonl.gz",
+    "size": 9543,
+    "readable": false,
+    "url": null,
+    "purpose": "32 10009 visible5.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "0400b96dc93fb2f3e8da717fbf55ecff91a76b464dad445577c55904aa1f6558",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/visibility_diversity_20261030/56_10008_ppo.jsonl.gz",
+    "size": 1161,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10008 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "b4cc2a325ec49ae3a341b77458045cf38b80ce550d9c1188abb2176605b90949",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/visibility_diversity_20261030/56_10008_square5.jsonl.gz",
+    "size": 8812,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10008 square5.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "858a2028e778dd00aaa66c256d81c717a45e7483febe311fcb47fbc0f451af8a",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/visibility_diversity_20261030/56_10008_visible24.jsonl.gz",
+    "size": 1335,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10008 visible24.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "7e5ba7dc2240864505f378ce5456f995ed81b4dedea18182471285cac362b4b9",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/visibility_diversity_20261030/56_10008_visible5.jsonl.gz",
+    "size": 1524,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10008 visible5.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "42d621c706b81457d4deb9ecb10bb6ac42471c0d04ed1e02420bfc6d5a4f5158",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/visibility_diversity_20261030/56_10009_ppo.jsonl.gz",
+    "size": 1684,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10009 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "2bc48fee86336187b8d86dc2a9c1529103db62fda095af87bd1ca50b10c02288",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/visibility_diversity_20261030/56_10009_square5.jsonl.gz",
+    "size": 8766,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10009 square5.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "4284adf105c5fe2a3104e67c42552bff772faee12125921bc261fa8221935303",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/visibility_diversity_20261030/56_10009_visible24.jsonl.gz",
+    "size": 10401,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10009 visible24.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "b053b39da968db1cda876b0f27d3d3b25012652c06d18df132320836fdbd40d8",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/visibility_diversity_20261030/56_10009_visible5.jsonl.gz",
+    "size": 10407,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10009 visible5.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "020e79f305ed3a67e19f5303560f0d1b5119a7122928229860fb1820ea96116e",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/visibility_diversity_20261030/56_10010_ppo.jsonl.gz",
+    "size": 1714,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10010 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "a40dec0231b1d4bbcd9c2895ea0ed81aec455588e81f00488d69423d533bcf23",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/visibility_diversity_20261030/56_10010_square5.jsonl.gz",
+    "size": 8973,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10010 square5.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "83548b331ec1f9be901d49f4bb247841b43d5f5eb32ce842febf0c570f92a824",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/visibility_diversity_20261030/56_10010_visible24.jsonl.gz",
+    "size": 9849,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10010 visible24.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "98181eb4e5c5f5025c9bf5a17f6a45a5587a91df98d9adb7021db2be917be1aa",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/visibility_diversity_20261030/56_10010_visible5.jsonl.gz",
+    "size": 9695,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10010 visible5.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "2fa1efe599978585e11deac0b06113fac0123ab50f0499c9cf36fbc4796ed3f5",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/visibility_diversity_20261030/56_10011_ppo.jsonl.gz",
+    "size": 1928,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10011 ppo.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "e1ed90efa761f7948da4c9a7a5ba2beda80c8cfb2b308138972693a0e1d799f8",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/visibility_diversity_20261030/56_10011_square5.jsonl.gz",
+    "size": 8881,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10011 square5.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "ac52652aab69247324a4634306a53f2c3f6d6d68467ebf118009342248e5e03f",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/visibility_diversity_20261030/56_10011_visible24.jsonl.gz",
+    "size": 10599,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10011 visible24.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "2cd35570705992e744b908f03698e59d5ac5c4729ba164461bbf37ee7cd5d9e6",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/visibility_diversity_20261030/56_10011_visible5.jsonl.gz",
+    "size": 8741,
+    "readable": false,
+    "url": null,
+    "purpose": "56 10011 visible5.jsonl — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "396d7a2a101e1a063e659846fd575c4776c21bbda20a35dc27b59b497f14be97",
+    "category": "artifacts",
+    "lines": null
+  },
+  {
+    "path": "artifacts/visibility_diversity_20261030/plan.json",
+    "size": 900,
+    "readable": true,
+    "url": "source/artifacts/visibility_diversity_20261030/plan.json.txt",
+    "purpose": "Structured plan metadata, configuration or recorded evidence.",
+    "declarations": [],
+    "sha256": "51338f4c1ba8f2988a544bd4b8a4b0d306305fb34af76a8c234c67d2e33bded5",
+    "category": "artifacts",
+    "lines": 51
+  },
+  {
+    "path": "artifacts/visibility_diversity_20261030/python_tests.txt",
+    "size": 961,
+    "readable": true,
+    "url": "source/artifacts/visibility_diversity_20261030/python_tests.txt.txt",
+    "purpose": "Python tests — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "84b8e855d18c0bdf333e3e2a0935d1e81153f53e8cd308cf7c13f70c11af41fa",
+    "category": "artifacts",
+    "lines": 13
+  },
+  {
+    "path": "artifacts/visibility_diversity_20261030/summary.json",
+    "size": 21404,
+    "readable": true,
+    "url": "source/artifacts/visibility_diversity_20261030/summary.json.txt",
+    "purpose": "Structured summary metadata, configuration or recorded evidence.",
+    "declarations": [],
+    "sha256": "7042ae0d323fd6bf78b9bad4de7a44cf00cfb8f51316f80c35567adc1c555b6a",
+    "category": "artifacts",
+    "lines": 759
+  },
+  {
+    "path": "artifacts/visibility_diversity_20261030/verification.json",
+    "size": 1167,
+    "readable": true,
+    "url": "source/artifacts/visibility_diversity_20261030/verification.json.txt",
+    "purpose": "Structured verification metadata, configuration or recorded evidence.",
+    "declarations": [],
+    "sha256": "e028bc4189fa58d90005c591754f46cb8b70473ddccd6eff310ca5bf7c824be3",
+    "category": "artifacts",
+    "lines": 58
   },
   {
     "path": "backend/README.md",
@@ -45,10 +2366,10 @@
   },
   {
     "path": "backend/ppo_service.py",
-    "size": 17351,
+    "size": 17795,
     "readable": true,
     "url": "source/backend/ppo_service.py.txt",
-    "purpose": "Loads verified actor modules and owns HTTP mission sessions, recurrent state, snapshots and idempotent steps.",
+    "purpose": "Loads verified actor modules; supplies session-free setup previews and owns missions, recurrent state and idempotent steps.",
     "declarations": [
       {
         "name": "digest_tree",
@@ -82,12 +2403,12 @@
       },
       {
         "name": "Handler",
-        "line": 265,
+        "line": 273,
         "kind": "ClassDef"
       },
       {
         "name": "main",
-        "line": 317,
+        "line": 325,
         "kind": "FunctionDef"
       },
       {
@@ -117,38 +2438,38 @@
       },
       {
         "name": "send_json",
-        "line": 268,
+        "line": 276,
         "kind": "FunctionDef"
       },
       {
         "name": "handle_request",
-        "line": 277,
+        "line": 285,
         "kind": "FunctionDef"
       },
       {
         "name": "do_GET",
-        "line": 304,
+        "line": 312,
         "kind": "FunctionDef"
       },
       {
         "name": "do_POST",
-        "line": 307,
+        "line": 315,
         "kind": "FunctionDef"
       },
       {
         "name": "do_DELETE",
-        "line": 310,
+        "line": 318,
         "kind": "FunctionDef"
       },
       {
         "name": "log_message",
-        "line": 313,
+        "line": 321,
         "kind": "FunctionDef"
       }
     ],
-    "sha256": "83c6ed00a15e575327229c5dc3f645798bbe724fc56ddb73cf2f4938735c2026",
+    "sha256": "9ff52a2a9ad8b14bb9c8f5315b9027032db4a5e05474de50e6baf25e410d516c",
     "category": "backend",
-    "lines": 339
+    "lines": 347
   },
   {
     "path": "backend/requirements.txt",
@@ -261,6 +2582,39 @@
     "lines": 110
   },
   {
+    "path": "docs/audits/frontier_utility_ablation.md",
+    "size": 7341,
+    "readable": true,
+    "url": "source/docs/audits/frontier_utility_ablation.md.txt",
+    "purpose": "Documentation: Information-gain/energy-aware frontier experiment — 30 October 2026. Read dates and limits alongside current executable code.",
+    "declarations": [],
+    "sha256": "e93b79614efb61e12284449127df21d0a349325a2caef08ef1da7b691f5f94a1",
+    "category": "docs",
+    "lines": 62
+  },
+  {
+    "path": "docs/audits/frozen_discovery_baselines.md",
+    "size": 1382,
+    "readable": true,
+    "url": "source/docs/audits/frozen_discovery_baselines.md.txt",
+    "purpose": "Documentation: Frozen discovery baseline results — 30 October 2026. Read dates and limits alongside current executable code.",
+    "declarations": [],
+    "sha256": "9e49e6a71f4e8a271b86e36e346b6f7ea64f8e6b3ad96afba9b72f81d59c664f",
+    "category": "docs",
+    "lines": 18
+  },
+  {
+    "path": "docs/audits/goal_governor_ablation.md",
+    "size": 5317,
+    "readable": true,
+    "url": "source/docs/audits/goal_governor_ablation.md.txt",
+    "purpose": "Documentation: Frozen-PPO goal-persistence and loop-prevention experiment. Read dates and limits alongside current executable code.",
+    "declarations": [],
+    "sha256": "33843948c0b91d1adbaf0130514917915d24c25fa664c455974c1280631a4f86",
+    "category": "docs",
+    "lines": 53
+  },
+  {
     "path": "docs/audits/hackathon_readiness_audit.md",
     "size": 12832,
     "readable": true,
@@ -270,6 +2624,61 @@
     "sha256": "0ce195552e5609a091a7d733de4173ac379ac3d0a032206c7dd7d485d02bd0e3",
     "category": "docs",
     "lines": 100
+  },
+  {
+    "path": "docs/audits/large_map_failure_diagnosis.md",
+    "size": 6436,
+    "readable": true,
+    "url": "source/docs/audits/large_map_failure_diagnosis.md.txt",
+    "purpose": "Documentation: Large-map failure diagnosis — 30 October 2026. Read dates and limits alongside current executable code.",
+    "declarations": [],
+    "sha256": "a825038df2db402016f613c25a64d266a784a601a841e037291533b3ec7a268b",
+    "category": "docs",
+    "lines": 54
+  },
+  {
+    "path": "docs/audits/observatory_redesign.md",
+    "size": 2422,
+    "readable": true,
+    "url": "source/docs/audits/observatory_redesign.md.txt",
+    "purpose": "Documentation: 3D observatory and simulator interface. Read dates and limits alongside current executable code.",
+    "declarations": [],
+    "sha256": "6ac34bb680a5cc7aa14fd227a8c1dae6af0246195fffbf6bdff9e78067e81e13",
+    "category": "docs",
+    "lines": 48
+  },
+  {
+    "path": "docs/audits/ros_branch_pr_audit.json",
+    "size": 12562,
+    "readable": true,
+    "url": "source/docs/audits/ros_branch_pr_audit.json.txt",
+    "purpose": "Recorded ros branch pr audit data. Consult its fields and parent guide for experiment scope.",
+    "declarations": [],
+    "sha256": "32fd438a1077bf28a610ce19ef19edbb26f3eb91146f0804fbd40be2214ecf93",
+    "category": "docs",
+    "lines": 413
+  },
+  {
+    "path": "docs/audits/ros_branch_pr_audit.md",
+    "size": 5798,
+    "readable": true,
+    "url": "source/docs/audits/ros_branch_pr_audit.md.txt",
+    "purpose": "Documentation: ros branch pr audit. Read dates and limits alongside current executable code.",
+    "declarations": [],
+    "sha256": "1f87ccb465bad2fba3a35890f33831783e45032e7720f0a8f47b6d5b7fcbb8c2",
+    "category": "docs",
+    "lines": 118
+  },
+  {
+    "path": "docs/audits/slam_local_validation.md",
+    "size": 5453,
+    "readable": true,
+    "url": "source/docs/audits/slam_local_validation.md.txt",
+    "purpose": "Documentation: Local SLAM integration validation — 2026-10-30. Read dates and limits alongside current executable code.",
+    "declarations": [],
+    "sha256": "c11cdd22232d0239671ac80388713f3501d5cf4f4de97c4646852ce0ca648e02",
+    "category": "docs",
+    "lines": 41
   },
   {
     "path": "docs/audits/step1_validation.md",
@@ -347,6 +2756,50 @@
     "sha256": "54ff0b7e713aea1b0025aef635af91135589e86c77a71d64cccde6c5a12fbfca",
     "category": "docs",
     "lines": 58
+  },
+  {
+    "path": "docs/audits/visibility_diversity_ablation.md",
+    "size": 8131,
+    "readable": true,
+    "url": "source/docs/audits/visibility_diversity_ablation.md.txt",
+    "purpose": "Documentation: Visibility-aware gain and expanded frontier-pool test. Read dates and limits alongside current executable code.",
+    "declarations": [],
+    "sha256": "d800756b9c0d9f8c8016f679ff371f1f93ec397bf0adf080d1d6db8947fb0c16",
+    "category": "docs",
+    "lines": 92
+  },
+  {
+    "path": "docs/benchmarks/README.md",
+    "size": 7808,
+    "readable": true,
+    "url": "source/docs/benchmarks/README.md.txt",
+    "purpose": "Documentation: Frozen large-map development benchmark v1. Read dates and limits alongside current executable code.",
+    "declarations": [],
+    "sha256": "1551a09aa0e9915971449472ed6fadcbddc3eacfc31f2c16932958b669317164",
+    "category": "docs",
+    "lines": 88
+  },
+  {
+    "path": "docs/benchmarks/large_map_development_v1.json",
+    "size": 1904,
+    "readable": true,
+    "url": "source/docs/benchmarks/large_map_development_v1.json.txt",
+    "purpose": "Recorded large map development v1 data. Consult its fields and parent guide for experiment scope.",
+    "declarations": [],
+    "sha256": "3a31d9992f495c065616dda679b38f68d718aea1181f80869e631da7d10c0c84",
+    "category": "docs",
+    "lines": 78
+  },
+  {
+    "path": "docs/benchmarks/large_map_development_v1.lock.json",
+    "size": 7480,
+    "readable": true,
+    "url": "source/docs/benchmarks/large_map_development_v1.lock.json.txt",
+    "purpose": "Recorded large map development v1.lock data. Consult its fields and parent guide for experiment scope.",
+    "declarations": [],
+    "sha256": "45b9be5f4d8a76fa40b439b1b8d4aacc87261fb9be16780e34c38009c4aa56f3",
+    "category": "docs",
+    "lines": 69
   },
   {
     "path": "docs/branches.md",
@@ -658,14 +3111,14 @@
   },
   {
     "path": "docs/gallery.md",
-    "size": 5030,
+    "size": 5981,
     "readable": true,
     "url": "source/docs/gallery.md.txt",
     "purpose": "Real capture descriptions and the provenance limits of browser, PPO and ROS media.",
     "declarations": [],
-    "sha256": "7d6c12156fbe72f225fe8bbd9e07fe614b818d59813877b0319df8995b4d0cc6",
+    "sha256": "ce2d9bd6307d014beed788b55b8a999c7e3cbf18f305e24cbd1a9a33ac4c451f",
     "category": "docs",
-    "lines": 99
+    "lines": 113
   },
   {
     "path": "docs/guides/GPU_TRANSFER_CHECKLIST.md",
@@ -677,6 +3130,17 @@
     "sha256": "6e7b1934c92697c2a5643a8f64ef52bd7b8f35421e1c0c33e9071e4772b7dfdc",
     "category": "docs",
     "lines": 141
+  },
+  {
+    "path": "docs/guides/LINUX_SLAM_VALIDATION_PROMPT.md",
+    "size": 44131,
+    "readable": true,
+    "url": "source/docs/guides/LINUX_SLAM_VALIDATION_PROMPT.md.txt",
+    "purpose": "Documentation: Prompt for the Linux Codex agent. Read dates and limits alongside current executable code.",
+    "declarations": [],
+    "sha256": "4f337d40fcbec352a97ea08e6d8a5a6f58a16b334efea368801f49778c51139c",
+    "category": "docs",
+    "lines": 354
   },
   {
     "path": "docs/guides/gpu_training_preparation.md",
@@ -713,14 +3177,14 @@
   },
   {
     "path": "docs/guides/ppo_frontend_integration.md",
-    "size": 11152,
+    "size": 12049,
     "readable": true,
     "url": "source/docs/guides/ppo_frontend_integration.md.txt",
     "purpose": "Documentation: PPO-controlled 3D browser missions. Read dates and limits alongside current executable code.",
     "declarations": [],
-    "sha256": "e7908c9fd89de0f8f52ebaba3816ea6abfe5c67bbf14cec77962baa09a4cf4bb",
+    "sha256": "00621e2d4ac6f779d7ee33a8ef3068223f1b03bc057dabacbe3d7478fbd77f93",
     "category": "docs",
-    "lines": 203
+    "lines": 221
   },
   {
     "path": "docs/guides/ros2_gazebo.md",
@@ -732,6 +3196,28 @@
     "sha256": "bb290240341cea5e1915e978a9628fa004ec61cab94b82670f9120c59741a732",
     "category": "docs",
     "lines": 109
+  },
+  {
+    "path": "docs/guides/slam_integration.md",
+    "size": 16986,
+    "readable": true,
+    "url": "source/docs/guides/slam_integration.md.txt",
+    "purpose": "Documentation: SLAM and peer communication integration. Read dates and limits alongside current executable code.",
+    "declarations": [],
+    "sha256": "0a1072b218f0b3852744d3a4b31af85cbf6a594df352ceaa4ec803ddd02cc621",
+    "category": "docs",
+    "lines": 151
+  },
+  {
+    "path": "docs/guides/swarm_observatory.md",
+    "size": 4954,
+    "readable": true,
+    "url": "source/docs/guides/swarm_observatory.md.txt",
+    "purpose": "Documentation: Swarm intelligence observatory. Read dates and limits alongside current executable code.",
+    "declarations": [],
+    "sha256": "3792cdd029dfa5f10627d00d9f1c6f5d9094417127648437005f973d3a758723",
+    "category": "docs",
+    "lines": 50
   },
   {
     "path": "docs/guides/validation_commands.md",
@@ -1009,6 +3495,72 @@
     "lines": null
   },
   {
+    "path": "docs/media/updates/capture-manifest.json",
+    "size": 2057,
+    "readable": true,
+    "url": "source/docs/media/updates/capture-manifest.json.txt",
+    "purpose": "Recorded capture manifest data. Consult its fields and parent guide for experiment scope.",
+    "declarations": [],
+    "sha256": "a49fe94e98814bdbdd133ee9bec4228f5d9e02098748337c2ce9b876300d1ac4",
+    "category": "docs",
+    "lines": 43
+  },
+  {
+    "path": "docs/media/updates/mission-control.png",
+    "size": 498606,
+    "readable": false,
+    "url": null,
+    "purpose": "Original project visual artifact. See the containing capture manifest or gallery for its runtime and provenance.",
+    "declarations": [],
+    "sha256": "316ca7a8cb00388d0a90677e3b8ae3bbb973972d50b196e7ed56b470cc30c2a3",
+    "category": "docs",
+    "lines": null
+  },
+  {
+    "path": "docs/media/updates/observatory-map.png",
+    "size": 219628,
+    "readable": false,
+    "url": null,
+    "purpose": "Original project visual artifact. See the containing capture manifest or gallery for its runtime and provenance.",
+    "declarations": [],
+    "sha256": "38b862feebe3278ed51a58060a39a916004614eb10ff5a2cd67aefcbf0331c41",
+    "category": "docs",
+    "lines": null
+  },
+  {
+    "path": "docs/media/updates/observatory-network.png",
+    "size": 156752,
+    "readable": false,
+    "url": null,
+    "purpose": "Original project visual artifact. See the containing capture manifest or gallery for its runtime and provenance.",
+    "declarations": [],
+    "sha256": "c888832f30f8c0b0cf341c6aaa70ace336cc2e98c9225345ac4c7835730b2ccb",
+    "category": "docs",
+    "lines": null
+  },
+  {
+    "path": "docs/media/updates/ppo-preview.png",
+    "size": 571249,
+    "readable": false,
+    "url": null,
+    "purpose": "Original project visual artifact. See the containing capture manifest or gallery for its runtime and provenance.",
+    "declarations": [],
+    "sha256": "f60e6b6f600971d22060522af6aed5cd8143497fa82059a1be3131a74f968d83",
+    "category": "docs",
+    "lines": null
+  },
+  {
+    "path": "docs/media/updates/ros-connection.png",
+    "size": 492368,
+    "readable": false,
+    "url": null,
+    "purpose": "Original project visual artifact. See the containing capture manifest or gallery for its runtime and provenance.",
+    "declarations": [],
+    "sha256": "65f6e4dac7e5d7fb85b8981f2f65cedf4407cb67439aa30aea63cc9881c6f402",
+    "category": "docs",
+    "lines": null
+  },
+  {
     "path": "docs/planning/PS5_Plan_Part1_v2.md",
     "size": 23425,
     "readable": true,
@@ -1031,6 +3583,39 @@
     "lines": 223
   },
   {
+    "path": "docs/planning/large_map_evidence_summary.json",
+    "size": 3320,
+    "readable": true,
+    "url": "source/docs/planning/large_map_evidence_summary.json.txt",
+    "purpose": "Recorded large map evidence summary data. Consult its fields and parent guide for experiment scope.",
+    "declarations": [],
+    "sha256": "4eba68915e9b92fdf510ce5630272f3d608ff087beebbad77f78a3fa91928f5f",
+    "category": "docs",
+    "lines": 124
+  },
+  {
+    "path": "docs/planning/large_map_marl_roadmap.md",
+    "size": 32950,
+    "readable": true,
+    "url": "source/docs/planning/large_map_marl_roadmap.md.txt",
+    "purpose": "Documentation: large map marl roadmap. Read dates and limits alongside current executable code.",
+    "declarations": [],
+    "sha256": "5884363d51f49deb0374403ae0ec936af80642819200a74e3f9dff91df4ab0ed",
+    "category": "docs",
+    "lines": 521
+  },
+  {
+    "path": "docs/planning/overnight_delivery_plan.md",
+    "size": 18968,
+    "readable": true,
+    "url": "source/docs/planning/overnight_delivery_plan.md.txt",
+    "purpose": "Documentation: overnight delivery plan. Read dates and limits alongside current executable code.",
+    "declarations": [],
+    "sha256": "61a15e18d25858c27918c27846ba6140916a9e1f1cb0ce87448b80c5f1acba34",
+    "category": "docs",
+    "lines": 320
+  },
+  {
     "path": "docs/planning/ros2_gazebo_prompt.md",
     "size": 11053,
     "readable": true,
@@ -1051,6 +3636,17 @@
     "sha256": "9fd34b0dee94316ef16d40c6cc0ed3af8bd011449079ddf36684457cba62bdb9",
     "category": "docs",
     "lines": 69
+  },
+  {
+    "path": "docs/planning/slam_communication_integration_plan.md",
+    "size": 24261,
+    "readable": true,
+    "url": "source/docs/planning/slam_communication_integration_plan.md.txt",
+    "purpose": "Documentation: slam communication integration plan. Read dates and limits alongside current executable code.",
+    "declarations": [],
+    "sha256": "45bc9662c0cf101336de718348d61a30d180c4d9616aad826e9ba3d7b13bed58",
+    "category": "docs",
+    "lines": 430
   },
   {
     "path": "docs/problem_statement.md",
@@ -1480,7 +4076,7 @@
   },
   {
     "path": "frontend/src/app/App.tsx",
-    "size": 8484,
+    "size": 9370,
     "readable": true,
     "url": "source/frontend/src/app/App.tsx.txt",
     "purpose": "App — implementation; inspect its declarations and source below.",
@@ -1492,28 +4088,28 @@
       },
       {
         "name": "Panel",
-        "line": 16,
+        "line": 17,
         "kind": "declaration"
       },
       {
         "name": "useKeyboard",
-        "line": 29,
+        "line": 30,
         "kind": "declaration"
       },
       {
         "name": "App",
-        "line": 80,
+        "line": 81,
         "kind": "declaration"
       },
       {
         "name": "ControlsGuide",
-        "line": 135,
+        "line": 151,
         "kind": "declaration"
       }
     ],
-    "sha256": "dfc7b60f6fc6219b5157559d3543c2a80b15ff4305add421769a65e3fb140e52",
+    "sha256": "bec1e57da08f352cdf0de827597f3514df19ce21fdb6ca3bce8dddce71ba45e5",
     "category": "frontend",
-    "lines": 150
+    "lines": 166
   },
   {
     "path": "frontend/src/app/format.ts",
@@ -1689,7 +4285,7 @@
   },
   {
     "path": "frontend/src/components/ControllerControls.tsx",
-    "size": 5760,
+    "size": 6478,
     "readable": true,
     "url": "source/frontend/src/components/ControllerControls.tsx.txt",
     "purpose": "React interface component for ControllerControls.",
@@ -1705,9 +4301,9 @@
         "kind": "declaration"
       }
     ],
-    "sha256": "b2951a2f90bad3ddd835125e7618a89c53ff1ff97a1ddcaddd22ef9974186ae4",
+    "sha256": "c18fa1b6ec7bedb284ed94db28b061dda4f9ec10b0bca1417e46b0ee2d7a140f",
     "category": "frontend",
-    "lines": 53
+    "lines": 61
   },
   {
     "path": "frontend/src/components/EventFeed.tsx",
@@ -1743,7 +4339,7 @@
   },
   {
     "path": "frontend/src/components/Icon.tsx",
-    "size": 3369,
+    "size": 3479,
     "readable": true,
     "url": "source/frontend/src/components/Icon.tsx.txt",
     "purpose": "React interface component for Icon.",
@@ -1755,17 +4351,17 @@
       },
       {
         "name": "Icon",
-        "line": 37,
+        "line": 38,
         "kind": "declaration"
       }
     ],
-    "sha256": "346966c33e00c2a72b34aea8026a21ca44c3106cce563378c5b99a82eea1df4c",
+    "sha256": "652057f11c1c5d8d2e6cdd4df02cd8bd6dbd930d2009fb7786ba22e5d58adf07",
     "category": "frontend",
-    "lines": 40
+    "lines": 41
   },
   {
     "path": "frontend/src/components/LeftPanel.tsx",
-    "size": 13256,
+    "size": 13376,
     "readable": true,
     "url": "source/frontend/src/components/LeftPanel.tsx.txt",
     "purpose": "React interface component for LeftPanel.",
@@ -1806,7 +4402,7 @@
         "kind": "declaration"
       }
     ],
-    "sha256": "f7f26db3231ea99e3d6cdcbe5836d1861e18aaae6e88ba4ee707bd230420dded",
+    "sha256": "cc9f64e8174c748aecddff332a1b2c9e96877f486297a12346adb9817d437d09",
     "category": "frontend",
     "lines": 194
   },
@@ -1949,7 +4545,7 @@
   },
   {
     "path": "frontend/src/components/SceneHud.tsx",
-    "size": 12043,
+    "size": 11870,
     "readable": true,
     "url": "source/frontend/src/components/SceneHud.tsx.txt",
     "purpose": "React interface component for SceneHud.",
@@ -1966,18 +4562,18 @@
       },
       {
         "name": "SceneHud",
-        "line": 18,
+        "line": 19,
         "kind": "declaration"
       },
       {
         "name": "and",
-        "line": 53,
+        "line": 54,
         "kind": "declaration"
       }
     ],
-    "sha256": "b1ec3e950bf2887de66f2d007829d7f2f39814b89b604dd3f2a96248eb77d48c",
+    "sha256": "43249a38961394f08d7971d4aa2d5110d57c5460de521517fdf1000155b98a26",
     "category": "frontend",
-    "lines": 87
+    "lines": 88
   },
   {
     "path": "frontend/src/components/SoundControls.tsx",
@@ -2052,7 +4648,7 @@
   },
   {
     "path": "frontend/src/components/TopBar.tsx",
-    "size": 1673,
+    "size": 2209,
     "readable": true,
     "url": "source/frontend/src/components/TopBar.tsx.txt",
     "purpose": "React interface component for TopBar.",
@@ -2063,24 +4659,339 @@
         "kind": "declaration"
       }
     ],
-    "sha256": "eed1abbe1d37c756510b44ab655ecd307e5d7158dcdce97490b6f4fbfa37f3aa",
+    "sha256": "ec9548e60546224e61c41fdba2b6fcd96d9a456b48c84cd20dabd8dd7749e856",
     "category": "frontend",
-    "lines": 22
+    "lines": 24
   },
   {
     "path": "frontend/src/main.tsx",
-    "size": 244,
+    "size": 586,
     "readable": true,
     "url": "source/frontend/src/main.tsx.txt",
     "purpose": "Main — implementation; inspect its declarations and source below.",
     "declarations": [],
-    "sha256": "c5a9569586d74e003ba09a0d0fed2801b6637857fdbea99230b64cdd12a65021",
+    "sha256": "1ed5635a4620cf7f297d7d4b31cfe401f3dca655a33609555e9750f5d8e7964f",
     "category": "frontend",
-    "lines": 11
+    "lines": 16
+  },
+  {
+    "path": "frontend/src/observatory/BrowserObservatory.tsx",
+    "size": 1824,
+    "readable": true,
+    "url": "source/frontend/src/observatory/BrowserObservatory.tsx.txt",
+    "purpose": "Browserobservatory — implementation; inspect its declarations and source below.",
+    "declarations": [
+      {
+        "name": "useObservatoryDriver",
+        "line": 7,
+        "kind": "declaration"
+      },
+      {
+        "name": "BrowserObservatory",
+        "line": 28,
+        "kind": "declaration"
+      }
+    ],
+    "sha256": "94d47814f8a49df7176257f5caece3484239a70236d592506af04bb347292a79",
+    "category": "frontend",
+    "lines": 36
+  },
+  {
+    "path": "frontend/src/observatory/ObservatoryPage.tsx",
+    "size": 15755,
+    "readable": true,
+    "url": "source/frontend/src/observatory/ObservatoryPage.tsx.txt",
+    "purpose": "Observatorypage — implementation; inspect its declarations and source below.",
+    "declarations": [
+      {
+        "name": "CSSProperties",
+        "line": 1,
+        "kind": "declaration"
+      },
+      {
+        "name": "Props",
+        "line": 8,
+        "kind": "declaration"
+      },
+      {
+        "name": "ObservatoryPage",
+        "line": 17,
+        "kind": "declaration"
+      }
+    ],
+    "sha256": "c3bac78fef6106f60a75140f32f962e5c918f8afd549e2980d49b476267d88cf",
+    "category": "frontend",
+    "lines": 88
+  },
+  {
+    "path": "frontend/src/observatory/ObservatoryScene.tsx",
+    "size": 21354,
+    "readable": true,
+    "url": "source/frontend/src/observatory/ObservatoryScene.tsx.txt",
+    "purpose": "Renders measured occupancy, robots, paths and actual packet arcs with Three.js.",
+    "declarations": [
+      {
+        "name": "V3",
+        "line": 8,
+        "kind": "declaration"
+      },
+      {
+        "name": "Layout",
+        "line": 9,
+        "kind": "declaration"
+      },
+      {
+        "name": "Cell",
+        "line": 10,
+        "kind": "declaration"
+      },
+      {
+        "name": "useReducedMotion",
+        "line": 15,
+        "kind": "declaration"
+      },
+      {
+        "name": "getLayout",
+        "line": 21,
+        "kind": "declaration"
+      },
+      {
+        "name": "collectCells",
+        "line": 35,
+        "kind": "declaration"
+      },
+      {
+        "name": "CellInstances",
+        "line": 52,
+        "kind": "declaration"
+      },
+      {
+        "name": "BeliefMap",
+        "line": 76,
+        "kind": "declaration"
+      },
+      {
+        "name": "RoverModel",
+        "line": 86,
+        "kind": "declaration"
+      },
+      {
+        "name": "DroneModel",
+        "line": 99,
+        "kind": "declaration"
+      },
+      {
+        "name": "AgentModel",
+        "line": 112,
+        "kind": "declaration"
+      },
+      {
+        "name": "makeCurve",
+        "line": 131,
+        "kind": "declaration"
+      },
+      {
+        "name": "PacketPulse",
+        "line": 135,
+        "kind": "declaration"
+      },
+      {
+        "name": "Communication",
+        "line": 153,
+        "kind": "declaration"
+      },
+      {
+        "name": "CameraRig",
+        "line": 165,
+        "kind": "declaration"
+      },
+      {
+        "name": "BoardGrid",
+        "line": 180,
+        "kind": "declaration"
+      },
+      {
+        "name": "World",
+        "line": 191,
+        "kind": "declaration"
+      },
+      {
+        "name": "RendererHealth",
+        "line": 220,
+        "kind": "declaration"
+      },
+      {
+        "name": "ObservatoryScene",
+        "line": 230,
+        "kind": "declaration"
+      }
+    ],
+    "sha256": "d346b4b24d5cce9c3ebc0d462cff0bbf6b3ff15e92b234e8a07198ea226361cb",
+    "category": "frontend",
+    "lines": 242
+  },
+  {
+    "path": "frontend/src/observatory/RosObservatory.tsx",
+    "size": 451,
+    "readable": true,
+    "url": "source/frontend/src/observatory/RosObservatory.tsx.txt",
+    "purpose": "Rosobservatory — implementation; inspect its declarations and source below.",
+    "declarations": [
+      {
+        "name": "RosObservatory",
+        "line": 4,
+        "kind": "declaration"
+      }
+    ],
+    "sha256": "e7f0c73580a226ba69012fca1ccfea1971b29af62bd939491e69bf91474f510a",
+    "category": "frontend",
+    "lines": 8
+  },
+  {
+    "path": "frontend/src/observatory/SceneBoundary.tsx",
+    "size": 1005,
+    "readable": true,
+    "url": "source/frontend/src/observatory/SceneBoundary.tsx.txt",
+    "purpose": "Sceneboundary — implementation; inspect its declarations and source below.",
+    "declarations": [
+      {
+        "name": "ReactNode",
+        "line": 1,
+        "kind": "declaration"
+      },
+      {
+        "name": "SceneBoundary",
+        "line": 5,
+        "kind": "declaration"
+      },
+      {
+        "name": "GraphicsUnavailable",
+        "line": 14,
+        "kind": "declaration"
+      }
+    ],
+    "sha256": "efbc3e94155e313bd5daf2116a3b84e6047539404aece5ae948b5c831dfa6032",
+    "category": "frontend",
+    "lines": 22
+  },
+  {
+    "path": "frontend/src/observatory/observatory.css",
+    "size": 20167,
+    "readable": true,
+    "url": "source/frontend/src/observatory/observatory.css.txt",
+    "purpose": "Observatory — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "4178261898939acdb42d7d197e6051f16aa000d9fb2638f0a99a23e9dd12f4d8",
+    "category": "frontend",
+    "lines": 12
+  },
+  {
+    "path": "frontend/src/observatory/types.ts",
+    "size": 1591,
+    "readable": true,
+    "url": "source/frontend/src/observatory/types.ts.txt",
+    "purpose": "Types — implementation; inspect its declarations and source below.",
+    "declarations": [
+      {
+        "name": "ObservatoryPoint",
+        "line": 1,
+        "kind": "declaration"
+      },
+      {
+        "name": "ObservatoryGrid",
+        "line": 2,
+        "kind": "declaration"
+      },
+      {
+        "name": "ObservatoryAgent",
+        "line": 3,
+        "kind": "declaration"
+      },
+      {
+        "name": "ObservatoryPacket",
+        "line": 9,
+        "kind": "declaration"
+      },
+      {
+        "name": "ObservatoryLink",
+        "line": 10,
+        "kind": "declaration"
+      },
+      {
+        "name": "ObservatorySnapshot",
+        "line": 11,
+        "kind": "declaration"
+      },
+      {
+        "name": "ObservatoryCanvasProps",
+        "line": 17,
+        "kind": "declaration"
+      }
+    ],
+    "sha256": "2ae6e3448f608101c07d5f009c6cb64bb0ca919195022dbe81425f1bd7f30141",
+    "category": "frontend",
+    "lines": 22
+  },
+  {
+    "path": "frontend/src/observatory/useObservatory.ts",
+    "size": 17681,
+    "readable": true,
+    "url": "source/frontend/src/observatory/useObservatory.ts.txt",
+    "purpose": "Useobservatory — implementation; inspect its declarations and source below.",
+    "declarations": [
+      {
+        "name": "telemetryFresh",
+        "line": 13,
+        "kind": "declaration"
+      },
+      {
+        "name": "clockProgressTime",
+        "line": 16,
+        "kind": "declaration"
+      },
+      {
+        "name": "rosObservatoryGrid",
+        "line": 19,
+        "kind": "declaration"
+      },
+      {
+        "name": "useBrowserObservatory",
+        "line": 30,
+        "kind": "declaration"
+      },
+      {
+        "name": "Timed",
+        "line": 91,
+        "kind": "declaration"
+      },
+      {
+        "name": "Health",
+        "line": 92,
+        "kind": "declaration"
+      },
+      {
+        "name": "Pose",
+        "line": 93,
+        "kind": "declaration"
+      },
+      {
+        "name": "RosState",
+        "line": 94,
+        "kind": "declaration"
+      },
+      {
+        "name": "useRosObservatory",
+        "line": 107,
+        "kind": "declaration"
+      }
+    ],
+    "sha256": "403c48d3875337ca52396f242789ecea3dcb55dfd45524d021c2c94f61ff2959",
+    "category": "frontend",
+    "lines": 221
   },
   {
     "path": "frontend/src/ppo/PPOBridge.tsx",
-    "size": 6276,
+    "size": 7391,
     "readable": true,
     "url": "source/frontend/src/ppo/PPOBridge.tsx.txt",
     "purpose": "Manages remote mission requests, pause/reset, errors and response ordering.",
@@ -2101,14 +5012,19 @@
         "kind": "declaration"
       },
       {
+        "name": "applyPythonInitial",
+        "line": 37,
+        "kind": "declaration"
+      },
+      {
         "name": "PPOBridge",
-        "line": 36,
+        "line": 47,
         "kind": "declaration"
       }
     ],
-    "sha256": "cdc787580c7df5a55448ecc04d5b6f5732db41996a1f98a0d93797459c36fdcb",
+    "sha256": "5d783fb79ae05e65c80d782da7f738c64e62133dd5fa3d12c5a87a121e14570b",
     "category": "frontend",
-    "lines": 102
+    "lines": 125
   },
   {
     "path": "frontend/src/ppo/RemoteEngine.ts",
@@ -2188,6 +5104,63 @@
     "sha256": "7a525c8802574d939c78d194c6a120a129e83e9689c4921bac9eec5b44d08947",
     "category": "frontend",
     "lines": 39
+  },
+  {
+    "path": "frontend/src/ros/transport.ts",
+    "size": 5537,
+    "readable": true,
+    "url": "source/frontend/src/ros/transport.ts.txt",
+    "purpose": "Transport — implementation; inspect its declarations and source below.",
+    "declarations": [
+      {
+        "name": "RosGrid",
+        "line": 2,
+        "kind": "declaration"
+      },
+      {
+        "name": "RosPose",
+        "line": 3,
+        "kind": "declaration"
+      },
+      {
+        "name": "NetEvent",
+        "line": 4,
+        "kind": "declaration"
+      },
+      {
+        "name": "Health",
+        "line": 5,
+        "kind": "declaration"
+      },
+      {
+        "name": "Stats",
+        "line": 6,
+        "kind": "declaration"
+      },
+      {
+        "name": "validGrid",
+        "line": 8,
+        "kind": "declaration"
+      },
+      {
+        "name": "cellWorld",
+        "line": 20,
+        "kind": "declaration"
+      },
+      {
+        "name": "Subscriber",
+        "line": 27,
+        "kind": "declaration"
+      },
+      {
+        "name": "RosConnection",
+        "line": 28,
+        "kind": "declaration"
+      }
+    ],
+    "sha256": "de541305a93824548f194637f6d6cee32167f567d3a0233b7aad3760a7a39455",
+    "category": "frontend",
+    "lines": 85
   },
   {
     "path": "frontend/src/scene/Network.tsx",
@@ -3654,7 +6627,7 @@
   },
   {
     "path": "frontend/src/store/simStore.ts",
-    "size": 22305,
+    "size": 22360,
     "readable": true,
     "url": "source/frontend/src/store/simStore.ts.txt",
     "purpose": "Zustand state for mission controls, UI settings and selected engine ownership.",
@@ -3720,7 +6693,7 @@
         "kind": "declaration"
       }
     ],
-    "sha256": "fd6992e08c46f10b7668e9c264e050d7df030350ac37bb9af58e815f207bd6cc",
+    "sha256": "e972aba1600de58292bb6060a670ac727463751c473a980086d56393930f3e2f",
     "category": "frontend",
     "lines": 490
   },
@@ -3734,6 +6707,17 @@
     "sha256": "5cfb55ead9b5f3098a8325b712b6fe02ece2d3876d6d71d484a9bdc42def2e1e",
     "category": "frontend",
     "lines": 476
+  },
+  {
+    "path": "frontend/src/styles/world-polish.css",
+    "size": 9156,
+    "readable": true,
+    "url": "source/frontend/src/styles/world-polish.css.txt",
+    "purpose": "World polish — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "7439c6d31d1a194419f72c6cfa1613ff1480a3177004895d8b1795b1e012580e",
+    "category": "frontend",
+    "lines": 183
   },
   {
     "path": "frontend/src/tests/audio.test.ts",
@@ -3942,8 +6926,19 @@
     "lines": 165
   },
   {
+    "path": "frontend/src/tests/observatoryTelemetry.test.ts",
+    "size": 2012,
+    "readable": true,
+    "url": "source/frontend/src/tests/observatoryTelemetry.test.ts.txt",
+    "purpose": "Automated checks for observatoryTelemetry.. Inspect the source for assertions and validation scope.",
+    "declarations": [],
+    "sha256": "0b072fa45e7b34f46f088bb8629d713f5a9fb7e9b2979006317632ae196db1dc",
+    "category": "frontend",
+    "lines": 34
+  },
+  {
     "path": "frontend/src/tests/ppo.test.ts",
-    "size": 4877,
+    "size": 6051,
     "readable": true,
     "url": "source/frontend/src/tests/ppo.test.ts.txt",
     "purpose": "Automated checks for ppo.. Inspect the source for assertions and validation scope.",
@@ -3954,9 +6949,9 @@
         "kind": "declaration"
       }
     ],
-    "sha256": "1d43603b90a63bc3adb0fed7e48651b6d9dabbd59063ee120e6aba4e534eee1a",
+    "sha256": "7f82d2edd14f9b8e0bac2702659cf894a45cee81df1929d93b9366a5ab2b7f81",
     "category": "frontend",
-    "lines": 93
+    "lines": 118
   },
   {
     "path": "frontend/src/tests/presentation.test.ts",
@@ -3979,6 +6974,23 @@
     "sha256": "07b5407bc742bde5ff21483a667e64794de68497132ba576302afcee16fa1646",
     "category": "frontend",
     "lines": 36
+  },
+  {
+    "path": "frontend/src/tests/rosTransport.test.ts",
+    "size": 1003,
+    "readable": true,
+    "url": "source/frontend/src/tests/rosTransport.test.ts.txt",
+    "purpose": "Automated checks for rosTransport.. Inspect the source for assertions and validation scope.",
+    "declarations": [
+      {
+        "name": "RosGrid",
+        "line": 2,
+        "kind": "declaration"
+      }
+    ],
+    "sha256": "fde316c4a3647efc941df7daf36c53b5a3dbf4abc4f4b5670b0c7b8e495e860b",
+    "category": "frontend",
+    "lines": 18
   },
   {
     "path": "frontend/src/tests/scenario.test.ts",
@@ -4012,6 +7024,64 @@
     "sha256": "6390199a81d197360c6018536bbe41b74e704a4a5261dff48d123143f4f0a2c3",
     "category": "frontend",
     "lines": 123
+  },
+  {
+    "path": "frontend/tools/validate_observatory_ui.py",
+    "size": 11863,
+    "readable": true,
+    "url": "source/frontend/tools/validate_observatory_ui.py.txt",
+    "purpose": "Actual browser mission QA plus explicitly synthetic ROS/PPO contract checks.",
+    "declarations": [
+      {
+        "name": "main",
+        "line": 7,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "check",
+        "line": 14,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "api",
+        "line": 71,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "route_socket",
+        "line": 92,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "send",
+        "line": 108,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "clock",
+        "line": 109,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "receive",
+        "line": 94,
+        "kind": "FunctionDef"
+      }
+    ],
+    "sha256": "cabf1c1313bedcfaa27e4cce570ab9f1d22af9d32735cb1b8058d1ab2552676e",
+    "category": "frontend",
+    "lines": 144
+  },
+  {
+    "path": "frontend/tools/validate_ppo_preview.py",
+    "size": 5213,
+    "readable": true,
+    "url": "source/frontend/tools/validate_ppo_preview.py.txt",
+    "purpose": "Verify live PPO setup preview against the running Python service, without fixtures.",
+    "declarations": [],
+    "sha256": "f1ed532c04a556191ababc3ad671cf7360df6c068b6184295bb66faa8a2b3e41",
+    "category": "frontend",
+    "lines": 73
   },
   {
     "path": "frontend/tsconfig.json",
@@ -4443,6 +7513,17 @@
     "lines": 64
   },
   {
+    "path": "package.json",
+    "size": 146,
+    "readable": true,
+    "url": "source/package.json.txt",
+    "purpose": "Structured package metadata, configuration or recorded evidence.",
+    "declarations": [],
+    "sha256": "384b9974ae71ac028f18d69f3e2aec23b7ac7626a1b6f218fa31ab11ab1fcb76",
+    "category": "root",
+    "lines": 9
+  },
+  {
     "path": "pyproject.toml",
     "size": 609,
     "readable": true,
@@ -4452,6 +7533,17 @@
     "sha256": "61eb4dd9f5226862685f26d2c9a79e82bf30d0b9c2f4a2760a476b3adf3673da",
     "category": "root",
     "lines": 30
+  },
+  {
+    "path": "scripts/swarm.mjs",
+    "size": 6454,
+    "readable": true,
+    "url": "source/scripts/swarm.mjs.txt",
+    "purpose": "Checks prerequisites, reuses healthy services and starts the local frontend, PPO backend and audiobook.",
+    "declarations": [],
+    "sha256": "5c8d32eaea2a5f695f4ae88602d73737cdb119bf3586b4f7b11048e0d0109b5c",
+    "category": "scripts",
+    "lines": 92
   },
   {
     "path": "simulation/README.md",
@@ -4466,14 +7558,14 @@
   },
   {
     "path": "simulation/ros2_ws/src/swarm_sar_control/package.xml",
-    "size": 955,
+    "size": 1027,
     "readable": true,
     "url": "source/simulation/ros2_ws/src/swarm_sar_control/package.xml.txt",
     "purpose": "ROS package metadata and build/runtime dependencies for swarm_sar_control.",
     "declarations": [],
-    "sha256": "fce8ef674da05d0e7d5e292bcdcfb55ad5b009bbf4ce987c937a47f284d4e20b",
+    "sha256": "f12d24934d6888586d8636defeb840b34f41184bdd778fd874baa4102d838afc",
     "category": "simulation",
-    "lines": 15
+    "lines": 16
   },
   {
     "path": "simulation/ros2_ws/src/swarm_sar_control/resource/swarm_sar_control",
@@ -4499,14 +7591,14 @@
   },
   {
     "path": "simulation/ros2_ws/src/swarm_sar_control/setup.py",
-    "size": 1338,
+    "size": 1400,
     "readable": true,
     "url": "source/simulation/ros2_ws/src/swarm_sar_control/setup.py.txt",
     "purpose": "Setup — implementation; inspect its declarations and source below.",
     "declarations": [],
-    "sha256": "fe67e8d56097864f36d470c6b9942ee2360cd0156cb40309f02820eed355bb04",
+    "sha256": "a311952aea521d70ecdb864df214f61920e01da590996a4526863d86d4283d29",
     "category": "simulation",
-    "lines": 34
+    "lines": 35
   },
   {
     "path": "simulation/ros2_ws/src/swarm_sar_control/swarm_sar_control/__init__.py",
@@ -4521,7 +7613,7 @@
   },
   {
     "path": "simulation/ros2_ws/src/swarm_sar_control/swarm_sar_control/decentralized_agent.py",
-    "size": 15124,
+    "size": 17132,
     "readable": true,
     "url": "source/simulation/ros2_ws/src/swarm_sar_control/swarm_sar_control/decentralized_agent.py.txt",
     "purpose": "Independent frontier explorer using only local sensors and delivered peer data.",
@@ -4548,7 +7640,7 @@
       },
       {
         "name": "main",
-        "line": 308,
+        "line": 341,
         "kind": "FunctionDef"
       },
       {
@@ -4558,78 +7650,83 @@
       },
       {
         "name": "_cell",
-        "line": 103,
-        "kind": "FunctionDef"
-      },
-      {
-        "name": "_world",
-        "line": 106,
-        "kind": "FunctionDef"
-      },
-      {
-        "name": "_inside",
         "line": 109,
         "kind": "FunctionDef"
       },
       {
-        "name": "_set_cell",
+        "name": "_world",
         "line": 112,
         "kind": "FunctionDef"
       },
       {
+        "name": "_inside",
+        "line": 115,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "_set_cell",
+        "line": 118,
+        "kind": "FunctionDef"
+      },
+      {
         "name": "_odom_callback",
-        "line": 117,
+        "line": 123,
         "kind": "FunctionDef"
       },
       {
         "name": "_scan_callback",
-        "line": 126,
+        "line": 133,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "_belief_callback",
+        "line": 155,
         "kind": "FunctionDef"
       },
       {
         "name": "_frontier_clusters",
-        "line": 145,
+        "line": 165,
         "kind": "FunctionDef"
       },
       {
         "name": "_choose_goal",
-        "line": 175,
-        "kind": "FunctionDef"
-      },
-      {
-        "name": "_control",
         "line": 195,
         "kind": "FunctionDef"
       },
       {
+        "name": "_control",
+        "line": 216,
+        "kind": "FunctionDef"
+      },
+      {
         "name": "_evidence_callback",
-        "line": 231,
+        "line": 258,
         "kind": "FunctionDef"
       },
       {
         "name": "_peer_callback",
-        "line": 247,
+        "line": 274,
         "kind": "FunctionDef"
       },
       {
         "name": "_publish_envelope",
-        "line": 268,
+        "line": 301,
         "kind": "FunctionDef"
       },
       {
         "name": "_broadcast",
-        "line": 282,
+        "line": 315,
         "kind": "FunctionDef"
       },
       {
         "name": "_publish_map",
-        "line": 298,
+        "line": 331,
         "kind": "FunctionDef"
       }
     ],
-    "sha256": "687393a3674c48059f6cd380599406c052c0b677b3c27a9f71c2f917dcb43d4f",
+    "sha256": "55a868629afc019cd2ac506b210b3ebc8e3064292cb14a504f4b90c9c5c2ed24",
     "category": "simulation",
-    "lines": 318
+    "lines": 351
   },
   {
     "path": "simulation/ros2_ws/src/swarm_sar_control/swarm_sar_control/demo_views.py",
@@ -4690,7 +7787,7 @@
   },
   {
     "path": "simulation/ros2_ws/src/swarm_sar_control/swarm_sar_control/disaster_scene.py",
-    "size": 7289,
+    "size": 7383,
     "readable": true,
     "url": "source/simulation/ros2_ws/src/swarm_sar_control/swarm_sar_control/disaster_scene.py.txt",
     "purpose": "Grayscale live RViz map and confirmed survivor dots; no world truth overlay.",
@@ -4717,7 +7814,7 @@
       },
       {
         "name": "main",
-        "line": 157,
+        "line": 158,
         "kind": "FunctionDef"
       },
       {
@@ -4737,99 +7834,288 @@
       },
       {
         "name": "publish_detections",
-        "line": 118,
+        "line": 119,
         "kind": "FunctionDef"
       },
       {
         "name": "receive_evidence",
-        "line": 123,
+        "line": 124,
         "kind": "FunctionDef"
       },
       {
         "name": "receive_clock",
-        "line": 127,
+        "line": 128,
         "kind": "FunctionDef"
       },
       {
         "name": "receive_map",
-        "line": 135,
+        "line": 136,
         "kind": "FunctionDef"
       },
       {
         "name": "publish_map",
-        "line": 138,
+        "line": 139,
         "kind": "FunctionDef"
       },
       {
         "name": "publish_vehicles",
-        "line": 143,
+        "line": 144,
         "kind": "FunctionDef"
       }
     ],
-    "sha256": "8f7f9552afa6212a9b994948280dfa38751302d007e8dbe74db7a76512440eac",
+    "sha256": "3d144641396e0c134308a4b3939f1e121537903b322ba7356c7911e5c012395d",
     "category": "simulation",
-    "lines": 167
+    "lines": 168
   },
   {
     "path": "simulation/ros2_ws/src/swarm_sar_control/swarm_sar_control/peer_network_bridge.py",
-    "size": 5824,
+    "size": 10557,
     "readable": true,
     "url": "source/simulation/ros2_ws/src/swarm_sar_control/swarm_sar_control/peer_network_bridge.py.txt",
     "purpose": "Range-, wall-, loss-, delay-, and expiry-aware peer message transport.",
     "declarations": [
       {
         "name": "_orientation",
-        "line": 18,
+        "line": 21,
         "kind": "FunctionDef"
       },
       {
         "name": "_intersects",
-        "line": 22,
+        "line": 25,
         "kind": "FunctionDef"
       },
       {
         "name": "PeerNetworkBridge",
-        "line": 26,
+        "line": 29,
         "kind": "ClassDef"
       },
       {
         "name": "main",
-        "line": 108,
+        "line": 185,
         "kind": "FunctionDef"
       },
       {
         "name": "__init__",
-        "line": 29,
+        "line": 32,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "_event",
+        "line": 84,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "_isolate",
+        "line": 88,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "_stats",
+        "line": 96,
         "kind": "FunctionDef"
       },
       {
         "name": "_odom",
-        "line": 60,
+        "line": 102,
         "kind": "FunctionDef"
       },
       {
         "name": "_route",
-        "line": 64,
+        "line": 106,
         "kind": "FunctionDef"
       },
       {
         "name": "_deliver_due",
-        "line": 93,
+        "line": 161,
         "kind": "FunctionDef"
       },
       {
         "name": "_report",
-        "line": 104,
+        "line": 181,
         "kind": "FunctionDef"
       }
     ],
-    "sha256": "ed496ae98c49bc4193599ddec5846ba5a94959c6c0b9c3adb34359863a1b111a",
+    "sha256": "c970d1fc983b0c72032bb6ca5bcc6b5ed5dabc65ce6bb11423a95bc1871800b7",
     "category": "simulation",
-    "lines": 118
+    "lines": 195
+  },
+  {
+    "path": "simulation/ros2_ws/src/swarm_sar_control/swarm_sar_control/slam_agent.py",
+    "size": 12868,
+    "readable": true,
+    "url": "source/simulation/ros2_ws/src/swarm_sar_control/swarm_sar_control/slam_agent.py.txt",
+    "purpose": "Connects per-rover SLAM maps and estimated TF poses to mission-frame belief, peer snapshots and health telemetry.",
+    "declarations": [
+      {
+        "name": "yaw",
+        "line": 25,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "SlamAgent",
+        "line": 29,
+        "kind": "ClassDef"
+      },
+      {
+        "name": "main",
+        "line": 197,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "__init__",
+        "line": 30,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "now",
+        "line": 69,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "receive_map",
+        "line": 71,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "receive_status",
+        "line": 73,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "send",
+        "line": 78,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "receive_peer",
+        "line": 86,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "tick",
+        "line": 110,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "grid_message",
+        "line": 166,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "publish_views",
+        "line": 172,
+        "kind": "FunctionDef"
+      }
+    ],
+    "sha256": "a418960b820fdea5c1d47d53050a5f8abf2d131ed487dcfa842b051bd67d123a",
+    "category": "simulation",
+    "lines": 202
+  },
+  {
+    "path": "simulation/ros2_ws/src/swarm_sar_control/swarm_sar_control/slam_support.py",
+    "size": 12273,
+    "readable": true,
+    "url": "source/simulation/ros2_ws/src/swarm_sar_control/swarm_sar_control/slam_support.py.txt",
+    "purpose": "ROS-independent map projection, snapshot recovery, admission, byte budgeting and leased frontier intent.",
+    "declarations": [
+      {
+        "name": "GridSpec",
+        "line": 17,
+        "kind": "ClassDef"
+      },
+      {
+        "name": "project_occupancy",
+        "line": 38,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "observed_cells",
+        "line": 68,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "frontier_graph",
+        "line": 73,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "PeerKnowledge",
+        "line": 102,
+        "kind": "ClassDef"
+      },
+      {
+        "name": "RadioBudget",
+        "line": 213,
+        "kind": "ClassDef"
+      },
+      {
+        "name": "slim_json",
+        "line": 233,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "slam_bridges",
+        "line": 237,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "__post_init__",
+        "line": 25,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "payload",
+        "line": 33,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "__init__",
+        "line": 104,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "expire",
+        "line": 111,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "accept_claim",
+        "line": 115,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "accept",
+        "line": 130,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "combined",
+        "line": 200,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "peer_only",
+        "line": 207,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "__init__",
+        "line": 215,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "take",
+        "line": 221,
+        "kind": "FunctionDef"
+      }
+    ],
+    "sha256": "b921f6595193c96b4dbe7b68d92b36c6cc2c3ef9d9c0809c00f9a16906c121fb",
+    "category": "simulation",
+    "lines": 254
   },
   {
     "path": "simulation/ros2_ws/src/swarm_sar_control/swarm_sar_control/survivor_oracle.py",
-    "size": 5757,
+    "size": 6042,
     "readable": true,
     "url": "source/simulation/ros2_ws/src/swarm_sar_control/swarm_sar_control/survivor_oracle.py.txt",
     "purpose": "Noisy thermal/acoustic proxy; truth poses are never published directly.",
@@ -4846,7 +8132,7 @@
       },
       {
         "name": "main",
-        "line": 96,
+        "line": 99,
         "kind": "FunctionDef"
       },
       {
@@ -4856,18 +8142,18 @@
       },
       {
         "name": "_odom",
-        "line": 63,
+        "line": 66,
         "kind": "FunctionDef"
       },
       {
         "name": "_sense",
-        "line": 67,
+        "line": 70,
         "kind": "FunctionDef"
       }
     ],
-    "sha256": "3f88d7bd4f07a94eee9d58171406e2fba7b005023c74061bf1df816df620f7be",
+    "sha256": "d525a4ac47b55be37345710bda26ed1e789912ca18822c25c8f690d0244cf2ec",
     "category": "simulation",
-    "lines": 106
+    "lines": 109
   },
   {
     "path": "simulation/ros2_ws/src/swarm_sar_control/swarm_sar_control/wait_for_simulation.py",
@@ -4888,7 +8174,7 @@
   },
   {
     "path": "simulation/ros2_ws/src/swarm_sar_control/swarm_sar_control/waypoint_demo.py",
-    "size": 5095,
+    "size": 5115,
     "readable": true,
     "url": "source/simulation/ros2_ws/src/swarm_sar_control/swarm_sar_control/waypoint_demo.py.txt",
     "purpose": "Bounded, repeatable waypoint demonstration using physical vehicle controllers.",
@@ -4934,7 +8220,7 @@
         "kind": "FunctionDef"
       }
     ],
-    "sha256": "68cc5485411d8d129e49f9c486ac52e76f76828e615900b56fe11eae09732b69",
+    "sha256": "e922a42dedf121ca61f96091a50a683803d1a5e0252739b07c3b52faef571373",
     "category": "simulation",
     "lines": 122
   },
@@ -5109,14 +8395,14 @@
   },
   {
     "path": "simulation/ros2_ws/src/swarm_sar_description/urdf/rover.urdf.xacro",
-    "size": 5167,
+    "size": 5357,
     "readable": true,
     "url": "source/simulation/ros2_ws/src/swarm_sar_description/urdf/rover.urdf.xacro.txt",
     "purpose": "Physical simulation description for rover.urdf: links, geometry, scene or plugin parameters.",
     "declarations": [],
-    "sha256": "1d876c29892dfc08d4bc588cf1f561a90cfa648e8f2de5ef2644275e27a3f2df",
+    "sha256": "510115c5606135fddaca3d0350d0bad0fba9a51c848aa64dca59bb2a8c338c44",
     "category": "simulation",
-    "lines": 75
+    "lines": 77
   },
   {
     "path": "simulation/ros2_ws/src/swarm_sar_description/worlds/disaster_site.world",
@@ -5163,6 +8449,28 @@
     "lines": 146
   },
   {
+    "path": "simulation/ros2_ws/src/swarm_sar_gazebo/config/slam_demo.rviz",
+    "size": 5128,
+    "readable": true,
+    "url": "source/simulation/ros2_ws/src/swarm_sar_gazebo/config/slam_demo.rviz.txt",
+    "purpose": "Slam demo — project tooling or configuration.",
+    "declarations": [],
+    "sha256": "0f2d9658d981606f2e45e9b77bc2c99771712d29cbfaf7309751ed2008bcc302",
+    "category": "simulation",
+    "lines": 193
+  },
+  {
+    "path": "simulation/ros2_ws/src/swarm_sar_gazebo/config/slam_rover.yaml",
+    "size": 1644,
+    "readable": true,
+    "url": "source/simulation/ros2_ws/src/swarm_sar_gazebo/config/slam_rover.yaml.txt",
+    "purpose": "Configuration for slam rover. Effective run overrides may differ from these defaults.",
+    "declarations": [],
+    "sha256": "f45361e6d0adad42ea200460f025906052ea8c9a823f353a06f557759645d6e3",
+    "category": "simulation",
+    "lines": 49
+  },
+  {
     "path": "simulation/ros2_ws/src/swarm_sar_gazebo/launch/rviz.launch.py",
     "size": 759,
     "readable": true,
@@ -5178,6 +8486,28 @@
     "sha256": "3d273b10cf4ac9956db6bdfe71a0253f2b4ca41dc2033ad998bedf1483016736",
     "category": "simulation",
     "lines": 15
+  },
+  {
+    "path": "simulation/ros2_ws/src/swarm_sar_gazebo/launch/slam_demo.launch.py",
+    "size": 8842,
+    "readable": true,
+    "url": "source/simulation/ros2_ws/src/swarm_sar_gazebo/launch/slam_demo.launch.py.txt",
+    "purpose": "Dedicated estimated-mapping profile; does not replace the original ROS demo.",
+    "declarations": [
+      {
+        "name": "_setup",
+        "line": 29,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "generate_launch_description",
+        "line": 94,
+        "kind": "FunctionDef"
+      }
+    ],
+    "sha256": "b880ef422ad210c06252cf1ed313ab17f524065e1755bc20299fcfc69fa142a4",
+    "category": "simulation",
+    "lines": 104
   },
   {
     "path": "simulation/ros2_ws/src/swarm_sar_gazebo/launch/swarm_sar_sim.launch.py",
@@ -5203,14 +8533,14 @@
   },
   {
     "path": "simulation/ros2_ws/src/swarm_sar_gazebo/package.xml",
-    "size": 1099,
+    "size": 1263,
     "readable": true,
     "url": "source/simulation/ros2_ws/src/swarm_sar_gazebo/package.xml.txt",
     "purpose": "ROS package metadata and build/runtime dependencies for swarm_sar_gazebo.",
     "declarations": [],
-    "sha256": "dc6d571792a19170a281319cf5aa71262a261d1bbc28229e7d5227ccedc1421b",
+    "sha256": "16ecf3d4a894bdc942e7993e7b8ac82971f486d9fb479e3ebd76afcb12e5e7e5",
     "category": "simulation",
-    "lines": 16
+    "lines": 18
   },
   {
     "path": "simulation/ros2_ws/src/swarm_sar_interfaces/CMakeLists.txt",
@@ -5298,6 +8628,124 @@
     "sha256": "1c17f402621d8b1aa33e71dde21955dde7dec30fa7348995c016dfd8bff65159",
     "category": "simulation",
     "lines": 67
+  },
+  {
+    "path": "simulation/ros2_ws/tools/slam_runtime_probe.py",
+    "size": 5746,
+    "readable": true,
+    "url": "source/simulation/ros2_ws/tools/slam_runtime_probe.py.txt",
+    "purpose": "Live ROS smoke evidence. Never invents a PASS from static/local checks.",
+    "declarations": [
+      {
+        "name": "main",
+        "line": 18,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "clock",
+        "line": 29,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "tf",
+        "line": 35,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "event",
+        "line": 40,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "stats",
+        "line": 44,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "scan",
+        "line": 50,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "wheel",
+        "line": 51,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "estimated",
+        "line": 53,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "grid",
+        "line": 56,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "health",
+        "line": 59,
+        "kind": "FunctionDef"
+      }
+    ],
+    "sha256": "d7ee355c49937015c084e8017f309488d4e57ec92452baf7872037c2d9f0d212",
+    "category": "simulation",
+    "lines": 97
+  },
+  {
+    "path": "simulation/scripts/ablate_goal_governor.py",
+    "size": 2783,
+    "readable": true,
+    "url": "source/simulation/scripts/ablate_goal_governor.py.txt",
+    "purpose": "Controlled frozen-PPO goal-persistence/loop ablation; CPU inference only.",
+    "declarations": [
+      {
+        "name": "hashes",
+        "line": 19,
+        "kind": "FunctionDef"
+      }
+    ],
+    "sha256": "352d2f0069e37e0cdc19ce3fcf4c7438b6c7fa4b733b3c116b6d47cf7b430f34",
+    "category": "simulation",
+    "lines": 37
+  },
+  {
+    "path": "simulation/scripts/ablate_visibility.py",
+    "size": 4485,
+    "readable": true,
+    "url": "source/simulation/scripts/ablate_visibility.py.txt",
+    "purpose": "Predeclared development-only comparison; do not tune on resulting seeds.",
+    "declarations": [
+      {
+        "name": "hashes",
+        "line": 25,
+        "kind": "FunctionDef"
+      }
+    ],
+    "sha256": "4ccb15e1f897c14d4c8baff17eaa31af6abcae4f41e1b333011361b214b601fe",
+    "category": "simulation",
+    "lines": 54
+  },
+  {
+    "path": "simulation/scripts/assess_development_benchmark.py",
+    "size": 3257,
+    "readable": true,
+    "url": "source/simulation/scripts/assess_development_benchmark.py.txt",
+    "purpose": "Reject incomplete comparisons; report predeclared engineering gates.",
+    "declarations": [
+      {
+        "name": "assess",
+        "line": 7,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "main",
+        "line": 35,
+        "kind": "FunctionDef"
+      }
+    ],
+    "sha256": "57fd9039f431d4ef0160cc74493779db854e07da02f2c908a92e23385721e256",
+    "category": "simulation",
+    "lines": 46
   },
   {
     "path": "simulation/scripts/audit_step25_scalability.py",
@@ -5428,6 +8876,176 @@
     "sha256": "a1aa56a66122631b4514b54a21bc48c13596a5ce75f3d38720523e2af8600763",
     "category": "simulation",
     "lines": 156
+  },
+  {
+    "path": "simulation/scripts/diagnose_large_maps.py",
+    "size": 10117,
+    "readable": true,
+    "url": "source/simulation/scripts/diagnose_large_maps.py.txt",
+    "purpose": "Small inference-only paired diagnosis; instrumentation stays outside training sources.",
+    "declarations": [
+      {
+        "name": "run",
+        "line": 15,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "main",
+        "line": 114,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "shield",
+        "line": 28,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "drain",
+        "line": 33,
+        "kind": "FunctionDef"
+      }
+    ],
+    "sha256": "44ffc8ceac25c26d3a63aebbfa21d5cdd273bbad8f5f1022ce507f6558bad3b1",
+    "category": "simulation",
+    "lines": 139
+  },
+  {
+    "path": "simulation/scripts/frontier_utility.py",
+    "size": 2641,
+    "readable": true,
+    "url": "source/simulation/scripts/frontier_utility.py.txt",
+    "purpose": "Opt-in heuristic ablation over unchanged PPO candidate slots, not new learning.",
+    "declarations": [
+      {
+        "name": "candidate_utility",
+        "line": 6,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "FrontierUtility",
+        "line": 19,
+        "kind": "ClassDef"
+      },
+      {
+        "name": "__init__",
+        "line": 20,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "choose_context",
+        "line": 23,
+        "kind": "FunctionDef"
+      }
+    ],
+    "sha256": "4f60a4915c53a1c708f6e8e75c9f513d211e7da5f75cf249572f007bf7e17a6e",
+    "category": "simulation",
+    "lines": 44
+  },
+  {
+    "path": "simulation/scripts/frozen_development_benchmark.py",
+    "size": 8957,
+    "readable": true,
+    "url": "source/simulation/scripts/frozen_development_benchmark.py.txt",
+    "purpose": "Frozen benchmark validation and explicit opt-in CPU execution. No training.",
+    "declarations": [
+      {
+        "name": "sha",
+        "line": 9,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "load_protocol",
+        "line": 11,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "cases",
+        "line": 24,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "case_key",
+        "line": 27,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "env_config",
+        "line": 29,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "signature",
+        "line": 35,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "main",
+        "line": 38,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "actor_hashes",
+        "line": 85,
+        "kind": "FunctionDef"
+      }
+    ],
+    "sha256": "e4304803482c1ef3a7b0c27fef57baa27a70da32522a01ccd92c43b0d66be3dc",
+    "category": "simulation",
+    "lines": 129
+  },
+  {
+    "path": "simulation/scripts/goal_governor.py",
+    "size": 2784,
+    "readable": true,
+    "url": "source/simulation/scripts/goal_governor.py.txt",
+    "purpose": "Experimental local decision overrides; never modifies actor weights or logits.",
+    "declarations": [
+      {
+        "name": "GoalGovernor",
+        "line": 5,
+        "kind": "ClassDef"
+      },
+      {
+        "name": "__init__",
+        "line": 6,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "choose",
+        "line": 13,
+        "kind": "FunctionDef"
+      }
+    ],
+    "sha256": "dcfac82db55eb7d37c1683dd51927a740483b031b5c4e6c57b23754170f79cab",
+    "category": "simulation",
+    "lines": 45
+  },
+  {
+    "path": "simulation/scripts/package_slam_handoff.py",
+    "size": 5582,
+    "readable": true,
+    "url": "source/simulation/scripts/package_slam_handoff.py.txt",
+    "purpose": "Package only the reviewed SLAM changes; verify reconstruction on a fixed base.",
+    "declarations": [
+      {
+        "name": "git",
+        "line": 43,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "digest",
+        "line": 44,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "main",
+        "line": 46,
+        "kind": "FunctionDef"
+      }
+    ],
+    "sha256": "fb6ee75422eeea0718600d806954a83ed90ee01759e6b28219b24299e27b92d2",
+    "category": "simulation",
+    "lines": 91
   },
   {
     "path": "simulation/scripts/play_manual.py",
@@ -5612,6 +9230,38 @@
     "sha256": "06c4743a0e5ef122ef7f9f8bb1e8fbbb3d854635224dd473bc25dfa472e0b517",
     "category": "simulation",
     "lines": 45
+  },
+  {
+    "path": "simulation/scripts/visibility_frontiers.py",
+    "size": 3143,
+    "readable": true,
+    "url": "source/simulation/scripts/visibility_frontiers.py.txt",
+    "purpose": "Private-belief visibility proxy and separate heuristic planner experiments.",
+    "declarations": [
+      {
+        "name": "visible_unknown_gain",
+        "line": 9,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "PrivateFrontierPlanner",
+        "line": 20,
+        "kind": "ClassDef"
+      },
+      {
+        "name": "__init__",
+        "line": 21,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "choose",
+        "line": 24,
+        "kind": "FunctionDef"
+      }
+    ],
+    "sha256": "46ef8b3807eae2d0f5b93843d1850f66fae343ff4cce4e5afa24d9afc2ffa4be",
+    "category": "simulation",
+    "lines": 53
   },
   {
     "path": "simulation/src/swarm_sar/__init__.py",
@@ -7614,7 +11264,7 @@
   },
   {
     "path": "tests/backend/test_ppo_service.py",
-    "size": 6019,
+    "size": 7153,
     "readable": true,
     "url": "source/tests/backend/test_ppo_service.py.txt",
     "purpose": "Real saved-policy integration: no training, fabricated actions or test seeds.",
@@ -7653,15 +11303,173 @@
         "name": "test_fresh_checkout_extracts_verified_default_archive",
         "line": 114,
         "kind": "FunctionDef"
+      },
+      {
+        "name": "test_preview_matches_creation_without_session_or_policy_steps",
+        "line": 130,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "unexpected_step",
+        "line": 132,
+        "kind": "FunctionDef"
       }
     ],
-    "sha256": "080475d2c25d1bb654bec66b0bcc92b03460056b57c255bde868fe6a2584d8c4",
+    "sha256": "564c67c6ac9b172acd364e2eb6459efd3e27f9d76cd419bb8732d7debadd67a1",
     "category": "tests",
-    "lines": 128
+    "lines": 151
+  },
+  {
+    "path": "tests/experiments/test_frontier_utility.py",
+    "size": 1871,
+    "readable": true,
+    "url": "source/tests/experiments/test_frontier_utility.py.txt",
+    "purpose": "Automated checks for frontier utility. Inspect the source for assertions and validation scope.",
+    "declarations": [
+      {
+        "name": "setup",
+        "line": 10,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "test_energy_budget_and_horizon_admission_are_explicit",
+        "line": 15,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "choose",
+        "line": 24,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "test_hold_release_is_bounded_and_preserves_investigation",
+        "line": 28,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "test_no_override_without_legal_affordable_opportunity",
+        "line": 35,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "test_visits_and_peer_claims_penalize_but_never_add_information",
+        "line": 40,
+        "kind": "FunctionDef"
+      }
+    ],
+    "sha256": "309573ddf23e0f85ef5dffed3cdf029e424201e418455e0a2be174362a3fde55",
+    "category": "tests",
+    "lines": 45
+  },
+  {
+    "path": "tests/experiments/test_frozen_benchmark.py",
+    "size": 2000,
+    "readable": true,
+    "url": "source/tests/experiments/test_frozen_benchmark.py.txt",
+    "purpose": "Automated checks for frozen benchmark. Inspect the source for assertions and validation scope.",
+    "declarations": [
+      {
+        "name": "fixture",
+        "line": 9,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "test_stages_disjoint_and_outside_sealed_final_split",
+        "line": 17,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "test_incomplete_duplicate_or_unpaired_results_cannot_pass",
+        "line": 24,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "test_average_gain_cannot_hide_a_small_map_or_layout_regression",
+        "line": 36,
+        "kind": "FunctionDef"
+      }
+    ],
+    "sha256": "d88e399ee6aa11fcd1e8b708d2dcbe1213e34968670030234e07868219a5b74d",
+    "category": "tests",
+    "lines": 45
+  },
+  {
+    "path": "tests/experiments/test_goal_governor.py",
+    "size": 1979,
+    "readable": true,
+    "url": "source/tests/experiments/test_goal_governor.py.txt",
+    "purpose": "Decision-boundary checks for opt-in experimental overrides.",
+    "declarations": [
+      {
+        "name": "candidates",
+        "line": 8,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "choose",
+        "line": 13,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "test_commitment_is_by_goal_identity_and_preserves_investigate_and_hold",
+        "line": 17,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "test_commitment_expires_and_releases_stalled_or_masked_goal",
+        "line": 26,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "test_loop_escape_requires_repeated_edge_and_a_legal_alternative",
+        "line": 36,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "test_state_is_private_and_inputs_are_not_modified",
+        "line": 45,
+        "kind": "FunctionDef"
+      }
+    ],
+    "sha256": "a2cf89cdeb80038102cdd5e98fc20548240824d79afa6fb3c3d5858ec3d5ee3f",
+    "category": "tests",
+    "lines": 52
+  },
+  {
+    "path": "tests/experiments/test_visibility_frontiers.py",
+    "size": 1543,
+    "readable": true,
+    "url": "source/tests/experiments/test_visibility_frontiers.py.txt",
+    "purpose": "Automated checks for visibility frontiers. Inspect the source for assertions and validation scope.",
+    "declarations": [
+      {
+        "name": "test_known_wall_blocks_unknown_opportunity_but_unknown_is_not_truth",
+        "line": 9,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "test_gain_clips_at_bounds_and_never_mutates_private_belief",
+        "line": 19,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "test_wider_candidate_pool_only_contains_locally_known_reachable_routes",
+        "line": 25,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "test_planner_history_is_per_robot",
+        "line": 35,
+        "kind": "FunctionDef"
+      }
+    ],
+    "sha256": "b7bfba27f665d7d285167baaa976190d35d7bdc775f3c2fcd5e14502a1841814",
+    "category": "tests",
+    "lines": 39
   },
   {
     "path": "tests/ros2/test_physical_models.py",
-    "size": 2470,
+    "size": 3179,
     "readable": true,
     "url": "source/tests/ros2/test_physical_models.py.txt",
     "purpose": "Regression checks for the physical demo; requires sourced ROS/xacro.",
@@ -7680,11 +11488,16 @@
         "name": "test_rover_wheels_touch_ground_without_initial_penetration",
         "line": 34,
         "kind": "FunctionDef"
+      },
+      {
+        "name": "test_slam_model_labels_truth_separately_and_retains_wheel_tf",
+        "line": 49,
+        "kind": "FunctionDef"
       }
     ],
-    "sha256": "248291f2d7f61a0f5983406bbb8a40437149e10fb905c9328d155d820b55e49c",
+    "sha256": "a34b2709d9a4eab3fee03b69687ce56c9025d834d705ced052261ad5d5a1c5b7",
     "category": "tests",
-    "lines": 47
+    "lines": 60
   },
   {
     "path": "tests/ros2/test_ros2_integration.py",
@@ -7737,6 +11550,103 @@
     "sha256": "ce13d8ce9fcb74f6334b3c770563fca21ea87e419d088149bcca3dc6caa2214c",
     "category": "tests",
     "lines": 104
+  },
+  {
+    "path": "tests/ros2/test_slam_support.py",
+    "size": 6549,
+    "readable": true,
+    "url": "source/tests/ros2/test_slam_support.py.txt",
+    "purpose": "Geometry and failure-mode tests that need no ROS installation.",
+    "declarations": [
+      {
+        "name": "packet",
+        "line": 16,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "accept",
+        "line": 20,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "test_reprojection_respects_origin_rotation_and_start_alignment",
+        "line": 23,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "test_coarse_collision_keeps_occupied_and_unknown_does_not_erase",
+        "line": 28,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "test_bad_source_grids_rejected",
+        "line": 33,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "test_out_of_order_chunks_apply_atomically_and_duplicate_is_ignored",
+        "line": 36,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "test_repair_finishes_missing_chunk_and_full_snapshot_removes_obsolete_cells",
+        "line": 45,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "test_invalid_messages_never_mutate_knowledge",
+        "line": 54,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "test_invalid_new_session_cannot_erase_valid_layer_or_allow_old_session_replay",
+        "line": 59,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "test_new_session_partial_snapshot_clears_old_layer_metadata_atomically",
+        "line": 66,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "test_peer_knowledge_does_not_modify_local_or_override_its_cells",
+        "line": 71,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "test_incomplete_snapshot_and_claim_leases_expire_but_observed_map_remains",
+        "line": 78,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "test_selective_repair_recovers_snapshot_after_deterministic_packet_loss",
+        "line": 85,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "test_bandwidth_is_shared_by_sender_and_never_refills_on_backward_time",
+        "line": 100,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "test_stale_claim_cannot_override_new_intent_or_reserve_after_expiry",
+        "line": 108,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "test_bridge_excludes_truth_tf_and_preserves_truth_only_on_diagnostic_topic",
+        "line": 116,
+        "kind": "FunctionDef"
+      },
+      {
+        "name": "test_frontier_components_do_not_claim_unproven_traversability_edges",
+        "line": 125,
+        "kind": "FunctionDef"
+      }
+    ],
+    "sha256": "5b15bd1f0e04928063a6122e1c1b0bce4e4da3214928d34f8257b8cd8ba60841",
+    "category": "tests",
+    "lines": 129
   },
   {
     "path": "tests/simulation/test_decentralized_controller.py",

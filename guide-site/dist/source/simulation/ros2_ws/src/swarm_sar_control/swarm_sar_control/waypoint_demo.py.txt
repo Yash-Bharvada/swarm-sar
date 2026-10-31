@@ -51,7 +51,7 @@ class WaypointDemo(DecentralizedAgent):
     def _control(self):
         now = self.get_clock().now().nanoseconds
         target = Twist()
-        if self.pose is None or self.last_odom_ns is None or now - self.last_odom_ns > 1_000_000_000:
+        if self.pose is None or self.last_odom_ns is None or not 0 <= now - self.last_odom_ns <= 1_000_000_000:
             self.cmd_pub.publish(target)
             self.last_command = target
             self._stage("WAITING_FOR_ODOMETRY")
@@ -83,7 +83,7 @@ class WaypointDemo(DecentralizedAgent):
             target.linear.x = scale*(math.cos(yaw)*vx+math.sin(yaw)*vy)
             target.linear.y = scale*(-math.sin(yaw)*vx+math.cos(yaw)*vy)
         else:
-            if self.last_scan_ns is None or now-self.last_scan_ns > 2_000_000_000:
+            if self.last_scan_ns is None or not 0 <= now-self.last_scan_ns <= 2_000_000_000:
                 self.cmd_pub.publish(Twist())
                 self.last_command = Twist()
                 self._stage("WAITING_FOR_SCAN")

@@ -44,3 +44,16 @@ def test_rover_wheels_touch_ground_without_initial_penetration():
     drive = root.find(".//plugin[@name='gz::sim::systems::DiffDrive']")
     assert 0 < float(drive.findtext("max_linear_acceleration")) <= 0.5
     assert drive.findtext("odom_topic") != root.findtext(".//plugin[@name='gz::sim::systems::OdometryPublisher']/odom_topic")
+
+
+def test_slam_model_labels_truth_separately_and_retains_wheel_tf():
+    if not shutil.which("xacro"):
+        pytest.skip("xacro required to expand SLAM model")
+    root=ET.fromstring(subprocess.check_output(["xacro",str(DESC/'urdf/rover.urdf.xacro'),
+        'robot_name:=rover_0','slam_mode:=true'],text=True))
+    truth=root.find(".//plugin[@name='gz::sim::systems::OdometryPublisher']")
+    wheel=root.find(".//plugin[@name='gz::sim::systems::DiffDrive']")
+    assert truth.findtext('odom_frame')=='map'
+    assert truth.findtext('robot_base_frame')=='rover_0/ground_truth_base'
+    assert wheel.findtext('frame_id')=='rover_0/odom'
+    assert wheel.findtext('child_frame_id')=='rover_0/base_footprint'

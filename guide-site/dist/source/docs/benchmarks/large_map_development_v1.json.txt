@@ -1,0 +1,77 @@
+{
+  "version": "large_map_development_v1",
+  "seed_split": "development",
+  "stages": {
+    "discovery": [
+      10020,
+      10021,
+      10022,
+      10023
+    ],
+    "confirmation": [
+      10080,
+      10081,
+      10082,
+      10083
+    ]
+  },
+  "sizes": [
+    32,
+    56,
+    64
+  ],
+  "layouts": [
+    "maze",
+    "rooms",
+    "cave"
+  ],
+  "team": {
+    "rover": 2,
+    "drone": 2
+  },
+  "max_steps": 400,
+  "battery_multiplier": 1,
+  "network_enabled": true,
+  "world_overrides": {
+    "footprint": "full",
+    "max_generation_retries": 100
+  },
+  "inference": "deterministic",
+  "primary": "equal_weight_mean_of_size_layout_survivor_recall",
+  "secondary": [
+    "completion_rate",
+    "coverage",
+    "termination",
+    "steps",
+    "remaining_energy"
+  ],
+  "gates": {
+    "large_macro_recall_gain_min": 0.1,
+    "small_macro_recall_delta_min": -0.02,
+    "each_stratum_recall_delta_min": -0.05
+  },
+  "rules": [
+    "Fixed resources across sizes: this measures degradation, not adequate mission capacity.",
+    "No confirmation run until candidate source, settings and checkpoint identity are locked.",
+    "At most one selected candidate per version on confirmation; changing it retires confirmation as selection data.",
+    "No tuning on confirmation or sealed final seeds; all failures and incomplete runs count as incomplete evidence.",
+    "Development seed allocations are disjoint here but are not guaranteed historically unused.",
+    "Thresholds are engineering criteria, not statistical significance or real-world reliability guarantees.",
+    "No deployment or retraining follows automatically from passing these gates.",
+    "Room counts scale with area from 10-14 rooms at 32 cells; specified before any controller evaluation."
+  ],
+  "room_count_by_size": {
+    "32": [
+      10,
+      14
+    ],
+    "56": [
+      31,
+      43
+    ],
+    "64": [
+      40,
+      56
+    ]
+  }
+}

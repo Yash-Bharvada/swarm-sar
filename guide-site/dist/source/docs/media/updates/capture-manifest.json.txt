@@ -1,0 +1,42 @@
+{
+  "edition": "31 October 2026",
+  "captures": [
+    {
+      "file": "mission-control.png",
+      "source": "artifacts/observatory_redesign/world-desktop.png",
+      "scope": "Running browser app, heuristic world ready state; no live ROS claim.",
+      "sha256": "316ca7a8cb00388d0a90677e3b8ae3bbb973972d50b196e7ed56b470cc30c2a3"
+    },
+    {
+      "file": "observatory-map.png",
+      "source": "Running browser app at http://127.0.0.1:5173/?mode=observatory",
+      "scope": "Actual browser simulator beliefs and poses, paused; not live ROS SLAM.",
+      "sha256": "38b862feebe3278ed51a58060a39a916004614eb10ff5a2cd67aefcbf0331c41",
+      "controller": "heuristic",
+      "capture_trigger_step": 61,
+      "timestamp_note": "The displayed simulation timestamp records the final paused state; the trigger precedes the pause click."
+    },
+    {
+      "file": "observatory-network.png",
+      "source": "Running browser app at http://127.0.0.1:5173/?mode=observatory",
+      "scope": "Actual browser transport topology; not a GNN visualization.",
+      "sha256": "c888832f30f8c0b0cf341c6aaa70ace336cc2e98c9225345ac4c7835730b2ccb",
+      "controller": "heuristic",
+      "capture_trigger_step": 61,
+      "timestamp_note": "The displayed simulation timestamp records the final paused state; the trigger precedes the pause click."
+    },
+    {
+      "file": "ppo-preview.png",
+      "source": "artifacts/ppo_preview/live-preview.png",
+      "scope": "Actual Python-generated PPO setup preview before mission creation; no inference in preview.",
+      "sha256": "f60e6b6f600971d22060522af6aed5cd8143497fa82059a1be3131a74f968d83"
+    },
+    {
+      "file": "ros-connection.png",
+      "source": "artifacts/observatory_redesign/ros-disconnected.png",
+      "scope": "Real disconnected ROS interface; no operational SLAM data shown.",
+      "sha256": "65f6e4dac7e5d7fb85b8981f2f65cedf4407cb67439aa30aea63cc9881c6f402"
+    }
+  ],
+  "live_slam_validation": "Unavailable in this Mac checkout; original Gazebo/RViz host captures retain their original provenance."
+}

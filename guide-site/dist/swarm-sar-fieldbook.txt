@@ -1,7 +1,7 @@
 SWARM SAR — THE FIELDBOOK
 Om Rashiya · Yash Bharvada · Purva Shah · Pankti Akbari
-Edition: 30 October 2026
-Source revision: 83cd96ce7a5651ee77f5816a7ab47844bc0cbf7a
+Edition: 31 October 2026
+Source revision: d554464752fc9d5f3aa114d55c46fb7b300f49a7
 
 
 ======================================================================
@@ -19,7 +19,7 @@ Om Rashiya · Yash Bharvada · Purva Shah · Pankti Akbari
 
 English narration · Real project captures · Interactive field notes · Source-linked explanations
 
-Repository edition: 30 October 2026. Research prototype for autonomous disaster-response search and rescue.
+Repository edition: 31 October 2026. Extended chapters cover rover SLAM, the observatory, large-map experiments and one-command startup. Research prototype for autonomous disaster-response search and rescue.
 
 Code examples / written reference:
 
@@ -275,7 +275,7 @@ A strong presentation separates capability from aspiration.
 
 The repository implements local-belief grid simulation, frontier and decentralized heuristic controllers, noisy sensing, peer map/evidence exchange, cooperative PPO, a recurrent GPU policy path, behavior cloning, development cohorts and a browser policy adapter. The ROS workspace includes physical models, bridge configuration, messages and controllers.
 
-Graph neural networks are mentioned as a challenge hint, but the checked-in decision path is not a GNN. NetworkX graphs represent topological information; that is ordinary graph data processing, not graph neural learning. The project also does not implement a validated collaborative SLAM backend with real sensor calibration.
+Graph neural networks are mentioned as a challenge hint, but the checked-in decision path is not a GNN. NetworkX graphs represent topological information; that is ordinary graph data processing, not graph neural learning. The new ROS source integrates per-rover slam_toolbox and known-start map sharing. It has local software validation, but live Linux SLAM and joint collaborative pose-graph optimization are not established here.
 
 GPS-denied motivation means the policy does not receive GPS. The simulator still has coordinates and simplified odometry. Some ROS demo feedback uses simulator world pose. Those abstractions are useful for experiments but do not establish real-world GPS-free localization.
 
@@ -1122,7 +1122,7 @@ Sources: backend/ppo_service.py; frontend/src/ppo/PPOBridge.tsx; frontend/src/pp
 ======================================================================
 PAGE 53 · INSIDE MISSION CONTROL
 Run and inspect the actual application
-Use two terminals for the learned path.
+Start all local services with one command.
 
 The code example is available in the written edition.
 
@@ -1137,14 +1137,13 @@ Verify the service is healthy, the controller label says PPO when intended, and 
 This fieldbook’s hosted site is educational. It does not make your localhost Python service available to remote visitors.
 
 Code examples / written reference:
+# One-time setup:
 npm --prefix frontend ci
-npm --prefix frontend run dev
-
-# In another terminal, from the repository root:
 python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install -e .
-python -m backend.ppo_service
+.venv/bin/python -m pip install -e .
+
+# Every subsequent launch:
+npm run swarm
 Sources: README.md; docs/guides/ppo_frontend_integration.md; backend/README.md
 
 ======================================================================
@@ -1287,7 +1286,7 @@ PAGE 60 · THE REPOSITORY ATLAS
 A map of every tracked file
 Use the atlas to connect a concept to its implementation.
 
-The searchable file atlas in this reader inventories the project snapshot before the book was added. It includes source code, configuration, tests, documentation, model metadata, evidence and binary artifacts. Each entry records its path, category, size and purpose; Python entries also expose declared classes/functions and module documentation where available.
+The searchable file atlas inventories the reviewed project source and evidence, including the later integration files. Generated fieldbook outputs are excluded to avoid recursive copies of the atlas itself. It includes source code, configuration, tests, documentation, model metadata, evidence and binary artifacts. Each entry records its path, category, size and purpose; Python entries also expose declared classes/functions and module documentation where available.
 
 Readable project files can be opened directly in the source drawer with line numbers. Binary weights and dataset chunks are catalogued rather than embedded as executable downloads. Large artifacts are identified so you know where they belong without filling a learning website with training payloads.
 
@@ -1639,7 +1638,7 @@ Belief / occupancy map; The robot’s current knowledge of cells;
 
 Topology; Places and their connections, represented as a graph; 
 
-SLAM; Simultaneous localization and mapping; not a validated backend here; 
+SLAM; Simultaneous localization and mapping; rover integration is implemented, live Linux validation remains pending; 
 
 GNN; Learned graph processing; not the checked-in controller; 
 
@@ -1712,3 +1711,370 @@ Om Rashiya · Yash Bharvada · Purva Shah · Pankti Akbari. Search together. Sha
 Code examples / written reference:
 
 Sources: README.md; docs/project_report.md
+
+======================================================================
+PAGE 75 · FROM SCANS TO ROVER SLAM
+A notebook and a moving pencil
+SLAM begins with two questions: where am I, and what is around me?
+
+Imagine walking through a dark school with a pencil and a notebook. You draw the corridor after every few steps. If you think you walked one meter but actually walked a little less, the drawing slowly bends. A range sensor gives you wall distances. Comparing a new set of distances with walls seen before helps correct your position and the drawing together. That is the basic reason localization and mapping belong in one problem.
+
+SLAM means simultaneous localization and mapping. Wheel odometry predicts how the rover moved. Lidar measures nearby surfaces. Scan matching compares those observations to estimate a correction. A pose graph stores relationships between observations so later evidence can improve the estimate. Recognizing a previously visited place may create a loop constraint, but merely enabling loop-closure parameters does not demonstrate a successful closure.
+
+Our new ROS profile integrates slam_toolbox separately for each rover. This is implemented source with local tests; this Mac has not run the full Linux scan-matching experiment. The original Gazebo and RViz photographs remain real historical host captures, rather than proof of the new integration.
+
+SLAM and PPO solve different problems
+
+SLAM estimates pose and observed geometry. PPO chooses a search action from its observation. Better localization may make an observation more trustworthy; it does not automatically teach a policy how to allocate its battery on a larger maze.
+
+Code examples / written reference:
+
+Sources: simulation/ros2_ws/src/swarm_sar_gazebo/launch/slam_demo.launch.py; simulation/ros2_ws/src/swarm_sar_control/swarm_sar_control/slam_agent.py; docs/audits/slam_local_validation.md
+
+======================================================================
+PAGE 76 · FROM SCANS TO ROVER SLAM
+Follow one scan through the system
+Every arrow should correspond to an executable interface.
+
+Gazebo moves the robot and simulates its lidar. The ROS bridge publishes the scan and wheel feedback. Each rover has its own slam_toolbox instance and map topic. The toolbox estimates the correction from that rover’s map frame to its odometry frame. The adapter uses this transform chain to publish an estimated pose in the common mission frame.
+
+slam_agent.py is the ROS-facing adapter. slam_support.py holds projection, snapshot assembly, map admission, budgeting and lease logic that can be tested without a running ROS installation. The launch and parameter files choose the frames and lifecycle settings. The runtime probe observes scans, map updates, motion, transform edges and receiver-applied peer snapshots.
+
+The adapter does not publish velocity commands. A separate controller decides motion. Exactly one active motion controller should own each robot’s cmd_vel topic. The waypoint controller is a useful repeatable mapping diagnostic. It must be labelled waypoint control; moving during a scan-built map demonstration is not evidence of PPO execution.
+
+Component; Job; 
+
+Gazebo / bridge; Physical motion and simulated sensor messages; 
+
+slam_toolbox; Per-rover scan matching and local pose graph; 
+
+slam_agent; Estimated mission-frame feedback and mapping interfaces; 
+
+Motion controller; Select goals and publish physical commands; 
+
+Runtime probe; Record observed behavior and missing evidence;
+
+Code examples / written reference:
+
+Sources: simulation/ros2_ws/src/swarm_sar_gazebo/launch/slam_demo.launch.py; simulation/ros2_ws/src/swarm_sar_control/swarm_sar_control/slam_agent.py; simulation/ros2_ws/src/swarm_sar_control/swarm_sar_control/slam_support.py; simulation/ros2_ws/tools/slam_runtime_probe.py
+
+======================================================================
+PAGE 77 · FROM SCANS TO ROVER SLAM
+Frames are rulers with names
+A coordinate is meaningful only when its frame is known.
+
+A rover can say “I am at two, three” only after saying which origin and axes it uses. The mission map is one ruler. Each rover’s local map is another. Wheel odometry is a third. TF records how to move between these rulers. Applying a starting offset twice puts the robot in the wrong corridor even if every individual number looks reasonable.
+
+The new profile aligns the rover maps using known starting positions. Static transforms connect the mission map to the rover map frames. SLAM owns each rover-map to rover-odometry correction. Wheel odometry owns rover-odometry to base_footprint. Robot state publishing connects the body to the lidar. Ground-truth world transforms must not compete for those same edges.
+
+The canonical rover odometry used by the integration comes from the estimated chain. Ground-truth odometry has a separate name for evaluation and sensor/radio emulation. Estimated pose is not a measured velocity or covariance: the adapter’s twist is unpopulated and its covariance is explicitly unavailable. Use suitable wheel feedback when a controller requires velocity.
+
+The code example is available in the written edition.
+
+Code examples / written reference:
+map
+  → rover_0/map        known start alignment
+    → rover_0/odom     SLAM correction
+      → base_footprint wheel estimate
+        → base_link → lidar_link
+Sources: docs/guides/slam_integration.md; simulation/ros2_ws/src/swarm_sar_gazebo/launch/slam_demo.launch.py; simulation/ros2_ws/src/swarm_sar_control/swarm_sar_control/slam_agent.py
+
+======================================================================
+PAGE 78 · FROM SCANS TO ROVER SLAM
+Two maps do not become one brain
+Peer knowledge supplements a local map; it does not rewrite its pose graph.
+
+Each rover keeps a local scan-built map. It can also receive occupancy information from peers. The integration exposes local knowledge separately from peer-only knowledge and the combined belief. Incoming peer cells fill unknown regions under admission rules; they do not overwrite a rover’s trusted local observations or enter the slam_toolbox pose graph.
+
+A ROS occupancy grid includes width, height, cell resolution, an origin and an orientation. Projecting it into the common belief must respect all of them, including a rotated origin. The fixed mission belief is 240 by 240 cells at 0.2 meters per cell: a configured 48 by 48 meter canvas, not a demonstrated explored area. The trained grid policy uses a different observation geometry and needs an explicit compatible adapter.
+
+This implementation assumes known relative starts. It does not solve unknown-start map registration, aerial visual SLAM or distributed joint pose-graph optimization. Drones retain simulator localization and raycast mapping. Calling the result local rover SLAM with decentralized map sharing states the actual boundary clearly.
+
+Why separate colors matter
+
+Teal peer knowledge should mean that a received message contributed it. Drawing all robots’ maps together directly in the browser would make an attractive picture while bypassing the communication problem.
+
+Code examples / written reference:
+
+Sources: simulation/ros2_ws/src/swarm_sar_control/swarm_sar_control/slam_support.py; simulation/ros2_ws/src/swarm_sar_control/swarm_sar_control/slam_agent.py; frontend/src/observatory/useObservatory.ts; docs/guides/slam_integration.md
+
+======================================================================
+PAGE 79 · FROM SCANS TO ROVER SLAM
+What would prove the SLAM integration?
+Evidence is a chain of observations, not a launch command.
+
+On Linux, first launch the two-rover waypoint mapping diagnostic. Verify unique transform authorities, fresh scans, independent SLAM map topics and active lifecycles. Move both rovers and observe meaningful scan-built occupancy. Run the runtime probe and inspect the result. A successful build establishes package compatibility, not correct live mapping.
+
+Then isolate a rover’s radio for fifteen simulated seconds. Its own mapping and motion should continue. Received revisions should stop, peer information should age, and short-lived claims should expire. Reconnect and measure time to a complete repaired snapshot. Preserve received maps rather than erasing them to manufacture a visual effect.
+
+For learned control, recover the actual Linux PPO controller and inspect its observation and actuator code. The supplied host log mentions actors, but the matching source is absent in fetched refs. Verify model identities and trace a learned decision through cmd_vel, physical motion, sensing and the next estimated observation. Do not silently substitute the waypoint controller. Demonstrated loop closure and map error need their own measurements.
+
+The code example is available in the written edition.
+
+Code examples / written reference:
+ros2 launch swarm_sar_gazebo slam_demo.launch.py scenario:=rovers controller:=waypoint rosbridge:=true
+python3 simulation/ros2_ws/tools/slam_runtime_probe.py --seconds 120 --wall-timeout 600 --output artifacts/slam_runtime.json
+Sources: docs/guides/LINUX_SLAM_VALIDATION_PROMPT.md; simulation/ros2_ws/tools/slam_runtime_probe.py; docs/audits/slam_local_validation.md
+
+======================================================================
+PAGE 80 · INSIDE THE SWARM OBSERVATORY
+A room for the swarm’s thoughts
+The observatory makes knowledge and communication visible.
+
+The main maze shows the physical or simulated site from the operator’s viewpoint. The observatory answers a different set of questions: what does this robot know, where has it travelled, what goal has been reported, and which messages crossed the network? A dedicated page gives these questions room without covering the main world with permanent panels.
+
+The 3D map renders observed occupancy as instanced geometry. The rover and drone models sit at reported positions; trajectories come from received or simulated state. Unknown cells remain unobserved. Selecting an agent reveals its private map and details. Browser beliefs already contain merged knowledge, so that source cannot truthfully separate peer-only cell provenance.
+
+The peer-network view places posed agents in a coordination layout and draws actual transport links and packet pulses. It resembles a communicating network, but it is not a visualization of neural activations. A graph drawing does not establish that the decision policy is a graph neural network.
+
+Open it
+
+Use Swarm intelligence in the simulator header. Browser mode is ?mode=observatory; the ROS source is ?mode=ros. Returning from the browser observatory preserves the same mission engine and PPO session.
+
+Code examples / written reference:
+
+Sources: frontend/src/observatory/ObservatoryPage.tsx; frontend/src/observatory/ObservatoryScene.tsx; frontend/src/app/App.tsx
+
+======================================================================
+PAGE 81 · INSIDE THE SWARM OBSERVATORY
+A message has a life story
+Queued, transported and applied are different events.
+
+Suppose rover A notices a new corridor and sends a map snapshot to rover B. First a message is queued. It consumes a sender byte budget, waits through modeled delay and may be dropped by range, walls, packet loss, partitions or bandwidth. Transport delivery means the receiver got bytes. It does not yet prove the receiver accepted the content into its belief.
+
+Large snapshots are chunked. Chunks can arrive out of order, be duplicated or be lost. A receiver buffers valid pieces, requests missing data and applies a complete accepted revision atomically. Session identity and sequence checks prevent delayed messages from an old run replacing current knowledge. TTLs and leased goal claims prevent stale intent from reserving a corridor forever.
+
+Both peer and slam_peer traffic use the same modeled sender budget. A direct SLAM-to-SLAM subscription that bypasses the radio would defeat the experiment. The UI exposes packet states and receiver-applied events separately, so delivery should never be relabelled application merely to improve a success counter.
+
+Observed event; What it establishes; 
+
+Queued; Transport accepted a send attempt; 
+
+Dropped; A modeled channel or admission condition rejected traffic; 
+
+Delivered; Transport reached the receiver; 
+
+Applied; Receiver accepted usable knowledge;
+
+Code examples / written reference:
+
+Sources: simulation/ros2_ws/src/swarm_sar_control/swarm_sar_control/peer_network_bridge.py; simulation/ros2_ws/src/swarm_sar_control/swarm_sar_control/slam_support.py; frontend/src/observatory/useObservatory.ts
+
+======================================================================
+PAGE 82 · INSIDE THE SWARM OBSERVATORY
+Controls that reveal rather than invent
+A live interface should keep missing information visible.
+
+The observatory provides isometric and top-down views, orbit, pan, zoom and camera reset. Layers independently reveal paths, frontier markers and packet effects. Agent inspection opens only when needed. The message tray starts closed, supports delivered or dropped filters and exports a JSON snapshot for inspection.
+
+Freeze visualization holds what you see. Pause mission stops requesting new browser mission steps. Those are different controls. Rendering interpolation may smooth received poses, but it does not predict the controller’s next route. Motion effects stop when data is stale, simulation time stops, the view freezes or reduced motion is requested.
+
+A disconnected ROS view shows a connection prompt instead of placeholder robots. Radio isolation uses the actual ROS service; its acknowledged request is separate from the state subsequently reported by network telemetry. Stale status disables the controls. If the graphics context fails, recovery remains available without taking message inspection and mission controls down.
+
+Read a screenshot correctly
+
+The browser captures in this chapter show actual browser telemetry. They are not live Linux SLAM evidence. The historical RViz captures establish their original session only.
+
+Code examples / written reference:
+
+Sources: frontend/src/observatory/ObservatoryPage.tsx; frontend/src/observatory/SceneBoundary.tsx; frontend/tools/validate_observatory_ui.py; docs/guides/swarm_observatory.md
+
+======================================================================
+PAGE 83 · INSIDE THE SWARM OBSERVATORY
+Trace the visualization files
+Small presentation adapters protect the simulation boundary.
+
+File; Responsibility; 
+
+types.ts; Explicit snapshots, grids, agent poses and packet states; 
+
+useObservatory.ts; Adapt real browser state or ROS messages; validate frames and freshness; 
+
+BrowserObservatory.tsx; Keep the browser mission ticking while the main world is unmounted; 
+
+RosObservatory.tsx; Bind the ROS client to the shared page; 
+
+ObservatoryPage.tsx; Controls, selected-agent details, bridge dialog and message export; 
+
+ObservatoryScene.tsx; Three.js occupancy, models, paths, links and camera; 
+
+SceneBoundary.tsx; Renderer failure recovery; 
+
+The browser adapter does not replace PPOBridge. That bridge remains mounted when moving between the main scene and observatory. Otherwise merely opening a visualization could create a new mission or discard recurrent state. The integration tests compare exact engine identity and session creation counts across navigation.
+
+The ROS adapter validates incoming occupancy grids and mission-frame poses. Browser tests feed explicitly synthetic socket fixtures to check UI contracts. Those tests are useful, but their output must not be presented as a live mapping run.
+
+Code examples / written reference:
+
+Sources: frontend/src/observatory/types.ts; frontend/src/observatory/useObservatory.ts; frontend/src/observatory/BrowserObservatory.tsx; frontend/src/observatory/RosObservatory.tsx; frontend/tools/validate_observatory_ui.py
+
+======================================================================
+PAGE 84 · WHAT LARGE MAPS TAUGHT US
+Why a bigger maze is a different problem
+Do not blame an optimizer before inspecting a trajectory.
+
+Doubling a square map’s side length multiplies its cell area by four. If the team, battery and deadline stay fixed, each robot may need to travel farther and choose between more branches. A successful small-map policy can still spend its limited energy returning to familiar corridors or waiting in an unhelpful location.
+
+Our diagnosis records proposed actions, holds, goal changes, repeated movement, map admission and termination. Comparing the policy with an expert under matched initial worlds and budgets separates a policy weakness from a world-generation problem or a resource limit. A logged hold is an observation, not a complete explanation of a neural network’s internal reasoning.
+
+SLAM does not solve this allocation problem automatically. It replaces a localization assumption with an estimator and can introduce its own drift or uncertainty. Larger-map improvement still requires careful search decisions, observations that expose useful branches, appropriate resources and controlled evaluation.
+
+Keep the checkpoint frozen first
+
+Changing planner logic while freezing actor weights tests the execution system. Retraining at the same time would make it harder to identify which change caused the result.
+
+Code examples / written reference:
+
+Sources: docs/audits/large_map_failure_diagnosis.md; simulation/scripts/diagnose_large_maps.py; docs/planning/large_map_marl_roadmap.md
+
+======================================================================
+PAGE 85 · WHAT LARGE MAPS TAUGHT US
+Persistence can help, and can trap you
+A robot should neither change its mind every step nor cling to a bad goal.
+
+Goal persistence keeps pursuing a valid reachable target long enough to make progress. Loop prevention notices repeated positions or corridors and discourages another useless return. Both sound sensible. Their effect depends on how they interact with route replanning, evidence investigation, peer claims, action masks, energy and the remaining horizon.
+
+The project keeps these ideas in experimental wrappers and ablation scripts. They do not silently alter the selected checkpoint or redefine what its action slots mean. The experiments preserve initial cases and compare trajectories under the same budget. If a wrapper overrides an action, the later observations and policy choices will also change; it is a new closed-loop trajectory.
+
+A poor result should remain in the report. A method that improves coverage while missing survivors has not solved search and rescue. These runs motivate better candidate selection and information estimates; they are not a default-controller promotion.
+
+Follow the implementation
+
+goal_governor.py implements the controlled goal/loop interventions. ablate_goal_governor.py runs comparisons and logs overrides. Read the audit before interpreting an attractive trajectory.
+
+Code examples / written reference:
+
+Sources: simulation/scripts/goal_governor.py; simulation/scripts/ablate_goal_governor.py; docs/audits/goal_governor_ablation.md
+
+======================================================================
+PAGE 86 · WHAT LARGE MAPS TAUGHT US
+Information gain is a prediction
+Unknown cells behind a wall are not necessarily visible from a frontier.
+
+An information-gain score estimates how much new knowledge a goal might reveal. A simple square-window score counts nearby unknown cells. It is cheap, but optimistic: a wall can hide most of those cells. A visibility-aware estimate attempts to account for occlusion. A branch-diverse candidate pool attempts to offer genuinely different corridor choices instead of several points from one branch.
+
+The utility experiment also accounts for route energy, visited goals, peer claims and the remaining time. A HOLD-release rule can force an affordable exploration opportunity after repeated holds. Such an override is a hybrid heuristic intervention, not improved learned weights. Expanding or reordering the actor’s trained action slots would require a compatible policy contract; the widened experimental pool is not fed into the old actor.
+
+On four 56-cell development cases, one utility comparison found four of seven survivors versus two of seven for baseline, but regressed another case from one of two to zero of two. Additional visibility/diversity comparisons also failed to establish a robust improvement. A promising aggregate does not erase a concrete failure.
+
+Code examples / written reference:
+
+Sources: simulation/scripts/frontier_utility.py; simulation/scripts/visibility_frontiers.py; docs/audits/frontier_utility_ablation.md; docs/audits/visibility_diversity_ablation.md
+
+======================================================================
+PAGE 87 · WHAT LARGE MAPS TAUGHT US
+Freeze the exam before taking it
+A benchmark protects against tuning every decision to maps you already saw.
+
+The frozen development protocol uses 32, 56 and 64-cell maps, maze/rooms/cave families and four seeds per stratum. Two rovers, two drones, original batteries and a 400-step horizon stay fixed. Discovery has thirty-six cases; a separate confirmation allocation is reserved for one nominated frozen candidate. Final-test seeds remain sealed.
+
+Larger room maps originally failed a reachable-area generation requirement when room counts stayed fixed. Room counts were scaled with area before evaluating controllers. Both the failed and corrected generation checks were retained, no seeds were replaced, and no controller outcome selected the adjustment. World validity must be established before policy comparison.
+
+The protocol locks relevant source, config and actor identities. Its runner defaults to validation rather than execution. Candidate confirmation requires a nomination tied to complete discovery results and is marked consumed before episodes begin. These checks improve auditability; deleting or copying local bookkeeping could still defeat the intended discipline.
+
+Metric and gates
+
+Average survivor recall equally across size/layout strata. Promotion requires at least ten percentage points gain over PPO across the large strata, small-map loss no worse than two points and no stratum loss greater than five points. Those are engineering gates, not proof of statistical significance.
+
+Code examples / written reference:
+
+Sources: docs/benchmarks/README.md; docs/benchmarks/large_map_development_v1.json; simulation/scripts/frozen_development_benchmark.py; simulation/scripts/assess_development_benchmark.py
+
+======================================================================
+PAGE 88 · WHAT LARGE MAPS TAUGHT US
+Read the seventy-two baseline episodes
+The largest weakness is specific enough to act on.
+
+Size / family; PPO survivors; Expert survivors; 
+
+32 maze; 6 / 13; 8 / 13; 
+
+32 rooms; 7 / 7; 7 / 7; 
+
+32 cave; 10 / 10; 10 / 10; 
+
+56 maze; 0 / 7; 3 / 7; 
+
+56 rooms; 5 / 12; 7 / 12; 
+
+56 cave; 10 / 11; 10 / 11; 
+
+64 maze; 0 / 13; 1 / 13; 
+
+64 rooms; 3 / 8; 8 / 8; 
+
+64 cave; 6 / 10; 10 / 10; 
+
+These are thirty-six matched PPO/expert case pairs: seventy-two episodes. The recorded inspection verified the frozen lock, paired initial signatures, complete compressed traces and expected cases. It did not retrain, rerun confirmation or access final seeds.
+
+The maze weakness affects both controllers at large scale, while the 64-cell room gap points to a policy/search gap under those resources. The four-seed strata are small, dependent development samples. Do not merge these totals into the older checkpoint review as if they were the same evaluation.
+
+The next justified step is a predeclared candidate comparison on discovery, followed by untouched confirmation only after passing the gates. SLAM validation and search-policy improvement remain separate evidence tracks.
+
+Code examples / written reference:
+
+Sources: docs/audits/frozen_discovery_baselines.md; artifacts/benchmark_discovery_baselines/verified_summary.json; docs/benchmarks/README.md
+
+======================================================================
+PAGE 89 · RUN, INSPECT AND PRESENT
+One command opens the workstation
+Spend rehearsal time on the mission rather than juggling terminals.
+
+The code example is available in the written edition.
+
+The root package script runs scripts/swarm.mjs. It checks the local Python environment and frontend dependencies, inspects the expected ports and reuses healthy services. Missing services are started with named logs. It waits for the PPO health endpoint before printing the complete set of ready addresses.
+
+The frontend is at port 5173, the Python PPO service at 8765 and the local audiobook at 8088. Ctrl+C stops processes started by this launch. An existing healthy server is left alone. A conflicting process is reported instead of being killed. First-time dependency installation is still required on a fresh computer.
+
+ROS, Gazebo, slam_toolbox and rosbridge belong on the compatible Linux ROS host. Opening the ROS page on the Mac does not start those native programs. Use the sourced Linux launch and, when necessary, an SSH tunnel to the bridge. The workstation launcher does not start training.
+
+Code examples / written reference:
+npm run swarm
+
+# Read-only dependency and service check:
+npm run swarm -- --check
+Sources: package.json; scripts/swarm.mjs; README.md; docs/guides/slam_integration.md
+
+======================================================================
+PAGE 90 · RUN, INSPECT AND PRESENT
+See the mission before creating it
+A setup change should show its consequence immediately.
+
+Changing the PPO seed, map size, site, rover/drone counts, radio, battery mode or duration now updates a preview automatically. The bridge briefly debounces rapid edits, cancels superseded requests and accepts only the current response. Invalid robot counts or durations do not generate an invalid world.
+
+The preview endpoint uses the same Python environment generation and initial sensing as mission creation. It closes its temporary environment without registering an active session or taking a policy step. RemoteEngine renders the exact returned geometry and initial robot state. This avoids making a different-looking TypeScript approximation of a Python map.
+
+Create mission then opens a real session with the selected settings and fresh recurrent state. Launch remains disabled in preview mode and becomes available after creation. Editing settings again returns to preview, closes the earlier session and prevents late responses from replacing the new view. Refresh preview does not create a mission.
+
+What was checked
+
+Actual browser controls were exercised against the running backend. The created grid and robot spawns matched the preview, no session was created during the preview sequence, and the created mission then advanced using the real saved actors.
+
+Code examples / written reference:
+
+Sources: frontend/src/components/ControllerControls.tsx; frontend/src/ppo/PPOBridge.tsx; backend/ppo_service.py; frontend/tools/validate_ppo_preview.py
+
+======================================================================
+PAGE 91 · RUN, INSPECT AND PRESENT
+Explain the complete prototype honestly
+A strong presentation connects each claim to its evidence.
+
+Start the local workspace and show an explicitly labelled heuristic or PPO mission.
+
+Preview a map/fleet change, create the PPO mission and show a real learned action sequence.
+
+Open the observatory to inspect a private map and actual peer packets; explain delivery versus application.
+
+Show the original Gazebo/RViz host captures with their original runtime and team description.
+
+Describe the new rover SLAM implementation and the exact Linux validations still outstanding.
+
+Show the frozen large-map failure table and explain what it tells you to test next.
+
+The strongest story is a reproducible chain: sensor observations create private knowledge; the policy chooses an action; a planner and safety rules resolve motion; peers exchange bounded knowledge; the UI reveals what actually happened. Distinguish implemented source, automated contract checks, recorded runtime evidence and pending physical validation.
+
+The English fieldbook now includes these integrations, current screenshots and experimental findings. Its atlas records the reviewed source revision. The website does not turn local CPU inference into a hosted public robot service. Team: Om Rashiya, Yash Bharvada, Purva Shah and Pankti Akbari.
+
+Code examples / written reference:
+
+Sources: README.md; docs/audits/observatory_redesign.md; docs/audits/slam_local_validation.md; docs/audits/frozen_discovery_baselines.md

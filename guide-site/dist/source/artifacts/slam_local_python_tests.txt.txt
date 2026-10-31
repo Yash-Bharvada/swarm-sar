@@ -1,0 +1,12 @@
+........................................................................ [ 39%]
+........................................................................ [ 78%]
+........................................                                 [100%]
+=============================== warnings summary ===============================
+.venv/lib/python3.13/site-packages/pettingzoo/utils/deprecated_module.py:99
+.venv/lib/python3.13/site-packages/pettingzoo/utils/deprecated_module.py:99
+  /Users/omvipulbhairashiya/Desktop/swarm/.venv/lib/python3.13/site-packages/pettingzoo/utils/deprecated_module.py:99: DeprecationWarning: The old environment creation API has been deprecated in favor of a Gymnasium-like registry implementation, please use the make function instead.
+  The old API will eventually be removed in a future release.
+    spec.loader.exec_module(module)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+184 passed, 2 warnings in 17.15s

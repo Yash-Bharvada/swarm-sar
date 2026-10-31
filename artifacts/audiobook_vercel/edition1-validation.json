@@ -1,0 +1,16 @@
+{
+  "url": "https://swarmsar.vercel.app",
+  "passed": true,
+  "checks": [
+    "Public cover loads without login",
+    "Animated page navigation works",
+    "Hosted English narration plays",
+    "Audio supports byte-range seeking",
+    "swarm-sar-fieldbook.pdf download available",
+    "swarm-sar-fieldbook.m4b download available",
+    "Full-text search works",
+    "Mobile layout fits viewport"
+  ],
+  "browser_errors": [],
+  "deployment_id": "dpl_2DMS19xjbcorYcGPLomn2ogHyZeB"
+}

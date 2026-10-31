@@ -1,0 +1,39 @@
+
+> swarm-mission-control@0.1.0 test
+> vitest run --reporter=dot
+
+
+ RUN  v2.1.4 /Users/omvipulbhairashiya/Desktop/swarm/frontend
+
+ ✓ src/tests/network.test.ts  (8 tests) 10ms
+ ✓ src/tests/collision.test.ts  (9 tests) 29ms
+ ✓ src/tests/audio.test.ts  (14 tests) 6ms
+ ✓ src/tests/ppo.test.ts  (12 tests) 84ms
+ ✓ src/tests/presentation.test.ts  (17 tests) 121ms
+ ✓ src/tests/camera.test.ts  (8 tests) 14ms
+ ✓ src/tests/missionControls.test.ts  (8 tests) 183ms
+ ✓ src/tests/survivorPlacement.test.ts  (18 tests) 868ms
+   ✓ Operator survivor placement > replays a custom mission deterministically 665ms
+ ✓ src/tests/controller.test.ts  (7 tests) 1032ms
+   ✓ DecentralizedController > never selects a masked frontier action (next step occupied by a teammate) 968ms
+ ✓ src/tests/scenario.test.ts  (15 tests) 774ms
+ ✓ src/tests/observatoryTelemetry.test.ts  (4 tests) 4ms
+ ✓ src/tests/rescueCelebration.test.ts  (5 tests) 4ms
+ ✓ src/tests/autonomy.test.ts  (4 tests) 1394ms
+   ✓ Autonomy restrictions > autonomous robots do not use global survivor positions 1165ms
+ ✓ src/tests/rosTransport.test.ts  (2 tests) 3ms
+ ✓ src/tests/demo.test.ts  (7 tests) 4ms
+ ✓ src/tests/determinism.test.ts  (3 tests) 1997ms
+   ✓ Determinism > same seed and actions give the same simulation outcome 1502ms
+   ✓ Determinism > a recorded command log replays to the identical state 332ms
+ ✓ src/tests/survivorEncounter.test.ts  (4 tests) 3694ms
+   ✓ Survivor encounters > pauses on every real discovery, blocks ordinary resume, and finishes the same mission 3679ms
+stdout | src/tests/missions.test.ts > Full missions > finds most survivors overall
+recall 54/55 = 98.2%
+
+ ✓ src/tests/missions.test.ts  (3 tests) 3ms
+
+ Test Files  18 passed (18)
+      Tests  148 passed (148)
+   Start at  09:04:59
+   Duration  7.34s (transform 1.00s, setup 0ms, collect 9.14s, tests 10.22s, environment 5ms, prepare 1.79s)

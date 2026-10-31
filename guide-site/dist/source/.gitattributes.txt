@@ -1,0 +1,3 @@
+# Preserve whitespace in verbatim historical source/log snapshots and exports.
+guide-site/dist/source/** -whitespace
+guide-site/dist/swarm-sar-fieldbook.txt -whitespace

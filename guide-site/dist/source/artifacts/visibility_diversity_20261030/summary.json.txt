@@ -1,0 +1,758 @@
+{
+  "plan": {
+    "cases": [
+      [
+        32,
+        10008
+      ],
+      [
+        32,
+        10009
+      ],
+      [
+        56,
+        10008
+      ],
+      [
+        56,
+        10009
+      ],
+      [
+        56,
+        10010
+      ],
+      [
+        56,
+        10011
+      ]
+    ],
+    "modes": [
+      "ppo",
+      "square5",
+      "visible5",
+      "visible24"
+    ],
+    "max_steps": 400,
+    "battery_multiplier": 1,
+    "team": {
+      "rover": 2,
+      "drone": 2
+    },
+    "gain_radius_cap": 4,
+    "min_gain": 4,
+    "battery_fraction": 0.8,
+    "investigate_thresholds": {
+      "thermal": 0.35,
+      "acoustic": 0.08
+    },
+    "settings_frozen_before_run": true,
+    "selection_rule": "No mode promoted from these cases; no within-run retuning. Final seeds remain sealed.",
+    "limits": "Additional development seeds, not guaranteed historically unseen in every experiment. Square known-wall ray estimate remains optimistic through unknown cells. Heuristic arms never invoke PPO."
+  },
+  "rows": [
+    {
+      "size": 32,
+      "seed": 10008,
+      "mode": "ppo",
+      "found": 3,
+      "total": 4,
+      "coverage": 0.8830897703549061,
+      "steps": 303,
+      "termination": "all_batteries_depleted",
+      "initial_signature": "6d39edb4395ab4dfd68710cf0bb3c36b3186705f37ed77d2f7832aa364a54861",
+      "planner_counts": {}
+    },
+    {
+      "size": 32,
+      "seed": 10008,
+      "mode": "square5",
+      "found": 4,
+      "total": 4,
+      "coverage": 0.9018789144050104,
+      "steps": 216,
+      "termination": "all_found",
+      "initial_signature": "6d39edb4395ab4dfd68710cf0bb3c36b3186705f37ed77d2f7832aa364a54861",
+      "planner_counts": {
+        "rover_0": {
+          "candidate_evaluations": 902,
+          "frontier_moves": 213,
+          "investigate": 3
+        },
+        "rover_1": {
+          "candidate_evaluations": 867,
+          "frontier_moves": 207,
+          "hold_no_legal_affordable_gain": 2,
+          "investigate": 7
+        },
+        "drone_2": {
+          "candidate_evaluations": 861,
+          "frontier_moves": 216
+        },
+        "drone_3": {
+          "candidate_evaluations": 1029,
+          "frontier_moves": 211,
+          "investigate": 3,
+          "hold_no_legal_affordable_gain": 2
+        }
+      }
+    },
+    {
+      "size": 32,
+      "seed": 10008,
+      "mode": "visible5",
+      "found": 2,
+      "total": 4,
+      "coverage": 0.31106471816283926,
+      "steps": 400,
+      "termination": "deadline",
+      "initial_signature": "6d39edb4395ab4dfd68710cf0bb3c36b3186705f37ed77d2f7832aa364a54861",
+      "planner_counts": {
+        "rover_0": {
+          "candidate_evaluations": 1572,
+          "frontier_moves": 196,
+          "investigate": 4,
+          "hold_no_legal_affordable_gain": 200
+        },
+        "rover_1": {
+          "candidate_evaluations": 1605,
+          "frontier_moves": 191,
+          "hold_no_legal_affordable_gain": 208,
+          "investigate": 1
+        },
+        "drone_2": {
+          "candidate_evaluations": 1382,
+          "frontier_moves": 139,
+          "hold_no_legal_affordable_gain": 261
+        },
+        "drone_3": {
+          "candidate_evaluations": 1627,
+          "frontier_moves": 129,
+          "investigate": 4,
+          "hold_no_legal_affordable_gain": 267
+        }
+      }
+    },
+    {
+      "size": 32,
+      "seed": 10008,
+      "mode": "visible24",
+      "found": 2,
+      "total": 4,
+      "coverage": 0.33820459290187893,
+      "steps": 400,
+      "termination": "deadline",
+      "initial_signature": "6d39edb4395ab4dfd68710cf0bb3c36b3186705f37ed77d2f7832aa364a54861",
+      "planner_counts": {
+        "rover_0": {
+          "candidate_evaluations": 1278,
+          "frontier_moves": 132,
+          "investigate": 2,
+          "hold_no_legal_affordable_gain": 266
+        },
+        "rover_1": {
+          "candidate_evaluations": 1430,
+          "frontier_moves": 134,
+          "hold_no_legal_affordable_gain": 264,
+          "investigate": 2
+        },
+        "drone_2": {
+          "candidate_evaluations": 1585,
+          "frontier_moves": 128,
+          "hold_no_legal_affordable_gain": 271,
+          "investigate": 1
+        },
+        "drone_3": {
+          "candidate_evaluations": 1650,
+          "frontier_moves": 111,
+          "investigate": 2,
+          "hold_no_legal_affordable_gain": 287
+        }
+      }
+    },
+    {
+      "size": 32,
+      "seed": 10009,
+      "mode": "ppo",
+      "found": 3,
+      "total": 4,
+      "coverage": 0.9058577405857741,
+      "steps": 295,
+      "termination": "all_batteries_depleted",
+      "initial_signature": "bba430d36510fd5710e64db2877a8d6e7cddaf5633e4e29deb337f4a33aa79da",
+      "planner_counts": {}
+    },
+    {
+      "size": 32,
+      "seed": 10009,
+      "mode": "square5",
+      "found": 3,
+      "total": 4,
+      "coverage": 0.8786610878661087,
+      "steps": 400,
+      "termination": "deadline",
+      "initial_signature": "bba430d36510fd5710e64db2877a8d6e7cddaf5633e4e29deb337f4a33aa79da",
+      "planner_counts": {
+        "rover_0": {
+          "candidate_evaluations": 1948,
+          "frontier_moves": 229,
+          "investigate": 2,
+          "hold_no_legal_affordable_gain": 169
+        },
+        "rover_1": {
+          "candidate_evaluations": 1990,
+          "frontier_moves": 227,
+          "hold_no_legal_affordable_gain": 173
+        },
+        "drone_2": {
+          "candidate_evaluations": 1957,
+          "frontier_moves": 230,
+          "investigate": 6,
+          "hold_no_legal_affordable_gain": 164
+        },
+        "drone_3": {
+          "candidate_evaluations": 1689,
+          "frontier_moves": 231,
+          "hold_no_legal_affordable_gain": 109
+        }
+      }
+    },
+    {
+      "size": 32,
+      "seed": 10009,
+      "mode": "visible5",
+      "found": 3,
+      "total": 4,
+      "coverage": 0.8514644351464435,
+      "steps": 400,
+      "termination": "deadline",
+      "initial_signature": "bba430d36510fd5710e64db2877a8d6e7cddaf5633e4e29deb337f4a33aa79da",
+      "planner_counts": {
+        "rover_0": {
+          "candidate_evaluations": 1641,
+          "frontier_moves": 248,
+          "investigate": 4,
+          "hold_no_legal_affordable_gain": 82
+        },
+        "rover_1": {
+          "candidate_evaluations": 1985,
+          "frontier_moves": 231,
+          "hold_no_legal_affordable_gain": 168,
+          "investigate": 1
+        },
+        "drone_2": {
+          "candidate_evaluations": 1961,
+          "frontier_moves": 208,
+          "investigate": 4,
+          "hold_no_legal_affordable_gain": 188
+        },
+        "drone_3": {
+          "candidate_evaluations": 1944,
+          "frontier_moves": 202,
+          "hold_no_legal_affordable_gain": 198
+        }
+      }
+    },
+    {
+      "size": 32,
+      "seed": 10009,
+      "mode": "visible24",
+      "found": 3,
+      "total": 4,
+      "coverage": 0.805439330543933,
+      "steps": 400,
+      "termination": "deadline",
+      "initial_signature": "bba430d36510fd5710e64db2877a8d6e7cddaf5633e4e29deb337f4a33aa79da",
+      "planner_counts": {
+        "rover_0": {
+          "candidate_evaluations": 5736,
+          "frontier_moves": 253,
+          "investigate": 2,
+          "hold_no_legal_affordable_gain": 145
+        },
+        "rover_1": {
+          "candidate_evaluations": 3017,
+          "frontier_moves": 260,
+          "hold_no_legal_affordable_gain": 27
+        },
+        "drone_2": {
+          "candidate_evaluations": 6099,
+          "frontier_moves": 217,
+          "investigate": 5,
+          "hold_no_legal_affordable_gain": 178
+        },
+        "drone_3": {
+          "candidate_evaluations": 5234,
+          "frontier_moves": 213,
+          "investigate": 3,
+          "hold_no_legal_affordable_gain": 184
+        }
+      }
+    },
+    {
+      "size": 56,
+      "seed": 10008,
+      "mode": "ppo",
+      "found": 1,
+      "total": 1,
+      "coverage": 0.22316200390370852,
+      "steps": 203,
+      "termination": "all_found",
+      "initial_signature": "38d6df4dbf2f3a90ff1f2ae5cae0bc0b5de5c0f709872f78433bbcbf81397b48",
+      "planner_counts": {}
+    },
+    {
+      "size": 56,
+      "seed": 10008,
+      "mode": "square5",
+      "found": 0,
+      "total": 1,
+      "coverage": 0.43331164606376055,
+      "steps": 377,
+      "termination": "all_batteries_depleted",
+      "initial_signature": "38d6df4dbf2f3a90ff1f2ae5cae0bc0b5de5c0f709872f78433bbcbf81397b48",
+      "planner_counts": {
+        "rover_0": {
+          "candidate_evaluations": 1882,
+          "frontier_moves": 266,
+          "hold_no_legal_affordable_gain": 111
+        },
+        "rover_1": {
+          "candidate_evaluations": 1461,
+          "frontier_moves": 275,
+          "investigate": 1,
+          "hold_no_legal_affordable_gain": 20
+        },
+        "drone_2": {
+          "candidate_evaluations": 1411,
+          "frontier_moves": 251,
+          "hold_no_legal_affordable_gain": 35
+        },
+        "drone_3": {
+          "candidate_evaluations": 1338,
+          "frontier_moves": 239,
+          "hold_no_legal_affordable_gain": 29
+        }
+      }
+    },
+    {
+      "size": 56,
+      "seed": 10008,
+      "mode": "visible5",
+      "found": 1,
+      "total": 1,
+      "coverage": 0.0852309694209499,
+      "steps": 30,
+      "termination": "all_found",
+      "initial_signature": "38d6df4dbf2f3a90ff1f2ae5cae0bc0b5de5c0f709872f78433bbcbf81397b48",
+      "planner_counts": {
+        "rover_0": {
+          "candidate_evaluations": 144,
+          "frontier_moves": 30
+        },
+        "rover_1": {
+          "candidate_evaluations": 144,
+          "frontier_moves": 30
+        },
+        "drone_2": {
+          "candidate_evaluations": 127,
+          "frontier_moves": 26,
+          "hold_no_legal_affordable_gain": 4
+        },
+        "drone_3": {
+          "candidate_evaluations": 141,
+          "frontier_moves": 29,
+          "investigate": 1
+        }
+      }
+    },
+    {
+      "size": 56,
+      "seed": 10008,
+      "mode": "visible24",
+      "found": 1,
+      "total": 1,
+      "coverage": 0.07677293428757319,
+      "steps": 24,
+      "termination": "all_found",
+      "initial_signature": "38d6df4dbf2f3a90ff1f2ae5cae0bc0b5de5c0f709872f78433bbcbf81397b48",
+      "planner_counts": {
+        "rover_0": {
+          "candidate_evaluations": 129,
+          "frontier_moves": 24
+        },
+        "rover_1": {
+          "candidate_evaluations": 105,
+          "frontier_moves": 24
+        },
+        "drone_2": {
+          "candidate_evaluations": 103,
+          "frontier_moves": 23,
+          "hold_no_legal_affordable_gain": 1
+        },
+        "drone_3": {
+          "candidate_evaluations": 148,
+          "frontier_moves": 23,
+          "investigate": 1
+        }
+      }
+    },
+    {
+      "size": 56,
+      "seed": 10009,
+      "mode": "ppo",
+      "found": 0,
+      "total": 3,
+      "coverage": 0.17643229166666666,
+      "steps": 314,
+      "termination": "all_batteries_depleted",
+      "initial_signature": "b916d54f98240388aad8aa6ff1c8dda3d361eecf54a7387ad9b81108952b0c70",
+      "planner_counts": {}
+    },
+    {
+      "size": 56,
+      "seed": 10009,
+      "mode": "square5",
+      "found": 1,
+      "total": 3,
+      "coverage": 0.4069010416666667,
+      "steps": 331,
+      "termination": "all_batteries_depleted",
+      "initial_signature": "b916d54f98240388aad8aa6ff1c8dda3d361eecf54a7387ad9b81108952b0c70",
+      "planner_counts": {
+        "rover_0": {
+          "candidate_evaluations": 1381,
+          "frontier_moves": 279,
+          "hold_no_legal_affordable_gain": 11
+        },
+        "rover_1": {
+          "candidate_evaluations": 1573,
+          "frontier_moves": 288,
+          "hold_no_legal_affordable_gain": 40,
+          "investigate": 3
+        },
+        "drone_2": {
+          "candidate_evaluations": 1409,
+          "frontier_moves": 234,
+          "hold_no_legal_affordable_gain": 61
+        },
+        "drone_3": {
+          "candidate_evaluations": 1254,
+          "frontier_moves": 237,
+          "investigate": 3,
+          "hold_no_legal_affordable_gain": 28
+        }
+      }
+    },
+    {
+      "size": 56,
+      "seed": 10009,
+      "mode": "visible5",
+      "found": 0,
+      "total": 3,
+      "coverage": 0.248046875,
+      "steps": 400,
+      "termination": "deadline",
+      "initial_signature": "b916d54f98240388aad8aa6ff1c8dda3d361eecf54a7387ad9b81108952b0c70",
+      "planner_counts": {
+        "rover_0": {
+          "candidate_evaluations": 1888,
+          "frontier_moves": 229,
+          "hold_no_legal_affordable_gain": 170,
+          "investigate": 1
+        },
+        "rover_1": {
+          "candidate_evaluations": 1472,
+          "frontier_moves": 286,
+          "hold_no_legal_affordable_gain": 21,
+          "investigate": 1
+        },
+        "drone_2": {
+          "candidate_evaluations": 1362,
+          "frontier_moves": 235,
+          "hold_no_legal_affordable_gain": 50
+        },
+        "drone_3": {
+          "candidate_evaluations": 1517,
+          "frontier_moves": 247,
+          "hold_no_legal_affordable_gain": 75
+        }
+      }
+    },
+    {
+      "size": 56,
+      "seed": 10009,
+      "mode": "visible24",
+      "found": 0,
+      "total": 3,
+      "coverage": 0.3268229166666667,
+      "steps": 400,
+      "termination": "deadline",
+      "initial_signature": "b916d54f98240388aad8aa6ff1c8dda3d361eecf54a7387ad9b81108952b0c70",
+      "planner_counts": {
+        "rover_0": {
+          "candidate_evaluations": 3983,
+          "frontier_moves": 215,
+          "hold_no_legal_affordable_gain": 185
+        },
+        "rover_1": {
+          "candidate_evaluations": 3276,
+          "frontier_moves": 310,
+          "hold_no_legal_affordable_gain": 29,
+          "investigate": 2
+        },
+        "drone_2": {
+          "candidate_evaluations": 4070,
+          "frontier_moves": 216,
+          "investigate": 2,
+          "hold_no_legal_affordable_gain": 182
+        },
+        "drone_3": {
+          "candidate_evaluations": 5505,
+          "frontier_moves": 230,
+          "hold_no_legal_affordable_gain": 110
+        }
+      }
+    },
+    {
+      "size": 56,
+      "seed": 10010,
+      "mode": "ppo",
+      "found": 1,
+      "total": 3,
+      "coverage": 0.2838541666666667,
+      "steps": 308,
+      "termination": "all_batteries_depleted",
+      "initial_signature": "953a6624d8846a5e23f70a12c059ffce9c83d7df4996233f690f3be88937ef92",
+      "planner_counts": {}
+    },
+    {
+      "size": 56,
+      "seed": 10010,
+      "mode": "square5",
+      "found": 0,
+      "total": 3,
+      "coverage": 0.5208333333333334,
+      "steps": 400,
+      "termination": "deadline",
+      "initial_signature": "953a6624d8846a5e23f70a12c059ffce9c83d7df4996233f690f3be88937ef92",
+      "planner_counts": {
+        "rover_0": {
+          "candidate_evaluations": 1512,
+          "frontier_moves": 285,
+          "hold_no_legal_affordable_gain": 20
+        },
+        "rover_1": {
+          "candidate_evaluations": 1471,
+          "frontier_moves": 277,
+          "hold_no_legal_affordable_gain": 20
+        },
+        "drone_2": {
+          "candidate_evaluations": 1356,
+          "frontier_moves": 236,
+          "investigate": 13,
+          "hold_no_legal_affordable_gain": 37
+        },
+        "drone_3": {
+          "candidate_evaluations": 1986,
+          "frontier_moves": 219,
+          "investigate": 1,
+          "hold_no_legal_affordable_gain": 180
+        }
+      }
+    },
+    {
+      "size": 56,
+      "seed": 10010,
+      "mode": "visible5",
+      "found": 1,
+      "total": 3,
+      "coverage": 0.3489583333333333,
+      "steps": 400,
+      "termination": "deadline",
+      "initial_signature": "953a6624d8846a5e23f70a12c059ffce9c83d7df4996233f690f3be88937ef92",
+      "planner_counts": {
+        "rover_0": {
+          "candidate_evaluations": 1588,
+          "frontier_moves": 281,
+          "investigate": 5,
+          "hold_no_legal_affordable_gain": 38
+        },
+        "rover_1": {
+          "candidate_evaluations": 1997,
+          "frontier_moves": 265,
+          "hold_no_legal_affordable_gain": 135
+        },
+        "drone_2": {
+          "candidate_evaluations": 1971,
+          "frontier_moves": 193,
+          "hold_no_legal_affordable_gain": 207
+        },
+        "drone_3": {
+          "candidate_evaluations": 1999,
+          "frontier_moves": 197,
+          "hold_no_legal_affordable_gain": 203
+        }
+      }
+    },
+    {
+      "size": 56,
+      "seed": 10010,
+      "mode": "visible24",
+      "found": 0,
+      "total": 3,
+      "coverage": 0.2962239583333333,
+      "steps": 400,
+      "termination": "deadline",
+      "initial_signature": "953a6624d8846a5e23f70a12c059ffce9c83d7df4996233f690f3be88937ef92",
+      "planner_counts": {
+        "rover_0": {
+          "candidate_evaluations": 4555,
+          "frontier_moves": 292,
+          "hold_no_legal_affordable_gain": 29
+        },
+        "rover_1": {
+          "candidate_evaluations": 3833,
+          "frontier_moves": 207,
+          "hold_no_legal_affordable_gain": 193
+        },
+        "drone_2": {
+          "candidate_evaluations": 3371,
+          "frontier_moves": 237,
+          "hold_no_legal_affordable_gain": 49
+        },
+        "drone_3": {
+          "candidate_evaluations": 3651,
+          "frontier_moves": 219,
+          "hold_no_legal_affordable_gain": 181
+        }
+      }
+    },
+    {
+      "size": 56,
+      "seed": 10011,
+      "mode": "ppo",
+      "found": 1,
+      "total": 3,
+      "coverage": 0.3441769681197137,
+      "steps": 400,
+      "termination": "deadline",
+      "initial_signature": "a7660816dd334aad85c7ded4d762fe8fdb79d25ca8862b5698daf13163a05eca",
+      "planner_counts": {}
+    },
+    {
+      "size": 56,
+      "seed": 10011,
+      "mode": "square5",
+      "found": 1,
+      "total": 3,
+      "coverage": 0.5087833441769681,
+      "steps": 400,
+      "termination": "deadline",
+      "initial_signature": "a7660816dd334aad85c7ded4d762fe8fdb79d25ca8862b5698daf13163a05eca",
+      "planner_counts": {
+        "rover_0": {
+          "candidate_evaluations": 1533,
+          "frontier_moves": 297,
+          "hold_no_legal_affordable_gain": 11
+        },
+        "rover_1": {
+          "candidate_evaluations": 1987,
+          "frontier_moves": 218,
+          "hold_no_legal_affordable_gain": 182
+        },
+        "drone_2": {
+          "candidate_evaluations": 1233,
+          "frontier_moves": 237,
+          "hold_no_legal_affordable_gain": 12,
+          "investigate": 10
+        },
+        "drone_3": {
+          "candidate_evaluations": 1593,
+          "frontier_moves": 231,
+          "investigate": 1,
+          "hold_no_legal_affordable_gain": 90
+        }
+      }
+    },
+    {
+      "size": 56,
+      "seed": 10011,
+      "mode": "visible5",
+      "found": 0,
+      "total": 3,
+      "coverage": 0.2992843201040989,
+      "steps": 400,
+      "termination": "deadline",
+      "initial_signature": "a7660816dd334aad85c7ded4d762fe8fdb79d25ca8862b5698daf13163a05eca",
+      "planner_counts": {
+        "rover_0": {
+          "candidate_evaluations": 1987,
+          "frontier_moves": 127,
+          "hold_no_legal_affordable_gain": 273
+        },
+        "rover_1": {
+          "candidate_evaluations": 1579,
+          "frontier_moves": 297,
+          "hold_no_legal_affordable_gain": 30
+        },
+        "drone_2": {
+          "candidate_evaluations": 1988,
+          "frontier_moves": 203,
+          "hold_no_legal_affordable_gain": 197
+        },
+        "drone_3": {
+          "candidate_evaluations": 1503,
+          "frontier_moves": 241,
+          "hold_no_legal_affordable_gain": 63
+        }
+      }
+    },
+    {
+      "size": 56,
+      "seed": 10011,
+      "mode": "visible24",
+      "found": 0,
+      "total": 3,
+      "coverage": 0.3122966818477554,
+      "steps": 400,
+      "termination": "deadline",
+      "initial_signature": "a7660816dd334aad85c7ded4d762fe8fdb79d25ca8862b5698daf13163a05eca",
+      "planner_counts": {
+        "rover_0": {
+          "candidate_evaluations": 6432,
+          "frontier_moves": 288,
+          "hold_no_legal_affordable_gain": 112
+        },
+        "rover_1": {
+          "candidate_evaluations": 3019,
+          "frontier_moves": 295,
+          "hold_no_legal_affordable_gain": 104,
+          "investigate": 1
+        },
+        "drone_2": {
+          "candidate_evaluations": 1979,
+          "frontier_moves": 238,
+          "hold_no_legal_affordable_gain": 21
+        },
+        "drone_3": {
+          "candidate_evaluations": 2833,
+          "frontier_moves": 238,
+          "hold_no_legal_affordable_gain": 20
+        }
+      }
+    }
+  ],
+  "actor_hashes": {
+    "rover_policy": "3edcfc12c5c2d9cd33288c76b5ee30a979886c14c6ac1f6fa75633a75db59945",
+    "drone_policy": "8e1c10a6448be21b84a3b40e7683021808b279fe49b7f33ca8a2595ef7916b50"
+  },
+  "actor_unchanged": true,
+  "paired_initial_states_equal": true,
+  "elapsed_seconds": 80.38391958399916,
+  "source_commit": "8465db82c649c63b44910cf406d219f4b7089af7",
+  "source_sha256": {
+    "/Users/omvipulbhairashiya/Desktop/swarm/simulation/scripts/ablate_visibility.py": "4ccb15e1f897c14d4c8baff17eaa31af6abcae4f41e1b333011361b214b601fe",
+    "/Users/omvipulbhairashiya/Desktop/swarm/simulation/scripts/visibility_frontiers.py": "46ef8b3807eae2d0f5b93843d1850f66fae343ff4cce4e5afa24d9afc2ffa4be",
+    "/Users/omvipulbhairashiya/Desktop/swarm/simulation/scripts/frontier_utility.py": "4f60a4915c53a1c708f6e8e75c9f513d211e7da5f75cf249572f007bf7e17a6e"
+  }
+}

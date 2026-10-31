@@ -1,0 +1,16 @@
+{
+  "url": "https://swarmsar.vercel.app",
+  "passed": true,
+  "deployment_id": "dpl_EawRDb1TLfvWPQhdjPpKVPaoLmLw",
+  "checks": [
+    "Public extended edition loads: 91 pages, 20 chapters, 693 atlas entries",
+    "New SLAM chapter narration plays publicly",
+    "New audio supports byte-range seeking",
+    "Current photos and updated PDF/M4B downloads are public",
+    "Updated SLAM source is readable in deployed atlas"
+  ],
+  "browser_errors": [],
+  "reader_pages": 91,
+  "chapters": 20,
+  "audio_minutes": 115.8
+}

@@ -1,0 +1,57 @@
+{
+  "prespecified_plan_matches": true,
+  "paired_cases": 6,
+  "episodes": 24,
+  "trace_checks": "passed",
+  "actor_unchanged": true,
+  "aggregates": {
+    "32_ppo": {
+      "episodes": 2,
+      "found": 6,
+      "total": 8,
+      "mean_coverage": 0.8944737554703401
+    },
+    "32_square5": {
+      "episodes": 2,
+      "found": 7,
+      "total": 8,
+      "mean_coverage": 0.8902700011355595
+    },
+    "32_visible5": {
+      "episodes": 2,
+      "found": 5,
+      "total": 8,
+      "mean_coverage": 0.5812645766546414
+    },
+    "32_visible24": {
+      "episodes": 2,
+      "found": 5,
+      "total": 8,
+      "mean_coverage": 0.571821961722906
+    },
+    "56_ppo": {
+      "episodes": 4,
+      "found": 3,
+      "total": 10,
+      "mean_coverage": 0.2569063575891889
+    },
+    "56_square5": {
+      "episodes": 4,
+      "found": 2,
+      "total": 10,
+      "mean_coverage": 0.4674573413101822
+    },
+    "56_visible5": {
+      "episodes": 4,
+      "found": 2,
+      "total": 10,
+      "mean_coverage": 0.24538012446459553
+    },
+    "56_visible24": {
+      "episodes": 4,
+      "found": 1,
+      "total": 10,
+      "mean_coverage": 0.25302912278383216
+    }
+  }
+}

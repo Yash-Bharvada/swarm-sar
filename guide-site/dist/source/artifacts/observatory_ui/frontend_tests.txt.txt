@@ -1,0 +1,41 @@
+
+> swarm-mission-control@0.1.0 test
+> vitest run --reporter=dot
+
+
+ RUN  v2.1.4 /Users/omvipulbhairashiya/Desktop/swarm/frontend
+
+ ✓ src/tests/network.test.ts  (8 tests) 27ms
+ ✓ src/tests/collision.test.ts  (9 tests) 66ms
+ ✓ src/tests/audio.test.ts  (14 tests) 53ms
+ ✓ src/tests/missionControls.test.ts  (8 tests) 270ms
+ ✓ src/tests/presentation.test.ts  (17 tests) 295ms
+ ✓ src/tests/camera.test.ts  (8 tests) 69ms
+ ✓ src/tests/ppo.test.ts  (10 tests) 479ms
+ ✓ src/tests/survivorPlacement.test.ts  (18 tests) 1696ms
+   ✓ Operator survivor placement > replays a custom mission deterministically 1312ms
+ ✓ src/tests/controller.test.ts  (7 tests) 2047ms
+   ✓ DecentralizedController > never selects a masked frontier action (next step occupied by a teammate) 1910ms
+ ✓ src/tests/scenario.test.ts  (15 tests) 1387ms
+   ✓ ScenarioGenerator > office places reachable, separated survivors away from spawn 331ms
+ ✓ src/tests/observatoryTelemetry.test.ts  (4 tests) 5ms
+ ✓ src/tests/autonomy.test.ts  (4 tests) 2231ms
+   ✓ Autonomy restrictions > autonomous robots do not use global survivor positions 1363ms
+   ✓ Autonomy restrictions > map knowledge spreads only through delivered messages 536ms
+ ✓ src/tests/rescueCelebration.test.ts  (5 tests) 5ms
+ ✓ src/tests/rosTransport.test.ts  (2 tests) 7ms
+ ✓ src/tests/demo.test.ts  (7 tests) 7ms
+ ✓ src/tests/determinism.test.ts  (3 tests) 3579ms
+   ✓ Determinism > same seed and actions give the same simulation outcome 3004ms
+   ✓ Determinism > a recorded command log replays to the identical state 352ms
+ ✓ src/tests/survivorEncounter.test.ts  (4 tests) 7452ms
+   ✓ Survivor encounters > pauses on every real discovery, blocks ordinary resume, and finishes the same mission 7427ms
+stdout | src/tests/missions.test.ts > Full missions > finds most survivors overall
+recall 54/55 = 98.2%
+
+ ✓ src/tests/missions.test.ts  (3 tests) 6ms
+
+ Test Files  18 passed (18)
+      Tests  146 passed (146)
+   Start at  20:50:22
+   Duration  14.88s (transform 2.33s, setup 0ms, collect 19.99s, tests 19.68s, environment 5ms, prepare 6.59s)

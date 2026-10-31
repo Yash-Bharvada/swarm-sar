@@ -28,7 +28,7 @@
     {
       "name": "Complete audiobook has page chapter markers",
       "passed": true,
-      "detail": 74
+      "detail": 91
     },
     {
       "name": "Cover renders actual screenshot",
@@ -496,6 +496,106 @@
       "detail": null
     },
     {
+      "name": "Desktop page 75 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 76 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 77 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 78 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 79 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 80 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 81 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 82 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 83 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 84 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 85 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 86 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 87 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 88 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 89 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 90 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop page 91 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "New SLAM chapter recorded narration plays",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Updated observatory photograph loads",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Extended edition has 20 chapters and 91 narrated pages",
+      "passed": true,
+      "detail": null
+    },
+    {
       "name": "Mobile has no horizontal overflow",
       "passed": true,
       "detail": null
@@ -881,9 +981,94 @@
       "detail": null
     },
     {
+      "name": "Mobile page 75 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 76 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 77 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 78 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 79 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 80 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 81 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 82 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 83 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 84 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 85 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 86 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 87 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 88 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 89 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 90 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Mobile page 91 renders without overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
       "name": "Full illustrated PDF generated",
       "passed": true,
-      "detail": 3210135
+      "detail": 5016516
     },
     {
       "name": "Browser reported no script errors",
@@ -891,13 +1076,13 @@
       "detail": []
     }
   ],
-  "passed": 178,
-  "readerPages": 74,
-  "chapters": 16,
-  "words": 12174,
-  "audioMinutes": 92.7,
-  "files": 421,
+  "passed": 215,
+  "readerPages": 91,
+  "chapters": 20,
+  "words": 15320,
+  "audioMinutes": 115.8,
+  "files": 693,
   "browserErrors": [],
-  "pdfPageCount": 74,
-  "sourceRevision": "83cd96ce7a5651ee77f5816a7ab47844bc0cbf7a"
+  "pdfPageCount": 92,
+  "sourceRevision": "d554464752fc9d5f3aa114d55c46fb7b300f49a7"
 }

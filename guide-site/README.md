@@ -3,9 +3,9 @@
 A separate static learning website for the existing Swarm SAR project. It does
 not change the simulator, training configuration, checkpoint or application.
 
-The edition has 91 reader pages across 20 chapters, original
+The edition has 91 reader pages across 20 chapters, 15,320 words, original
 project captures, interactive teaching diagrams, fifteen hackathon question
-cards and a searchable inventory of reviewed project files in the source snapshot (generated fieldbook outputs excluded). It includes 91 English audio tracks, a complete chaptered
+cards and a searchable inventory of reviewed project files in the source snapshot (generated fieldbook outputs excluded). It includes 91 English audio tracks, a complete 115.8-minute chaptered
 M4B, an illustrated PDF, transcript and downloadable file atlas.
 
 Narration is synthetic English speech (Samantha, macOS system TTS). The static

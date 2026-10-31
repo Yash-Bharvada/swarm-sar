@@ -125,3 +125,26 @@ def test_fresh_checkout_extracts_verified_default_archive(tmp_path, monkeypatch)
     module.prepare_checkpoint(checkpoint)
     expected = json.loads((original / 'ppo_754k_review.json').read_text())['checkpoint_provenance']['tree_sha256']
     assert module.digest_tree(checkpoint) == expected
+
+
+def test_preview_matches_creation_without_session_or_policy_steps(service, monkeypatch):
+    import backend.ppo_service as module
+    def unexpected_step(*args, **kwargs):
+        raise AssertionError('Preview must not run actor inference')
+    monkeypatch.setattr(module, 'policy_step', unexpected_step)
+    config = dict(seed=10081, size=40, layout='maze', rovers=4, drones=2,
+                  network=False, batteryLimited=False, timeLimit=123)
+    sessions = set(service.sessions)
+    preview = service.request('POST', '/api/ppo/preview', config)
+    assert set(service.sessions) == sessions
+    assert preview['preview'] is True
+    assert preview['step'] == 0
+    with pytest.raises(KeyError):
+        service.request('GET', '/api/ppo/missions/' + preview['mission'])
+    created = service.request('POST', '/api/ppo/missions', config)
+    try:
+        for key in ('grid', 'robots', 'victims', 'options', 'spawn', 'maxSteps', 'metrics'):
+            assert preview[key] == created[key], key
+    finally:
+        service.request('DELETE', '/api/ppo/missions/' + created['mission'])
+    assert set(service.sessions) == sessions

@@ -1,0 +1,113 @@
+{
+  "kind": "world_generation_only",
+  "rows": [
+    {
+      "size": 32,
+      "layout": "maze",
+      "seed": 10020,
+      "status": "generated",
+      "signature": "631e3fae1b79ca3c962976e45970ee749e6c43f7d2681dbdcd26f1713f3d27dd",
+      "victims": 3,
+      "shape": [
+        32,
+        32
+      ]
+    },
+    {
+      "size": 32,
+      "layout": "rooms",
+      "seed": 10020,
+      "status": "generated",
+      "signature": "ba3e25b8ffd306d230daaa2f43cdad5bb4660e044904b01048e972e2adbef8f7",
+      "victims": 2,
+      "shape": [
+        32,
+        32
+      ]
+    },
+    {
+      "size": 32,
+      "layout": "cave",
+      "seed": 10020,
+      "status": "generated",
+      "signature": "239871b8816f0219f6f9162c6f71f6073a0cc8ed5c9063776759b121da42a432",
+      "victims": 2,
+      "shape": [
+        32,
+        32
+      ]
+    },
+    {
+      "size": 56,
+      "layout": "maze",
+      "seed": 10020,
+      "status": "generated",
+      "signature": "9252106d914c9d31ec7bca12ebf2977b2866515084451a7dc69905d1ff993e26",
+      "victims": 1,
+      "shape": [
+        56,
+        56
+      ]
+    },
+    {
+      "size": 56,
+      "layout": "rooms",
+      "seed": 10020,
+      "status": "generated",
+      "signature": "d2f83082468e09f21be7d70dc1ac06065f1b752ca4cbf83e3396c677df359db1",
+      "victims": 4,
+      "shape": [
+        56,
+        56
+      ]
+    },
+    {
+      "size": 56,
+      "layout": "cave",
+      "seed": 10020,
+      "status": "generated",
+      "signature": "8a041fd3cfa26ed4373774e838d594fb852a4c54e0c2c0cdf2a373bf2371a7b6",
+      "victims": 3,
+      "shape": [
+        56,
+        56
+      ]
+    },
+    {
+      "size": 64,
+      "layout": "maze",
+      "seed": 10020,
+      "status": "generated",
+      "signature": "251c9338a2d61167bdb44e386afd3001589924ec86b3a2d68f53c556c781cdef",
+      "victims": 3,
+      "shape": [
+        64,
+        64
+      ]
+    },
+    {
+      "size": 64,
+      "layout": "rooms",
+      "seed": 10020,
+      "status": "generated",
+      "signature": "4e97f886528a819c8b70248f1646761b7bfa897cc17176498fddb06db9d1d9db",
+      "victims": 2,
+      "shape": [
+        64,
+        64
+      ]
+    },
+    {
+      "size": 64,
+      "layout": "cave",
+      "seed": 10020,
+      "status": "generated",
+      "signature": "37eaaa05410d8a2a8da3f9789345e8567f7c4fd046ca25e556b89d06b9a16ae4",
+      "victims": 3,
+      "shape": [
+        64,
+        64
+      ]
+    }
+  ]
+}

@@ -81,8 +81,8 @@ export function LeftPanel() {
   if (controllerMode === 'ppo') return <aside className="panel left" aria-label="Mission settings">
     <div className="panel-header"><span className="panel-eyebrow">LEARNED EXPLORATION</span><h2>Mission setup</h2><p className="panel-intro">Choose a map and build your team.</p></div>
     <ControllerControls />
-    <div className="objective-card"><strong>{ppoPhase === 'ready' ? 'Ready to explore' : ppoPhase === 'error' ? 'Connection needed' : 'Preparing your mission'}</strong><p className="explain">{ppoPhase === 'ready' ? `Current map: ${engine.scenario.width} × ${engine.scenario.height} · ${settings.rovers} rovers · ${settings.drones} drones` : 'The mission service needs to be running.'}</p></div>
-    <button className="btn" onClick={reset} disabled={ppoPhase === 'connecting'}>Restart mission</button>
+    <div className="objective-card"><strong>{ppoPhase === 'preview' ? 'Mission preview' : ppoPhase === 'ready' ? 'Ready to explore' : ppoPhase === 'error' ? 'Connection needed' : 'Preparing your mission'}</strong><p className="explain">{ppoPhase === 'ready' || ppoPhase === 'preview' ? `Current map: ${engine.scenario.width} × ${engine.scenario.height} · ${settings.rovers} rovers · ${settings.drones} drones` : 'The mission service needs to be running.'}</p></div>
+    <button className="btn" onClick={reset} disabled={ppoPhase === 'connecting'}>{ppoPhase === 'preview' ? 'Refresh preview' : 'Restart mission'}</button>
     <details className="disclosure" open><summary>Graphics</summary><Segmented<Quality> label="Graphics quality" value={settings.quality} onChange={(v) => setSetting('quality', v)} options={[{ value: 'low', label: 'Low' }, { value: 'medium', label: 'Medium' }, { value: 'high', label: 'High' }]} /></details>
   </aside>;
 

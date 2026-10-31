@@ -38,6 +38,7 @@ class SurvivorOracle(Node):
         self.declare_parameter("agents", ["rover_0", "rover_1", "drone_0", "drone_1"])
         self.declare_parameter("survivors", [-14.0, 13.0, -2.0, 6.0, 14.0, 14.0, 13.0, -14.0, -13.0, -12.0])
         self.declare_parameter("world_file", "")
+        self.declare_parameter("truth_odom_topics", [""])
         self.declare_parameter("thermal_radius", 6.0)
         self.declare_parameter("acoustic_radius", 11.0)
         self.declare_parameter("noise_std", 0.04)
@@ -57,7 +58,9 @@ class SurvivorOracle(Node):
         self.positions: dict[str, tuple[float, float]] = {}
         self.evidence_publishers = {agent: self.create_publisher(SurvivorEvidence, f"/{agent}/survivor_evidence", 10) for agent in self.agents}
         self.marker_pub = self.create_publisher(MarkerArray, "/survivor_markers", 10)
-        self.odom_subscriptions = [self.create_subscription(Odometry, f"/{agent}/odom", lambda msg, source=agent: self._odom(source, msg), qos_profile_sensor_data) for agent in self.agents]
+        topics=list(self.get_parameter("truth_odom_topics").value)
+        if topics != [""] and len(topics)!=len(self.agents):raise ValueError("truth_odom_topics must match agents")
+        self.odom_subscriptions = [self.create_subscription(Odometry, f"/{agent}/odom" if topics==[""] else topics[i], lambda msg, source=agent: self._odom(source, msg), qos_profile_sensor_data) for i,agent in enumerate(self.agents)]
         self.create_timer(0.5, self._sense)
 
     def _odom(self, agent: str, msg: Odometry) -> None:

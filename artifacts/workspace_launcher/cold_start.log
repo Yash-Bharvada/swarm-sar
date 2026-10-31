@@ -1,0 +1,24 @@
+
+SWARM SAR · local workspace
+
+PPO: not running
+Frontend: not running
+Audiobook: not running
+Waiting for services and verified PPO checkpoint…
+[Audiobook] Local: http://127.0.0.1:8088
+[Frontend]
+[Frontend]   VITE v5.4.10  ready in 1129 ms
+[Frontend]
+[Frontend]   ➜  Local:   http://127.0.0.1:5173/
+[PPO] 2026-10-31 09:08:31,741	WARNING rl_module.py:463 -- DeprecationWarning: `RLModule(config=[RLModuleConfig object])` has been deprecated. Use `RLModule(observation_space=.., action_space=.., inference_only=.., model_config=.., catalog_class=..)` instead. This will raise an error in the future!
+[PPO] PPO service ready at http://127.0.0.1:8765; verified checkpoint 753664
+
+Ready:
+  Simulator   http://127.0.0.1:5173/
+  Observatory http://127.0.0.1:5173/?mode=observatory
+  ROS view    http://127.0.0.1:5173/?mode=ros
+  Audiobook   http://127.0.0.1:8088/
+  PPO health  http://127.0.0.1:8765/api/ppo/health
+
+ROS/Gazebo and rosbridge run separately on the Linux ROS host.
+Ctrl+C stops services started here; existing servers remain running.

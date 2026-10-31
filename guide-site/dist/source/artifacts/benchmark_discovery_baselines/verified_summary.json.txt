@@ -1,0 +1,233 @@
+{
+  "verified": true,
+  "episodes": 72,
+  "paired_cases": 36,
+  "elapsed_seconds": 172.68864066700007,
+  "strata": [
+    {
+      "size": 32,
+      "layout": "maze",
+      "ppo": {
+        "found": 6,
+        "total": 13,
+        "recall": 0.46153846153846156,
+        "coverage": 0.6487817618115633,
+        "completed": 0,
+        "endings": {
+          "deadline": 2,
+          "all_batteries_depleted": 2
+        }
+      },
+      "expert": {
+        "found": 8,
+        "total": 13,
+        "recall": 0.6153846153846154,
+        "coverage": 0.830888977650616,
+        "completed": 0,
+        "endings": {
+          "all_batteries_depleted": 4
+        }
+      }
+    },
+    {
+      "size": 32,
+      "layout": "rooms",
+      "ppo": {
+        "found": 7,
+        "total": 7,
+        "recall": 1.0,
+        "coverage": 0.8418027507573929,
+        "completed": 4,
+        "endings": {
+          "all_found": 4
+        }
+      },
+      "expert": {
+        "found": 7,
+        "total": 7,
+        "recall": 1.0,
+        "coverage": 0.6673887080318689,
+        "completed": 4,
+        "endings": {
+          "all_found": 4
+        }
+      }
+    },
+    {
+      "size": 32,
+      "layout": "cave",
+      "ppo": {
+        "found": 10,
+        "total": 10,
+        "recall": 1.0,
+        "coverage": 0.7351141798346142,
+        "completed": 4,
+        "endings": {
+          "all_found": 4
+        }
+      },
+      "expert": {
+        "found": 10,
+        "total": 10,
+        "recall": 1.0,
+        "coverage": 0.6962024324815199,
+        "completed": 4,
+        "endings": {
+          "all_found": 4
+        }
+      }
+    },
+    {
+      "size": 56,
+      "layout": "maze",
+      "ppo": {
+        "found": 0,
+        "total": 7,
+        "recall": 0.0,
+        "coverage": 0.1872804410924315,
+        "completed": 0,
+        "endings": {
+          "deadline": 3,
+          "all_batteries_depleted": 1
+        }
+      },
+      "expert": {
+        "found": 3,
+        "total": 7,
+        "recall": 0.42857142857142855,
+        "coverage": 0.3852820750433621,
+        "completed": 1,
+        "endings": {
+          "all_batteries_depleted": 3,
+          "all_found": 1
+        }
+      }
+    },
+    {
+      "size": 56,
+      "layout": "rooms",
+      "ppo": {
+        "found": 5,
+        "total": 12,
+        "recall": 0.4166666666666667,
+        "coverage": 0.7214752460151587,
+        "completed": 0,
+        "endings": {
+          "all_batteries_depleted": 3,
+          "deadline": 1
+        }
+      },
+      "expert": {
+        "found": 7,
+        "total": 12,
+        "recall": 0.5833333333333334,
+        "coverage": 0.717049684474443,
+        "completed": 2,
+        "endings": {
+          "all_batteries_depleted": 2,
+          "all_found": 2
+        }
+      }
+    },
+    {
+      "size": 56,
+      "layout": "cave",
+      "ppo": {
+        "found": 10,
+        "total": 11,
+        "recall": 0.9090909090909091,
+        "coverage": 0.7538542705909905,
+        "completed": 3,
+        "endings": {
+          "all_found": 3,
+          "all_batteries_depleted": 1
+        }
+      },
+      "expert": {
+        "found": 10,
+        "total": 11,
+        "recall": 0.9090909090909091,
+        "coverage": 0.7337200987601182,
+        "completed": 3,
+        "endings": {
+          "all_found": 3,
+          "all_batteries_depleted": 1
+        }
+      }
+    },
+    {
+      "size": 64,
+      "layout": "maze",
+      "ppo": {
+        "found": 0,
+        "total": 13,
+        "recall": 0.0,
+        "coverage": 0.12419312722332633,
+        "completed": 0,
+        "endings": {
+          "deadline": 3,
+          "all_batteries_depleted": 1
+        }
+      },
+      "expert": {
+        "found": 1,
+        "total": 13,
+        "recall": 0.07692307692307693,
+        "coverage": 0.3179798619873817,
+        "completed": 0,
+        "endings": {
+          "all_batteries_depleted": 4
+        }
+      }
+    },
+    {
+      "size": 64,
+      "layout": "rooms",
+      "ppo": {
+        "found": 3,
+        "total": 8,
+        "recall": 0.375,
+        "coverage": 0.3948191992594547,
+        "completed": 1,
+        "endings": {
+          "all_batteries_depleted": 3,
+          "all_found": 1
+        }
+      },
+      "expert": {
+        "found": 8,
+        "total": 8,
+        "recall": 1.0,
+        "coverage": 0.7119597057110473,
+        "completed": 4,
+        "endings": {
+          "all_found": 4
+        }
+      }
+    },
+    {
+      "size": 64,
+      "layout": "cave",
+      "ppo": {
+        "found": 6,
+        "total": 10,
+        "recall": 0.6,
+        "coverage": 0.6983435217816532,
+        "completed": 0,
+        "endings": {
+          "all_batteries_depleted": 4
+        }
+      },
+      "expert": {
+        "found": 10,
+        "total": 10,
+        "recall": 1.0,
+        "coverage": 0.7251702527304755,
+        "completed": 4,
+        "endings": {
+          "all_found": 4
+        }
+      }
+    }
+  ]
+}
